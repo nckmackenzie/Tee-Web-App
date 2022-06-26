@@ -8,8 +8,10 @@ class Users extends Controller {
 
     public function index()
     {
-        $data = ['title' => 'Welcome'];
-       
+       $data = [
+        'PageName' => 'Log In',
+        'title' => 'Welcome'
+    ];       
        $this->view('users/index',$data);
     }
 }
