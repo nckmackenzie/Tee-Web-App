@@ -6,7 +6,7 @@
             <input class="form-control" name="email" type="email" id="userid" required placeholder="Enter your user id">
         </div>
         <div class="mb-3">
-            <a href="./reset_password" class="text-muted float-end"><small>Forgot your password?</small></a>
+            <a href="<?php echo URLROOT;?>/auth/reset_password" class="text-muted float-end"><small>Forgot your password?</small></a>
             <label for="password" class="form-label">Password</label>
             <div class="input-group input-group-merge">
                 <input type="password" name="password" class="form-control" placeholder="Enter your passwordid="password" class="form-control" placeholder="Enter your password">

@@ -1,6 +1,6 @@
 <?php require APPROOT .'/views/inc/layout/auth/header.php'; ?>
 
-    <form action="./auth/resetpassword">
+    <form action="<?php echo URLROOT;?>/auth/reset_password_act" method="POST" autocomplete="off">
         <div class="mb-3">
             <label for="contact" class="form-label">Phone No</label>
             <input class="form-control" type="text" id="contact"
