@@ -1,4 +1,6 @@
-<!-- end card -->
+                            </div> <!-- end card-body -->
+                        </div>
+                        <!-- end card -->
                     </div> <!-- end col -->
                 </div>
                 <!-- end row -->
@@ -15,5 +17,3 @@
         <script src="<?php echo URLROOT; ?>/dist/js/vendor.min.js"></script>
         <script src="<?php echo URLROOT; ?>/dist/js/app.min.js"></script>
         
-    </body>
-</html>
