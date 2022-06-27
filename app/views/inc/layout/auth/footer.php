@@ -12,8 +12,8 @@
         </footer>
 
         <!-- bundle -->
-        <script src="./dist/js/vendor.min.js"></script>
-        <script src="./dist/js/app.min.js"></script>
+        <script src="<?php echo URLROOT; ?>/dist/js/vendor.min.js"></script>
+        <script src="<?php echo URLROOT; ?>/dist/js/app.min.js"></script>
         
     </body>
 </html>
