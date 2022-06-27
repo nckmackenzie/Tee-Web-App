@@ -5,7 +5,7 @@
         <title><?php echo $data['title'];?> | PCEA TEE</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- App favicon -->
-        <link rel="shortcut icon" href="./img/logos/favicon.ico">
+        <link rel="shortcut icon" href="<?php echo URLROOT;?>/img/logos/favicon.ico">
         <!-- Fonts -->
         <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,7 +27,7 @@
                         <div class="card">
                             <!-- Logo -->
                             <div class="card-header pt-4 pb-4 text-center bg-primary d-flex gap-2 justify-content-center">
-                                <img src="./img/logos/logo_24_white.png" alt="" height="24">
+                                <img src="<?php echo URLROOT;?>/img/logos/logo_24_white.png" alt="Logo" height="24">
                                 <span class="fs-4 text-white fw-bolder">PCEA T.E.E</span>
                             </div>
 
