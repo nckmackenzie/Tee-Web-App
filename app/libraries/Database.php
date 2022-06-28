@@ -64,7 +64,7 @@ class Database {
     }
 
     //get result set as array of objects
-    public function resultSet()
+    public function resultset()
     {
         $this->execute();
         return $this->stmt->fetchAll(PDO::FETCH_OBJ);
@@ -75,8 +75,20 @@ class Database {
        $this->execute();
        return $this->stmt->fetch(PDO::FETCH_OBJ);
     }
+    //fetch
+    public function fetch()
+    {
+        $this->execute();
+        return $this->stmt->fetchAll();
+    }
+    //get single value
+    public function getvalue()
+    {
+        $this->execute();
+        return $this->stmt->fetchColumn();
+    }
     //get row count
-    public function rowCount()
+    public function rowcount()
     {
        return $this->stmt->rowCount();
     }
