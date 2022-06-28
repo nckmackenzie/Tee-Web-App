@@ -1,6 +1,6 @@
 <?php require APPROOT .'/views/inc/layout/auth/header.php'; ?>
 
-    <form action="#" autocomplete="off" id="login-form">
+    <form action="<?php echo URLROOT;?>/auth/login_act" autocomplete="off" id="login-form">
         <div class="mb-3">
             <label for="userid" class="form-label">User ID</label>
             <input type="text" name="userid" id="userid" class="form-control 
