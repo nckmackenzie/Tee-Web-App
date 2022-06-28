@@ -12,3 +12,14 @@ function inputvalidation($data,$err){
         return 'is-valid';
     }
 }
+
+//set selected option
+function selectdCheck($value1,$value2)
+{
+    if ($value1 == $value2){
+      echo 'selected="selected"';
+    } else {
+       echo '';
+    }
+    return;
+}
