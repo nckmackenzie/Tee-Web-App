@@ -1,6 +1,6 @@
 <?php require APPROOT .'/views/inc/layout/auth/header.php'; ?>
 
-    <form action="<?php echo URLROOT;?>/auth/login_act" autocomplete="off" id="login-form">
+    <form action="<?php echo URLROOT;?>/auth/login_act" autocomplete="off" id="login-form" method="POST">
         <div class="mb-3">
             <label for="userid" class="form-label">User ID</label>
             <input type="text" name="userid" id="userid" class="form-control 
@@ -36,8 +36,6 @@
             <button class="btn btn-primary login-btn" type="submit"> Log In </button>
         </div>
     </form>
-    
 
 <?php require APPROOT .'/views/inc/layout/auth/footer.php'; ?>
-<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/login.js"></script>
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>
