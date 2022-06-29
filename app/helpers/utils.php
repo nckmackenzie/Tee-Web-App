@@ -23,3 +23,12 @@ function selectdCheck($value1,$value2)
     }
     return;
 }
+
+//add class based on alert type
+function flashclass($flash,$type) {
+    if($flash === "toast"){
+        echo 'toast-header bg-'. $type . '';
+    }elseif($flash === 'alert'){
+        echo 'alert alert-'. $type .' alert-dismissible fade show';
+    }
+}
