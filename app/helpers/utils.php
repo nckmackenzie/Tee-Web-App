@@ -27,8 +27,8 @@ function selectdCheck($value1,$value2)
 //add class based on alert type
 function flashclass($flash,$type) {
     if($flash === "toast"){
-        echo 'toast-header bg-'. $type . '';
+        return 'toast-header bg-'. $type . '';
     }elseif($flash === 'alert'){
-        echo 'alert alert-'. $type .' alert-dismissible fade show';
+        return 'alert alert-'. $type .' alert-dismissible fade show';
     }
 }
