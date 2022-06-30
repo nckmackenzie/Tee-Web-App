@@ -9644,7 +9644,11 @@ body {
   position: fixed;
   top: 0; }
   .logo span.logo-lg {
-    display: block; }
+    display: flex;
+    align-items: center;
+    justify-content : center;
+    gap : 1rem;
+  }
   .logo span.logo-sm {
     display: none; }
   .logo.logo-light {
