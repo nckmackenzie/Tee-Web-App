@@ -1,4 +1,4 @@
-
+            </div> <!-- content -->
                 <!-- Footer Start -->
                 <footer class="footer">
                     <div class="container-fluid">
@@ -29,5 +29,3 @@
             <script src="<?php echo URLROOT; ?>/dist/js/vendor/dataTables.keyTable.min.js"></script>
             <script src="<?php echo URLROOT; ?>/dist/js/vendor/dataTables.select.min.js"></script>
         <?php endif; ?>
-    </body>
-</html>
