@@ -32,3 +32,10 @@ function flashclass($flash,$type) {
         return 'alert alert-'. $type .' alert-dismissible fade show';
     }
 }
+
+//Get value from Database
+function getdbvalue($con,$sql,$arr){
+    $stmt = $con->prepare($sql);
+    $stmt->execute($arr);
+    return $stmt->fetchColumn();
+}
