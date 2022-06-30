@@ -5,7 +5,7 @@
             <label for="userid" class="form-label">User ID</label>
             <input type="text" name="userid" id="userid" class="form-control 
                    <?php echo inputvalidation($data['userid'],$data['userid_err']); ?>" 
-                   placeholder="Enter your user id" autocomplete="nope" required>
+                   placeholder="Enter your user id" value="<?php echo $data['userid']; ?>" autocomplete="nope" required>
             <span class="invalid-feedback"><?php echo $data['userid_err'];?></span>
         </div>
         <div class="mb-3">
@@ -14,7 +14,7 @@
             <div class="input-group input-group-merge">
                 <input type="password" name="password" class="form-control 
                        <?php echo inputvalidation($data['password'],$data['password_err']); ?>" 
-                       placeholder="Enter your password" required>
+                       value="<?php echo $data['password']; ?>" placeholder="Enter your password" required>
                 <div class="input-group-text" data-password="false">
                     <span class="password-eye"></span>
                 </div>
