@@ -28,4 +28,18 @@ class Auths
             return true;
         }
     }
+
+    public function Login($userid,$password,$center)
+    {
+        $this->db->query('CALL `sp_userdetails`(:usid, :center)');
+        $this->db->bind(':usid',trim($userid));
+        $this->db->bind(':center',trim($center));
+        $row = $this->db->single();
+        //verify password is correct
+        if (password_verify($password,$row->Password)){
+            return $row;
+        }else{
+            return false;
+        }
+    }
 }
