@@ -10,8 +10,8 @@
                                         <img src="<?php echo URLROOT;?>/img/users/avatar-1.png" alt="user-image" class="rounded-circle">
                                     </span>
                                     <span>
-                                        <span class="account-user-name">Administrator</span>
-                                        <span class="account-position">User</span>
+                                        <span class="account-user-name"><?php echo getfirstword($_SESSION['username']);?></span>
+                                        <span class="account-position"><?php echo $_SESSION['usertype'];?></span>
                                     </span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
