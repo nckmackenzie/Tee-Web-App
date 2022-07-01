@@ -112,4 +112,17 @@ class Auth extends Controller {
         // flash('test_msg',null,'Created Successfully!',flashclass('toast','danger'));
         redirect('home');
     }
+    //logout functionality
+    public function logout()
+    {
+        unset($_SESSION['userid']);
+        unset($_SESSION['username']);
+        unset($_SESSION['usertypeid']);
+        unset($_SESSION['usertype']);
+        unset($_SESSION['ishead']);
+        unset($_SESSION['centerid']);
+        unset($_SESSION['centername']);
+        session_destroy();
+        redirect('home');
+    }
 }
