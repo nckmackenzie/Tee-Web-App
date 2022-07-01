@@ -39,3 +39,8 @@ function getdbvalue($con,$sql,$arr){
     $stmt->execute($arr);
     return $stmt->fetchColumn();
 }
+
+//get first letter of word
+function getfirstword($word){
+    return explode(' ',$word)[0];
+}
