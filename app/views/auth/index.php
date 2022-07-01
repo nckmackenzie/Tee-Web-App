@@ -19,7 +19,7 @@
                     <span class="password-eye"></span>
                 </div>
             </div>
-            <span class="invalid-feedback"><?php echo $data['password_err'];?></span>
+            <span class="invalid-feedback" <?php echo (!empty($data['password_err'])) ? 'style="display:block;"' : ''; ?>><?php echo $data['password_err'];?></span>
         </div>
         <div class="mb-3">
             <label for="center" class="form-label">Center</label>
