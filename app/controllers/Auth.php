@@ -27,6 +27,12 @@ class Auth extends Controller {
         $this->view('auth/forbidden',$data);
     }
 
+    public function test()
+    {
+        $data = ['title' => 'Test Page!',];
+        $this->view('auth/test',$data);
+    }
+
     public function reset_password()
     {
         $data = [
@@ -83,11 +89,27 @@ class Auth extends Controller {
                 $this->view('auth/index',$data);
                 exit();
             }else{
-                redirect('auth/forbidden');
+                $loggeduser = $this->authmodel->Login($data['userid'],$data['password'],$data['center']);
+                if(!$loggeduser){
+                    $data['password_err'] = 'Invalid Password';
+                    $this->view('auth/index',$data);
+                }else{
+                    $this->createsession($loggeduser); //log user in and create session
+                }
             }
-
-            // flash('test_msg',null,'Created Successfully!',flashclass('toast','danger'));
         }
     }
     
+    public function createsession($user)
+    {
+        $_SESSION['userid'] = $user->ID;
+        $_SESSION['username'] = $user->UserName;
+        $_SESSION['usertypeid'] = $user->UserTypeId;
+        $_SESSION['usertype'] = $user->UserType;
+        $_SESSION['ishead'] = $user->IsHead;
+        $_SESSION['centerid'] = $user->CenterId;
+        $_SESSION['centername'] = $user->CenterName;
+        // flash('test_msg',null,'Created Successfully!',flashclass('toast','danger'));
+        redirect('home');
+    }
 }
