@@ -27,12 +27,6 @@ class Auth extends Controller {
         $this->view('auth/forbidden',$data);
     }
 
-    public function test()
-    {
-        $data = ['title' => 'Test Page!',];
-        $this->view('auth/test',$data);
-    }
-
     public function reset_password()
     {
         $data = [
