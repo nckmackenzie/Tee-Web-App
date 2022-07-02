@@ -123,6 +123,80 @@ class Auth extends Controller {
     //password change
     public function change_password()
     {
-        
+        if(!isset($_SESSION['userid'])){
+            redirect('auth');
+            exit();
+        }
+        $data = [
+            'title' => 'Change Password',
+            'oldpassword' => '',
+            'newpassword' => '',
+            'confirmpassword' => '',
+            'oldpassword_err' => '',
+            'newpassword_err' => '',
+            'confirmpassword_err' => '',
+        ];
+        $this->view('auth/change_password', $data);
+        exit();
+    }
+
+    //action for change password
+    public function change_password_act()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
+            $data = [
+                'title' => 'Change Password',
+                'oldpassword' => trim($_POST['oldpassword']),
+                'newpassword' => trim($_POST['newpassword']),
+                'confirmpassword' => trim($_POST['confirmpassword']),
+                'oldpassword_err' => '',
+                'newpassword_err' => '',
+                'confirmpassword_err' => '',
+            ];
+
+            if(empty($data['oldpassword'])) {
+                $data['oldpassword_err'] = 'Enter old password';
+            }else{
+                if(!$this->authmodel->ValidatePassword($data['oldpassword'])){
+                    $data['oldpassword_err'] = 'Old password is incorrect';
+                }
+            }
+
+            if(empty($data['newpassword'])) {
+                $data['newpassword_err'] = 'Enter new password';
+            }
+
+            if(empty($data['confirmpassword'])) {
+                $data['confirmpassword_err'] = 'Confirm password';
+            }
+
+            if(!empty($data['newpassword']) && !empty($data['confirmpassword']) && 
+                strcmp($data['newpassword'],$data['confirmpassword']) !=0) {
+                $data['newpassword_err'] = 'Passwords do not match';    
+                $data['confirmpassword_err'] = 'Passwords do not match';    
+            }
+
+            //if errors
+            if(!empty($data['oldpassword_err']) || !empty($data['newpassword_err']) || 
+               !empty($data['confirmpassword_err'])){
+                $this->view('auth/change_password',$data);
+                exit();
+            }else{
+                //password not changed
+                if(!$this->authmodel->ChangePassword($data['newpassword'])){
+                    flash('pwd_msg',null,'Something went wrong! Retry or contact admin',flashclass('alert','danger'));
+                    redirect('auth/change_password');
+                    exit();
+                }else{
+                    flash('home_msg',null,'Password changed successfully!',flashclass('toast','success'));
+                    redirect('home');
+                }
+            }
+
+        }else {
+            redirect('auth/forbidden');
+            exit();
+        }
     }
 }
