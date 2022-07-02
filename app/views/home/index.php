@@ -18,7 +18,8 @@
         </div>
     </div>     
     <!-- end page title --> 
-                        
+   
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>                    
+<?php flash('home_msg','toast');?>
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
