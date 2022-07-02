@@ -199,4 +199,13 @@ class Auth extends Controller {
             exit();
         }
     }
+
+    //unauthorized access
+    public function unauthorized()
+    {
+        $data = [
+            'title' => '401 Unauthorized',
+        ];       
+        $this->view('auth/unauthorized',$data);
+    }
 }
