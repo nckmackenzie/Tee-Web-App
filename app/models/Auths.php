@@ -22,7 +22,7 @@ class Auths
         $arr = array();
         array_push($arr,$userid);
         array_push($arr,(int)$center);
-        if((int)getdbvalue($this->db->dbh,"SELECT checkuseravailability(?,?)",$arr) === 0){
+        if((int)getdbvalue($this->db->dbh,"SELECT fn_checkuseravailability(?,?)",$arr) === 0){
            return false; 
         }else{
             return true;
@@ -42,4 +42,31 @@ class Auths
             return false;
         }
     }
+
+    //validate password entered
+    public function ValidatePassword($pwd)
+    {
+        $arr = array();
+        array_push($arr,$_SESSION['userid']);
+        $dbpassword = getdbvalue($this->db->dbh,'SELECT fn_getpassword(?)',$arr);
+        if(password_verify($pwd,$dbpassword)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    //change password 
+    public function ChangePassword($newpassword)
+    {
+        $this->db->query("UPDATE users SET `Password` = :pwd WHERE ID = :id");
+        $this->db->bind(':pwd',password_hash($newpassword,PASSWORD_DEFAULT));
+        $this->db->bind(':id',$_SESSION['userid']);
+        if(!$this->db->execute()){
+            return false;
+        }else{
+            return true;
+        }
+    }
+   
 }
