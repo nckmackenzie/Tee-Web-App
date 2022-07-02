@@ -119,4 +119,10 @@ class Auth extends Controller {
         session_destroy();
         redirect('home');
     }
+
+    //password change
+    public function change_password()
+    {
+        
+    }
 }

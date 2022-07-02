@@ -25,7 +25,7 @@
                                         <span>My Account</span>
                                     </a>
                                     <!-- item-->
-                                    <a href="<?php echo URLROOT;?>/auth/change-password" class="dropdown-item notify-item">
+                                    <a href="<?php echo URLROOT;?>/auth/change_password" class="dropdown-item notify-item">
                                         <i class="mdi mdi-lock me-1"></i>
                                         <span>Change Password</span>
                                     </a>
