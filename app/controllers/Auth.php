@@ -103,7 +103,7 @@ class Auth extends Controller {
         $_SESSION['ishead'] = $user->IsHead;
         $_SESSION['centerid'] = $user->CenterId;
         $_SESSION['centername'] = $user->CenterName;
-        // flash('test_msg',null,'Created Successfully!',flashclass('toast','danger'));
+        flash('test_msg',null,'Login Success!',flashclass('toast','success'));
         redirect('home');
     }
     //logout functionality
