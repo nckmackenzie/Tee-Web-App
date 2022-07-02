@@ -1,3 +1,6 @@
 .block {
   display: block !important;
 }
+.z-index-toast {
+  z-index: 1000;
+}
