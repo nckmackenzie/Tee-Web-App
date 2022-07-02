@@ -24,7 +24,7 @@
               unset($_SESSION[$name.'_class']);
             }elseif(!empty($_SESSION[$name]) && empty($message) && $type === 'toast'){
               $class = !empty($_SESSION[$name.'_class']) ? $_SESSION[$name.'_class'] : 'success';
-              echo '<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+              echo '<div class="toast-container position-fixed bottom-0 end-0 z-index-toast p-3">
                       <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                         <div class="'.$class.'">
                           <img src="'.URLROOT.'./img/other/info_24px.png" class="rounded me-2" alt="Action Icon">
