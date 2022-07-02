@@ -117,7 +117,7 @@ class Auth extends Controller {
         unset($_SESSION['centerid']);
         unset($_SESSION['centername']);
         session_destroy();
-        redirect('home');
+        redirect('auth');
     }
 
     //password change
