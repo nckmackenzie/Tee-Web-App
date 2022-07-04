@@ -11,10 +11,10 @@ class Auth extends Controller {
        $data = [
             'title' => 'Log In',
             'centers' => $this->authmodel->LoadCenters(),
-            'userid' => '',
+            'contact' => '',
             'password' => '',
             'center' => '',
-            'userid_err' => '',
+            'contact_err' => '',
             'password_err' => '',
             'center_err' => '',
         ];       
@@ -53,17 +53,17 @@ class Auth extends Controller {
             $data = [
                 'title' => 'Log In',
                 'centers' => $this->authmodel->LoadCenters(),
-                'userid' => $_POST['userid'],
+                'contact' => $_POST['contact'],
                 'password' => $_POST['password'],
                 'center' => !empty($_POST['center']) ? $_POST['center'] : '',
-                'userid_err' => '',
+                'contact_err' => '',
                 'password_err' => '',
                 'center_err' => '',
             ];
 
             //validation
-            if(empty($data['userid'])){
-                $data['userid_err'] = 'Enter your userid';
+            if(empty($data['contact'])){
+                $data['contact_err'] = 'Enter your contact';
             }
 
             if(empty($data['password'])){
@@ -74,16 +74,16 @@ class Auth extends Controller {
                 $data['center_err'] = 'Select center';
             }
 
-            if(!empty($data['userid']) && !empty($data['center']) && 
-               !$this->authmodel->CheckUserAvailability($data['userid'], $data['center'])){
-                $data['userid_err'] = 'Userid not available or user is deactivated';
+            if(!empty($data['contact']) && !empty($data['center']) && 
+               !$this->authmodel->CheckUserAvailability($data['contact'], $data['center'])){
+                $data['contact_err'] = 'contact not available or user is deactivated';
             }
 
-            if(!empty($data['userid_err']) || !empty($data['password_err']) || !empty($data['center_err'])){
+            if(!empty($data['contact_err']) || !empty($data['password_err']) || !empty($data['center_err'])){
                 $this->view('auth/index',$data);
                 exit();
             }else{
-                $loggeduser = $this->authmodel->Login($data['userid'],$data['password'],$data['center']);
+                $loggeduser = $this->authmodel->Login($data['contact'],$data['password'],$data['center']);
                 if(!$loggeduser){
                     $data['password_err'] = 'Invalid Password';
                     $this->view('auth/index',$data);
