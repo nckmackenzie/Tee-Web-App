@@ -17,10 +17,10 @@ class Auths
         return $this->db->resultset();
     }
 
-    public function CheckUserAvailability($userid,$center)
+    public function CheckUserAvailability($contact,$center)
     {
         $arr = array();
-        array_push($arr,$userid);
+        array_push($arr,$contact);
         array_push($arr,(int)$center);
         if((int)getdbvalue($this->db->dbh,"SELECT fn_checkuseravailability(?,?)",$arr) === 0){
            return false; 
@@ -31,8 +31,8 @@ class Auths
 
     public function Login($userid,$password,$center)
     {
-        $this->db->query('CALL `sp_userdetails`(:usid, :center)');
-        $this->db->bind(':usid',trim($userid));
+        $this->db->query('CALL `sp_userdetails`(:cont, :center)');
+        $this->db->bind(':cont',trim($userid));
         $this->db->bind(':center',trim($center));
         $row = $this->db->single();
         //verify password is correct
