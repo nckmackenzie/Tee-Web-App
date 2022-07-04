@@ -10,6 +10,7 @@ class Users extends Controller {
           exit();
        }else{
           $this->usermodel = $this->model('User');
+          $this->authmodel = $this->model('Auths');
        }
     }
 
@@ -21,6 +22,26 @@ class Users extends Controller {
         'users' => $this->usermodel->GetUsers()
        ];
        $this->view('users/index',$data);
+    }
+
+    public function add()
+    {
+        $data = [
+            'title' => 'Add Users',
+            'userid' => '',
+            'username' => '',
+            'contact' => '',
+            'password' => '',
+            'usertype' => '',
+            'confirmpassword' => '',
+            'userid_err' => '',
+            'username_err' => '',
+            'contact_err' => '',
+            'password_err' => '',
+            'usertype_err' => '',
+            'confirmpassword_err' => '',
+        ];
+        $this->view('users/add',$data);
     }
 
     public function profile()
@@ -59,6 +80,75 @@ class Users extends Controller {
             }
 
         } else {
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
+
+    //create user
+    public function create()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
+            $data = [
+                'title' => 'Add Users',
+                'username' => '',
+                'contact' => '',
+                'password' => '',
+                'usertype' => '',
+                'confirmpassword' => '',
+                'username_err' => '',
+                'contact_err' => '',
+                'password_err' => '',
+                'usertype_err' => '',
+                'confirmpassword_err' => '', 
+            ];
+
+            //validation
+            if (empty($data['username'])){
+                $data['username_err'] = 'Enter username';
+            }
+
+            if(empty($data['contact'])){
+                $data['contact_err'] = 'Enter user contact';
+            }else{
+                if($this->authmodel->CheckUserAvailability($data['contact'],$_SESSION['centerid'])){
+                    $data['contact_err'] = 'Contact already exists';
+                }
+            }
+
+            if(empty($data['password'])){
+                $data['password_err'] = 'Enter password';
+            }
+
+            if(empty($data['confirmpassword'])){
+                $data['confirmpassword_err'] = 'Confirm password';
+            }
+
+            if(!empty($data['password']) && !empty($data['confirmpassword']) && 
+                strcmp($data['password'], $data['confirmpassword']) != 0){
+                $data['password_err'] = 'Passwords do not match';
+                $data['confirmpassword_err'] = 'Passwords do not match';  
+            }
+
+            if(empty($data['username']) || empty($data['password']) || empty($data['confirmpassword']) || 
+               empty($data['contact'])){
+               $this->view('users/add',$data);
+               exit();
+            }else{
+                if(!$this->usermodel->CreateUser($data)){
+                    flash('user_msg',null,'Something went wrong creating the user.',flashclass('alert','danger'));
+                    redirect('users');
+                    exit();
+                }else{
+                    flash('user_msg',null,'User created successfully!',flashclass('toast','success'));
+                    redirect('users');
+                    exit();
+                }
+            }
+
+
+        }else {
             redirect('auth/forbidden');
             exit();
         }
