@@ -29,10 +29,10 @@ class Auths
         }
     }
 
-    public function Login($userid,$password,$center)
+    public function Login($contact,$password,$center)
     {
         $this->db->query('CALL `sp_userdetails`(:cont, :center)');
-        $this->db->bind(':cont',trim($userid));
+        $this->db->bind(':cont',trim($contact));
         $this->db->bind(':center',trim($center));
         $row = $this->db->single();
         //verify password is correct
