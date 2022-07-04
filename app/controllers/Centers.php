@@ -17,6 +17,7 @@ class Centers extends Controller
     {
         $data = [
             'title' => 'Centers',
+            'has_datatable' => true,
             'centers' => $this->centermodel->GetCenters()
         ];
         $this->view('centers/index', $data);
