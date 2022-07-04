@@ -44,3 +44,12 @@ function getdbvalue($con,$sql,$arr){
 function getfirstword($word){
     return explode(' ',$word)[0];
 }
+
+//set badge classes for status
+function badgeclasses($var){
+    if($var === 'Active'){
+        return 'bg-success';;
+    }else{
+        return 'bg-danger';
+    }
+}
