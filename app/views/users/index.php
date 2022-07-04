@@ -27,7 +27,6 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>ID</th>
-                                    <th>User ID</th>
                                     <th>Full Name</th>
                                     <th>Contact</th>
                                     <th>User Type</th>
@@ -39,7 +38,6 @@
                                 <?php foreach($data['users'] as $user): ?>
                                     <tr>
                                         <td><?php echo $user->ID;?></td>
-                                        <td><?php echo $user->UserID;?></td>
                                         <td><?php echo $user->UserName;?></td>
                                         <td><?php echo $user->Contact;?></td>
                                         <td><?php echo $user->UserType;?></td>
