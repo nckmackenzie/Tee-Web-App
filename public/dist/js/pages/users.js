@@ -17,8 +17,3 @@ $(document).ready(function () {
     },
   });
 });
-
-const btnDelete = document.querySelector('.btndel');
-btnDelete.addEventListener('click', e => {
-  e.preventDefault();
-});
