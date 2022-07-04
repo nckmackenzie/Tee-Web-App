@@ -15,7 +15,12 @@ class Users extends Controller {
 
     public function index()
     {
-       
+       $data = [
+        'title' => 'Users',
+        'has_datatable' => true,
+        'users' => $this->usermodel->GetUsers()
+       ];
+       $this->view('users/index',$data);
     }
 
     public function profile()
