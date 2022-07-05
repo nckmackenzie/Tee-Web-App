@@ -68,6 +68,7 @@ class Users extends Controller {
         'title' => 'My Profile',
         'username' => strtoupper($userinfo->UserName),
         'contact' => $userinfo->Contact,
+        'touched' => false,
         'username_err' => '',
         'contact_err' => '',
        ];
@@ -80,18 +81,30 @@ class Users extends Controller {
             $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
             $data = [
                 'title' => 'My Profile',
+                'touched' => true,
                 'username' => trim($_POST['username']),
-                'username_err' => ''
+                'contact' => trim($_POST['contact']),
+                'username_err' => '',
+                'contact_err' => '',
             ];
             //validation
             if(empty($data['username'])){
                 $data['username_err'] = 'Please enter your full name';
             }
 
-            if(!empty($data['username_err'])){
+            //validation
+            if(empty($data['contact'])){
+                $data['contact_err'] = 'Please enter your contact';
+            }else{
+                if($this->authmodel->CheckUserAvailability($data['contact'],$_SESSION['centerid'],$_SESSION['userid'])){
+                    $data['contact_err'] = 'This contact is already available';
+                }
+            }
+
+            if(!empty($data['username_err']) || !empty($data['contact_err'])){
                 $this->view('users/profile',$data);
             }else{
-                if(!$this->usermodel->ChangeProfile($data['username'])){
+                if(!$this->usermodel->ChangeProfile($data['username'],$data['contact'])){
                     flash('home_msg',null,'Not updated.Try again or contact admin if it still doesn\'t work!',flashclass('toast','danger'));
                 }else{
                     flash('home_msg',null,'Profile Updated!',flashclass('toast','success'));
