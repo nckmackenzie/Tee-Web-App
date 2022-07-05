@@ -29,16 +29,33 @@ class User
     //create user
     public function CreateUser($data)
     {
-        $this->db->query('INSERT INTO users (UserName,`Password`,Contact,UserTypeId,CenterId) VALUES(:uname,:pwd,:contact,:utype,:cid)');
-        $this->db->bind(':uname',strtolower(trim($data['username'])));
-        $this->db->bind(':pwd',password_hash(trim($data['password']),PASSWORD_DEFAULT));
-        $this->db->bind(':contact',trim($data['contact']));
-        $this->db->bind(':utype',trim($data['usertype']));
-        $this->db->bind(':cid',(int)$_SESSION['centerid']);
+        if(!$data['isedit']){
+            $this->db->query('INSERT INTO users (UserName,`Password`,Contact,UserTypeId,CenterId) VALUES(:uname,:pwd,:contact,:utype,:cid)');
+            $this->db->bind(':uname',strtolower(trim($data['username'])));
+            $this->db->bind(':pwd',password_hash(trim($data['password']),PASSWORD_DEFAULT));
+            $this->db->bind(':contact',trim($data['contact']));
+            $this->db->bind(':utype',trim($data['usertype']));
+            $this->db->bind(':cid',(int)$_SESSION['centerid']);
+        }else{
+            $this->db->query('UPDATE users SET UserName=:uname,Contact=:contact,UserTypeId=:utype WHERE ID=:id');
+            $this->db->bind(':uname',strtolower(trim($data['username'])));
+            $this->db->bind(':contact',trim($data['contact']));
+            $this->db->bind(':utype',trim($data['usertype']));
+            $this->db->bind(':id',(int)$data['id']);
+        }
+        
         if (!$this->db->execute()) {
             return false;
         }else{
             return true;
         }
+    }
+
+    #Get single user information
+    public function GetUser($id)
+    {
+        $this->db->query('SELECT * FROM users WHERE ID=:id');
+        $this->db->bind(':id' , trim($id));
+        return $this->db->single();
     }
 }
