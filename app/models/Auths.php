@@ -17,12 +17,13 @@ class Auths
         return $this->db->resultset();
     }
 
-    public function CheckUserAvailability($contact,$center)
+    public function CheckUserAvailability($contact,$center,$id)
     {
         $arr = array();
         array_push($arr,$contact);
         array_push($arr,(int)$center);
-        if((int)getdbvalue($this->db->dbh,"SELECT fn_checkuseravailability(?,?)",$arr) === 0){
+        array_push($arr,$id);
+        if((int)getdbvalue($this->db->dbh,"SELECT fn_checkuseravailability(?,?,?)",$arr) === 0){
            return false; 
         }else{
             return true;
