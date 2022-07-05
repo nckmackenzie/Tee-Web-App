@@ -45,4 +45,11 @@ class Center
             return true;
         }
     }
+
+    public function GetCenter($id)
+    {
+        $this->db->query('SELECT * FROM centers WHERE (ID=:id)');
+        $this->db->bind(':id',trim($id));
+        return $this->db->single();
+    }
 }

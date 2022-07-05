@@ -34,7 +34,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="contact" class="form-label">contact</label>
+                                    <label for="contact" class="form-label">Contact</label>
                                     <input type="text" name="contact" id="contact" 
                                            class="form-control form-control-sm 
                                            <?php echo inputvalidation($data['contact'],$data['contact_err'],$data['touched']);?>"
@@ -45,7 +45,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">email</label>
+                                    <label for="email" class="form-label">Email</label>
                                     <input type="email" name="email" id="email" 
                                            class="form-control form-control-sm 
                                            <?php echo inputvalidation($data['email'],$data['email_err'],$data['touched']);?>"
