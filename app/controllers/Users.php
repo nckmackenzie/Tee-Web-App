@@ -163,6 +163,10 @@ class Users extends Controller {
 
     public function edit($id)
     {
+        if((int)$_SESSION['usertypeid'] > 2){
+            redirect('/auth/unauthorized');
+            exit();
+        }
         $user = $this->usermodel->GetUser($id);
         $data = [
             'title' => 'Edit User',
@@ -177,5 +181,31 @@ class Users extends Controller {
             'usertype_err' => '',
         ];
         $this->view('users/add', $data);
+    }
+
+    //delete
+    public function Delete()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $id = trim($_POST['id']);
+            if(!empty($id)){
+                if(!$this->usermodel->Delete($id)){
+                    flash('user_msg',null,'Something went wrong deleting the user.',flashclass('alert','danger'));
+                    redirect('users');
+                    exit();
+                }else{
+                    flash('user_toast_msg',null,'Deleted successfully!',flashclass('toast','success'));
+                    redirect('users');
+                    exit();
+                }
+            }else{
+                flash('user_msg',null,'Something went wrong deleting the user.',flashclass('alert','danger'));
+                redirect('users');
+                exit();
+            }
+        }else {
+            redirect('auth/forbidden');
+            exit();
+        }
     }
 }
