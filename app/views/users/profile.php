@@ -19,9 +19,20 @@
                     <form action="<?php echo URLROOT;?>/users/profile_act" method="post" autocomplete="off">
                         <div class="mb-3">
                             <label for="username" id="form-label">Full Name</label>
-                            <input type="text" class="form-control form-control-sm" name="username"
+                            <input type="text" class="form-control form-control-sm 
+                                   <?php echo inputvalidation($data['username'],$data['username_err'],$data['touched']);?>" 
+                                   name="username"
                                    placeholder="Enter your full name" value="<?php echo $data['username'];?>">
-                                   <span class="invalid-feedback"><?php echo $data['username_err'];?></span>
+                            <span class="invalid-feedback"><?php echo $data['username_err'];?></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contact" id="form-label">Full Name</label>
+                            <input type="text" class="form-control form-control-sm 
+                                   <?php echo inputvalidation($data['contact'],$data['contact_err'],$data['touched']);?>" 
+                                   name="contact"
+                                   maxlength="10"
+                                   placeholder="Enter your full name" value="<?php echo $data['contact'];?>">
+                            <span class="invalid-feedback"><?php echo $data['contact_err'];?></span>
                         </div>
                         <div class="d-grid d-md-block">
                             <button class="btn btn-primary" type="submit"> Update Profile </button>
