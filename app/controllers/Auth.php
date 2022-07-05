@@ -11,6 +11,7 @@ class Auth extends Controller {
        $data = [
             'title' => 'Log In',
             'centers' => $this->authmodel->LoadCenters(),
+            'touched' => false,
             'contact' => '',
             'password' => '',
             'center' => '',
@@ -53,6 +54,7 @@ class Auth extends Controller {
             $data = [
                 'title' => 'Log In',
                 'centers' => $this->authmodel->LoadCenters(),
+                'touched' => true,
                 'contact' => $_POST['contact'],
                 'password' => $_POST['password'],
                 'center' => !empty($_POST['center']) ? $_POST['center'] : '',
