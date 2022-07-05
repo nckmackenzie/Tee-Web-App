@@ -85,7 +85,7 @@ class Centers extends Controller
             if(empty($data['contact'])){
                 $data['contact_err'] = 'Provide center contact';
             }else{
-                if(!$this->centermodel->CheckAvailability('Contact',$data['id'],$data['name'])){
+                if(!$this->centermodel->CheckAvailability('Contact',$data['id'],$data['contact'])){
                     $data['contact_err'] = 'Center already available';
                 }
             }
