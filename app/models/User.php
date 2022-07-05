@@ -58,4 +58,16 @@ class User
         $this->db->bind(':id' , trim($id));
         return $this->db->single();
     }
+
+    #delete user
+    public function Delete($id)
+    {
+        $this->db->query('UPDATE users SET Deleted = 1 WHERE ID=:id');
+        $this->db->bind(':id',$id);
+        if($this->db->execute()) {
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
