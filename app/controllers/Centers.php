@@ -114,4 +114,27 @@ class Centers extends Controller
             exit();
         }
     }
+
+    public function edit($id)
+    {
+        if(!$this->checkrights()){
+            redirect('auth/forbidden');
+            exit();
+        }
+        $center = $this->centermodel->GetCenter($id);
+        $data = [
+            'title' => 'Create Center',
+            'touched' => false,
+            'isedit' => true,
+            'id' => $center->ID,
+            'name' => strtoupper($center->CenterName),
+            'email' => $center->Email,
+            'contact' => $center->Contact,
+            'name_err' => '',
+            'email_err' => '',
+            'contact_err' => '',
+        ];
+        $this->view('centers/add',$data);
+        exit();
+    }
 }
