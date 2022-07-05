@@ -16,7 +16,7 @@
         <div class="col-lg-9 mx-auto">
             <div class="card">
                 <div class="card-body">
-                    <form action="<?php echo URLROOT;?>/users/create" method="post">
+                    <form action="<?php echo URLROOT;?>/users/create" method="post" autocomplete="off">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
@@ -45,8 +45,8 @@
                                     <label for="usertype" class="form-label">User Type</label>
                                     <select name="usertype" id="usertype" class="form-select form-select-sm">
                                         <option value="" disabled>Select user type</option>
-                                        <option value="1">Administrator</option>
-                                        <option value="2" selected>Standard User</option>
+                                        <option value="2">Administrator</option>
+                                        <option value="4" selected>Standard User</option>
                                      </select>
                                     <span class="invalid-feedback"><?php echo $data['usertype_err'];?></span>
                                 </div>
