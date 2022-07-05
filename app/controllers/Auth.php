@@ -53,6 +53,7 @@ class Auth extends Controller {
             $_POST = filter_input_array(INPUT_POST,FILTER_UNSAFE_RAW);
             $data = [
                 'title' => 'Log In',
+                'id' => '',
                 'centers' => $this->authmodel->LoadCenters(),
                 'touched' => true,
                 'contact' => $_POST['contact'],
@@ -77,7 +78,7 @@ class Auth extends Controller {
             }
 
             if(!empty($data['contact']) && !empty($data['center']) && 
-               !$this->authmodel->CheckUserAvailability($data['contact'], $data['center'])){
+               !$this->authmodel->CheckUserAvailability($data['contact'], $data['center'],$data['id'])){
                 $data['contact_err'] = 'contact not available or user is deactivated';
             }
 
