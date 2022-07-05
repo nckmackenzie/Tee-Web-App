@@ -10,7 +10,8 @@
                 <h4 class="page-title">Centers</h4>
             </div>
         </div>
-    </div>     
+    </div>
+    <?php DeleteModal(URLROOT.'/centers/delete'); ?>     
     <!-- end page title --> 
     <?php flash('center_msg','alert'); ?>
     <div class="row">
@@ -44,7 +45,10 @@
                                         <td><span class="badge <?php echo badgeclasses($center->Status);?>"><?php echo $center->Status;?></span></td>
                                         <td>
                                             <a href="<?php echo URLROOT;?>/centers/edit/<?php echo $center->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                            <button class="action-icon btn text-danger"><i class="mdi mdi-delete"></i></button>
+                                            <button class="action-icon btn text-danger btndel" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#centermodal"
+                                                    onclick="rowFunction(this)"><i class="mdi mdi-delete"></i></button>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>    
@@ -57,6 +61,6 @@
     </div><!--End row-->                    
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?> 
-<?php flash('center_toast_msg','flash'); ?> 
-<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/centers.js"></script>                  
+<?php flash('center_toast_msg','toast'); ?> 
+<script src="<?php echo URLROOT;?>/dist/js/pages/centers.js"></script>                  
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
