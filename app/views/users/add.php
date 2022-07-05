@@ -7,7 +7,7 @@
         <div class="col-12">
             <div class="page-title-box">
                 <div class="page-title-right"></div>
-                <h4 class="page-title">Add User</h4>
+                <h4 class="page-title"><?php echo $data['isedit'] === true ? 'Edit User' : 'Add User';?></h4>
             </div>
         </div>
     </div>     
@@ -23,7 +23,7 @@
                                     <label for="username" class="form-label">Full Name</label>
                                     <input type="text" id="username" name="username" 
                                            class="form-control form-control-sm 
-                                           <?php echo inputvalidation($data['username'],$data['username_err']);?>" 
+                                           <?php echo inputvalidation($data['username'],$data['username_err'],$data['touched']);?>" 
                                            value="<?php echo $data['username'];?>" placeholder="eg Jane Doe" required>
                                     <span class="invalid-feedback"><?php echo $data['username_err'];?></span>
                                 </div>
@@ -33,7 +33,7 @@
                                     <label for="contact" class="form-label">Contact</label>
                                     <input type="text" id="contact" name="contact" 
                                            class="form-control form-control-sm 
-                                           <?php echo inputvalidation($data['contact'],$data['contact_err']);?>" 
+                                           <?php echo inputvalidation($data['contact'],$data['contact_err'],$data['touched']);?>" 
                                            value="<?php echo $data['contact'];?>"
                                            maxlength="10" 
                                            placeholder="eg 0700000000" required>
@@ -45,18 +45,19 @@
                                     <label for="usertype" class="form-label">User Type</label>
                                     <select name="usertype" id="usertype" class="form-select form-select-sm">
                                         <option value="" disabled>Select user type</option>
-                                        <option value="2">Administrator</option>
-                                        <option value="4" selected>Standard User</option>
+                                        <option value="2" <?php selectdCheck($data['usertype'],2);?>>Administrator</option>
+                                        <option value="4" <?php selectdCheck($data['usertype'],4);?>>Standard User</option>
                                      </select>
                                     <span class="invalid-feedback"><?php echo $data['usertype_err'];?></span>
                                 </div>
                             </div>
+                            <?php if($data['isedit'] === false) : ?>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Password</label>
                                     <input type="password" id="password" name="password" 
                                            class="form-control form-control-sm 
-                                           <?php echo inputvalidation($data['password'],$data['password_err']);?>" 
+                                           <?php echo inputvalidation($data['password'],$data['password_err'],$data['touched']);?>" 
                                            value="<?php echo $data['password'];?>"
                                            placeholder="Enter user password" required>
                                     <span class="invalid-feedback"><?php echo $data['password_err'];?></span>
@@ -67,14 +68,17 @@
                                     <label for="confirmpassword" class="form-label">Confirm Password</label>
                                     <input type="password" id="confirmpassword" name="confirmpassword" 
                                            class="form-control form-control-sm 
-                                           <?php echo inputvalidation($data['confirmpassword'],$data['confirmpassword_err']);?>" 
+                                           <?php echo inputvalidation($data['confirmpassword'],$data['confirmpassword_err'],$data['touched']);?>" 
                                            value="<?php echo $data['confirmpassword'];?>"
                                            placeholder="Confirm password" required>
                                     <span class="invalid-feedback"><?php echo $data['confirmpassword_err'];?></span>
                                 </div>
                             </div>
+                            <?php endif; ?>
                         </div>
                         <div class="d-grid d-md-block">
+                            <input type="hidden" name="id" value=<?php echo $data['id'];?>>
+                            <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
                             <button class="btn btn-primary login-btn" type="submit"> Save </button>
                         </div>
                     </form>
