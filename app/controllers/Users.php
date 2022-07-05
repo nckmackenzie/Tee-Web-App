@@ -28,11 +28,14 @@ class Users extends Controller {
     {
         $data = [
             'title' => 'Add Users',
+            'touched' => false,
+            'isedit' => false,
+            'id' => '',
             'userid' => '',
             'username' => '',
             'contact' => '',
             'password' => '',
-            'usertype' => '',
+            'usertype' => 4,
             'confirmpassword' => '',
             'userid_err' => '',
             'username_err' => '',
@@ -91,12 +94,15 @@ class Users extends Controller {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
             $data = [
-                'title' => 'Add Users',
+                'title' => $_POST['isedit'] == true ? 'Edit Users' : 'Add Users',
+                'id' => trim($_POST['id']),
+                'touched' => true,
+                'isedit' => converttobool($_POST['isedit']),
                 'username' => trim($_POST['username']),
                 'contact' => trim($_POST['contact']),
-                'password' => $_POST['password'],
+                'password' => $_POST['isedit'] == true ? '' : $_POST['password'],
                 'usertype' => (int)$_POST['usertype'],
-                'confirmpassword' => $_POST['confirmpassword'],
+                'confirmpassword' => $_POST['isedit'] == true ? '' : $_POST['confirmpassword'],
                 'username_err' => '',
                 'contact_err' => '',
                 'password_err' => '',
@@ -104,6 +110,7 @@ class Users extends Controller {
                 'confirmpassword_err' => '', 
             ];
 
+           
             //validation
             if (empty($data['username'])){
                 $data['username_err'] = 'Enter username';
@@ -112,21 +119,21 @@ class Users extends Controller {
             if(empty($data['contact'])){
                 $data['contact_err'] = 'Enter user contact';
             }else{
-                if($this->authmodel->CheckUserAvailability($data['contact'],$_SESSION['centerid'])){
+                if(!$data['isedit'] && $this->authmodel->CheckUserAvailability($data['contact'],$_SESSION['centerid'])){
                     $data['contact_err'] = 'Contact already exists';
                 }
             }
 
-            if(empty($data['password'])){
+            if(empty($data['password']) && !$data['isedit']){
                 $data['password_err'] = 'Enter password';
             }
 
-            if(empty($data['confirmpassword'])){
+            if(empty($data['confirmpassword']) && !$data['isedit']){
                 $data['confirmpassword_err'] = 'Confirm password';
             }
 
             if(!empty($data['password']) && !empty($data['confirmpassword']) && 
-                strcmp($data['password'], $data['confirmpassword']) != 0){
+                strcmp($data['password'], $data['confirmpassword']) != 0 && !$data['isedit']){
                 $data['password_err'] = 'Passwords do not match';
                 $data['confirmpassword_err'] = 'Passwords do not match';  
             }
@@ -141,7 +148,7 @@ class Users extends Controller {
                     redirect('users');
                     exit();
                 }else{
-                    flash('user_toast_msg',null,'User created successfully!',flashclass('toast','success'));
+                    flash('user_toast_msg',null,'Saved successfully!',flashclass('toast','success'));
                     redirect('users');
                     exit();
                 }
@@ -152,5 +159,23 @@ class Users extends Controller {
             redirect('auth/forbidden');
             exit();
         }
+    }
+
+    public function edit($id)
+    {
+        $user = $this->usermodel->GetUser($id);
+        $data = [
+            'title' => 'Edit User',
+            'touched' => false,
+            'isedit' => true,
+            'id' => $user->ID,
+            'username' => strtoupper($user->UserName),
+            'contact' => $user->Contact,
+            'usertype' => $user->UserTypeId,
+            'username_err' => '',
+            'contact_err' => '',
+            'usertype_err' => '',
+        ];
+        $this->view('users/add', $data);
     }
 }
