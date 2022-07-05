@@ -75,7 +75,7 @@ function DeleteModal($route){
                         <p>Are you sure you want to delete?</p>
                     </div>
                     <div class="modal-footer">
-                        <input type="text" name="id" value="" id="id" />
+                        <input type="hidden" name="id" value="" id="id" />
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Yes</button>
                     </div>
