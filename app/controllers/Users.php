@@ -92,11 +92,11 @@ class Users extends Controller {
             $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
             $data = [
                 'title' => 'Add Users',
-                'username' => '',
-                'contact' => '',
-                'password' => '',
-                'usertype' => '',
-                'confirmpassword' => '',
+                'username' => trim($_POST['username']),
+                'contact' => trim($_POST['contact']),
+                'password' => $_POST['password'],
+                'usertype' => (int)$_POST['usertype'],
+                'confirmpassword' => $_POST['confirmpassword'],
                 'username_err' => '',
                 'contact_err' => '',
                 'password_err' => '',
@@ -131,8 +131,8 @@ class Users extends Controller {
                 $data['confirmpassword_err'] = 'Passwords do not match';  
             }
 
-            if(empty($data['username']) || empty($data['password']) || empty($data['confirmpassword']) || 
-               empty($data['contact'])){
+            if(!empty($data['username_err']) || !empty($data['password_err']) || !empty($data['confirmpassword_err']) || 
+               !empty($data['contact_err'])){
                $this->view('users/add',$data);
                exit();
             }else{
@@ -141,7 +141,7 @@ class Users extends Controller {
                     redirect('users');
                     exit();
                 }else{
-                    flash('user_msg',null,'User created successfully!',flashclass('toast','success'));
+                    flash('user_toast_msg',null,'User created successfully!',flashclass('toast','success'));
                     redirect('users');
                     exit();
                 }
