@@ -5,10 +5,10 @@ function redirect($page){
 }
 
 //add css classes for data validation
-function inputvalidation($data,$err){
+function inputvalidation($data,$err,$touch){
     if (!empty($err)){
         return 'is-invalid';
-    }elseif (empty($err) && !empty($data)){ 
+    }elseif (empty($err) && !empty($data) && $touch === true){ 
         return 'is-valid';
     }
 }
@@ -52,4 +52,10 @@ function badgeclasses($var){
     }else{
         return 'bg-danger';
     }
+}
+
+//convert value from string to boolean
+function converttobool($val){
+    $converted = filter_var($val, FILTER_VALIDATE_BOOLEAN);
+    return $converted;
 }
