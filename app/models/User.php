@@ -29,11 +29,12 @@ class User
     //create user
     public function CreateUser($data)
     {
-        $this->db->query('INSERT INTO user (UserName,`Password`,Contact,UserType) VALUES(:uname,:pwd,:contact,:utype)');
-        $this->db->bind(':uname',strtotime(trim($data['username'])));
+        $this->db->query('INSERT INTO users (UserName,`Password`,Contact,UserTypeId,CenterId) VALUES(:uname,:pwd,:contact,:utype,:cid)');
+        $this->db->bind(':uname',strtolower(trim($data['username'])));
         $this->db->bind(':pwd',password_hash(trim($data['password']),PASSWORD_DEFAULT));
         $this->db->bind(':contact',trim($data['contact']));
         $this->db->bind(':utype',trim($data['usertype']));
+        $this->db->bind(':cid',(int)$_SESSION['centerid']);
         if (!$this->db->execute()) {
             return false;
         }else{
