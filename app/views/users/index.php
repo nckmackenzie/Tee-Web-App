@@ -58,6 +58,6 @@
                         
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>
-<?php flash('user_msg','toast');?>
+<?php flash('user_toast_msg','toast');?>
 <script src="<?php echo URLROOT; ?>/dist/js/pages/users.js"></script>                   
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
