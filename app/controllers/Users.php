@@ -5,17 +5,27 @@ class Users extends Controller {
     {
        if(!isset($_SESSION['userid'])){
             redirect('auth');
-       }elseif (isset($_SESSION['userid']) && (int)$_SESSION['usertypeid'] > 2) {
-          redirect('auth/unauthorized');
-          exit();
        }else{
           $this->usermodel = $this->model('User');
           $this->authmodel = $this->model('Auths');
        }
     }
 
+    public function checkrights()
+    {
+        if (isset($_SESSION['userid']) && (int)$_SESSION['usertypeid'] > 2) {
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     public function index()
     {
+       if(!$this->checkrights()){
+            redirect('auth/unauthorized');
+            exit();
+       }
        $data = [
         'title' => 'Users',
         'has_datatable' => true,
@@ -26,6 +36,10 @@ class Users extends Controller {
 
     public function add()
     {
+        if(!$this->checkrights()){
+            redirect('auth/unauthorized');
+            exit();
+        }
         $data = [
             'title' => 'Add Users',
             'touched' => false,
@@ -49,10 +63,13 @@ class Users extends Controller {
 
     public function profile()
     {
+       $userinfo = $this->usermodel->GetUser($_SESSION['userid']);
        $data = [
         'title' => 'My Profile',
-        'username' => $_SESSION['username'],
-        'username_err' => ''
+        'username' => strtoupper($userinfo->UserName),
+        'contact' => $userinfo->Contact,
+        'username_err' => '',
+        'contact_err' => '',
        ];
        $this->view('users/profile', $data);
     }
@@ -163,8 +180,8 @@ class Users extends Controller {
 
     public function edit($id)
     {
-        if((int)$_SESSION['usertypeid'] > 2){
-            redirect('/auth/unauthorized');
+        if(!$this->checkrights()){
+            redirect('auth/unauthorized');
             exit();
         }
         $user = $this->usermodel->GetUser($id);
