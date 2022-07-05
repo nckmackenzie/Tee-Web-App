@@ -137,4 +137,31 @@ class Centers extends Controller
         $this->view('centers/add',$data);
         exit();
     }
+
+    public function delete()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $id = $_POST['id'];
+            
+            //validation
+            if(!empty($id)){
+                if(!$this->centermodel->Delete($id)){
+                    flash('center_msg',null,'Something went wrong creating the center.',flashclass('alert','danger'));
+                    redirect('users');
+                    exit();
+                }else{
+                    flash('center_toast_msg',null,'Deleted successfully!',flashclass('toast','success'));
+                    redirect('centers');
+                    exit();
+                }
+            }else{
+                flash('center_msg',null,'Unable to get selected center!',flashclass('altert','danger'));
+                redirect('centers');
+                exit();
+            }
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
