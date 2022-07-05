@@ -59,3 +59,29 @@ function converttobool($val){
     $converted = filter_var($val, FILTER_VALIDATE_BOOLEAN);
     return $converted;
 }
+
+//modal
+function DeleteModal($route){
+    echo '
+    <div class="modal fade" id="centermodal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form action="'.$route.'" method="post" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myCenterModalLabel">Delete</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="text" name="id" value="" id="id" />
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Yes</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    ';
+}
