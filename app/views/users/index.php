@@ -10,7 +10,8 @@
                 <h4 class="page-title">Users</h4>
             </div>
         </div>
-    </div>     
+    </div>
+    <?php DeleteModal(URLROOT.'/users/delete'); ?>     
     <!-- end page title -->
     <?php flash('user_msg','alert'); ?>
     <div class="row">
@@ -44,7 +45,10 @@
                                         <td><span class="badge <?php echo $user->Status === 'Active' ? 'bg-success' : 'bg-danger';?>"><?php echo $user->Status;?></span></td>
                                         <td>
                                             <a href="<?php echo URLROOT;?>/users/edit/<?php echo $user->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                            <button class="action-icon btn text-danger"><i class="mdi mdi-delete"></i></button>
+                                            <button class="action-icon btn text-danger btndel" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#centermodal"
+                                                    onclick="rowFunction(this)"><i class="mdi mdi-delete"></i></button>
                                         </td>
                                     </tr>    
                                 <?php endforeach; ?>    
