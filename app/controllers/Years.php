@@ -105,7 +105,7 @@ class Years extends Controller
         }
     }
 
-    public function delete()
+    function openclosedelete($action)
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $id = trim($_POST['id']);
@@ -116,13 +116,13 @@ class Years extends Controller
                 exit();
             }
 
-            if(!$this->yearmodel->DeleteClose($id,'delete')){
-                flash('year_msg',null,'Unable to delete selected year. Retry or contact admin!',flashclass('alert','danger'));
+            if(!$this->yearmodel->DeleteClose($id,$action)){
+                flash('year_msg',null,'Unable to '.$action.' selected year. Retry or contact admin!',flashclass('alert','danger'));
                 redirect('years');
                 exit();
             }
 
-            flash('year_toast_msg',null,'Deleted successfully!',flashclass('toast','success'));
+            flash('year_toast_msg',null,''.ucwords($action).' success!',flashclass('toast','success'));
             redirect('years');
             exit();    
 
@@ -132,31 +132,19 @@ class Years extends Controller
         }
     }
 
+    public function delete()
+    {
+        $this->openclosedelete('delete');
+    }
+
     public function close()
     {
-        if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $id = trim($_POST['id']);
+        $this->openclosedelete('close');
+    }
 
-            if(empty($id)){
-                flash('year_msg',null,'Unable to get selected year!',flashclass('toast','success'));
-                redirect('years');
-                exit();
-            }
-
-            if(!$this->yearmodel->DeleteClose($id,'close')){
-                flash('year_msg',null,'Unable to close selected year. Retry or contact admin!',flashclass('alert','danger'));
-                redirect('years');
-                exit();
-            }
-
-            flash('year_toast_msg',null,'Closed successfully!',flashclass('alert','danger'));
-            redirect('years');
-            exit(); 
-
-        }else{
-            redirect('auth/forbidden');
-            exit();
-        }
+    public function open()
+    {
+        $this->openclosedelete('open');
     }
 
     public function edit($id)
