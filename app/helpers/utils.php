@@ -61,21 +61,21 @@ function converttobool($val){
 }
 
 //modal
-function DeleteModal($route){
+function DeleteModal($route,$modalid,$message,$inputid){
     echo '
-    <div class="modal fade" id="centermodal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="'.$modalid.'" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <form action="'.$route.'" method="post" autocomplete="off">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="myCenterModalLabel">Delete</h4>
+                        <h4 class="modal-title">Action</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>Are you sure you want to delete?</p>
+                        <p>'.$message.'?</p>
                     </div>
                     <div class="modal-footer">
-                        <input type="hidden" name="id" value="" id="id" />
+                        <input type="hidden" name="id" value="" id="'.$inputid.'" />
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Yes</button>
                     </div>
