@@ -155,7 +155,7 @@ class Centers extends Controller
                     exit();
                 }
             }else{
-                flash('center_msg',null,'Unable to get selected center!',flashclass('altert','danger'));
+                flash('center_msg',null,'Unable to get selected center!',flashclass('alert','danger'));
                 redirect('centers');
                 exit();
             }
