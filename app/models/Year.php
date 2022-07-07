@@ -65,6 +65,8 @@ class Year
             $this->db->query('UPDATE years SET Deleted=1 WHERE (ID=:id)');
         }elseif($action === 'close'){
             $this->db->query('UPDATE years SET Closed=1 WHERE (ID=:id)');
+        }elseif($action === 'open'){
+            $this->db->query('UPDATE years SET Closed=0 WHERE (ID=:id)');
         }
         $this->db->bind(':id',$id);
         if(!$this->db->execute()){
