@@ -9,17 +9,6 @@
             <li>
                 <a href="<?php echo URLROOT;?>/users">Users</a>
             </li>
-        </ul>
-    </div>
-</li>
-<li class="side-nav-item">
-    <a data-bs-toggle="collapse" href="#sidebarMaster" aria-expanded="false" aria-controls="sidebarMaster" class="side-nav-link">
-        <i class="uil-plus-square"></i>
-        <span> Master Entries </span>
-        <span class="menu-arrow"></span>
-    </a>
-    <div class="collapse" id="sidebarMaster">
-        <ul class="side-nav-second-level">
             <li>
                 <a href="<?php echo URLROOT;?>/items">Items</a>
             </li>
