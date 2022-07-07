@@ -57,4 +57,28 @@ class Year
             return true;
         }
     }
+
+    //close or delete year based on criteria
+    public function DeleteClose($id,$action)
+    {
+        if($action === 'delete'){
+            $this->db->query('UPDATE years SET Deleted=1 WHERE (ID=:id)');
+        }elseif($action === 'close'){
+            $this->db->query('UPDATE years SET Closed=1 WHERE (ID=:id)');
+        }
+        $this->db->bind(':id',$id);
+        if(!$this->db->execute()){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    //get single year based on ID
+    public function GetYear($id)
+    {
+        $this->db->query('SELECT * FROM years WHERE ID=:id');
+        $this->db->bind(':id', $id);
+        return $this->db->single();
+    }
 }
