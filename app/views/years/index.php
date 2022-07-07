@@ -14,6 +14,7 @@
     <!-- end page title --> 
     <?php DeleteModal(URLROOT.'/years/delete','centermodal','Are your you want to delete this year?','id'); ?>     
     <?php DeleteModal(URLROOT.'/years/close','closemodal','Are your you want to close this year?','cid'); ?>     
+    <?php DeleteModal(URLROOT.'/years/open','openmodal','Are your you want to reopen this year?','oid'); ?>     
     <?php flash('year_msg','alert'); ?>
     <div class="row">
         <div class="col-12">
@@ -45,15 +46,23 @@
                                         <td><?php echo $year->EndDate;?></td>
                                         <td><span class="badge <?php echo $year->Status === 'Open' ? 'bg-success' : 'bg-danger';?>"><?php echo $year->Status;?></span></td>
                                         <td>
-                                            <a href="<?php echo URLROOT;?>/years/edit/<?php echo $year->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                            <button class="action-icon btn text-warning" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#closemodal"
-                                                    onclick="rowFunction(this,'cid')"><i class="mdi mdi-cancel"></i></button>
-                                            <button class="action-icon btn text-danger btndel" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#centermodal"
-                                                    onclick="rowFunction(this,'id')"><i class="mdi mdi-delete"></i></button>
+                                            
+                                            <?php if($year->Status === 'Open') : ?>
+                                                <a href="<?php echo URLROOT;?>/years/edit/<?php echo $year->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                <button class="action-icon btn text-warning" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#closemodal"
+                                                        onclick="rowFunction(this,'cid')"><i class="mdi mdi-cancel"></i></button>
+                                                <button class="action-icon btn text-danger btndel" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#centermodal"
+                                                        onclick="rowFunction(this,'id')"><i class="mdi mdi-delete"></i></button>
+                                            <?php else: ?>
+                                                <button class="action-icon btn text-warning" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#openmodal"
+                                                        onclick="rowFunction(this,'oid')"><i class="mdi mdi-undo-variant"></i></button>
+                                            <?php endif; ?>
                                         </td>
                                     </tr> 
                                 <?php endforeach; ?>
