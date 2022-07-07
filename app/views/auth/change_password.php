@@ -22,7 +22,7 @@
                             <label for="oldpassword" class="form-label">Old Password</label>
                             <input type="password" name="oldpassword" id="oldpassword" 
                                    class="form-control form-control-sm 
-                                   <?php echo inputvalidation($data['oldpassword'],$data['oldpassword_err']); ?>"
+                                   <?php echo inputvalidation($data['oldpassword'],$data['oldpassword_err'],$data['touched']); ?>"
                                    value="<?php echo $data['oldpassword'];?>" placeholder="Old Password" required>
                             <span class="invalid-feedback"><?php echo $data['oldpassword_err'];?></span>
                         </div>
@@ -30,7 +30,7 @@
                             <label for="newpassword" class="form-label">New Password</label>
                             <input type="password" name="newpassword" id="newpassword" 
                                    class="form-control form-control-sm 
-                                   <?php echo inputvalidation($data['newpassword'],$data['newpassword_err']);?>"
+                                   <?php echo inputvalidation($data['newpassword'],$data['newpassword_err'],$data['touched']);?>"
                                    value="<?php echo $data['newpassword'];?>" placeholder="New Password" required>
                             <span class="invalid-feedback"><?php echo $data['newpassword_err'];?></span>
                         </div>
@@ -38,7 +38,7 @@
                             <label for="confirmpassword" class="form-label">Confirm Password</label>
                             <input type="password" name="confirmpassword" id="confirmpassword" 
                                    class="form-control form-control-sm 
-                                   <?php echo inputvalidation($data['confirmpassword'],$data['confirmpassword_err']);?>"
+                                   <?php echo inputvalidation($data['confirmpassword'],$data['confirmpassword_err'],$data['touched']);?>"
                                    value="<?php echo $data['confirmpassword'];?>" placeholder="Confirm Password" required>
                             <span class="invalid-feedback"><?php echo $data['confirmpassword_err'];?></span>
                         </div>
