@@ -8,7 +8,7 @@ $(document).ready(function () {
       },
       info: 'Showing Centers _START_ to _END_ of _TOTAL_',
       lengthMenu:
-        'Display <select class=\'form-select form-select-sm ms-1 me-1\'><option value="5">5</option><option value="10">10</option><option value="20">20</option><option value="-1">All</option></select> products',
+        'Display <select class=\'form-select form-select-sm ms-1 me-1\'><option value="5">5</option><option value="10">10</option><option value="20">20</option><option value="-1">All</option></select> centers',
     },
     pageLength: 10,
     drawCallback: function () {
@@ -18,8 +18,8 @@ $(document).ready(function () {
   });
 });
 
-function rowFunction(el) {
-  const input = document.querySelector('#id');
+function rowFunction(el, id) {
+  const input = document.querySelector('#' + id + '');
   var n = el.parentNode.parentNode.cells[0].textContent;
   input.value = +n;
   // ...
