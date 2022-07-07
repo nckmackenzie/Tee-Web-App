@@ -8,7 +8,7 @@ class Books extends Controller
     }
 
     public function index(){
-        $items = $this->itemmodel->GetItems();
+        $items = $this->bookmodel->GetItems();
         $data = [
             'title' => 'Books',
             'has_datatable' => true,
