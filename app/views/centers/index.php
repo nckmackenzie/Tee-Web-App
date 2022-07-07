@@ -11,7 +11,7 @@
             </div>
         </div>
     </div>
-    <?php DeleteModal(URLROOT.'/centers/delete'); ?>     
+    <?php DeleteModal(URLROOT.'/centers/delete','centermodal','Are your you want to delete this year?','id'); ?>     
     <!-- end page title --> 
     <?php flash('center_msg','alert'); ?>
     <div class="row">
