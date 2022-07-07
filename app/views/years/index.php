@@ -25,7 +25,7 @@
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-centered table-sm w-100 dt-responsive nowrap" id="years-datatable">
+                        <table class="table table-centered w-100 dt-responsive nowrap" id="years-datatable">
                             <thead class="table-light">
                                 <tr>
                                     <th>ID</th>
@@ -45,7 +45,7 @@
                                         <td><?php echo $year->EndDate;?></td>
                                         <td><span class="badge <?php echo $year->Status === 'Open' ? 'bg-success' : 'bg-danger';?>"><?php echo $year->Status;?></span></td>
                                         <td>
-                                            <a href="<?php echo URLROOT;?>/centers/edit/<?php echo $year->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                            <a href="<?php echo URLROOT;?>/years/edit/<?php echo $year->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
                                             <button class="action-icon btn text-warning" 
                                                     data-bs-toggle="modal" 
                                                     data-bs-target="#closemodal"
