@@ -15,9 +15,6 @@
             <li>
                 <a href="<?php echo URLROOT;?>/years">Financial Year</a>
             </li>
-            <li>
-                <a href="<?php echo URLROOT;?>/items">Items</a>
-            </li>            
         </ul>
     </div>
 </li>
@@ -29,6 +26,12 @@
     </a>
     <div class="collapse" id="sidebarStocks">
         <ul class="side-nav-second-level">
+            <li>
+                <a href="<?php echo URLROOT;?>/books">Books</a>
+            </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/prices">Set Prices</a>
+            </li>
             <li>
                 <a href="<?php echo URLROOT;?>/stocks/receipts">Receipts</a>
             </li>
