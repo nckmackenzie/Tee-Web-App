@@ -7,8 +7,8 @@ class Book
         $this->db = new Database;
     }
 
-    public function index(){
-        $this->db->query('CALL sp_booklist(:tdate)');
+    public function GetItems(){
+        $this->db->query('CALL sp_bookslist(:tdate)');
         $this->db->bind(':tdate',date('Y-m-d'));
         return $this->db->resultSet();
     }
