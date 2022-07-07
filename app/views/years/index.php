@@ -12,7 +12,8 @@
         </div>
     </div>     
     <!-- end page title --> 
-    <?php DeleteModal(URLROOT.'/years/delete'); ?>     
+    <?php DeleteModal(URLROOT.'/years/delete','centermodal','Are your you want to delete this year?','id'); ?>     
+    <?php DeleteModal(URLROOT.'/years/close','closemodal','Are your you want to close this year?','cid'); ?>     
     <?php flash('year_msg','alert'); ?>
     <div class="row">
         <div class="col-12">
@@ -24,10 +25,10 @@
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-centered w-100 dt-responsive nowrap">
+                        <table class="table table-centered table-sm w-100 dt-responsive nowrap" id="years-datatable">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="display: none;">ID</th>
+                                    <th>ID</th>
                                     <th>Year Name</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
@@ -38,17 +39,21 @@
                             <tbody>
                                 <?php foreach($data['years'] as $year) : ?>
                                     <tr>
-                                        <td style="display: none;"><?php echo $year->ID;?></td>
+                                        <td><?php echo $year->ID;?></td>
                                         <td><?php echo $year->YearName;?></td>
                                         <td><?php echo $year->StartDate;?></td>
                                         <td><?php echo $year->EndDate;?></td>
-                                        <td><span class="badge <?php echo $year->Status === 'open' ? 'bg-success' : 'bg-danger';?>"><?php echo $year->Status;?></span></td>
+                                        <td><span class="badge <?php echo $year->Status === 'Open' ? 'bg-success' : 'bg-danger';?>"><?php echo $year->Status;?></span></td>
                                         <td>
                                             <a href="<?php echo URLROOT;?>/centers/edit/<?php echo $year->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                            <button class="action-icon btn text-warning" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#closemodal"
+                                                    onclick="rowFunction(this,'cid')"><i class="mdi mdi-cancel"></i></button>
                                             <button class="action-icon btn text-danger btndel" 
                                                     data-bs-toggle="modal" 
                                                     data-bs-target="#centermodal"
-                                                    onclick="rowFunction(this)"><i class="mdi mdi-delete"></i></button>
+                                                    onclick="rowFunction(this,'id')"><i class="mdi mdi-delete"></i></button>
                                         </td>
                                     </tr> 
                                 <?php endforeach; ?>
