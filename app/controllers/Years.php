@@ -50,7 +50,7 @@ class Years extends Controller
                 'title' => 'Add Year',
                 'isedit' => converttobool($_POST['isedit']),
                 'touched' => true,
-                'id' => '',
+                'id' => $_POST['id'],
                 'name' => trim($_POST['name']),
                 'start' => date("Y-m-d", strtotime($_POST['start'])),
                 'end' => date("Y-m-d", strtotime($_POST['end'])),
@@ -103,5 +103,78 @@ class Years extends Controller
             redirect('auth/forbidden');
             exit();
         }
+    }
+
+    public function delete()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $id = trim($_POST['id']);
+
+            if(empty($id)){
+                flash('year_msg',null,'Unable to get selected year!',flashclass('alert','danger'));
+                redirect('years');
+                exit();
+            }
+
+            if(!$this->yearmodel->DeleteClose($id,'delete')){
+                flash('year_msg',null,'Unable to delete selected year. Retry or contact admin!',flashclass('alert','danger'));
+                redirect('years');
+                exit();
+            }
+
+            flash('year_toast_msg',null,'Deleted successfully!',flashclass('toast','success'));
+            redirect('years');
+            exit();    
+
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
+
+    public function close()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $id = trim($_POST['id']);
+
+            if(empty($id)){
+                flash('year_msg',null,'Unable to get selected year!',flashclass('toast','success'));
+                redirect('years');
+                exit();
+            }
+
+            if(!$this->yearmodel->DeleteClose($id,'close')){
+                flash('year_msg',null,'Unable to close selected year. Retry or contact admin!',flashclass('alert','danger'));
+                redirect('years');
+                exit();
+            }
+
+            flash('year_toast_msg',null,'Closed successfully!',flashclass('alert','danger'));
+            redirect('years');
+            exit(); 
+
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
+
+    public function edit($id)
+    {
+        $year = $this->yearmodel->GetYear($id);
+        $data = [
+            'title' => 'Edit Year',
+            'isedit' => true,
+            'touched' => false,
+            'id' => (int)$year->ID,
+            'name' => strtoupper($year->YearName),
+            'start' => $year->StartDate,
+            'end' => $year->EndDate,
+            'name_err' => '',
+            'start_err' => '',
+            'end_err' => '',
+        ];
+        $this->view('years/add',$data);
+        exit();
     }
 }
