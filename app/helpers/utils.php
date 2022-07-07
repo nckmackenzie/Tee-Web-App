@@ -85,3 +85,13 @@ function DeleteModal($route,$modalid,$message,$inputid){
     </div><!-- /.modal -->
     ';
 }
+
+function adminonly($session,$usertype){
+    if(!isset($session)){
+        redirect('auth');
+        exit();
+    }elseif(isset($session) && $usertype > 2){
+        redirect('auth/unauthorized');
+        exit();
+    }
+}
