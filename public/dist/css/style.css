@@ -4,3 +4,7 @@
 .z-index-toast {
   z-index: 1000;
 }
+
+.mandatory {
+  border-left: 2px solid #f87171 !important;
+}
