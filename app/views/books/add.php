@@ -71,7 +71,7 @@
                                     <label for="asat" class="form-label">As At</label>
                                     <input type="date" name="asat" id="asat" class="mandatory form-control form-control-sm 
                                            <?php echo inputvalidation($data['asat'],$data['asat_err'],$data['touched']);?>"
-                                           value="<?php echo $data['asat'];?>" placeholder="eg Longhorn" >
+                                           value="<?php echo $data['asat'];?>" placeholder="eg Longhorn" required>
                                     <span class="invalid-feedback"><?php echo $data['asat_err'];?></span>
                                 </div>
                             </div>
