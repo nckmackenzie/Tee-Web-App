@@ -25,7 +25,7 @@
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Name</label>
                                     <input type="text" name="name" id="name" 
-                                           class="form-control form-control-sm 
+                                           class="mandatory form-control form-control-sm 
                                            <?php echo inputvalidation($data['name'],$data['name_err'],$data['touched']);?>"
                                            value="<?php echo $data['name'];?>" 
                                            placeholder="eg TEE Kikuyu" required>
@@ -36,7 +36,7 @@
                                 <div class="mb-3">
                                     <label for="contact" class="form-label">Contact</label>
                                     <input type="text" name="contact" id="contact" 
-                                           class="form-control form-control-sm 
+                                           class="mandatory form-control form-control-sm 
                                            <?php echo inputvalidation($data['contact'],$data['contact_err'],$data['touched']);?>"
                                            value="<?php echo $data['contact'];?>" 
                                            placeholder="eg 0700000000" maxlength="10" required>

@@ -22,7 +22,7 @@
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Full Name</label>
                                     <input type="text" id="username" name="username" 
-                                           class="form-control form-control-sm 
+                                           class="mandatory form-control form-control-sm 
                                            <?php echo inputvalidation($data['username'],$data['username_err'],$data['touched']);?>" 
                                            value="<?php echo $data['username'];?>" placeholder="eg Jane Doe" required>
                                     <span class="invalid-feedback"><?php echo $data['username_err'];?></span>
@@ -32,7 +32,7 @@
                                 <div class="mb-3">
                                     <label for="contact" class="form-label">Contact</label>
                                     <input type="text" id="contact" name="contact" 
-                                           class="form-control form-control-sm 
+                                           class="mandatory form-control form-control-sm 
                                            <?php echo inputvalidation($data['contact'],$data['contact_err'],$data['touched']);?>" 
                                            value="<?php echo $data['contact'];?>"
                                            maxlength="10" 
@@ -43,7 +43,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="usertype" class="form-label">User Type</label>
-                                    <select name="usertype" id="usertype" class="form-select form-select-sm">
+                                    <select name="usertype" id="usertype" class="mandatory form-select form-select-sm">
                                         <option value="" disabled>Select user type</option>
                                         <option value="2" <?php selectdCheck($data['usertype'],2);?>>Administrator</option>
                                         <option value="4" <?php selectdCheck($data['usertype'],4);?>>Standard User</option>
@@ -56,7 +56,7 @@
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Password</label>
                                     <input type="password" id="password" name="password" 
-                                           class="form-control form-control-sm 
+                                           class="mandatory form-control form-control-sm 
                                            <?php echo inputvalidation($data['password'],$data['password_err'],$data['touched']);?>" 
                                            value="<?php echo $data['password'];?>"
                                            placeholder="Enter user password" required>
@@ -67,7 +67,7 @@
                                 <div class="mb-3">
                                     <label for="confirmpassword" class="form-label">Confirm Password</label>
                                     <input type="password" id="confirmpassword" name="confirmpassword" 
-                                           class="form-control form-control-sm 
+                                           class="mandatory form-control form-control-sm 
                                            <?php echo inputvalidation($data['confirmpassword'],$data['confirmpassword_err'],$data['touched']);?>" 
                                            value="<?php echo $data['confirmpassword'];?>"
                                            placeholder="Confirm password" required>

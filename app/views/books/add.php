@@ -24,7 +24,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Book Name</label>
-                                    <input type="text" name="name" id="name" class="form-control form-control-sm 
+                                    <input type="text" name="name" id="name" class="mandatory form-control form-control-sm 
                                            <?php echo inputvalidation($data['name'],$data['name_err'],$data['touched']);?>"
                                            value="<?php echo $data['name'];?>" placeholder="eg Knowing God" required>
                                     <span class="invalid-feedback"><?php echo $data['name_err'];?></span>
@@ -33,7 +33,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="code" class="form-label">Book Code</label>
-                                    <input type="text" name="code" id="code" class="form-control form-control-sm 
+                                    <input type="text" name="code" id="code" class="mandatory form-control form-control-sm 
                                            <?php echo inputvalidation($data['code'],$data['code_err'],$data['touched']);?>"
                                            value="<?php echo $data['code'];?>" placeholder="Enter book code" required>
                                     <span class="invalid-feedback"><?php echo $data['code_err'];?></span>
