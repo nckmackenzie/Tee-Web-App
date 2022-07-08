@@ -8,12 +8,32 @@ class Books extends Controller
     }
 
     public function index(){
-        $items = $this->bookmodel->GetItems();
+        $books = $this->bookmodel->GetBooks();
         $data = [
             'title' => 'Books',
             'has_datatable' => true,
-            // 'items' => $items
+            'books' => $books
         ];
         $this->view('books/index',$data);
+    }
+
+    public function add()
+    {
+        $data = [
+            'title' => 'Books',
+            'has_datatable' => true,
+            'isedit' => false,
+            'touched' => false,
+            'id' => '',
+            'name' => '',
+            'code' => '',
+            'author' => '',
+            'publisher' => '',
+            'name_err' => '',
+            'code_err' => '',
+            'author_err' => '',
+            'publisher_err' => '',
+        ];
+        $this->view('books/add',$data);
     }
 }
