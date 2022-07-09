@@ -47,10 +47,11 @@
                                 <td><span class="badge <?php echo $book->Status === 'Active' ? 'bg-success' : 'bg-danger';?>"><?php echo $book->Status;?></span></td>
                                 <td>
                                     <a href="<?php echo URLROOT;?>/books/edit/<?php echo $book->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                    <button class="action-icon btn text-danger btndel" 
+                                    <button class="action-icon btn text-danger btndel"
+                                                    data-id="<?php echo $book->ID;?>" 
                                                     data-bs-toggle="modal" 
                                                     data-bs-target="#centermodal"
-                                                    onclick="rowFunction(this)"><i class="mdi mdi-delete"></i></button>
+                                                    ><i class="mdi mdi-delete"></i></button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>    
@@ -63,5 +64,6 @@
  
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>
-<?php flash('book_flash_msg','toast'); ?>                    
+<?php flash('book_flash_msg','toast'); ?>  
+<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/books.js"></script> 
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
