@@ -79,7 +79,7 @@
                             <?php endif; ?>
                             <div class="col-12">
                                 <div class="form-check mb-2">
-                                    <input type="checkbox" class="form-check-input" id="active" <?php checkstate($data['active']);?>>
+                                    <input type="checkbox" name="active" class="form-check-input" id="active" <?php checkstate($data['active']);?>>
                                     <label class="form-check-label" for="active">Active</label>
                                 </div>
                             </div>
@@ -87,6 +87,7 @@
                         <div class="d-grid d-md-block">
                             <input type="hidden" name="id" value=<?php echo $data['id'];?>>
                             <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
+                            <input type="hidden" name="allowedit" value="<?php echo $data['allowedit'];?>">
                             <button class="btn btn-primary login-btn" type="submit"> Save </button>
                         </div>
                     </form>
