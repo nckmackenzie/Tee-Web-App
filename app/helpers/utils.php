@@ -95,3 +95,14 @@ function adminonly($session,$usertype){
         exit();
     }
 }
+
+//checkbox checked state
+function checkstate($val)
+{
+    if (converttobool($val)){
+      echo 'checked';
+    } else {
+       echo 'unchecked';
+    }
+    return;
+}
