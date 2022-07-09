@@ -139,4 +139,37 @@ class Books extends Controller
         ];
         $this->view('books/add',$data);
     }
+
+    public function delete()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $id = $_POST['id'];
+            
+            if(empty($id)){
+                flash('book_msg',null,'Unable to get selected book!',flashclass('alert','danger'));
+                redirect('books');
+                exit();
+            }
+
+            if((int)$this->bookmodel->GetStock($id) > 0){
+                flash('book_msg',null,'Cannot delete as book is still in stock!',flashclass('alert','danger'));
+                redirect('books');
+                exit();
+            }   
+               
+            if(!$this->bookmodel->Delete($id)){
+                flash('book_msg',null,'Book not deleted.Retry and contact admin if it fails',flashclass('alert','danger'));
+                redirect('books');
+                exit();
+            }
+
+            flash('book_flash_msg',null,'Deleted successfully.',flashclass('toast','success'));
+            redirect('books');
+            exit();
+
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
