@@ -30,6 +30,7 @@ class Books extends Controller
             'publisher' => '',
             'openingbal' => '',
             'asat' => '',
+            'allowedit' => false,
             'name_err' => '',
             'code_err' => '',
             'author_err' => '',
@@ -55,6 +56,8 @@ class Books extends Controller
                 'publisher' => strtolower(trim($_POST['publisher'])),
                 'openingbal' => trim($_POST['openingbal']),
                 'asat' => !empty($_POST['asat']) ? date("Y-m-d", strtotime($_POST['asat'])) : date('Y-m-d'),
+                'active' => converttobool($_POST['isedit']) ? (isset($_POST['active']) ? true : false) : true,
+                'allowedit' => converttobool($_POST['allowedit']),
                 'name_err' => '',
                 'code_err' => '',
                 'author_err' => '',
@@ -62,6 +65,8 @@ class Books extends Controller
                 'openingbal_err' => '',
                 'asat_err' => '',
             ];
+
+            
 
             if(empty($data['name'])){
                 $data['name_err'] = 'Book name is required';
@@ -107,5 +112,31 @@ class Books extends Controller
             redirect('auth/forbidden');
             exit();
         }
+    }
+
+    public function edit($id)
+    {
+        $book = $this->bookmodel->GetBook($id);
+        $data = [
+            'title' => 'Edit Book',
+            'isedit' => true,
+            'touched' => false,
+            'id' => (int)$book->ID,
+            'name' => $book->Title,
+            'code' => $book->BookCode,
+            'author' => $book->Author,
+            'publisher' => $book->Publisher,
+            'openingbal' => $book->OpeningBal,
+            'allowedit' => converttobool($book->AllowBalEdit),
+            'active' => converttobool($book->Active),
+            'asat' => $book->AsAtDate,
+            'name_err' => '',
+            'code_err' => '',
+            'author_err' => '',
+            'publisher_err' => '',
+            'openingbal_err' => '',
+            'asat_err' => '',
+        ];
+        $this->view('books/add',$data);
     }
 }
