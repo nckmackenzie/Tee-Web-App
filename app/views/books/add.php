@@ -57,22 +57,30 @@
                                     <span class="invalid-feedback"><?php echo $data['publisher_err'];?></span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="openingbal" class="form-label">Opening Bal</label>
-                                    <input type="number" name="openingbal" id="openingbal" class="mandatory form-control form-control-sm 
-                                           <?php echo inputvalidation($data['openingbal'],$data['openingbal_err'],$data['touched']);?>"
-                                           value="<?php echo $data['openingbal'];?>" placeholder="eg Longhorn" required>
-                                    <span class="invalid-feedback"><?php echo $data['openingbal_err'];?></span>
+                            <?php if($data['allowedit']) : ?>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="openingbal" class="form-label">Opening Bal</label>
+                                        <input type="number" name="openingbal" id="openingbal" class="mandatory form-control form-control-sm 
+                                            <?php echo inputvalidation($data['openingbal'],$data['openingbal_err'],$data['touched']);?>"
+                                            value="<?php echo $data['openingbal'];?>" placeholder="eg Longhorn" required>
+                                        <span class="invalid-feedback"><?php echo $data['openingbal_err'];?></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="asat" class="form-label">As At</label>
-                                    <input type="date" name="asat" id="asat" class="mandatory form-control form-control-sm 
-                                           <?php echo inputvalidation($data['asat'],$data['asat_err'],$data['touched']);?>"
-                                           value="<?php echo $data['asat'];?>" placeholder="eg Longhorn" required>
-                                    <span class="invalid-feedback"><?php echo $data['asat_err'];?></span>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="asat" class="form-label">As At</label>
+                                        <input type="date" name="asat" id="asat" class="mandatory form-control form-control-sm 
+                                            <?php echo inputvalidation($data['asat'],$data['asat_err'],$data['touched']);?>"
+                                            value="<?php echo $data['asat'];?>" placeholder="eg Longhorn" required>
+                                        <span class="invalid-feedback"><?php echo $data['asat_err'];?></span>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                            <div class="col-12">
+                                <div class="form-check mb-2">
+                                    <input type="checkbox" class="form-check-input" id="active" <?php checkstate($data['active']);?>>
+                                    <label class="form-check-label" for="active">Active</label>
                                 </div>
                             </div>
                         </div>
