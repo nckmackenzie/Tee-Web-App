@@ -99,4 +99,43 @@ class Book
         $this->db->bind(':id',$id);
         return $this->db->single();
     }
+
+    //get stock of book
+    public function GetStock($book)
+    {
+        $this->db->query('SELECT fn_getstock(:pid,:tdate)');
+        $this->db->bind(':pid',$book);
+        $this->db->bind(':tdate',date('Y-m-d'));
+        return $this->db->getvalue();
+    }
+
+    //delete a book
+    public function Delete($id)
+    {
+        try {
+
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('UPDATE books SET Deleted = 0 WHERE ID = :id');
+            $this->db->bind(':id',$id);
+            $this->db->execute();
+
+            $this->db->query('UPDATE stockmovements SET Deleted = 0 WHERE BookId = :id');
+            $this->db->bind(':id',$id);
+            $this->db->execute();
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+            
+        } catch (\Exception $e) {
+            if ($this->db->dbh->inTransaction()) {
+                $this->db->dbh->rollBack();
+            }
+            throw $e;
+            return false;
+        }
+    }
 }
