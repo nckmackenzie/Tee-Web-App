@@ -15,11 +15,11 @@ class Book
     }
 
     //check if book exists
-    public function CheckAvailability($code,$id)
+    public function CheckAvailability($id,$code)
     {
         $arr = array();
-        array_push($arr,$code);
         array_push($arr,$id);
+        array_push($arr,$code);
         if((int)getdbvalue($this->db->dbh,"SELECT fn_checkbookavailability(?,?)",$arr) > 0){
            return false; 
         }else{

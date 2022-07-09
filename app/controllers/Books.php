@@ -70,7 +70,7 @@ class Books extends Controller
             if(empty($data['code'])){
                 $data['code_err'] = 'Book code is required';
             }else{
-                if(!$this->bookmodel->CheckAvailability($data['code'],$data['id'])){
+                if(!$this->bookmodel->CheckAvailability($data['id'],$data['code'])){
                     $data['code_err'] = 'Book code exists';
                 }
             }
