@@ -72,7 +72,7 @@ function DeleteModal($route,$modalid,$message,$inputid){
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>'.$message.'?</p>
+                        <p>'.$message.'</p>
                     </div>
                     <div class="modal-footer">
                         <input type="hidden" name="id" value="" id="'.$inputid.'" />
