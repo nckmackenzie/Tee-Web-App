@@ -73,4 +73,12 @@ class Book
             return $this->Save($data);
         }
     }
+
+    //get single book
+    public function GetBook($id)
+    {
+        $this->db->query('SELECT * FROM vw_books WHERE ID = :id');
+        $this->db->bind(':id',$id);
+        return $this->db->single();
+    }
 }
