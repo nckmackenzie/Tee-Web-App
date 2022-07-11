@@ -39,7 +39,8 @@
                                 <div class="mb-3">
                                     <label for="price" class="form-label">Price</label>
                                     <input type="number" name="price" id="price" 
-                                           class="form-control form-control-sm mandatory"
+                                           class="form-control form-control-sm mandatory 
+                                           <?php echo inputvalidation($data['price'],$data['price_err'],$data['touched']);?>"
                                            value="<?php echo $data['price']; ?>" placeholder="eg 800" required>
                                     <span class="invalid-feedback"><?php echo $data['price_err'];?></span>
                                 </div>
@@ -49,7 +50,8 @@
                                     <label for="startdate" class="form-label">From</label>
                                     <input type="date" name="startdate" id="startdate" 
                                            class="form-control form-control-sm mandatory 
-                                           <?php echo inputvalidation($data['startdate'],$data['startdate_err'],$data['touched']);?>">
+                                           <?php echo inputvalidation($data['startdate'],$data['startdate_err'],$data['touched']);?>"
+                                           value="<?php echo $data['startdate'];?>" required>
                                     <span class="invalid-feedback"><?php echo $data['startdate_err'];?></span>
                                 </div>
                             </div>
@@ -58,7 +60,8 @@
                                     <label for="enddate" class="form-label">To</label>
                                     <input type="date" name="enddate" id="enddate" 
                                            class="form-control form-control-sm mandatory 
-                                           <?php echo inputvalidation($data['enddate'],$data['enddate_err'],$data['touched']);?>">
+                                           <?php echo inputvalidation($data['enddate'],$data['enddate_err'],$data['touched']);?>"
+                                           value="<?php echo $data['enddate'];?>" required>
                                     <span class="invalid-feedback"><?php echo $data['enddate_err'];?></span>
                                 </div>
                             </div>
