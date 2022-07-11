@@ -27,7 +27,7 @@
                                     <select name="bookid" id="bookid" 
                                             class="form-select form-select-sm mandatory 
                                             <?php echo inputvalidation($data['bookid'],$data['bookid_err'],$data['touched']); ?>">
-                                        <option value="0" selected disabled>Select Book</option>
+                                        <option value="" selected disabled>Select Book</option>
                                         <?php foreach($data['books'] as $book) : ?>
                                             <option value="<?php echo $book->ID;?>" <?php selectdCheck($data['bookid'],$book->ID);?>><?php echo $book->Title;?></option>
                                         <?php endforeach;?>
