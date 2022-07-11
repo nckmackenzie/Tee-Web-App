@@ -47,4 +47,16 @@ class Price
         $this->db->bind(':id', $id);
         return $this->db->single();
     }
+
+    //delete price
+    public function Delete($id)
+    {
+        $this->db->query('UPDATE prices SET Deleted = 1 WHERE ID = :id');
+        $this->db->bind(':id', $id);
+        if(!$this->db->execute()){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
