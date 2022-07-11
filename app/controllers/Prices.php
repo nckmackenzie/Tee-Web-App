@@ -79,7 +79,11 @@ class Prices extends Controller
             if(!empty($data['startdate']) && !empty($data['enddate']) && $data['startdate'] > $data['enddate']){
                 $data['startdate_err'] = 'Starting date cannot be greater than end date';
             }else{
-
+                if(!empty($data['bookid'])){
+                    if(!$this->pricemodel->CheckPriceExists($data['bookid'],$data['startdate'],$data['id'])){
+                        $data['bookid_err'] = 'Book price set for selected period';
+                    }
+                }
             }
 
             //errors found in validation
