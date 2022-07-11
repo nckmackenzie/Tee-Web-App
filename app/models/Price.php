@@ -13,6 +13,20 @@ class Price
         return $this->db->resultset();
     }
 
+    //get if product is available or date range for price is set
+    public function CheckPriceExists($bid,$sdate,$id)
+    {
+        $this->db->query('SELECT fn_checkprice(:bid,:sdate,:tid)');
+        $this->db->bind(':bid',$bid);
+        $this->db->bind(':sdate',$sdate);
+        $this->db->bind(':tid',$id);
+        if((int)$this->db->getvalue() > 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     //get created books
     public function GetBooks()
     {
