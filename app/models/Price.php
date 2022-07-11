@@ -39,4 +39,12 @@ class Price
             return true;
         }
     }
+
+    //get single price  
+    public function GetPrice($id)
+    {
+        $this->db->query('SELECT * FROM prices WHERE ID= :id');
+        $this->db->bind(':id', $id);
+        return $this->db->single();
+    }
 }
