@@ -126,4 +126,32 @@ class Prices extends Controller
         ];
         $this->view('prices/add',$data);
     }
+
+    public function delete()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $id = (int)$_POST['id'];
+            
+            //validation
+            if(empty($id)){
+                flash('price_msg',null,'Unable to get selected price',flashclass('alert','danger'));
+                redirect('prices');
+                exit();
+            }
+            
+            if(!$this->pricemodel->Delete($id)){
+                flash('price_msg',null,'Unable to delete price!Retry or contact admin!',flashclass('alert','danger'));
+                redirect('prices');
+                exit();
+            }
+        
+            flash('price_toast_msg',null,'Deleted successfully',flashclass('toast','success'));
+            redirect('prices');
+            exit();
+
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
