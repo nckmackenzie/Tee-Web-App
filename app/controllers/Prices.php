@@ -104,4 +104,26 @@ class Prices extends Controller
             exit();
         }
     }
+
+    public function edit($id)
+    {
+        $price = $this->pricemodel->GetPrice($id);
+        $books = $this->pricemodel->GetBooks();
+        $data = [
+            'title' => 'Edit Price',
+            'books' => $books,
+            'id' => (int)$price->ID,
+            'touched' => false,
+            'isedit' => true,
+            'bookid' => (int)$price->BookId,
+            'startdate' => $price->StartDate,
+            'enddate' => $price->EndDate,
+            'price' => $price->Price,
+            'bookid_err' => '',
+            'startdate_err' => '',
+            'enddate_err' => '',
+            'price_err' => '',
+        ];
+        $this->view('prices/add',$data);
+    }
 }
