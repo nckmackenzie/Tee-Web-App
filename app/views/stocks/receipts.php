@@ -65,5 +65,5 @@
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?> 
 <?php flash('receipt_toast_msg', 'toast'); ?> 
-<script src="<?php echo URLROOT;?>/dist/js/pages/receipts.js"></script>                  
+<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/receipts.js"></script>                  
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
