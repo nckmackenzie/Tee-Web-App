@@ -43,13 +43,14 @@ class Book
 
                 $id = $this->db->dbh->lastInsertId();
 
-                $this->db->query('INSERT INTO stockmovements (TransactionDate,BookId,Qty,TransactionType,TransactionId) 
-                                  VALUES(:tdate,:bid,:qty,:ttype,:tid)');
+                $this->db->query('INSERT INTO stockmovements (TransactionDate,BookId,Qty,TransactionType,TransactionId,CenterId) 
+                                  VALUES(:tdate,:bid,:qty,:ttype,:tid,:cid)');
                 $this->db->bind(':tdate',$data['asat']);
                 $this->db->bind(':bid',$id);
                 $this->db->bind(':qty',$data['openingbal']);
                 $this->db->bind(':ttype',1);
                 $this->db->bind(':tid',$id);
+                $this->db->bind(':cid',$_SESSION['centerid']);
                 $this->db->execute();
             }else{
                 if($data['allowedit']){
