@@ -20,7 +20,7 @@
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-sm-4">
-                            <a href="<?php echo URLROOT;?>/stocks/addreceipt" class="btn btn-success mb-2"><i class="mdi mdi-plus-circle me-2"></i> Add Price</a>
+                            <a href="<?php echo URLROOT;?>/stocks/addreceipt" class="btn btn-success mb-2"><i class="mdi mdi-plus-circle me-2"></i> Add Receipt</a>
                         </div>
                     </div>
                     <div class="table-responsive">
