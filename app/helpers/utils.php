@@ -106,3 +106,11 @@ function checkstate($val)
     }
     return;
 }
+
+//check if user is authenticated
+function is_authenticated($user){
+    if(!isset($user)){
+        return false;
+    }
+    return true;
+}
