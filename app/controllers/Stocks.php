@@ -9,4 +9,15 @@ class Stocks extends Controller
         }
         $this->stockmodel = $this->model('Stock');
     }
+
+    public function receipts()
+    {
+        $receipts = $this->stockmodel->GetReceipts();
+        $data = [
+            'title' => 'Receipts',
+            'has_datatable' => true,
+            'receipts' => $receipts
+        ];
+        $this->view('stocks/receipts',$data);
+    }
 }
