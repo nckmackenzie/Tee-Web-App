@@ -20,4 +20,16 @@ class Stocks extends Controller
         ];
         $this->view('stocks/receipts',$data);
     }
+
+    public function addreceipt()
+    {
+        $books = $this->stockmodel->GetBooks();
+        $data = [
+            'title' => 'Add Receipt',
+            'books' => $books,
+            'date' => date('Y-m-d'),
+            'type' => 'grn'
+        ];
+        $this->view('stocks/addreceipt',$data);
+    }
 }
