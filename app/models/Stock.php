@@ -14,4 +14,11 @@ class Stock
         $this->db->bind(':cid',$_SESSION['centerid']);
         return $this->db->resultset();
     }
+
+    //get books
+    public function GetBooks()
+    {
+        $this->db->query('SELECT ID,UCASE(Title) As Title FROM books WHERE Deleted = 0 ORDER BY Title ASC');
+        return $this->db->resultset();
+    }
 }
