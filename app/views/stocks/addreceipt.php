@@ -97,7 +97,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table-sm table">
+                            <table class="table-sm table" id="receipts-table">
                                 <thead class="table-light">
                                     <tr>
                                         <th class="d-none">Pid</th>
