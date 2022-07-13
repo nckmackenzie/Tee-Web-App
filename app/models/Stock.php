@@ -21,4 +21,13 @@ class Stock
         $this->db->query('SELECT ID,UCASE(Title) As Title FROM books WHERE Deleted = 0 ORDER BY Title ASC');
         return $this->db->resultset();
     }
+
+    //get book price
+    public function GetPrice($book,$date)
+    {
+       $this->db->query('SELECT fn_getprice(:book,:rdate) As Price');
+       $this->db->bind(':book',(int)$book);
+       $this->db->bind(':rdate',date('Y-m-d',strtotime($date)));
+       return $this->db->getvalue();
+    }
 }
