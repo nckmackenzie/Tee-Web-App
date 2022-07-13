@@ -125,5 +125,5 @@
     </div>                    
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?> 
-<script src="<?php echo URLROOT;?>/dist/js/pages/add-receipts.js"></script>                   
+<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/add-receipts.js"></script>                   
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
