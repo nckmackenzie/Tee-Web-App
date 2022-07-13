@@ -8,3 +8,9 @@ export function btnClick(btnclass, inputid) {
     });
   });
 }
+
+export function getSelectedText(sel) {
+  return sel.options[sel.selectedIndex].text;
+}
+
+export const HOST_URL = 'http://localhost/pcea_tee';
