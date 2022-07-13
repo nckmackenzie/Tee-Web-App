@@ -8,3 +8,8 @@
 .mandatory {
   border-left: 2px solid #f87171 !important;
 }
+
+.table-input {
+  border: none !important;
+  outline: none !important;
+}
