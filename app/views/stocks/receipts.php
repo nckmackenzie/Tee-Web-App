@@ -40,7 +40,7 @@
                                 <?php foreach ($data['receipts'] as $receipt) : ?>
                                     <tr>
                                         <td><?php echo $receipt->ID;?></td>
-                                        <td><?php echo $receipt->TransanctionDate;?></td>
+                                        <td><?php echo $receipt->TransactionDate;?></td>
                                         <td><?php echo $receipt->Type;?></td>
                                         <td><?php echo $receipt->Reference;?></td>
                                         <td><?php echo $receipt->Title;?></td>
