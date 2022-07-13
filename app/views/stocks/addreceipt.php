@@ -89,7 +89,7 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button type="button" class="btn btn-sm btn-success" id="add">Add</button>
+                                <button type="button" class="btn btn-sm btn-success btnadd" id="add">Add</button>
                             </div>
                         </div><!-- /.row -->
                     </div><!-- /.card-body -->
