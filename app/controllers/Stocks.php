@@ -32,4 +32,20 @@ class Stocks extends Controller
         ];
         $this->view('stocks/addreceipt',$data);
     }
+
+    public function getprice()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $data = [
+                'book' => $_GET['book'],
+                'date' => $_GET['rdate']
+            ];
+            $price = $this->stockmodel->GetPrice($data['book'],$data['date']);
+            echo json_encode(floatval($price));
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
