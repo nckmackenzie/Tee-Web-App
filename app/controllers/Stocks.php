@@ -48,4 +48,30 @@ class Stocks extends Controller
             exit();
         }
     }
+
+    public function createupdatereceipt()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
+            $data = [
+                'type' => trim($_POST['receipttype']),
+                'date' => !empty($_POST['date']) ? date('Y-m-d',strtotime($_POST['date'])) : date('Y-m-d'),
+                'mtn' => !empty($_POST['mtn']) ? trim($_POST['mtn']) : '',
+                'reference' => !empty($_POST['reference']) ? trim($_POST['reference']) : '',
+                'booksid' => $_POST['booksid'],
+                'booksname' => $_POST['booksname'],
+                'qtys' => $_POST['qtys'],
+            ];
+
+            if(!$this->stockmodel->CreateUpdateReceipt($data)){
+                flash('receipt_msg',null,'Receipt not created. Retry or contact admin',flashclass('alert','danger'));
+                redirect('stocks/receipts');
+                exit();
+            }
+
+            flash('receipt_toast_msg',null,'Receipt created.',flashclass('toast','success'));
+            redirect('stocks/receipts');
+            exit();
+        }
+    }
 }
