@@ -51,7 +51,7 @@ class Stock
             $id = $this->db->dbh->lastInsertId();
 
             for ($i=0; $i < count($data['booksid']); $i++) { 
-                $this->db->query('INSERT INTO receiptsdetails(HeaderId,BookId,Qty) VALUES(:hid,:bid,:qty)');
+                $this->db->query('INSERT INTO receiptsdetails(HeaderID,BookId,Qty) VALUES(:hid,:bid,:qty)');
                 $this->db->bind(':hid',$id);
                 $this->db->bind(':bid',$data['booksid'][$i]);
                 $this->db->bind(':qty',$data['qtys'][$i]);
@@ -94,5 +94,56 @@ class Stock
                           ORDER BY CenterName');
         $this->db->bind(':id',$_SESSION['centerid']);
         return $this->db->resultset();
+    }
+
+    public function CreateUpdateTransfer($data)
+    {
+        try {
+
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('INSERT INTO transfersheader (TransferDate,MtnNo,ToCenter,CenterId) 
+                              VALUES(:tdate,:mtn,:tocenter,:cid)');
+            $this->db->bind(':tdate',$data['date']);
+            $this->db->bind(':mtn',!empty($data['mtn']) ? $data['mtn'] : null);
+            $this->db->bind(':tocenter',$data['center']);
+            $this->db->bind(':cid',$_SESSION['centerid']);
+            $this->db->execute();
+
+            $id = $this->db->dbh->lastInsertId();
+
+            for ($i=0; $i < count($data['booksid']); $i++) { 
+                $this->db->query('INSERT INTO transferdetails(HeaderID,BookId,Qty) VALUES(:hid,:bid,:qty)');
+                $this->db->bind(':hid',$id);
+                $this->db->bind(':bid',$data['booksid'][$i]);
+                $this->db->bind(':qty',$data['qtys'][$i]);
+                $this->db->execute();
+
+                $this->db->query('INSERT INTO stockmovements (TransactionDate,BookId,Qty,Reference,
+                                          TransactionType,TransactionId,CenterId) 
+                              VALUES(:tdate,:bid,:qty,:ref,:ttype,:tid,:cid)');
+                $this->db->bind(':tdate',$data['date']);
+                $this->db->bind(':bid',$data['booksid'][$i]);
+                $this->db->bind(':qty',$data['qtys'][$i]);
+                $this->db->bind(':ref',$data['mtn']); 
+                $this->db->bind(':ttype',3);
+                $this->db->bind(':tid',$id);
+                $this->db->bind(':cid',$_SESSION['centerid']);
+                $this->db->execute();
+            }
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+            
+        } catch (\Exception $e) {
+            if ($this->db->dbh->inTransaction()) {
+                $this->db->dbh->rollBack();
+            }
+            throw $e;
+            return false;
+        }
     }
 }
