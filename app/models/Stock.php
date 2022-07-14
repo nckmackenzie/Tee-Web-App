@@ -84,4 +84,15 @@ class Stock
             return false;
         }
     }
+
+    public function GetCenters()
+    {
+        $this->db->query('SELECT ID,
+                                 UCASE(CenterName) AS CenterName 
+                          FROM   centers 
+                          WHERE  Deleted = 0 AND ID <> :id
+                          ORDER BY CenterName');
+        $this->db->bind(':id',$_SESSION['centerid']);
+        return $this->db->resultset();
+    }
 }
