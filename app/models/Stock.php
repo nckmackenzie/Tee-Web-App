@@ -8,18 +8,10 @@ class Stock
     }
 
     //get receipts
-    public function GetReceipts()
+    public function GetReceiptsOrTransfers($type)
     {
-        $this->db->query("SELECT 
-                            ID,
-                            ReceiptDate,
-                            ReceiptType,
-                            GrnNo,
-                            FORMAT(SUM(BookValue),2) As `Value`
-                          FROM 
-                            vw_receipts
-                          WHERE 
-                            CenterId = :cid");
+        $this->db->query("CALL sp_getreceiptsortransfers(:action,:cid)");
+        $this->db->bind(':action',$type);
         $this->db->bind(':cid',$_SESSION['centerid']);
         return $this->db->resultset();
     }
