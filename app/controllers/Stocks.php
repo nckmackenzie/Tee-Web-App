@@ -12,13 +12,14 @@ class Stocks extends Controller
 
     public function receipts()
     {
-        $receipts = $this->stockmodel->GetReceipts();
+        $receipts = $this->stockmodel->GetReceiptsOrTransfers('receipts');
         $data = [
             'title' => 'Receipts',
             'has_datatable' => true,
             'receipts' => $receipts
         ];
         $this->view('stocks/receipts',$data);
+        exit();
     }
 
     public function addreceipt()
@@ -73,5 +74,16 @@ class Stocks extends Controller
             redirect('stocks/receipts');
             exit();
         }
+    }
+
+    public function transfers()
+    {
+        $transfers = $this->stockmodel->GetReceiptsOrTransfers('transfers');
+        $data = [
+            'title' => 'Transfers',
+            'has_datatable' => true,
+            'transfers' => $transfers,
+        ];
+        $this->view('stocks/transfers',$data);
     }
 }
