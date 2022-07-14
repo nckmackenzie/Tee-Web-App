@@ -31,6 +31,7 @@ class Books extends Controller
             'openingbal' => '',
             'asat' => '',
             'allowedit' => false,
+            'active' => true,
             'name_err' => '',
             'code_err' => '',
             'author_err' => '',
