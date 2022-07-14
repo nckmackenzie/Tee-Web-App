@@ -30,9 +30,8 @@
                                     <th>ID</th>
                                     <th>Receipt Date</th>
                                     <th>Type</th>
-                                    <th>Reference</th>
-                                    <th>Book</th>
-                                    <th>Qty</th>
+                                    <th>Grn No</th>
+                                    <th>Value</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -40,11 +39,10 @@
                                 <?php foreach ($data['receipts'] as $receipt) : ?>
                                     <tr>
                                         <td><?php echo $receipt->ID;?></td>
-                                        <td><?php echo $receipt->TransactionDate;?></td>
-                                        <td><?php echo $receipt->Type;?></td>
-                                        <td><?php echo $receipt->Reference;?></td>
-                                        <td><?php echo $receipt->Title;?></td>
-                                        <td><?php echo $receipt->Qty;?></td>
+                                        <td><?php echo $receipt->ReceiptDate;?></td>
+                                        <td><?php echo $receipt->ReceiptType;?></td>
+                                        <td><?php echo $receipt->GrnNo;?></td>
+                                        <td><?php echo $receipt->Value;?></td>
                                         <td>
                                             <a href="<?php echo URLROOT;?>/stocks/receiptedit/<?php echo $receipt->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
                                             <button class="action-icon btn text-danger btndel"
