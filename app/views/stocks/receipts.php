@@ -13,7 +13,8 @@
     </div>     
     <!-- end page title --> 
     <?php flash('receipt_msg','alert'); ?>
-    <?php DeleteModal(URLROOT .'/stocks/deletereceipt','centermodel','Are you sure you want to delete this receipt?','id') ; ?>
+    <?php DeleteModal(URLROOT .'/stocks/deletereceipt','centermodal','Are you sure you want to delete this receipt?','id') ; ?>
+    
     <div class="row">
         <div class="col-12">
             <div class="card">
