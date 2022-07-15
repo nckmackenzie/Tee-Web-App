@@ -240,4 +240,16 @@ class Stock
         $this->db->bind(':id',$id);
         return $this->db->resultset();
     }
+    public function CheckMtnAvailability($mtn,$id)
+    {
+        $this->db->query('SELECT fn_checkmtnavailability(:mtn,:id)');
+        $this->db->bind(':mtn',$mtn);
+        $this->db->bind(':id',$id);
+        if((int)$this->db->getvalue() > 0){
+            return false;
+        }else{
+            return true;
+        }
+
+    }
 }

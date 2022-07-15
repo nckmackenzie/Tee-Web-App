@@ -166,6 +166,10 @@ class Stocks extends Controller
 
             if(empty($data['mtn'])){
                 $data['mtn_err'] = 'Please enter MTN No';
+            }else{
+                if(!$this->stockmodel->CheckMtnAvailability($data['mtn'],$data['id'])){
+                    $data['mtn_err'] = 'Mtn No already exists';
+                }
             }
 
             if(!empty($data['date_err']) || !empty($data['center_err']) || !empty($data['mtn_err']) 
