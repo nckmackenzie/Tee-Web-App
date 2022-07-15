@@ -146,4 +146,16 @@ class Stock
             return false;
         }
     }
+    public function GetTransfereheader($id)
+    {
+        $this->db->query('SELECT h.ID,
+                                 h.TransferDate,
+                                 h.MtnNo,
+                                 h.ToCenter,
+                                 fn_checktransferreceived(h.ID) AS Received
+                          FROM   transfersheader h
+                          WHERE  h.ID = :id');
+        $this->db->bind(':id',$id);
+        return $this->db->single();
+    }
 }
