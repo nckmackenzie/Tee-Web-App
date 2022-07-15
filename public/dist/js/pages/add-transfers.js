@@ -40,8 +40,8 @@ btnadd.addEventListener('click', function () {
   let html = `
       <tr>
         <td class="d-none"><input type="text" name="booksid[]" value="${selectedValue}"></td>
-        <td><input type="text" class="table-input" name="booksname[]" value="${selectedBook}"></td>
-        <td><input type="text" class="table-input" name="qtys[]" value="${qty}"></td>
+        <td><input type="text" class="table-input" name="booksname[]" value="${selectedBook}" readonly></td>
+        <td><input type="text" class="table-input" name="qtys[]" value="${qty}" readonly></td>
         <td><button type="button" class="action-icon btn btn-sm text-danger fs-5 btndel">Remove</button></td>
       </tr>
   `;
