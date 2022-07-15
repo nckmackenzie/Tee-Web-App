@@ -146,7 +146,7 @@ class Stock
             return false;
         }
     }
-    public function GetTransfereheader($id)
+    public function GetTransfereHeader($id)
     {
         $this->db->query('SELECT h.ID,
                                  h.TransferDate,
@@ -157,5 +157,23 @@ class Stock
                           WHERE  h.ID = :id');
         $this->db->bind(':id',$id);
         return $this->db->single();
+    }
+
+    public function GetTransferDetails($id)
+    {
+        $this->db->query('SELECT 
+                            d.BookId,
+                            UCASE(b.Title) As Title,
+                            d.Qty
+                          FROM 
+                            transferdetails d 
+                                INNER JOIN 
+                            books b 
+                                ON 
+                            d.BookId =b.ID
+                          WHERE 
+                            d.HeaderID = :id');
+        $this->db->bind(':id',$id);
+        return $this->db->resultset();
     }
 }
