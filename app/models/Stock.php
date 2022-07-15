@@ -96,7 +96,7 @@ class Stock
         return $this->db->resultset();
     }
 
-    public function CreateUpdateTransfer($data)
+    public function SaveTransfer($data)
     {
         try {
 
@@ -144,6 +144,70 @@ class Stock
             }
             throw $e;
             return false;
+        }
+    }
+    public function UpdateTransfer($data)
+    {
+        try {
+
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('UPDATE transfersheader SET TransferDate=:tdate,MtnNo=:mtn,ToCenter=:tocenter
+                              WHERE (ID=:id)');
+            $this->db->bind(':tdate',$data['date']);
+            $this->db->bind(':mtn',!empty($data['mtn']) ? $data['mtn'] : null);
+            $this->db->bind(':tocenter',$data['center']);
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
+            $this->db->query('DELETE FROM transferdetails WHERE HeaderID = :id');
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
+            $this->db->query('DELETE FROM stockmovements WHERE TransactionType = 3 AND TransactionId = :id');
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
+            for ($i=0; $i < count($data['booksid']); $i++) { 
+                $this->db->query('INSERT INTO transferdetails(HeaderID,BookId,Qty) VALUES(:hid,:bid,:qty)');
+                $this->db->bind(':hid',$data['id']);
+                $this->db->bind(':bid',$data['booksid'][$i]);
+                $this->db->bind(':qty',$data['qtys'][$i]);
+                $this->db->execute();
+
+                $this->db->query('INSERT INTO stockmovements (TransactionDate,BookId,Qty,Reference,
+                                          TransactionType,TransactionId,CenterId) 
+                              VALUES(:tdate,:bid,:qty,:ref,:ttype,:tid,:cid)');
+                $this->db->bind(':tdate',$data['date']);
+                $this->db->bind(':bid',$data['booksid'][$i]);
+                $this->db->bind(':qty',$data['qtys'][$i]);
+                $this->db->bind(':ref',$data['mtn']); 
+                $this->db->bind(':ttype',3);
+                $this->db->bind(':tid',$data['id']);
+                $this->db->bind(':cid',$_SESSION['centerid']);
+                $this->db->execute();
+            }
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+            
+        } catch (\Exception $e) {
+            if ($this->db->dbh->inTransaction()) {
+                $this->db->dbh->rollBack();
+            }
+            throw $e;
+            return false;
+        }
+    }
+    public function CreateUpdateTransfer($data)
+    {
+        if(!$data['isedit']){
+            return $this->SaveTransfer($data);
+        }elseif($data['isedit'] && $data['allowedit']){
+            return $this->UpdateTransfer($data);
         }
     }
     public function GetTransfereHeader($id)
