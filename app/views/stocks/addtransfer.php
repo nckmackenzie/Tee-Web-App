@@ -128,7 +128,9 @@
                 <div class="d-grid d-md-block">
                     <input type="hidden" name="id" value="<?php echo $data['id'];?>">
                     <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
-                    <button class="btn btn-primary login-btn" type="submit"> Save </button>
+                    <?php if(!converttobool($data['isedit']) || converttobool($data['isedit']) && $data['allowedit']) : ?>
+                        <button class="btn btn-primary login-btn" type="submit"> Save </button>
+                    <?php endif; ?>
                 </div>
             </form>
         </div>
