@@ -226,4 +226,30 @@ class Stocks extends Controller
         $this->view('stocks/addtransfer',$data);
         exit();
     }
+    public function deletetransfer()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $id = trim($_POST['id']);
+
+            if(empty($id)){
+                flash('transfer_msg',null,'Unable to get selected transfer',flashclass('alert','danger'));
+                redirect('stocks/transfers');
+                exit();
+            }
+
+            if(!$this->stockmodel->DeleteTransfer($id)){
+                flash('transfer_msg',null,'Unable to delete selected transfer',flashclass('alert','danger'));
+                redirect('stocks/transfers');
+                exit();
+            }
+
+            flash('transfer_toast_msg',null,'Transfer deleted',flashclass('toast','success'));
+            redirect('stocks/transfers');
+            exit();
+
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
