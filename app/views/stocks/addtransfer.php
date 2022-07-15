@@ -8,7 +8,7 @@
             <div class="page-title-box">
                 <div class="page-title-right"></div>
                 <h4 class="page-title">
-                    <a href="<?php echo URLROOT;?>/stocks/receipts" class="btn btn-sm ms-2 btn-warning">&larr; Back</a>
+                    <a href="<?php echo URLROOT;?>/stocks/transfers" class="btn btn-sm ms-2 btn-warning">&larr; Back</a>
                 </h4>
             </div>
         </div>
