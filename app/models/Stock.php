@@ -39,7 +39,7 @@ class Stock
 
             $this->db->dbh->beginTransaction();
 
-            $this->db->query('INSERT INTO receiptsheader (ReceiptDate,ReceiptType,MtnNo,GrnNo,CenterId) 
+            $this->db->query('INSERT INTO receiptsheader (ReceiptDate,ReceiptType,TransferId,GrnNo,CenterId) 
                               VALUES(:rdate,:rtype,:mtn,:grn,:cid)');
             $this->db->bind(':rdate',$data['date']);
             $this->db->bind(':rtype',$data['type'] === 'grn' ? 1 : 2);
