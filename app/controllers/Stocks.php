@@ -97,6 +97,8 @@ class Stocks extends Controller
             'centers' => $centers,
             'books' => $books,
             'touched' => false,
+            'id' => '',
+            'isedit' => false,
             'date' => date('Y-m-d'),
             'error' => '',
             'center' => '',
@@ -117,10 +119,12 @@ class Stocks extends Controller
             $books = $this->stockmodel->GetBooks();
             $centers = $this->stockmodel->GetCenters();
             $data = [
-                'title' => 'Add Transfer',
+                'title' => converttobool($_POST['isedit']) ? 'Edit Transfer' : 'Add Transfer',
                 'centers' => $centers,
                 'books' => $books,
                 'touched' => true,
+                'id' => trim($_POST['id']),
+                'isedit' => converttobool($_POST['isedit']),
                 'error' => '',
                 'date' => !empty($_POST['date']) ? date('Y-m-d',strtotime($_POST['date'])) : '',
                 'center' => !empty($_POST['center']) ? trim($_POST['center']) : '',
@@ -182,5 +186,9 @@ class Stocks extends Controller
             redirect('auth/forbidden');
             exit();
         }
+    }
+    public function transferedit($id)
+    {
+        
     }
 }
