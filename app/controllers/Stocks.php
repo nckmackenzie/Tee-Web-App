@@ -98,6 +98,7 @@ class Stocks extends Controller
             'books' => $books,
             'touched' => false,
             'id' => '',
+            'allowedit' => false,
             'isedit' => false,
             'date' => date('Y-m-d'),
             'error' => '',
@@ -125,6 +126,7 @@ class Stocks extends Controller
                 'touched' => true,
                 'id' => trim($_POST['id']),
                 'isedit' => converttobool($_POST['isedit']),
+                'allowedit' => converttobool($_POST['allowedit']),
                 'error' => '',
                 'date' => !empty($_POST['date']) ? date('Y-m-d',strtotime($_POST['date'])) : '',
                 'center' => !empty($_POST['center']) ? trim($_POST['center']) : '',
@@ -189,6 +191,35 @@ class Stocks extends Controller
     }
     public function transferedit($id)
     {
+        $books = $this->stockmodel->GetBooks();
+        $centers = $this->stockmodel->GetCenters();
+        $transfereheader = $this->stockmodel->GetTransfereHeader($id);
+        $transferdetails = $this->stockmodel->GetTransferDetails($id);
+        $data = [
+            'title' => 'Edit Transfer',
+            'centers' => $centers,
+            'books' => $books,
+            'touched' => false,
+            'id' => $transfereheader->ID,
+            'isedit' => true,
+            'allowedit' => !converttobool($transfereheader->Received),
+            'date' => $transfereheader->TransferDate,
+            'center' => $transfereheader->ToCenter,
+            'mtn' => $transfereheader->MtnNo,
+            'table' => [],
+            'date_err' => '',
+            'center_err' => '',
+            'mtn_err' => '',
+        ];
         
+        foreach ($transferdetails as $detail){
+            array_push($data['table'],[
+                'pid' => $detail->BookId,
+                'book' => $detail->Title,
+                'qty' => $detail->Qty
+            ]);
+        }
+        $this->view('stocks/addtransfer',$data);
+        exit();
     }
 }
