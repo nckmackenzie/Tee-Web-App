@@ -45,12 +45,14 @@
                                         <td><?php echo $transfer->TransferTo;?></td>
                                         <td><?php echo $transfer->TransferValue;?></td>
                                         <td>
-                                            <a href="<?php echo URLROOT;?>/stocks/transferedit/<?php echo $transfer->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                            <button class="action-icon btn text-danger btndel"
-                                                    data-id="<?php echo $transfer->ID;?>" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#centermodal"
-                                                    ><i class="mdi mdi-delete"></i></button>
+                                            <?php if(!converttobool($transfer->Received)) :?>
+                                                <a href="<?php echo URLROOT;?>/stocks/transferedit/<?php echo $transfer->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                <button class="action-icon btn text-danger btndel"
+                                                        data-id="<?php echo $transfer->ID;?>" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#centermodal"
+                                                        ><i class="mdi mdi-delete"></i></button>
+                                            <?php endif;?>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
