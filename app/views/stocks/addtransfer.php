@@ -113,8 +113,8 @@
                                     <?php foreach($data['table'] as $table) : ?>
                                         <tr>
                                             <td class="d-none"><input type="text" name="booksid[]" value="<?php echo $table['pid'];?>"></td>
-                                            <td><input type="text" class="table-input" name="booksname[]" value="<?php echo $table['book'];?>"></td>
-                                            <td><input type="text" class="table-input" name="qtys[]" value="<?php echo $table['qty'];?>"></td>
+                                            <td><input type="text" class="table-input" name="booksname[]" value="<?php echo $table['book'];?>" readonly></td>
+                                            <td><input type="text" class="table-input" name="qtys[]" value="<?php echo $table['qty'];?>" readonly></td>
                                             <td>
                                                 <button type="button" class="action-icon btn btn-sm text-danger fs-5 btndel">Remove</button>
                                             </td>
