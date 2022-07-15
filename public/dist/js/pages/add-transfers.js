@@ -37,6 +37,18 @@ btnadd.addEventListener('click', function () {
   let selectedBook = getSelectedText(bookSelect);
   let selectedValue = bookSelect.value;
   let qty = qtyInput.value;
+  var rows = table.rows;
+  for (var i = 1; i < rows.length; i++) {
+    var cols = rows[i].cells;
+    if (Number(cols[0].children[0].value) === +selectedValue) {
+      cols[2].children[0].value =
+        parseFloat(cols[2].children[0].value) + parseFloat(qty);
+      bookSelect.value = '';
+      qtyInput.value = '';
+      value.value = '';
+      return;
+    }
+  }
   let html = `
       <tr>
         <td class="d-none"><input type="text" name="booksid[]" value="${selectedValue}"></td>
