@@ -1,4 +1,4 @@
-import { getSelectedText, HOST_URL } from './utils.js';
+import { getSelectedText, HOST_URL, displayAlert } from './utils.js';
 
 const mtnSelect = document.getElementById('mtn');
 const bookSelect = document.getElementById('bookid');
@@ -8,6 +8,7 @@ const qtyInput = document.getElementById('qty');
 const btnadd = document.querySelector('.btnadd');
 const table = document.getElementById('receipts-table');
 const form = document.querySelector('form');
+const alertBox = document.querySelector('.alert-box');
 
 // radio event handler
 document.querySelectorAll("input[name='receipttype']").forEach(input => {
@@ -88,7 +89,8 @@ form.addEventListener('submit', e => {
   e.preventDefault();
   const body = table.getElementsByTagName('tbody')[0];
   if (Number(body.rows.length) === 0) {
-    alert('No items added');
+    // alert('No items added');
+    displayAlert(alertBox, 'Add Received Items');
     return false;
   } else {
     document.transferform.submit();
