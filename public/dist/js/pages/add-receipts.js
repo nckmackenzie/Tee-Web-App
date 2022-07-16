@@ -7,6 +7,7 @@ const valueInput = document.getElementById('value');
 const qtyInput = document.getElementById('qty');
 const btnadd = document.querySelector('.btnadd');
 const table = document.getElementById('receipts-table');
+const form = document.querySelector('form');
 
 // radio event handler
 document.querySelectorAll("input[name='receipttype']").forEach(input => {
@@ -42,16 +43,28 @@ btnadd.addEventListener('click', function () {
     alert('Enter all required fields');
     return;
   }
-  const rows = table.rows.length;
+
   const body = table.getElementsByTagName('tbody')[0];
   let selectedBook = getSelectedText(bookSelect);
   let selectedValue = bookSelect.value;
   let qty = qtyInput.value;
+  var rows = table.rows;
+  for (var i = 1; i < rows.length; i++) {
+    var cols = rows[i].cells;
+    if (Number(cols[0].children[0].value) === +selectedValue) {
+      cols[2].children[0].value =
+        parseFloat(cols[2].children[0].value) + parseFloat(qty);
+      bookSelect.value = '';
+      qtyInput.value = '';
+      value.value = '';
+      return;
+    }
+  }
   let html = `
       <tr>
-        <td class="d-none"><input type="text" name="booksid[]" value="${selectedValue}"></td>
-        <td><input type="text" class="table-input" name="booksname[]" value="${selectedBook}"></td>
-        <td><input type="text" class="table-input" name="qtys[]" value="${qty}"></td>
+        <td class="d-none"><input type="text" name="booksid[]" value="${selectedValue}" readonly></td>
+        <td><input type="text" class="table-input" name="booksname[]" value="${selectedBook}" readonly></td>
+        <td><input type="text" class="table-input" name="qtys[]" value="${qty}" readonly></td>
         <td><button type="button" class="action-icon btn btn-sm text-danger fs-5 btndel">Remove</button></td>
       </tr>
   `;
@@ -66,4 +79,15 @@ table.addEventListener('click', function (e) {
   if (!e.target.classList.contains('btndel')) return;
   const btn = e.target;
   btn.closest('tr').remove();
+});
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const body = table.getElementsByTagName('tbody')[0];
+  if (Number(body.rows.length) === 0) {
+    alert('No items added');
+    return false;
+  } else {
+    document.transferform.submit();
+  }
 });
