@@ -12,9 +12,12 @@ const form = document.querySelector('form');
 // radio event handler
 document.querySelectorAll("input[name='receipttype']").forEach(input => {
   input.addEventListener('change', e => {
-    // console.log(e.target.value);
+    mtnSelect.classList.remove('mandatory');
     if (e.target.value === 'grn') mtnSelect.disabled = true;
-    if (e.target.value === 'internal') mtnSelect.disabled = false;
+    if (e.target.value === 'internal') {
+      mtnSelect.disabled = false;
+      mtnSelect.classList.add('mandatory');
+    }
     mtnSelect.value = '';
   });
 });
