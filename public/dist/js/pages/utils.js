@@ -14,3 +14,15 @@ export function getSelectedText(sel) {
 }
 
 export const HOST_URL = 'http://localhost/pcea_tee';
+
+export function displayAlert(elm, message) {
+  const html = `
+    <div class="alert alert-danger" role="alert">
+      ${message}
+    </div>
+  `;
+  elm.insertAdjacentHTML('afterbegin', html);
+  setTimeout(function () {
+    elm.innerHTML = '';
+  }, 5000);
+}
