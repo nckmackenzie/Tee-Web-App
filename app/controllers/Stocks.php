@@ -101,7 +101,7 @@ class Stocks extends Controller
             'allowedit' => false,
             'isedit' => false,
             'date' => date('Y-m-d'),
-            'error' => '',
+            'errors' => [],
             'center' => '',
             'mtn' => '',
             'table' => [],
@@ -127,7 +127,7 @@ class Stocks extends Controller
                 'id' => trim($_POST['id']),
                 'isedit' => converttobool($_POST['isedit']),
                 'allowedit' => converttobool($_POST['allowedit']),
-                'error' => '',
+                'errors' => [],
                 'date' => !empty($_POST['date']) ? date('Y-m-d',strtotime($_POST['date'])) : '',
                 'center' => !empty($_POST['center']) ? trim($_POST['center']) : '',
                 'mtn' => trim($_POST['mtn']),
@@ -149,6 +149,9 @@ class Stocks extends Controller
                         'book' => $data['booksname'][$i],
                         'qty' => $data['qtys'][$i],
                     ]);
+                    if(!$this->stockmodel->CheckStockAvailability($data['booksid'][$i],$data['date'],$data['qtys'][$i])){
+                        array_push($data['errors'],$data['booksname'][$i] . ' has insufficient stock');
+                    }
                 }
             }
 
@@ -173,7 +176,7 @@ class Stocks extends Controller
             }
 
             if(!empty($data['date_err']) || !empty($data['center_err']) || !empty($data['mtn_err']) 
-               || !empty($data['error'])){
+               || count($data['errors']) !== 0){
                 $this->view('stocks/addtransfer',$data);
                 exit();
             }

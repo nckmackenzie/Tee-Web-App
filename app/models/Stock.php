@@ -281,4 +281,17 @@ class Stock
             return false;
         }
     }
+
+    public function CheckStockAvailability($book,$date,$qty)
+    {
+        $this->db->query('SELECT fn_getstock(:bid,:rdate,:cid)');
+        $this->db->bind(':bid',$book);
+        $this->db->bind(':rdate',$date);
+        $this->db->bind(':cid',$_SESSION['centerid']);
+        if((int)$this->db->getvalue() < $qty){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
