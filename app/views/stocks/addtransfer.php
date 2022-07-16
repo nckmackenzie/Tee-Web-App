@@ -15,10 +15,12 @@
     </div>     
     <!-- end page title --> 
     <div class="row">
-        <?php if(!empty($data['error'])): ?>
+        <?php if(count($data['errors']) > 0) : ?>
             <div class="col-md-6 mx-auto">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Oops!</strong> <?php echo $data['error'];?>
+                    <?php foreach($data['errors'] as $error): ?>    
+                        <p class="mb-1"><strong><?php echo $error;?></strong></p>
+                    <?php endforeach; ?> 
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </div>
