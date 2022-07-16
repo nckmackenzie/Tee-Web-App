@@ -62,7 +62,7 @@ class Stock
                 $this->db->query('INSERT INTO receiptsdetails(HeaderID,BookId,Qty) VALUES(:hid,:bid,:qty)');
                 $this->db->bind(':hid',$id);
                 $this->db->bind(':bid',$data['booksid'][$i]);
-                $this->db->bind(':qty',$data['qtys'][$i]);
+                $this->db->bind(':qty', !empty($data['qtys'][$i]) ? $data['qtys'][$i] : 0);
                 $this->db->execute();
 
                 $this->db->query('INSERT INTO stockmovements (TransactionDate,BookId,Qty,Reference,
