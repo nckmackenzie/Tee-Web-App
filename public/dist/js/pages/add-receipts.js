@@ -111,7 +111,10 @@ table.addEventListener('click', function (e) {
 
 form.addEventListener('submit', e => {
   e.preventDefault();
-  const body = table.getElementsByTagName('tbody')[0];
+  const body = document
+    .getElementById('receipts-table')
+    .getElementsByTagName('tbody')[0];
+  // const body = table.getElementsByTagName('tbody')[0];
   if (Number(body.rows.length) === 0) {
     displayAlert(alertBox, 'Add Received Items');
     return false;
