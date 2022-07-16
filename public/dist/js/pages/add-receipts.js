@@ -93,6 +93,6 @@ form.addEventListener('submit', e => {
     displayAlert(alertBox, 'Add Received Items');
     return false;
   } else {
-    document.transferform.submit();
+    document.receiptform.submit();
   }
 });
