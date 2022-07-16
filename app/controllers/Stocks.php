@@ -106,6 +106,12 @@ class Stocks extends Controller
                 $data['mtn_err'] = 'No mtn selected';
             }
 
+            if(!empty($data['date']) && $data['type'] === 'internal'){
+                if(!$this->stockmodel->ValidateReceiptVsTransferDate($data['date'],$data['mtn'])){
+                    $data['date_err'] = 'Receipt date earlier than transfer date';
+                }
+            }
+
             if(empty($data['reference'])){
                 $data['reference_err'] = 'Enter GRN No';
             }else{
@@ -305,6 +311,48 @@ class Stocks extends Controller
             redirect('stocks/transfers');
             exit();
 
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
+    public function gettransfereditems()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $tid = trim($_GET['tid']);
+            if(empty($tid)){
+                echo json_encode('No data found');
+                exit();
+            }
+
+            $transfers = $this->stockmodel->GetTransferDetails($tid);
+            $output = '';
+            $output .= '<table class="table-sm table" id="receipts-table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="d-none">Pid</th>
+                                    <th>Product</th>
+                                    <th>Transfered Qty</th>
+                                    <th>Received Qty</th>
+                                    <th width="10%">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>';
+                            foreach($transfers as $transfer){
+                                $output .='
+                                <tr>
+                                    <td class="d-none"><input type="text" name="booksid[]" value="'.$transfer->BookId.'" readonly></td>
+                                    <td><input type="text" class="table-input" name="booksname[]" value="'.$transfer->Title.'" readonly></td>
+                                    <td><input type="text" class="table-input" name="trqtys[]" value="'.$transfer->Qty.'" readonly></td>
+                                    <td><input type="number" class="table-input" name="qtys[]" value="" ></td>
+                                    <td><button type="button" class="action-icon btn btn-sm text-danger fs-5 btndel">Remove</button></td>
+                                </tr>
+                                '; 
+                            }
+                        $output .='   
+                            </tbody>
+                        </table>';
+            echo json_encode($output);
         }else{
             redirect('auth/forbidden');
             exit();
