@@ -303,4 +303,16 @@ class Stock
             return true;
         }
     }
+
+    public function ValidateReceiptVsTransferDate($date,$mtn)
+    {
+        $this->db->query('SELECT TransferDate FROM transfersheader WHERE ID = :id');
+        $this->db->bind(':id',$mtn);
+        $transferdate = date('Y-m-d',strtotime($this->db->getvalue()));
+        if($transferdate > $date){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
