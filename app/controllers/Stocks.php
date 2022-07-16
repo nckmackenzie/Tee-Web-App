@@ -25,11 +25,22 @@ class Stocks extends Controller
     public function addreceipt()
     {
         $books = $this->stockmodel->GetBooks();
+        $mtns = $this->stockmodel->GetMtns();
         $data = [
             'title' => 'Add Receipt',
             'books' => $books,
             'date' => date('Y-m-d'),
-            'type' => 'grn'
+            'touched' => false,
+            'type' => 'grn',
+            'mtns' => $mtns,
+            'id' => '',
+            'isedit' => false,
+            'mtn' => '',
+            'reference' => '',
+            'table' => [],
+            'date_err' => '',
+            'mtn_err' => '',
+            'reference_err' => '',
         ];
         $this->view('stocks/addreceipt',$data);
     }
@@ -54,15 +65,59 @@ class Stocks extends Controller
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
+            $mtns = $this->stockmodel->GetMtns();
             $data = [
-                'type' => trim($_POST['receipttype']),
+                'title' => converttobool($_POST['isedit']) ? 'Edit Receipt' :'Add Receipt',
+                'mtns' => $mtns,
+                'touched' => true,
+                'id' => trim($_POST['id']),
+                'isedit' => converttobool($_POST['isedit']),
+                'type' => !empty(trim($_POST['receipttype'])) ? trim($_POST['receipttype']) : 'grn',
                 'date' => !empty($_POST['date']) ? date('Y-m-d',strtotime($_POST['date'])) : date('Y-m-d'),
                 'mtn' => !empty($_POST['mtn']) ? trim($_POST['mtn']) : '',
-                'reference' => !empty($_POST['reference']) ? trim($_POST['reference']) : '',
+                'reference' => !empty($_POST['reference']) ? strtolower(trim($_POST['reference'])) : '',
                 'booksid' => $_POST['booksid'],
                 'booksname' => $_POST['booksname'],
                 'qtys' => $_POST['qtys'],
+                'table' => [],
+                'date_err' => '',
+                'mtn_err' => '',
+                'reference_err' => '',
             ];
+
+            for ($i=0; $i < count($data['booksid']); $i++) { 
+                array_push($data['table'],[
+                    'pid' => $data['booksid'][$i],
+                    'book' => $data['booksname'][$i],
+                    'qty' => $data['qtys'][$i],
+                ]);
+            }
+
+            //validate
+            if(empty($data['date'])){
+                $data['date_err'] = 'Select receipt date';
+            }else{
+                if($data['date'] > date('Y-m-d')){
+                    $data['date_err'] = 'Invalid date selected';
+                }
+            }
+
+            if($data['type'] === 'internal' && empty($data['mtn'])){
+                $data['mtn_err'] = 'No mtn selected';
+            }
+
+            if(empty($data['reference'])){
+                $data['reference_err'] = 'Enter GRN No';
+            }else{
+                if(!$this->stockmodel->CheckGrnMtnAvailability('grn',$data['reference'],$data['id'])){
+                    $data['reference_err'] = 'GRN No already exists';
+                }
+            }
+
+            if(!empty($data['date_err']) || !empty($data['mtn_err']) || !empty($data['reference_err'])){
+                $this->view('stocks/addreceipt',$data);
+                exit();
+            }
 
             if(!$this->stockmodel->CreateUpdateReceipt($data)){
                 flash('receipt_msg',null,'Receipt not created. Retry or contact admin',flashclass('alert','danger'));
@@ -170,7 +225,7 @@ class Stocks extends Controller
             if(empty($data['mtn'])){
                 $data['mtn_err'] = 'Please enter MTN No';
             }else{
-                if(!$this->stockmodel->CheckMtnAvailability($data['mtn'],$data['id'])){
+                if(!$this->stockmodel->CheckGrnMtnAvailability('mtn',$data['mtn'],$data['id'])){
                     $data['mtn_err'] = 'Mtn No already exists';
                 }
             }

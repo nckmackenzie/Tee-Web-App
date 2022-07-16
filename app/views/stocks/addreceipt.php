@@ -16,7 +16,10 @@
     <!-- end page title --> 
     <div class="row">
         <div class="col-12">
-            <form action="<?php echo URLROOT;?>/stocks/createupdatereceipt" method="post">
+            <div class="alert-box"></div>
+        </div>
+        <div class="col-12">
+            <form action="<?php echo URLROOT;?>/stocks/createupdatereceipt" method="post" autocomplete="off" name="receiptform">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -39,23 +42,33 @@
                                 <div class="mb-1">
                                     <label for="date" class="form-label">Receipt Date</label>
                                     <input type="date" name="date" id="date" 
-                                          class="form-control form-control-sm mandatory"
+                                          class="form-control form-control-sm mandatory 
+                                          <?php echo inputvalidation($data['date'],$data['date_err'],$data['touched']);?>"
                                           value="<?php echo $data['date']; ?>">
+                                    <span class="invalid-feedback"><?php echo $data['date_err'];?></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-1">
                                     <label for="mtn" class="form-label">Transfer Note</label>
-                                    <select name="mtn" id="mtn" class="form-select form-select-sm" <?php echo $data['type'] === 'grn' ? 'disabled' : ''; ?>>
+                                    <select name="mtn" id="mtn" class="form-select form-select-sm
+                                    <?php echo inputvalidation($data['mtn'],$data['mtn_err'],$data['touched']);?>" <?php echo $data['type'] === 'grn' ? 'disabled' : ''; ?>>
                                         <option value="" selected disabled>Select Transfer Note</option>
-                                        <option value="1">Test Value</option>
+                                        <?php foreach($data['mtns'] as $mtn) : ?>
+                                            <option value="<?php echo $mtn->ID;?>"><?php echo $mtn->Mtn;?></option>
+                                        <?php endforeach;?>
                                     </select>
+                                    <span class="invalid-feedback"><?php echo $data['mtn_err'];?></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-1">
                                     <label for="reference" class="form-label">GRN No</label>
-                                    <input type="text" name="reference" id="reference" class="form-control form-control-sm mandatory" required>
+                                    <input type="text" name="reference" id="reference" 
+                                           class="form-control form-control-sm mandatory 
+                                           <?php echo inputvalidation($data['reference'],$data['reference_err'],$data['touched']);?>" 
+                                           value="<?php echo $data['reference'];?>" required>
+                                    <span class="invalid-feedback"><?php echo $data['reference_err'];?></span>
                                 </div>
                             </div>
                             
@@ -107,7 +120,16 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
+                                    <?php foreach($data['table'] as $table) : ?>
+                                        <tr>
+                                            <td class="d-none"><input type="text" name="booksid[]" value="<?php echo $table['pid'];?>"></td>
+                                            <td><input type="text" class="table-input" name="booksname[]" value="<?php echo $table['book'];?>" readonly></td>
+                                            <td><input type="text" class="table-input" name="qtys[]" value="<?php echo $table['qty'];?>" readonly></td>
+                                            <td>
+                                                <button type="button" class="action-icon btn btn-sm text-danger fs-5 btndel">Remove</button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?> 
                                 </tbody>
                             </table>
                         </div><!-- /.table-responsive -->

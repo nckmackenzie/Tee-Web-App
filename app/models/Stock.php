@@ -23,6 +23,14 @@ class Stock
         return $this->db->resultset();
     }
 
+    //get mtns
+    public function GetMtns()
+    {
+        $this->db->query('SELECT ID,UCASE(MtnNo) AS Mtn FROM transfersheader WHERE (Deleted=0) AND (ToCenter =:cid)');
+        $this->db->bind(':cid',$_SESSION['centerid']);
+        return $this->db->resultset();
+    }
+
     //get book price
     public function GetPrice($book,$date)
     {
@@ -240,9 +248,10 @@ class Stock
         $this->db->bind(':id',$id);
         return $this->db->resultset();
     }
-    public function CheckMtnAvailability($mtn,$id)
+    public function CheckGrnMtnAvailability($type,$mtn,$id)
     {
-        $this->db->query('SELECT fn_checkmtnavailability(:mtn,:id)');
+        $this->db->query('SELECT fn_checkmtngrnavailability(:ttype,:mtn,:id)');
+        $this->db->bind(':ttype',$type);
         $this->db->bind(':mtn',$mtn);
         $this->db->bind(':id',$id);
         if((int)$this->db->getvalue() > 0){
