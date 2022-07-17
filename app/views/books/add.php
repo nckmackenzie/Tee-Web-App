@@ -88,7 +88,7 @@
                             <input type="hidden" name="id" value=<?php echo $data['id'];?>>
                             <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
                             <input type="hidden" name="allowedit" value="<?php echo $data['allowedit'];?>">
-                            <button class="btn btn-primary login-btn" type="submit"> Save </button>
+                            <button class="btn btn-primary" type="submit"> Save </button>
                         </div>
                     </form>
                 </div>

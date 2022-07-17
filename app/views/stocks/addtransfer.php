@@ -132,7 +132,7 @@
                     <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
                     <input type="hidden" name="allowedit" value="<?php echo $data['allowedit'];?>">
                     <?php if(!converttobool($data['isedit']) || converttobool($data['isedit']) && $data['allowedit']) : ?>
-                        <button class="btn btn-primary login-btn" type="submit"> Save </button>
+                        <button class="btn btn-primary" type="submit"> Save </button>
                     <?php endif; ?>
                 </div>
             </form>
