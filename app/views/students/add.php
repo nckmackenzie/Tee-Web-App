@@ -40,7 +40,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="contact" class="form-label">Contact</label>
-                                    <input type="text" id="contact" class="form-control form-control-sm mandatory 
+                                    <input type="text" id="contact" name="contact" class="form-control form-control-sm mandatory 
                                            <?php echo inputvalidation($data['contact'],$data['contact_err'],$data['touched']);?>" 
                                            value="<?php echo $data['contact'];?>" placeholder="0700000000" maxlength="10" required>
                                     <span class="invalid-feedback"><?php echo $data['contact_err'];?></span>
