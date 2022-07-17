@@ -36,8 +36,10 @@ class Students extends Controller
             'admdate' => '',
             'sname_err' => '',
             'contact_err' => '',
+            'idno_err' => '',
             'gender_err' => '',
             'admdate_err' => '',
+            'admno_err' => '',
         ];
         $this->view('students/add',$data);
         exit();
@@ -55,13 +57,15 @@ class Students extends Controller
                 'sname' => trim($_POST['sname']),
                 'idno' => trim($_POST['idno']),
                 'contact' => trim($_POST['contact']),
-                'admno' => trim($_POST['admno']),
+                'admno' => !empty(trim($_POST['admno'])) ? trim($_POST['admno']) : '',
                 'gender' => !empty(trim($_POST['gender'])) ? trim($_POST['gender']) : '',
                 'admdate' => !empty(trim($_POST['admdate'])) ? date('Y-m-d',strtotime(trim($_POST['admdate']))) : '',
                 'sname_err' => '',
                 'contact_err' => '',
                 'gender_err' => '',
                 'admdate_err' => '',
+                'idno_err' => '',
+                'admno_err' => '',
             ];
 
             //validation
@@ -71,6 +75,18 @@ class Students extends Controller
 
             if(empty($data['contact'])){
                 $data['contact_err'] = 'Enter student contact';
+            }else{
+                if(!$this->studentmodel->CheckFieldsAvailability('Contact',$data['contact'],$data['id'])){
+                    $data['contact_err'] = 'Entered contact already exists';
+                }
+            }
+
+            if(!empty($data['idno']) && !$this->studentmodel->CheckFieldsAvailability('IdNumber',$data['idno'],$data['id'])){
+                $data['idno_err'] = 'ID Number already exists';
+            }
+
+            if(!empty($data['admno']) && !$this->studentmodel->CheckFieldsAvailability('IdNumber',$data['admno'],$data['id'])){
+                $data['admno_err'] = 'Admision Number already exists';
             }
 
             if(empty($data['gender'])){
@@ -82,7 +98,7 @@ class Students extends Controller
             }
 
             if(!empty($data['sname_err']) || !empty($data['contact_err']) || !empty($data['gender_err']) 
-               || !empty($data['admdate_err'])){
+               || !empty($data['admdate_err']) || !empty($data['idno_err']) || !empty($data['admno_err'])){
                 $this->view('students/add',$data);
                 exit();
             }
