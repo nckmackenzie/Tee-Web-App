@@ -41,7 +41,7 @@
                                         <td><?php echo $student->ID;?></td>
                                         <td><?php echo $student->StudentName;?></td>
                                         <td><?php echo $student->AdmisionNo;?></td>
-                                        <td><?php echo $student->Contact;?></td>
+                                        <td><?php echo decrypt($student->Contact);?></td>
                                         <td><?php echo $student->Gender;?></td>
                                         <td>
                                             <a href="<?php echo URLROOT;?>/students/edit/<?php echo $student->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
