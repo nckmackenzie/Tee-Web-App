@@ -25,7 +25,7 @@
                                 <div class="mb-3">
                                     <label for="sname" class="form-label">Student Name</label>
                                     <input type="text" name="sname" id="sname" class="form-control form-control-sm mandatory
-                                           <?php inputvalidation($data['sname'],$data['sname_err'],$data['touched']);?>"
+                                           <?php echo inputvalidation($data['sname'],$data['sname_err'],$data['touched']);?>"
                                            value="<?php echo $data['sname'];?>" placeholder="eg Jane Doe" required>
                                     <span class="invalid-feedback"><?php echo $data['sname_err'];?></span>
                                 </div>
@@ -33,8 +33,10 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="admno" class="form-label">Admision No</label>
-                                    <input type="text" name="admno" id="admno" class="form-control form-control-sm"
+                                    <input type="text" name="admno" id="admno" class="form-control form-control-sm 
+                                           <?php echo inputvalidation($data['admno'],$data['admno_err'],$data['touched']);?>"
                                            value="<?php echo $data['admno'];?>">
+                                    <span class="invalid-feedback"><?php echo $data['admno_err'];?></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -49,7 +51,8 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="gender" class="form-label">Gender</label>
-                                    <select name="gender" id="gender" class="form-select form-select-sm mandatory" required>
+                                    <select name="gender" id="gender" class="form-select form-select-sm mandatory 
+                                            <?php echo inputvalidation($data['gender'],$data['gender_err'],$data['touched']);?>" required>
                                         <option value="" selected disabled>Select Gender</option>
                                         <option value="1">Male</option>
                                         <option value="1">Female</option>
@@ -61,8 +64,10 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="idno" class="form-label">ID Number</label>
-                                    <input type="text" name="idno" id="idno" class="form-control form-control-sm"
+                                    <input type="text" name="idno" id="idno" class="form-control form-control-sm 
+                                           <?php echo inputvalidation($data['idno'],$data['idno_err'],$data['touched']);?>"
                                            value="<?php echo $data['idno'];?>" placeholder="eg 12345678">
+                                    <span class="invalid-feedback"><?php echo $data['idno_err'];?></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
