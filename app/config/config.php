@@ -10,3 +10,4 @@ define('APPROOT',dirname(dirname(__FILE__)));
 define('URLROOT','http://localhost/pcea_tee');
 //SITE NAME
 define('SITENAME','PCEA TEE');
+define('ENCRYPTION_KEY', '^!*#%&@^$^&$@$^$@%%^');
