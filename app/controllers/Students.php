@@ -20,4 +20,85 @@ class Students extends Controller
         ];
         $this->view('students/index',$data);
     }
+
+    public function add()
+    {
+        $data = [
+            'title' => 'Add student',
+            'isedit' => false,
+            'touched' => false,
+            'id' => '',
+            'sname' => '',
+            'idno' => '',
+            'contact' => '',
+            'admno' => '',
+            'gender' => '',
+            'admdate' => '',
+            'sname_err' => '',
+            'contact_err' => '',
+            'gender_err' => '',
+            'admdate_err' => '',
+        ];
+        $this->view('students/add',$data);
+        exit();
+    }
+
+    public function createupdate()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $_POST = filter_input_array(INPUT_POST,FILTER_UNSAFE_RAW);
+            $data = [
+                'title' => converttobool(trim($_POST['isedit'])) ? 'Edit student' : 'Add student',
+                'isedit' => converttobool(trim($_POST['isedit'])),
+                'touched' => true,
+                'id' => trim($_POST['id']),
+                'sname' => trim($_POST['sname']),
+                'idno' => trim($_POST['idno']),
+                'contact' => trim($_POST['contact']),
+                'admno' => trim($_POST['admno']),
+                'gender' => !empty(trim($_POST['gender'])) ? trim($_POST['gender']) : '',
+                'admdate' => !empty(trim($_POST['admdate'])) ? date('Y-m-d',strtotime(trim($_POST['admdate']))) : '',
+                'sname_err' => '',
+                'contact_err' => '',
+                'gender_err' => '',
+                'admdate_err' => '',
+            ];
+
+            //validation
+            if(empty($data['sname'])){
+                $data['sname_err'] = 'Enter student name';
+            }
+
+            if(empty($data['contact'])){
+                $data['contact_err'] = 'Enter student contact';
+            }
+
+            if(empty($data['gender'])){
+                $data['gender_err'] = 'Select student gender';
+            }
+
+            if(!empty($data['admdate']) && date('Y-m-d',strtotime($data['admdate'])) > date('Y-m-d')){
+                $data['admdate_err'] = 'Invalid date selected';
+            }
+
+            if(!empty($data['sname_err']) || !empty($data['contact_err']) || !empty($data['gender_err']) 
+               || !empty($data['admdate_err'])){
+                $this->view('students/add',$data);
+                exit();
+            }
+
+            if(!$this->studentmodel->CreateUpdate($data)){
+                flash('student_msg',null,'Student not saved. Retry or contact admin.',flashclass('alert','danger'));
+                redirect('students');
+                exit();
+            }
+
+            flash('student_flash_msg',null,'Saved successfully!',flashclass('toast','success'));
+            redirect('students');
+            exit();
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
