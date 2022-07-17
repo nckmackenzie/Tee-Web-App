@@ -48,4 +48,17 @@ class Student
             return true;
         }
     }
+
+    public function CheckFieldsAvailability($field,$param,$id)
+    {
+        $sql = 'SELECT COUNT(*) FROM students WHERE ID <> :id AND (Deleted = 0) AND ('.$field.' = :param)';
+        $this->db->query($sql);
+        $this->db->bind(':id',intval($id));
+        $this->db->bind(':param',($field === 'Contact' || $field === 'IdNumber') ? encrypt($param) : $param);
+        if(intval($this->db->getvalue()) > 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
