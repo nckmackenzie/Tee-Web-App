@@ -27,7 +27,7 @@ class Student
             $this->db->query('INSERT INTO students (StudentName,IdNumber,AdmisionNo,Contact,GenderId,RegistrationDate,CenterId) 
                               VALUES(:sname,:idno,:admno,:contact,:gender,:regdate,:cid)');
         }else{
-            $this->db->query('UPDATE students StudentName=:sname,IdNumber=:idno,AdmisionNo=:admno,
+            $this->db->query('UPDATE students SET StudentName=:sname,IdNumber=:idno,AdmisionNo=:admno,
                                      Contact=:contact,GenderId=:gender,RegistrationDate=:regdate
                               WHERE  (ID = :id)');
         }
@@ -60,5 +60,12 @@ class Student
         }else{
             return true;
         }
+    }
+
+    public function GetStudent($id)
+    {
+        $this->db->query('SELECT * FROM students WHERE ID = :id');
+        $this->db->bind(':id',intval($id));
+        return $this->db->single();
     }
 }
