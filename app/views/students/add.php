@@ -54,9 +54,9 @@
                                     <select name="gender" id="gender" class="form-select form-select-sm mandatory 
                                             <?php echo inputvalidation($data['gender'],$data['gender_err'],$data['touched']);?>" required>
                                         <option value="" selected disabled>Select Gender</option>
-                                        <option value="1">Male</option>
-                                        <option value="1">Female</option>
-                                        <option value="3">Not Specified</option>
+                                        <option value="1" <?php selectdCheck($data['gender'],1);?>>Male</option>
+                                        <option value="2" <?php selectdCheck($data['gender'],2);?>>Female</option>
+                                        <option value="3" <?php selectdCheck($data['gender'],3);?>>Not Specified</option>
                                     </select>
                                     <span class="invalid-feedback"><?php echo $data['gender_err'];?></span>
                                 </div>
