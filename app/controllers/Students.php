@@ -142,4 +142,30 @@ class Students extends Controller
         $this->view('students/add',$data);
         exit();
     }
+
+    public function delete()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $id = trim(htmlentities($_POST['id']));
+            if(empty($id)){
+                flash('student_msg',null,'Unable to get selected student',flashclass('alert','danger'));
+                redirect('students');
+                exit();
+            }
+
+            if(!$this->studentmodel->Delete($id)){
+                flash('student_msg',null,'Student not deleted! Tryto or contact admin!',flashclass('alert','danger'));
+                redirect('students');
+                exit();
+            }
+
+            flash('student_flash_msg',null,'Deleted successfully!',flashclass('toast','success'));
+            redirect('students');
+            exit();
+            
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }

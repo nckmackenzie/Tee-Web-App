@@ -68,4 +68,15 @@ class Student
         $this->db->bind(':id',intval($id));
         return $this->db->single();
     }
+
+    public function Delete($id)
+    {
+        $this->db->query('UPDATE students SET Deleted = 1 WHERE ID = :id');
+        $this->db->bind(':id',intval($id));
+        if(!$this->db->execute()){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
