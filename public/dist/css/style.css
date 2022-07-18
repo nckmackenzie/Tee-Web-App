@@ -13,3 +13,7 @@
   border: none !important;
   outline: none !important;
 }
+
+.input-padding {
+  padding: 0.28rem 0.8rem !important;
+}
