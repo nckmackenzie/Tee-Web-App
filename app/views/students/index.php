@@ -12,8 +12,8 @@
         </div>
     </div>     
     <!-- end page title --> 
-    <?php flash('student_msg','alert'); ?>
     <?php DeleteModal(URLROOT.'/students/delete','centermodal','Are you sure you want to delete this student?','id');?>
+    <?php flash('student_msg','alert'); ?>
     <div class="row">
         <div class="col-12">
             <div class="card">
