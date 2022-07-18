@@ -117,4 +117,29 @@ class Students extends Controller
             exit();
         }
     }
+
+    public function edit($id)
+    {
+        $student = $this->studentmodel->GetStudent($id);
+        $data = [
+            'title' => 'Edit student',
+            'isedit' => true,
+            'touched' => false,
+            'id' => $student->ID,
+            'sname' => strtoupper($student->StudentName),
+            'idno' => decrypt($student->IdNumber),
+            'contact' => decrypt($student->Contact),
+            'admno' => strtoupper($student->AdmisionNo),
+            'gender' => $student->GenderId,
+            'admdate' => $student->RegistrationDate,
+            'sname_err' => '',
+            'contact_err' => '',
+            'idno_err' => '',
+            'gender_err' => '',
+            'admdate_err' => '',
+            'admno_err' => '',
+        ];
+        $this->view('students/add',$data);
+        exit();
+    }
 }
