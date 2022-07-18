@@ -14,4 +14,28 @@ class Sale
         $this->db->bind(':cid',intval($_SESSION['centerid']));
         return $this->db->resultset();
     }
+
+    public function GetStudents()
+    {
+        $this->db->query('SELECT ID,UCASE(StudentName) AS StudentName 
+                          FROM   students 
+                          WHERE  (CenterId = :cid) AND (Deleted =0)');
+        $this->db->bind(':cid',intval($_SESSION['centerid']));
+        return $this->db->resultset();
+    }
+    
+    public function GetSaleId()
+    {
+        $this->db->query("SELECT COUNT(*) FROM sales_header WHERE (CenterId = :cid) AND (Deleted = 0)");
+        $this->db->bind(':cid',intval($_SESSION['centerid']));
+        if(intval($this->db->getvalue()) === 0){
+            return 1;
+        }else{
+            $this->db->query('SELECT SalesID FROM sales_header 
+                              WHERE (CenterId = :cid) AND (Deleted = 0) 
+                              ORDER BY SalesID DESC LIMIT 1');
+            $this->db->bind(':cid',intval($_SESSION['centerid']));
+            return intval($this->db->getvalue()) + 1;
+        }
+    }
 }
