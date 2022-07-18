@@ -13,7 +13,7 @@
                 <a href="<?php echo URLROOT;?>/stocks/transfers">Transfers</a>
             </li>
             <li>
-                <a href="<?php echo URLROOT;?>/stocks/sales">Sales</a>
+                <a href="<?php echo URLROOT;?>/sales">Sales</a>
             </li>
         </ul>
     </div>
