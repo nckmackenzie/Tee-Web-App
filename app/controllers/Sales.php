@@ -54,4 +54,18 @@ class Sales extends Controller
         $this->view('sales/add',$data);
         exit();
     }
+
+    public function getstockandrate()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $bookid = intval(trim($_GET['bookid']));
+            $date = date('Y-m-d',strtotime(trim($_GET['date'])));
+            $rate_stock = $this->salemodel->GetStockAndRate($date,$bookid);
+            $result = ['rate' => $rate_stock->Rate,'stock' => $rate_stock->Stock];
+            echo json_encode($result);
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
