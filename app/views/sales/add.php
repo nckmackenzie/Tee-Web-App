@@ -16,32 +16,31 @@
     <!-- end page title --> 
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header"><?php echo $data['isedit'] ? 'Edit Sale' : 'Add Sale';?></div>
-                <div class="card-body">
-                    <form action="<?php echo URLROOT;?>/sales/createupdate" method="post" autocomplete="off" name="salesform">
+            <form action="<?php echo URLROOT;?>/sales/createupdate" method="post" autocomplete="off" name="salesform">
+                <div class="card">
+                    <div class="card-body">        
                         <div class="row">
                             <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="saleid" class="form-label">Sale ID</label>
+                                <!-- <div class="mb-3"> -->
+                                    <label for="saleid" class="">Sale ID</label>
                                     <input type="text" name="saleid" id="saleid" 
                                            class="form-control form-control-sm" 
                                            value="<?php echo $data['salesid'];?>" readonly>
-                                </div>
+                                <!-- </div> -->
                             </div>
                             <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="sdate" class="form-label">Sale Date</label>
+                                <!-- <div class="mb-3"> -->
+                                    <label for="sdate" class="">Sale Date</label>
                                     <input type="date" name="sdate" id="sdate" 
                                            class="form-control form-control-sm 
                                            <?php echo inputvalidation($data['sdate'],$data['sdate_err'],$data['touched']);?>" 
                                            value="<?php echo $data['sdate'];?>" >
                                     <span class="invalid-feedback"><?php echo $data['sdate'];?></span>
-                                </div>
+                                <!-- </div> -->
                             </div>
                             <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="student" class="form-label">Student</label>
+                                <!-- <div class="mb-3"> -->
+                                    <label for="student" class="">Student</label>
                                     <select name="student" id="student" class="form-select form-select-sm 
                                             <?php echo inputvalidation($data['student'],$data['student_err'],$data['touched']);?>">
                                         <option value="" selected disabled>Select student</option>
@@ -50,21 +49,61 @@
                                         <?php endforeach;?>
                                     </select>
                                     <span class="invalid-feedback"><?php echo $data['sdate'];?></span>
-                                </div>
+                                <!-- </div> -->
                             </div>
+                        </div><!-- /.row -->
+                    </div><!-- /.card-body -->
+                </div><!-- /.card -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="book">Book</label>
+                                <select name="book" id="book" class="form-select form-select-sm">
+                                    <option value="">Select book</option>
+                                    <?php foreach($data['books'] as $book) :?>
+                                        <option value="<?php echo $book->ID;?>"><?php echo $book->Title;?></option>
+                                    <?php endforeach;?>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="stock" class="">Stock</label>
+                                <input type="text" id="stock" class="form-control form-control-sm" readonly>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="rate" class="">Rate</label>
+                                <input type="text" id="rate" class="form-control form-control-sm" readonly>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="qty" class="">Qty</label>
+                                <input type="number" id="qty" class="form-control form-control-sm">
+                            </div>
+                            <div class="col-md-2">
+                                <label for="value" class="">Value</label>
+                                <input type="text" id="value" class="form-control form-control-sm" readonly>
+                            </div> 
+                            <div class="col-2 mt-1">
+                                <button type="button" class="btn btn-sm btn-success w-100 btnadd">Add</button>
+                            </div>                
+                        </div><!-- /.row -->
+                    </div><!-- /.card-body -->
+                </div><!-- /.card -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
                             <div class="col-12 mb-3">
                                 <div class="table-responsive">
                                     <table class="table table-sm" id="addsale">
                                         <thead class="table-light">
                                             <tr>
+                                                <th class="d-none">BookId</th>
                                                 <th width="30%">Book</th>
-                                                <th>Stock</th>
                                                 <th>Rate</th>
                                                 <th>Qty</th>
                                                 <th>Value</th>
-                                                <th width="10%"><button class="btn btn-success btn-sm">+</button></th>
                                             </tr>
                                         </thead>
+                                        <tbody></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -123,11 +162,12 @@
                             <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
                             <button type="submit" class="btn btn-sm btn-primary">Save</button>
                         </div>
-                    </form>
-                </div>
-            </div>
+                    </div>
+                </div>  
+            </form>
         </div>
     </div>                    
 </div> <!-- container -->
-<?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>                    
+<?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>  
+<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/sales/add-sale.js"></script>                  
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
