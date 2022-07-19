@@ -47,4 +47,15 @@ class Sale
                           ORDER BY Title");
         return $this->db->resultset();
     }
+
+    public function GetStockAndRate($date,$id)
+    {
+        $this->db->query("SELECT fn_getprice(b.ID,:cdate) As Rate,
+                                 fn_getstock(b.ID,:cdate,:cid) As Stock 
+                          FROM `books` b WHERE b.ID = :bid");
+        $this->db->bind(':cdate',$date);
+        $this->db->bind(':cid',intval($_SESSION['centerid']));
+        $this->db->bind(':bid',$id);
+        return $this->db->single();
+    }
 }
