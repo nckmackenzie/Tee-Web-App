@@ -38,4 +38,13 @@ class Sale
             return intval($this->db->getvalue()) + 1;
         }
     }
+
+    public function GetBooks()
+    {
+        $this->db->query("SELECT ID,UCASE(Title) AS Title 
+                          FROM books 
+                          WHERE (Deleted = 0) AND (Active = 1)
+                          ORDER BY Title");
+        return $this->db->resultset();
+    }
 }
