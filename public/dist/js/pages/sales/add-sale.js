@@ -8,6 +8,7 @@ const selectedDate = document.getElementById('sdate');
 const qtyInput = document.getElementById('qty');
 const valueInput = document.getElementById('value');
 const alertBox = document.getElementById('message');
+const subtotalInput = document.getElementById('subtotal');
 
 //calculate total value
 function calculateTotalValue() {
@@ -15,6 +16,24 @@ function calculateTotalValue() {
   const rate = rateInput.value;
   if (!qty || !rate) return;
   valueInput.value = +qty * +rate;
+}
+
+function resetAndGetTotal() {
+  bookSelect.value = '';
+  qtyInput.value = '';
+  value.value = '';
+  rateInput.value = '';
+  stockInput.value = '';
+  updateSubTotal();
+}
+
+function updateSubTotal() {
+  let sumVal = 0;
+  for (var i = 1; i < table.rows.length; i++) {
+    sumVal = sumVal + parseFloat(table.rows[i].cells[4].children[0].value);
+  }
+
+  subtotalInput.value = sumVal;
 }
 
 qtyInput.addEventListener('change', calculateTotalValue);
@@ -44,6 +63,18 @@ addBtn.addEventListener('click', () => {
     displayAlert(alertBox, 'Qty must be less than or equal to available stock');
     return;
   }
+  var rows = table.rows;
+  for (var i = 1; i < rows.length; i++) {
+    var cols = rows[i].cells;
+    if (Number(cols[0].children[0].value) === +bookSelect.value) {
+      cols[3].children[0].value =
+        parseFloat(cols[3].children[0].value) + parseFloat(qtyInput.value);
+      cols[4].children[0].value =
+        parseFloat(cols[4].children[0].value) + parseFloat(valueInput.value);
+      resetAndGetTotal();
+      return;
+    }
+  }
   const body = document
     .getElementById('addsale')
     .getElementsByTagName('tbody')[0];
@@ -69,11 +100,7 @@ addBtn.addEventListener('click', () => {
   `;
   let newRow = body.insertRow(body.rows.length);
   newRow.innerHTML = html;
-  bookSelect.value = '';
-  qtyInput.value = '';
-  value.value = '';
-  rateInput.value = '';
-  stockInput.value = '';
+  resetAndGetTotal();
 });
 
 //remove row
@@ -81,4 +108,5 @@ table.addEventListener('click', function (e) {
   if (!e.target.classList.contains('btndel')) return;
   const btn = e.target;
   btn.closest('tr').remove();
+  updateSubTotal();
 });
