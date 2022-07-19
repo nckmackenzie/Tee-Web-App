@@ -117,7 +117,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="subtotal" class="form-label">Sub Total</label>
-                                            <input type="text" name="subtotal" class="form-control form-control-sm" 
+                                            <input type="text" name="subtotal"id="subtotal" class="form-control form-control-sm" 
                                                    value="<?php echo $data['subtotal'];?>" readonly>    
                                         </div>
                                     </div>
