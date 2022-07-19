@@ -102,6 +102,7 @@
                                                 <th>Rate</th>
                                                 <th>Qty</th>
                                                 <th>Value</th>
+                                                <th>Remove</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
