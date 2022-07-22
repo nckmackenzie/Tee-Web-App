@@ -25,4 +25,20 @@ class Courses extends Controller
         ];
         $this->view('courses/index',$data);
     }
+
+    public function add()
+    {
+        $data = [
+            'title' => 'Add Course',
+            'touched' => false,
+            'isedit' => false,
+            'id' => '',
+            'coursename' => '',
+            'coursecode' => '',
+            'active' => true,
+            'coursename_err' => '',
+            'coursecode_err' => '',
+        ];
+        $this->view('courses/add',$data);
+    }
 }
