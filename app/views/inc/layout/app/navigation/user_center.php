@@ -29,6 +29,9 @@
             <li>
                 <a href="<?php echo URLROOT;?>/students/">Students</a>
             </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/groups/">Groups</a>
+            </li>
         </ul>
     </div>
 </li>
