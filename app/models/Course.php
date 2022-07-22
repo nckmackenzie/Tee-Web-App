@@ -49,4 +49,11 @@ class Course
             return true;
         }
     }
+
+    public function GetCourse($id)
+    {
+        $this->db->query('SELECT * FROM courses WHERE ID = :id');
+        $this->db->bind(':id',$id);
+        return $this->db->single();
+    }
 }
