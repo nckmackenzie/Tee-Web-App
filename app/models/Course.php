@@ -56,4 +56,15 @@ class Course
         $this->db->bind(':id',$id);
         return $this->db->single();
     }
+
+    public function Delete($id)
+    {
+        $this->db->query('UPDATE courses SET Deleted = 1 WHERE id = :id');
+        $this->db->bind(':id',$id);
+        if(!$this->db->execute()){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
