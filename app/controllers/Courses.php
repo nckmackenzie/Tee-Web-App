@@ -109,4 +109,31 @@ class Courses extends Controller
         ];
         $this->view('courses/add',$data);
     }
+
+    public function delete()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $id = trim($_POST['id']);
+
+            if(empty($id)){
+                flash('course_msg',null,'Unable to get selected course. Contact admin',flashclass('alert','danger'));
+                redirect('courses');
+                exit();
+            }
+
+            if(!$this->coursemodel->Delete($id)){
+                flash('course_msg',null,'Unable to delete course. Contact admin',flashclass('alert','danger'));
+                redirect('courses');
+                exit();
+            }
+
+            flash('course_flash_msg',null,'Deleted successfully',flashclass('toast','success'));
+            redirect('courses');
+            exit();
+
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
