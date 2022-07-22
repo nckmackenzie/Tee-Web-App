@@ -9,4 +9,15 @@ class Courses extends Controller
         }
         $this->coursemodel = $this->model('Course');
     }
+
+    public function index()
+    {
+        $courses = $this->coursemodel->GetCourses();
+        $data = [
+            'title' => 'Courses',
+            'has_datatable' => true,
+            'courses' => $courses
+        ];
+        $this->view('courses/index',$data);
+    }
 }
