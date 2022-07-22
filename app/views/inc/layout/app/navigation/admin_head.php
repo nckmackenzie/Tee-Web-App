@@ -15,6 +15,9 @@
             <li>
                 <a href="<?php echo URLROOT;?>/years">Financial Year</a>
             </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/courses">Courses</a>
+            </li>
         </ul>
     </div>
 </li>
@@ -54,6 +57,9 @@
         <ul class="side-nav-second-level">
             <li>
                 <a href="<?php echo URLROOT;?>/students/">Students</a>
+            </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/groups/">Groups</a>
             </li>
         </ul>
     </div>
