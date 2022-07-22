@@ -57,7 +57,7 @@
                                     <span class="invalid-feedback"><?php echo $data['publisher_err'];?></span>
                                 </div>
                             </div>
-                            <?php if($data['allowedit']) : ?>
+                            <?php if($data['allowedit'] || !$data['isedit']) : ?>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="openingbal" class="form-label">Opening Bal</label>
