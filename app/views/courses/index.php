@@ -40,10 +40,10 @@
                                     <tr>
                                         <td><?php echo $course->ID;?></td>
                                         <td><?php echo $course->CourseName;?></td>
-                                        <td><?php echo $course->Code;?></td>
-                                        <td><span class="badge <?php echo badgeclasses($course->Status);?>"><?php $course->Status;?></span></td>
+                                        <td><?php echo $course->CourseCode;?></td>
+                                        <td><span class="badge <?php echo badgeclasses($course->Status);?>"><?php echo $course->Status;?></span></td>
                                         <td>
-                                            <a href="<?php echo URLROOT;?>/books/edit/<?php echo $course->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                            <a href="<?php echo URLROOT;?>/courses/edit/<?php echo $course->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
                                             <button class="action-icon btn text-danger btndel"
                                                     data-id="<?php echo $course->ID;?>" 
                                                     data-bs-toggle="modal" 
