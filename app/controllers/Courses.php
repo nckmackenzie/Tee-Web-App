@@ -41,4 +41,53 @@ class Courses extends Controller
         ];
         $this->view('courses/add',$data);
     }
+
+    public function createupdate()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
+            $data = [
+                'title' => converttobool($_POST['isedit']) ? 'Edit Course' : 'Add Course',
+                'touched' => true,
+                'isedit' => converttobool(trim($_POST['isedit'])),
+                'id' => trim($_POST['id']),
+                'coursename' => trim($_POST['coursename']),
+                'coursecode' => trim($_POST['coursecode']),
+                'active' => converttobool($_POST['isedit']) ? trim($_POST['active']) : true,
+                'coursename_err' => '',
+                'coursecode_err' => '',
+            ];
+
+            if(empty($data['coursename'])){
+                $data['coursename_err'] = 'Enter course name';
+            }else{
+                if(!$this->coursemodel->CheckFieldAvailability('CourseName',$data['coursename'],$data['id'])){
+                    $data['coursename_err'] = 'This course already exists';
+                }
+            }
+
+            if(!empty($data['coursecode']) && !$this->coursemodel->CheckFieldAvailability('CourseCode',$data['coursename'],$data['id'])){
+                $data['coursename_err'] = 'This course code already exists';
+            }
+
+            if(!empty($data['coursecode_err']) || !empty($data['coursename_err'])){
+                $this->view('courses/add',$data);
+                exit();
+            }
+
+            if(!$this->coursemodel->CreateUpdate($data)){
+                flash('course_msg',null,'Unable to save course. Contact admin',flashclass('alert','danger'));
+                redirect('courses');
+                exit();
+            }
+
+            flash('course_flash_msg',null,'Saved successfully',flashclass('toast','success'));
+            redirect('courses');
+            exit();
+
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
