@@ -49,14 +49,16 @@ class Courses extends Controller
             $data = [
                 'title' => converttobool($_POST['isedit']) ? 'Edit Course' : 'Add Course',
                 'touched' => true,
-                'isedit' => converttobool(trim($_POST['isedit'])),
+                'isedit' => converttobool($_POST['isedit']),
                 'id' => trim($_POST['id']),
                 'coursename' => trim($_POST['coursename']),
                 'coursecode' => trim($_POST['coursecode']),
-                'active' => converttobool($_POST['isedit']) ? trim($_POST['active']) : true,
+                'active' => converttobool($_POST['isedit']) ? isset($_POST['active']) : true,
                 'coursename_err' => '',
                 'coursecode_err' => '',
             ];
+
+           
 
             if(empty($data['coursename'])){
                 $data['coursename_err'] = 'Enter course name';
@@ -66,8 +68,8 @@ class Courses extends Controller
                 }
             }
 
-            if(!empty($data['coursecode']) && !$this->coursemodel->CheckFieldAvailability('CourseCode',$data['coursename'],$data['id'])){
-                $data['coursename_err'] = 'This course code already exists';
+            if(!empty($data['coursecode']) && !$this->coursemodel->CheckFieldAvailability('CourseCode',$data['coursecode'],$data['id'])){
+                $data['coursecode_err'] = 'This course code already exists';
             }
 
             if(!empty($data['coursecode_err']) || !empty($data['coursename_err'])){
@@ -89,5 +91,22 @@ class Courses extends Controller
             redirect('auth/forbidden');
             exit();
         }
+    }
+
+    public function edit($id)
+    {
+        $course = $this->coursemodel->GetCourse($id);
+        $data = [
+            'title' => 'Edit Course',
+            'touched' => false,
+            'isedit' => true,
+            'id' => $course->ID,
+            'coursename' => strtoupper($course->CourseName),
+            'coursecode' => strtoupper($course->CourseCode),
+            'active' => converttobool($course->Active),
+            'coursename_err' => '',
+            'coursecode_err' => '',
+        ];
+        $this->view('courses/add',$data);
     }
 }
