@@ -24,8 +24,8 @@ class Student
         // $decrypted = decrypt($encrypted,ENCRYPTION_KEY);
      
         if(!$data['isedit']){
-            $this->db->query('INSERT INTO students (StudentName,IdNumber,AdmisionNo,Contact,GenderId,RegistrationDate,CenterId) 
-                              VALUES(:sname,:idno,:admno,:contact,:gender,:regdate,:cid)');
+            $this->db->query('INSERT INTO students (StudentName,IdNumber,AdmisionNo,Contact,GenderId,RegistrationDate) 
+                              VALUES(:sname,:idno,:admno,:contact,:gender,:regdate)');
         }else{
             $this->db->query('UPDATE students SET StudentName=:sname,IdNumber=:idno,AdmisionNo=:admno,
                                      Contact=:contact,GenderId=:gender,RegistrationDate=:regdate
