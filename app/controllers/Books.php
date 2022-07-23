@@ -19,14 +19,17 @@ class Books extends Controller
 
     public function add()
     {
+        $courses = $this->bookmodel->GetCourses();
         $data = [
             'title' => 'Add Book',
+            'courses' => $courses,
             'isedit' => false,
             'touched' => false,
             'id' => '',
             'name' => '',
             'code' => '',
             'author' => '',
+            'course' => '',
             'publisher' => '',
             'openingbal' => '',
             'asat' => '',
@@ -38,6 +41,7 @@ class Books extends Controller
             'publisher_err' => '',
             'openingbal_err' => '',
             'asat_err' => '',
+            'course_err' => '',
         ];
         $this->view('books/add',$data);
     }
@@ -46,16 +50,19 @@ class Books extends Controller
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
+            $courses = $this->bookmodel->GetCourses();
             $data = [
                 'title' => converttobool($_POST['isedit']) ? 'Edit Book' : 'Add Book',
+                'courses' => $courses,
                 'isedit' => converttobool($_POST['isedit']),
                 'touched' => true,
                 'id' => trim($_POST['id']),
+                'course' => !empty($_POST['course']) ? trim($_POST['course']) : '',
                 'name' => strtolower(trim($_POST['name'])),
                 'code' => strtolower(trim($_POST['code'])),
                 'author' => strtolower(trim($_POST['author'])),
                 'publisher' => strtolower(trim($_POST['publisher'])),
-                'openingbal' => trim($_POST['openingbal']),
+                'openingbal' => (converttobool($_POST['isedit']) && converttobool($_POST['allowedit'])) ? trim($_POST['openingbal']) : '',
                 'asat' => !empty($_POST['asat']) ? date("Y-m-d", strtotime($_POST['asat'])) : date('Y-m-d'),
                 'active' => converttobool($_POST['isedit']) ? (isset($_POST['active']) ? true : false) : true,
                 'allowedit' => converttobool($_POST['allowedit']),
@@ -65,9 +72,8 @@ class Books extends Controller
                 'publisher_err' => '',
                 'openingbal_err' => '',
                 'asat_err' => '',
+                'course_err' => '',
             ];
-
-            
 
             if(empty($data['name'])){
                 $data['name_err'] = 'Book name is required';
@@ -81,7 +87,11 @@ class Books extends Controller
                 }
             }
 
-            if(empty($data['openingbal'])){
+            if(empty($data['course'])){
+                $data['course_err'] = 'Course not selected';
+            }
+
+            if(empty($data['openingbal']) && $data['allowedit']){
                 $data['openingbal_err'] = 'Opening balance is required';
             }
 
@@ -118,8 +128,10 @@ class Books extends Controller
     public function edit($id)
     {
         $book = $this->bookmodel->GetBook($id);
+        $courses = $this->bookmodel->GetCourses();
         $data = [
             'title' => 'Edit Book',
+            'courses' => $courses,
             'isedit' => true,
             'touched' => false,
             'id' => (int)$book->ID,
@@ -128,6 +140,7 @@ class Books extends Controller
             'author' => $book->Author,
             'publisher' => $book->Publisher,
             'openingbal' => $book->OpeningBal,
+            'course' => $book->CourseId,
             'allowedit' => converttobool($book->AllowBalEdit),
             'active' => converttobool($book->Active),
             'asat' => $book->AsAtDate,
@@ -137,6 +150,7 @@ class Books extends Controller
             'publisher_err' => '',
             'openingbal_err' => '',
             'asat_err' => '',
+            'course_err' => '',
         ];
         $this->view('books/add',$data);
     }
