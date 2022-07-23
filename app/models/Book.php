@@ -28,6 +28,15 @@ class Book
         }
     }
 
+    //get courses
+    public function GetCourses()
+    {
+        $this->db->query("SELECT ID, UCASE(CourseName) AS CourseName 
+                          FROM courses 
+                          WHERE (Active=1) AND (Deleted = 0)");
+        return $this->db->resultset();
+    }
+
     public function Save($data)
     {
         try {
@@ -35,11 +44,13 @@ class Book
             $this->db->dbh->beginTransaction();
 
             if(!$data['isedit']){
-                $this->db->query('INSERT INTO books (Title,BookCode,Author,Publisher) VALUES(:title, :code, :author, :publisher)');
+                $this->db->query('INSERT INTO books (Title,BookCode,Author,Publisher,CourseId) 
+                                  VALUES(:title, :code, :author, :publisher,:cid)');
                 $this->db->bind(':title',$data['name']);
                 $this->db->bind(':code',$data['code']);
                 $this->db->bind(':author',!empty($data['author']) ? $data['author'] : null);
                 $this->db->bind(':publisher',!empty($data['publisher']) ? $data['publisher'] : null);
+                $this->db->bind(':cid',$data['course']);
                 $this->db->execute();
 
                 $id = $this->db->dbh->lastInsertId();
@@ -62,12 +73,14 @@ class Book
                     $this->db->bind(':id',$data['id']);
                     $this->db->execute();
                 }
-                $this->db->query('UPDATE books SET Title = :title, BookCode = :code, Author = :author, Publisher = :publisher, Active = :active 
+                $this->db->query('UPDATE books SET Title = :title, BookCode = :code, Author = :author, 
+                                         Publisher = :publisher,CourseId = :cid, Active = :active 
                                   WHERE (ID=:id)');
                 $this->db->bind(':title',$data['name']);
                 $this->db->bind(':code',$data['code']);
                 $this->db->bind(':author',!empty($data['author']) ? $data['author'] : null);
                 $this->db->bind(':publisher',!empty($data['publisher']) ? $data['publisher'] : null);
+                $this->db->bind(':cid',$data['course']);
                 $this->db->bind(':active',$data['active']);
                 $this->db->bind(':id',$data['id']);
                 $this->db->execute();
