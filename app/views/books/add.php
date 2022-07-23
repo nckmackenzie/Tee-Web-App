@@ -57,6 +57,17 @@
                                     <span class="invalid-feedback"><?php echo $data['publisher_err'];?></span>
                                 </div>
                             </div>
+                            <div class="col-12 mb-3">
+                                <label for="course" class="form-label">Course</label>
+                                <select name="course" id="course" class="form-select form-select-sm mandatory
+                                        <?php echo inputvalidation($data['course'],$data['course_err'],$data['touched']);?>">
+                                    <option value="" selected disabled>Select course</option>
+                                    <?php foreach($data['courses'] as $course) : ?>
+                                        <option value="<?php echo $course->ID;?>" <?php selectdCheck($data['course'],$course->ID);?>><?php echo $course->CourseName;?></option>
+                                    <?php endforeach;?>
+                                </select>
+                                <span class="invalid-feedback"><?php echo $data['course_err'];?></span>
+                            </div>
                             <?php if($data['allowedit'] || !$data['isedit']) : ?>
                                 <div class="col-md-6">
                                     <div class="mb-3">
