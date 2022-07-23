@@ -45,7 +45,8 @@
                                         <td><span class="badge <?php echo badgeclasses($center->Status);?>"><?php echo $center->Status;?></span></td>
                                         <td>
                                             <a href="<?php echo URLROOT;?>/centers/edit/<?php echo $center->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                            <button class="action-icon btn text-danger btndel" 
+                                            <button class="action-icon btn text-danger btndel"
+                                                    data-id="<?php echo $center->ID;?>"  
                                                     data-bs-toggle="modal" 
                                                     data-bs-target="#centermodal"
                                                     onclick="rowFunction(this)"><i class="mdi mdi-delete"></i></button>
@@ -62,5 +63,5 @@
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?> 
 <?php flash('center_toast_msg','toast'); ?> 
-<script src="<?php echo URLROOT;?>/dist/js/pages/centers.js"></script>                  
+<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/centers.js"></script>                  
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
