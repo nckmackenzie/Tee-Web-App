@@ -29,7 +29,7 @@
                         <table class="table table-centered w-100 dt-responsive nowrap" id="years-datatable">
                             <thead class="table-light">
                                 <tr>
-                                    <th>ID</th>
+                                    <th class="d-none">ID</th>
                                     <th>Year Name</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
@@ -40,7 +40,7 @@
                             <tbody>
                                 <?php foreach($data['years'] as $year) : ?>
                                     <tr>
-                                        <td><?php echo $year->ID;?></td>
+                                        <td class="d-none"><?php echo $year->ID;?></td>
                                         <td><?php echo $year->YearName;?></td>
                                         <td><?php echo $year->StartDate;?></td>
                                         <td><?php echo $year->EndDate;?></td>

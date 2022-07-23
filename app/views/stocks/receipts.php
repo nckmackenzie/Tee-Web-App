@@ -28,7 +28,7 @@
                         <table class="table table-centered dt-responsive w-100 nowrap" id="receipts-datatable">
                             <thead class="table-light">
                                 <tr>
-                                    <th>ID</th>
+                                    <th class="d-none">ID</th>
                                     <th>Receipt Date</th>
                                     <th>Type</th>
                                     <th>Grn No</th>
@@ -39,7 +39,7 @@
                             <tbody>
                                 <?php foreach ($data['receipts'] as $receipt) : ?>
                                     <tr>
-                                        <td><?php echo $receipt->ID;?></td>
+                                        <td class="d-none"><?php echo $receipt->ID;?></td>
                                         <td><?php echo $receipt->ReceiptDate;?></td>
                                         <td><?php echo $receipt->ReceiptType;?></td>
                                         <td><?php echo $receipt->GrnNo;?></td>

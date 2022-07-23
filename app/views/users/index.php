@@ -27,7 +27,7 @@
                        <table class="table table-centered w-100 dt-responsive nowrap" id="users-datatable">
                             <thead class="table-light">
                                 <tr>
-                                    <th>ID</th>
+                                    <th class="d-none">ID</th>
                                     <th>Full Name</th>
                                     <th>Contact</th>
                                     <th>User Type</th>
@@ -38,7 +38,7 @@
                             <tbody>
                                 <?php foreach($data['users'] as $user): ?>
                                     <tr>
-                                        <td><?php echo $user->ID;?></td>
+                                        <td class="d-none"><?php echo $user->ID;?></td>
                                         <td><?php echo $user->UserName;?></td>
                                         <td><?php echo $user->Contact;?></td>
                                         <td><?php echo $user->UserType;?></td>

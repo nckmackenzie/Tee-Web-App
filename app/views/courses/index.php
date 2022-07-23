@@ -28,7 +28,7 @@
                         <table class="table table-centered w-100 nowrap dt-responsive" id="courses-datatable">
                             <thead class="table-light">
                                 <tr>
-                                    <th>ID</th>
+                                    <th class="d-none">ID</th>
                                     <th>Course Name</th>
                                     <th>Course Code</th>
                                     <th>Status</th>
@@ -38,7 +38,7 @@
                             <tbody>
                                 <?php foreach($data['courses'] as $course) : ?>
                                     <tr>
-                                        <td><?php echo $course->ID;?></td>
+                                        <td class="d-none"><?php echo $course->ID;?></td>
                                         <td><?php echo $course->CourseName;?></td>
                                         <td><?php echo $course->CourseCode;?></td>
                                         <td><span class="badge <?php echo badgeclasses($course->Status);?>"><?php echo $course->Status;?></span></td>

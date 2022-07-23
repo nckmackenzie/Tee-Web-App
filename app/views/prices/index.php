@@ -28,7 +28,7 @@
                         <table class="table table-centered dt-responsive w-100 nowrap" id="prices-datatable">
                             <thead class="table-light">
                                 <tr>
-                                    <th>ID</th>
+                                    <th class="d-none">ID</th>
                                     <th>Title</th>
                                     <th>Price</th>
                                     <th>Start Date</th>
@@ -39,7 +39,7 @@
                             <tbody>
                                 <?php foreach($data['prices'] as $price) : ?>
                                     <tr>
-                                        <td><?php echo $price->ID;?></td>
+                                        <td class="d-none"><?php echo $price->ID;?></td>
                                         <td><?php echo $price->Title;?></td>
                                         <td><?php echo $price->Price;?></td>
                                         <td><?php echo $price->StartDate;?></td>

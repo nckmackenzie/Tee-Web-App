@@ -27,7 +27,7 @@
                         <table class="table table-centered w-100 dt-responsive nowrap" id="centers-datatable">
                             <thead class="table-light">
                                 <tr>
-                                    <th>ID</th>
+                                    <th class="d-none">ID</th>
                                     <th>Center Name</th>
                                     <th>Contact</th>
                                     <th>Email</th>
@@ -38,7 +38,7 @@
                             <tbody>
                                 <?php foreach($data['centers'] as $center): ?>
                                     <tr>
-                                        <td><?php echo $center->ID;?></td>
+                                        <td class="d-none"><?php echo $center->ID;?></td>
                                         <td><?php echo $center->CenterName;?></td>
                                         <td><?php echo $center->Contact;?></td>
                                         <td><?php echo $center->Email;?></td>

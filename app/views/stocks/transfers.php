@@ -28,7 +28,7 @@
                         <table class="table table-centered dt-responsive w-100 nowrap" id="transfers-datatable">
                             <thead class="table-light">
                                 <tr>
-                                    <th>ID</th>
+                                    <th class="d-none">ID</th>
                                     <th>Transfer Date</th>
                                     <th>MtnNo</th>
                                     <th>Transfer To</th>
@@ -39,7 +39,7 @@
                             <tbody>
                                 <?php foreach ($data['transfers'] as $transfer) : ?>
                                     <tr>
-                                        <td><?php echo $transfer->ID;?></td>
+                                        <td class="d-none"><?php echo $transfer->ID;?></td>
                                         <td><?php echo $transfer->TransferDate;?></td>
                                         <td><?php echo $transfer->MtnNo;?></td>
                                         <td><?php echo $transfer->TransferTo;?></td>
