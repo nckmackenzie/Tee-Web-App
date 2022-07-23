@@ -12,9 +12,8 @@ class Student
 
     public function GetActiveStudents()
     {
-        $this->db->query('CALL sp_getstudentbystatus(:sid,:cid)');
+        $this->db->query('CALL sp_getstudentbystatus(:sid)');
         $this->db->bind(':sid',1);
-        $this->db->bind(':cid',$_SESSION['centerid']);
         return $this->db->resultset();
     }
 
