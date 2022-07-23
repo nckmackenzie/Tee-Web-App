@@ -28,7 +28,7 @@
                     <table class="table table-centered w-100 dt-responsive nowrap" id="books-datatable">
                         <thead class="table-light">
                             <tr>
-                                <th>ID</th>
+                                <th class="d-none">ID</th>
                                 <th>Title</th>
                                 <th>Book Code</th>
                                 <th>Author</th>
@@ -39,7 +39,7 @@
                         </thead>
                         <?php foreach($data['books'] as $book): ?>
                             <tr>
-                                <td><?php echo $book->ID;?></td>
+                                <td class="d-none"><?php echo $book->ID;?></td>
                                 <td><?php echo $book->Title;?></td>
                                 <td><?php echo $book->BookCode;?></td>
                                 <td><?php echo $book->Author;?></td>
