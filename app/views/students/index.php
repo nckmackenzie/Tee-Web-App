@@ -27,7 +27,7 @@
                         <table class="table table-centered w-100 dt-responsive nowrap" id="students-datatable">
                             <thead class="table-light">
                                 <tr>
-                                    <th>ID</th>
+                                    <th class="d-none">ID</th>
                                     <th>Student Name</th>
                                     <th>Adm No</th>
                                     <th>Contact</th>
@@ -38,7 +38,7 @@
                             <tbody>
                                 <?php foreach($data['activestudents'] as $student) : ?>
                                     <tr>
-                                        <td><?php echo $student->ID;?></td>
+                                        <td class="d-none"><?php echo $student->ID;?></td>
                                         <td><?php echo $student->StudentName;?></td>
                                         <td><?php echo $student->AdmisionNo;?></td>
                                         <td><?php echo decrypt($student->Contact);?></td>
