@@ -118,9 +118,10 @@ class Book
     //get stock of book
     public function GetStock($book)
     {
-        $this->db->query('SELECT fn_getstock(:pid,:tdate)');
+        $this->db->query('SELECT fn_getstock(:pid,:tdate,:cid)');
         $this->db->bind(':pid',$book);
         $this->db->bind(':tdate',date('Y-m-d'));
+        $this->db->bind(':cid',intval($_SESSION['centerid']));
         return $this->db->getvalue();
     }
 
