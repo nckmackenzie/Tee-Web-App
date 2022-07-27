@@ -14,12 +14,13 @@ class Group
         return $this->db->resultSet();
     }
 
-    public function CheckGroupName($name,$parish)
+    public function CheckGroupName($name,$parish,$id)
     {
         $this->db->query('SELECT COUNT(*) FROM groups 
-                          WHERE (GroupName = :gname) AND (ParishName = :parish) AND (Deleted = 0)');
+                          WHERE (GroupName = :gname) AND (ParishName = :parish) AND (ID <> :id) AND (Deleted = 0)');
         $this->db->bind(':gname',strtolower(trim($name)));
         $this->db->bind(':parish',strtolower(trim($parish)));
+        $this->db->bind(':id',trim($id));
         if(intval($this->db->getvalue()) > 0){
             return false;
         }else{
@@ -46,5 +47,12 @@ class Group
         }else{
             return true;
         }
+    }
+
+    public function GetGroup($id)
+    {
+        $this->db->query("SELECT * FROM groups WHERE (ID = :id)");
+        $this->db->bind(':id',trim($id));
+        return $this->db->single();
     }
 }
