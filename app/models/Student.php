@@ -36,11 +36,13 @@ class Student
         // $decrypted = decrypt($encrypted,ENCRYPTION_KEY);
      
         if(!$data['isedit']){
-            $this->db->query('INSERT INTO students (StudentName,IdNumber,AdmisionNo,Contact,GenderId,RegistrationDate) 
-                              VALUES(:sname,:idno,:admno,:contact,:gender,:regdate)');
+            $this->db->query('INSERT INTO students (StudentName,IdNumber,AdmisionNo,Contact,GenderId,
+                                                    RegistrationDate,CourseId,Email) 
+                              VALUES(:sname,:idno,:admno,:contact,:gender,:regdate,:course,:email)');
         }else{
             $this->db->query('UPDATE students SET StudentName=:sname,IdNumber=:idno,AdmisionNo=:admno,
-                                     Contact=:contact,GenderId=:gender,RegistrationDate=:regdate
+                                     Contact=:contact,GenderId=:gender,RegistrationDate=:regdate,
+                                     CourseId = :course,Email=:email
                               WHERE  (ID = :id)');
         }
         $this->db->bind(':sname',strtolower($data['sname']));
@@ -49,6 +51,8 @@ class Student
         $this->db->bind(':contact',encrypt($data['contact'],ENCRYPTION_KEY));
         $this->db->bind(':gender',intval($data['gender']));
         $this->db->bind(':regdate',!empty($data['admdate']) ? $data['admdate'] : null);
+        $this->db->bind(':course',$data['course']);
+        $this->db->bind(':email',!empty($data['email']) ? $data['email'] : null);
         if($data['isedit']){
             $this->db->bind(':id',intval($data['id']));
         }else{
