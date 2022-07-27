@@ -106,4 +106,28 @@ class Groups extends Controller
         $this->view('groups/add',$data);
         exit();
     }
+
+    public function delete()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $id = trim($_POST['id']);
+
+            if(empty($id)){
+                flash('group_msg',null,'Unable to get selected group.',flashclass('alert','danger'));
+                redirect('groups');
+                exit();
+            }
+
+            if(!$this->groupmodel->Delete($id)){
+                flash('group_msg',null,'Unable to delete group. Contact your administrator',flashclass('alert','danger'));
+                redirect('groups');
+                exit();
+            }
+
+            flash('group_flash_msg',null,'Deleted successfully!',flashclass('toast','success'));
+            redirect('groups');
+            exit();
+            
+        }
+    }
 }
