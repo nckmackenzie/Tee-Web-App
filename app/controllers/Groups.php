@@ -20,4 +20,20 @@ class Groups extends Controller
         ];
         $this->view('groups/index',$data);
     }
+
+    public function add()
+    {
+        $data = [
+            'title' => 'Add Group',
+            'id' => '',
+            'touched' => false,
+            'isedit' => false,
+            'groupname' => '',
+            'parishname' => '',
+            'active' => true,
+            'groupname_err' => '',
+            'parishname_err' => '',
+        ];
+        $this->view('groups/add',$data);
+    }
 }
