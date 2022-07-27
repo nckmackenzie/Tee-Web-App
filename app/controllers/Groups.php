@@ -64,7 +64,7 @@ class Groups extends Controller
             }
 
             if(!empty($data['groupname']) && !empty($data['parishname']) 
-               && !$this->groupmodel->CheckGroupName($data['groupname'],$data['parishname'])){
+               && !$this->groupmodel->CheckGroupName($data['groupname'],$data['parishname'],$data['id'])){
                 $data['groupname_err'] = 'Group name already exists';
             }
 
@@ -87,5 +87,23 @@ class Groups extends Controller
             redirect('auth/forbidden');
             exit();
         }
+    }
+
+    public function edit($id)
+    {
+        $group = $this->groupmodel->GetGroup($id);
+        $data = [
+            'title' => 'Edit Group',
+            'id' => $group->ID,
+            'touched' => false,
+            'isedit' => true,
+            'groupname' => strtoupper($group->GroupName),
+            'parishname' => strtoupper($group->ParishName),
+            'active' => converttobool($group->Active),
+            'groupname_err' => '',
+            'parishname_err' => '',
+        ];
+        $this->view('groups/add',$data);
+        exit();
     }
 }
