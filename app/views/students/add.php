@@ -79,6 +79,27 @@
                                     <span class="invalid-feedback"><?php echo $data['admdate_err'];?></span>
                                 </div>
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="course" class="form-label">Course</label>
+                                <select name="course" id="course" 
+                                        class="form-select form-select-sm mandatory 
+                                        <?php echo inputvalidation($data['course'],$data['course_err'],$data['touched']);?>">
+                                    <option value="">Select course</option>
+                                    <?php foreach($data['courses'] as $course) : ?>
+                                        <option value="<?php echo $course->ID;?>" <?php selectdCheck($data['course'],$course->ID);?>><?php echo $course->CourseName;?></option>
+                                    <?php endforeach;?>
+                                </select>
+                                <span class="invalid-feedback"><?php echo $data['course_err'];?></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" name="email" id="email" 
+                                       class="form-control form-control-sm 
+                                       <?php echo inputvalidation($data['email'],$data['email_err'],$data['touched']);?>"
+                                       value="<?php echo $data['email'];?>"
+                                       placeholder="eg test@example.com">
+                                <span class="invalid-feed"><?php echo $data['email_err'];?></span>
+                            </div>
                         </div><!-- /.row -->
                         <div class="d-grid d-md-block">
                             <input type="hidden" name="id" value="<?php echo $data['id'];?>">
