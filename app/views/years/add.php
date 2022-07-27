@@ -8,7 +8,7 @@
             <div class="page-title-box">
                 <div class="page-title-right"></div>
                 <h4 class="page-title">
-                    <a href="<?php echo URLROOT;?>/years" class="ms-2 btn btn-sm btn-danger">&larr; Back</a>
+                    <a href="<?php echo URLROOT;?>/years" class="ms-1 btn btn-sm btn-danger">&larr; Back</a>
                 </h4>
             </div>
         </div>
