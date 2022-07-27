@@ -55,4 +55,16 @@ class Group
         $this->db->bind(':id',trim($id));
         return $this->db->single();
     }
+
+    public function Delete($id)
+    {
+        $this->db->query('UPDATE groups SET Deleted = 1 
+                          WHERE (ID = :id)');
+        $this->db->bind(':id',intval($id));
+        if(!$this->db->execute()){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
