@@ -142,3 +142,9 @@ function decrypt($string){
     return $result;
 }
 
+//validate email
+function validateemail($email){
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        return false;
+    }
+}
