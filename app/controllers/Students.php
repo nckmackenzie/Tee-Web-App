@@ -23,8 +23,10 @@ class Students extends Controller
 
     public function add()
     {
+        $courses = $this->studentmodel->GetCourses();
         $data = [
             'title' => 'Add student',
+            'courses' => $courses,
             'isedit' => false,
             'touched' => false,
             'id' => '',
@@ -34,12 +36,16 @@ class Students extends Controller
             'admno' => '',
             'gender' => '',
             'admdate' => '',
+            'course' => '',
+            'email' => '',
             'sname_err' => '',
             'contact_err' => '',
             'idno_err' => '',
             'gender_err' => '',
             'admdate_err' => '',
             'admno_err' => '',
+            'email_err' => '',
+            'course_err' => ''
         ];
         $this->view('students/add',$data);
         exit();
@@ -49,7 +55,9 @@ class Students extends Controller
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $_POST = filter_input_array(INPUT_POST,FILTER_UNSAFE_RAW);
+            $courses = $this->studentmodel->GetCourses();
             $data = [
+                'courses' => $courses,
                 'title' => converttobool(trim($_POST['isedit'])) ? 'Edit student' : 'Add student',
                 'isedit' => converttobool(trim($_POST['isedit'])),
                 'touched' => true,
@@ -60,12 +68,16 @@ class Students extends Controller
                 'admno' => !empty(trim($_POST['admno'])) ? trim($_POST['admno']) : '',
                 'gender' => !empty(trim($_POST['gender'])) ? trim($_POST['gender']) : '',
                 'admdate' => !empty(trim($_POST['admdate'])) ? date('Y-m-d',strtotime(trim($_POST['admdate']))) : '',
+                'course' => !empty(trim($_POST['course'])) ? trim($_POST['course']) : '' ,
+                'email' => !empty(trim($_POST['email'])) ? trim($_POST['email']) : '',
                 'sname_err' => '',
                 'contact_err' => '',
                 'gender_err' => '',
                 'admdate_err' => '',
                 'idno_err' => '',
                 'admno_err' => '',
+                'email_err' => '',
+                'course_err' => ''
             ];
 
             //validation
@@ -121,8 +133,10 @@ class Students extends Controller
     public function edit($id)
     {
         $student = $this->studentmodel->GetStudent($id);
+        $courses = $this->studentmodel->GetCourses();
         $data = [
             'title' => 'Edit student',
+            'courses' => $courses,
             'isedit' => true,
             'touched' => false,
             'id' => $student->ID,
@@ -132,12 +146,16 @@ class Students extends Controller
             'admno' => strtoupper($student->AdmisionNo),
             'gender' => $student->GenderId,
             'admdate' => $student->RegistrationDate,
+            'course' => $student->CourseId,
+            'email' => $student->email,
             'sname_err' => '',
             'contact_err' => '',
             'idno_err' => '',
             'gender_err' => '',
             'admdate_err' => '',
             'admno_err' => '',
+            'email_err' => '',
+            'course_err' => ''
         ];
         $this->view('students/add',$data);
         exit();
