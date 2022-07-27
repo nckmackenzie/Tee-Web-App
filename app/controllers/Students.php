@@ -156,7 +156,7 @@ class Students extends Controller
             'gender' => $student->GenderId,
             'admdate' => $student->RegistrationDate,
             'course' => $student->CourseId,
-            'email' => $student->email,
+            'email' => $student->Email,
             'sname_err' => '',
             'contact_err' => '',
             'idno_err' => '',
