@@ -98,7 +98,7 @@
                                        <?php echo inputvalidation($data['email'],$data['email_err'],$data['touched']);?>"
                                        value="<?php echo $data['email'];?>"
                                        placeholder="eg test@example.com">
-                                <span class="invalid-feed"><?php echo $data['email_err'];?></span>
+                                <span class="invalid-feedback"><?php echo $data['email_err'];?></span>
                             </div>
                         </div><!-- /.row -->
                         <div class="d-grid d-md-block">
