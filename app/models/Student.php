@@ -17,6 +17,19 @@ class Student
         return $this->db->resultset();
     }
 
+    public function GetCourses()
+    {
+        $this->db->query('SELECT 
+                            ID,
+                            UCASE(CourseName) AS CourseName 
+                          FROM 
+                            courses 
+                          WHERE 
+                            (Active = 1) AND (Deleted = 0)
+                          ORDER BY CourseName');
+        return $this->db->resultset();
+    }
+
     public function CreateUpdate($data)
     {
         // $encrypted = encrypt($data['sname'],ENCRYPTION_KEY);
