@@ -109,8 +109,17 @@ class Students extends Controller
                 $data['admdate_err'] = 'Invalid date selected';
             }
 
+            if(empty($data['course'])){
+                $data['course_err'] = 'Select course';
+            }
+
+            if(!empty($data['email']) && !validateemail($data['email'])){
+                $data['email_err'] = 'Invalid email address';
+            }
+
             if(!empty($data['sname_err']) || !empty($data['contact_err']) || !empty($data['gender_err']) 
-               || !empty($data['admdate_err']) || !empty($data['idno_err']) || !empty($data['admno_err'])){
+               || !empty($data['admdate_err']) || !empty($data['idno_err']) || !empty($data['admno_err']) 
+               || !empty($data['course_err']) || !empty($data['email_err'])){
                 $this->view('students/add',$data);
                 exit();
             }
