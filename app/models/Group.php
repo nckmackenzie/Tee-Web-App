@@ -13,4 +13,38 @@ class Group
         $this->db->query('SELECT * FROM vw_groups');
         return $this->db->resultSet();
     }
+
+    public function CheckGroupName($name,$parish)
+    {
+        $this->db->query('SELECT COUNT(*) FROM groups 
+                          WHERE (GroupName = :gname) AND (ParishName = :parish) AND (Deleted = 0)');
+        $this->db->bind(':gname',strtolower(trim($name)));
+        $this->db->bind(':parish',strtolower(trim($parish)));
+        if(intval($this->db->getvalue()) > 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public function CreateUpdate($data)
+    {
+        if(!$data['isedit']){
+            $this->db->query('INSERT INTO groups (GroupName,ParishName) VALUES(:gname,:parish)');
+        }else{
+            $this->db->query('UPDATE groups SET GroupName = :gname,ParishName = :parish,Active = :active 
+                              WHERE (ID = :id)');
+        }
+        $this->db->bind(':gname',strtolower($data['groupname']));
+        $this->db->bind(':parish',strtolower($data['parishname']));
+        if($data['isedit']){
+            $this->db->bind(':active',$data['active']);
+            $this->db->bind(':id',$data['id']);
+        }
+        if(!$this->db->execute()){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
