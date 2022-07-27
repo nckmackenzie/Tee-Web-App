@@ -10,7 +10,7 @@ class Group
 
     public function GetGroups()
     {
-        $this->db->query('SELECT * FROM groups WHERE (Deleted = 0) AND (Active = 1) ORDER BY GroupName');
+        $this->db->query('SELECT * FROM vw_groups');
         return $this->db->resultSet();
     }
 }
