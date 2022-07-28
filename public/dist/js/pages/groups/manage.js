@@ -1,9 +1,11 @@
-import { getSelectedText } from '../utils.js';
+import { getSelectedText, displayAlert } from '../utils.js';
 
 const studentSelect = document.getElementById('student');
 const addBtn = document.querySelector('.btnadd');
 const studentSpan = document.querySelector('.invalid-feedback');
 const table = document.getElementById('members');
+const form = document.querySelector('form');
+const alertBox = document.querySelector('.alert-box');
 
 addBtn.addEventListener('click', () => {
   studentSelect.classList.remove('is-invalid');
@@ -37,4 +39,18 @@ addBtn.addEventListener('click', () => {
   let newRow = body.insertRow(body.rows.length);
   newRow.innerHTML = html;
   studentSelect.value = '';
+});
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const body = document
+    .getElementById('members')
+    .getElementsByTagName('tbody')[0];
+  // const body = table.getElementsByTagName('tbody')[0];
+  if (Number(body.rows.length) === 0) {
+    displayAlert(alertBox, 'Add Students');
+    return false;
+  } else {
+    document.form.submit();
+  }
 });
