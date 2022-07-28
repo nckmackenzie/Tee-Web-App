@@ -52,6 +52,9 @@
             <li>
                 <a href="<?php echo URLROOT;?>/groups/">Groups</a>
             </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/groups/members">Group Members</a>
+            </li>
         </ul>
     </div>
 </li>
