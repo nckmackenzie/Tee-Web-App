@@ -54,3 +54,10 @@ form.addEventListener('submit', function (e) {
     document.studentsform.submit();
   }
 });
+
+table.addEventListener('click', function (e) {
+  if (!e.target.classList.contains('btndel')) return;
+
+  const btn = e.target;
+  btn.closest('tr').remove();
+});
