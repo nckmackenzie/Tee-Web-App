@@ -15,11 +15,12 @@
     </div>     
     <!-- end page title --> 
     <div class="row">
+        <div class="alert-box"></div>
         <div class="col-md-8 mx-auto">
             <div class="card">  
                 <div class="card-header">Manage Group Members</div>
                 <div class="card-body">
-                    <form action="<?php echo URLROOT;?>/groups/createupdate" method="post" autocomplete="off">
+                    <form action="<?php echo URLROOT;?>/groups/managecreateupdate" method="post" autocomplete="off" name="studentsform">
                         <div class="row">
                             <div class="col-md-6 mb-1">
                                 <label for="group">Group</label>
@@ -32,7 +33,7 @@
                             </div>
                             <div class="col-md-6 mb-1">
                                 <label for="student">Student</label>
-                                <select name="student" id="student" class="form-select form-select-sm mandatory">
+                                <select name="student" id="student" class="form-select form-select-sm mandatory" required>
                                     <option value="">Select student</option>
                                     <?php foreach($data['students'] as $student) : ?>
                                         <option value="<?php echo $student->ID;?>"><?php echo $student->StudentName;?></option>
@@ -69,6 +70,12 @@
                                     </table>
                                 </div>
                             </div>
+                        </div>
+                        <div class="d-grid d-md-block">
+                            <input type="hidden" name="id" value="<?php echo $data['id'];?>">
+                            <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
+                            <input type="hidden" name="group" value="<?php echo $data['group'];?>">
+                            <button type="submit" class="btn btn-sm btn-primary">Save</button>
                         </div>
                     </form>
                 </div>
