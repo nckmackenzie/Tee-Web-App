@@ -88,7 +88,7 @@ class Group
     public function GetMembersByGroup($id)
     {
         $this->db->query('SELECT 
-                            m.MemberId,
+                            m.MemberId AS ID,
                             UCASE(StudentName) AS StudentName
                           FROM  
                             group_members m
