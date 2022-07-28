@@ -17,35 +17,37 @@
     <div class="row">
         <div class="card">
             <div class="card-body">
-                <table class="table table-centered dt-responsive w-100 nowrap" id="groupmembers-datatable">
-                    <thead class="table-light">
-                        <tr>
-                            <th class="d-none">ID</th>
-                            <th>Group Name</th>
-                            <th>Parish Name</th>
-                            <th>Members Count</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($data['groups'] as $group) : ?>
+                <div class="table-responsive">
+                    <table class="table table-centered dt-responsive w-100 nowrap" id="groupmembers-datatable">
+                        <thead class="table-light">
                             <tr>
-                                <td class="d-none"><?php echo $group->ID;?></td>
-                                <td><?php echo $group->GroupName;?></td>
-                                <td><?php echo $group->ParishName;?></td>
-                                <td><?php echo $group->MemberCount;?></td>
-                                <td>
-                                    <a href="<?php echo URLROOT;?>/groups/manage/<?php echo $group->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-account-cog-outline"></i></a>
-                                    <button class="action-icon btn text-danger btndel"
-                                            data-id="<?php echo $group->ID;?>" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#centermodal"
-                                            ><i class="mdi mdi-delete"></i></button>
-                                </td>
+                                <th class="d-none">ID</th>
+                                <th>Group Name</th>
+                                <th>Parish Name</th>
+                                <th>Members Count</th>
+                                <th>Actions</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach($data['groups'] as $group) : ?>
+                                <tr>
+                                    <td class="d-none"><?php echo $group->ID;?></td>
+                                    <td><?php echo $group->GroupName;?></td>
+                                    <td><?php echo $group->ParishName;?></td>
+                                    <td><?php echo $group->MemberCount;?></td>
+                                    <td>
+                                        <a href="<?php echo URLROOT;?>/groups/manage/<?php echo $group->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-account-cog-outline"></i></a>
+                                        <button class="action-icon btn text-danger btndel"
+                                                data-id="<?php echo $group->ID;?>" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#centermodal"
+                                                ><i class="mdi mdi-delete"></i></button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
