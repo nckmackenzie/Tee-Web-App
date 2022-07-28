@@ -102,20 +102,33 @@ class Group
 
     public function ManageCreateUpdate($data)
     {
-        $saved = 0;
-        for ($i=0; $i < count($data['studentsid']); $i++) { 
-            $this->db->query('INSERT INTO group_members (GroupId,MemberId) VALUES(:gid,:student)');
-            $this->db->bind(':gid',$data['group']);
-            $this->db->bind(':student',$data['studentsid'][$i]);
-            if($this->db->execute()){
-                $saved++;
-            }
-        }
+        try {
 
-        if($saved === 0){
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('DELETE FROM group_members WHERE (GroupId = :group)');
+            $this->db->bind(':group',intval($data['group']));
+            $this->db->execute();
+
+            for ($i=0; $i < count($data['studentsid']); $i++) { 
+                $this->db->query('INSERT INTO group_members (GroupId,MemberId) VALUES(:gid,:student)');
+                $this->db->bind(':gid',$data['group']);
+                $this->db->bind(':student',$data['studentsid'][$i]);
+                $this->db->execute();
+            }
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+            
+        } catch (\Exception $e) {
+            if ($this->db->dbh->inTransaction()) {
+                $this->db->dbh->rollBack();
+            }
+            throw $e;
             return false;
-        }else{
-            return true;
         }
     }
 }
