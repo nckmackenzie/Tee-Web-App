@@ -99,4 +99,23 @@ class Group
         $this->db->bind(':gid',trim($id));
         return $this->db->resultset();
     }
+
+    public function ManageCreateUpdate($data)
+    {
+        $saved = 0;
+        for ($i=0; $i < count($data['studentsid']); $i++) { 
+            $this->db->query('INSERT INTO group_members (GroupId,MemberId) VALUES(:gid,:student)');
+            $this->db->bind(':gid',$data['group']);
+            $this->db->bind(':student',$data['studentsid'][$i]);
+            if($this->db->execute()){
+                $saved++;
+            }
+        }
+
+        if($saved === 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
