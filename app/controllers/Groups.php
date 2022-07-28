@@ -199,4 +199,31 @@ class Groups extends Controller
             exit();
         }
     }
+
+    public function deletemembers()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $id = trim($_POST['id']);
+
+            if(empty($id)){
+                flash('groupmember_msg',null,'Unable to get selected group!',flashclass('alert','danger'));
+                redirect('groups/members');
+                exit();
+            }
+
+            if(!$this->groupmodel->ManageDelete($id)){
+                flash('groupmember_msg',null,'Members not deleted. Retry or contact admin',flashclass('alert','danger'));
+                redirect('groups/members');
+                exit();
+            }
+
+            flash('groupmember_flash_msg',null,'Deleted successfully!',flashclass('toast','success'));
+            redirect('groups/members');
+            exit();
+
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
