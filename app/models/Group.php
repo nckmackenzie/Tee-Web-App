@@ -14,6 +14,12 @@ class Group
         return $this->db->resultSet();
     }
 
+    public function GetGroupMembers()
+    {
+        $this->db->query('SELECT * FROM vw_groupmembers');
+        return $this->db->resultSet();
+    }
+
     public function CheckGroupName($name,$parish,$id)
     {
         $this->db->query('SELECT COUNT(*) FROM groups 
