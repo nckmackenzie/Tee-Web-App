@@ -149,6 +149,8 @@ class Groups extends Controller
         $groups = $this->groupmodel->GetGroups();
         $data = [
             'title' => 'Manage Group Members',
+            'id' => '',
+            'isedit' => false,
             'groupmembers' => [],
             'students' => $students,
             'groups' => $groups,
@@ -162,5 +164,39 @@ class Groups extends Controller
         }
         $this->view('groups/manage',$data);
         exit();
+    }
+
+    public function managecreateupdate()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
+            $students = $this->groupmodel->GetStudents();
+            $groups = $this->groupmodel->GetGroups();
+            $data = [
+                'title' => 'Manage Group Members',
+                'id' => trim($_POST['id']),
+                'isedit' => converttobool(trim($_POST['isedit'])),
+                'groupmembers' => [],
+                'students' => $students,
+                'groups' => $groups,
+                'group' => trim($_POST['group']),
+                'studentsid' => $_POST['studentsid'],
+                'studentsname' => $_POST['studentsname'],
+            ];
+
+            if(!$this->groupmodel->ManageCreateUpdate($data)){
+                flash('groupmember_msg',null,'Members not saved. Retry or contact admin',flashclass('alert','danger'));
+                redirect('groups/members');
+                exit();
+            }
+
+            flash('groupmember_flash_msg',null,'Saved successfully!',flashclass('toast','success'));
+            redirect('groups/members');
+            exit();
+
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
     }
 }
