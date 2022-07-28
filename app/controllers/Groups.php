@@ -130,4 +130,15 @@ class Groups extends Controller
             
         }
     }
+
+    public function members()
+    {
+        $groups = $this->groupmodel->GetGroupMembers();
+        $data = [
+            'title' => 'Groups Members',
+            'has_datatable' => true,
+            'groups' => $groups
+        ];
+        $this->view('groups/members',$data);
+    }
 }
