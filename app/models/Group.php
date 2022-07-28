@@ -14,6 +14,17 @@ class Group
         return $this->db->resultSet();
     }
 
+    public function GetStudents()
+    {
+        $this->db->query('SELECT 
+                            ID,
+                            UCASE(StudentName) AS StudentName 
+                          FROM students 
+                          WHERE (StatusId = 1) AND (Deleted = 0)
+                          ORDER BY StudentName');
+        return $this->db->resultSet();
+    }
+
     public function GetGroupMembers()
     {
         $this->db->query('SELECT * FROM vw_groupmembers');
@@ -72,5 +83,20 @@ class Group
         }else{
             return true;
         }
+    }
+
+    public function GetMembersByGroup($id)
+    {
+        $this->db->query('SELECT 
+                            m.MemberId,
+                            UCASE(StudentName) AS StudentName
+                          FROM  
+                            group_members m
+                          INNER JOIN 
+                            students s
+                            ON m.MemberId = s.ID
+                          WHERE (GroupId = :gid)');
+        $this->db->bind(':gid',trim($id));
+        return $this->db->resultset();
     }
 }
