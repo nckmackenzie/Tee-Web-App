@@ -131,4 +131,15 @@ class Group
             return false;
         }
     }
+
+    public function ManageDelete($id)
+    {
+        $this->db->query('DELETE FROM group_members WHERE (GroupId = :group)');
+        $this->db->bind(':group',intval($id));
+        if(!$this->db->execute()){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
