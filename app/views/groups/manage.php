@@ -33,7 +33,7 @@
                             </div>
                             <div class="col-md-6 mb-1">
                                 <label for="student">Student</label>
-                                <select name="student" id="student" class="form-select form-select-sm mandatory" required>
+                                <select name="student" id="student" class="form-select form-select-sm mandatory">
                                     <option value="">Select student</option>
                                     <?php foreach($data['students'] as $student) : ?>
                                         <option value="<?php echo $student->ID;?>"><?php echo $student->StudentName;?></option>
