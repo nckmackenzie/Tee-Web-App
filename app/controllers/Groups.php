@@ -127,7 +127,6 @@ class Groups extends Controller
             flash('group_flash_msg',null,'Deleted successfully!',flashclass('toast','success'));
             redirect('groups');
             exit();
-            
         }
     }
 
@@ -140,5 +139,28 @@ class Groups extends Controller
             'groups' => $groups
         ];
         $this->view('groups/members',$data);
+        exit();
+    }
+
+    public function manage($id)
+    {
+        $groupmembers = $this->groupmodel->GetMembersByGroup($id);
+        $students = $this->groupmodel->GetStudents();
+        $groups = $this->groupmodel->GetGroups();
+        $data = [
+            'title' => 'Manage Group Members',
+            'groupmembers' => [],
+            'students' => $students,
+            'groups' => $groups,
+            'group' => $id
+        ];
+        foreach ($groupmembers as $member){
+            array_push($data['groupmembers'],[
+                'sid' => $member->ID,
+                'studentname' => $member->StudentName
+            ]);
+        }
+        $this->view('groups/manage',$data);
+        exit();
     }
 }
