@@ -55,8 +55,6 @@ class Student
         $this->db->bind(':email',!empty($data['email']) ? $data['email'] : null);
         if($data['isedit']){
             $this->db->bind(':id',intval($data['id']));
-        }else{
-            $this->db->bind(':cid',intval($_SESSION['centerid']));
         }
         if(!$this->db->execute()){
             return false;
