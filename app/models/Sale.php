@@ -19,8 +19,7 @@ class Sale
     {
         $this->db->query('SELECT ID,UCASE(StudentName) AS StudentName 
                           FROM   students 
-                          WHERE  (CenterId = :cid) AND (Deleted =0)');
-        $this->db->bind(':cid',intval($_SESSION['centerid']));
+                          WHERE  (Deleted =0)');
         return $this->db->resultset();
     }
     
