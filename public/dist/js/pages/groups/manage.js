@@ -51,6 +51,6 @@ form.addEventListener('submit', function (e) {
     displayAlert(alertBox, 'Add Students');
     return false;
   } else {
-    document.form.submit();
+    document.studentsform.submit();
   }
 });
