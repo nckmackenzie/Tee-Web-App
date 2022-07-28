@@ -62,7 +62,7 @@
                                             <?php foreach($data['groupmembers'] as $member) : ?>
                                                 <tr>
                                                     <td class="d-none"><input type="text" name="studentsid[]" value="<?php echo $member['sid'];?>"></td>
-                                                    <td><input type="text" class="table-input" name="studentsname[]" value="<?php echo $table['StudentName'];?>" readonly></td>
+                                                    <td><input type="text" class="table-input" name="studentsname[]" value="<?php echo $member['studentname'];?>" readonly></td>
                                                     <td><button type="button" class="action-icon btn btn-sm text-danger fs-5 btndel">Remove</button></td>
                                                 </tr>
                                             <?php endforeach;?>
@@ -73,7 +73,6 @@
                         </div>
                         <div class="d-grid d-md-block">
                             <input type="hidden" name="id" value="<?php echo $data['id'];?>">
-                            <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
                             <input type="hidden" name="group" value="<?php echo $data['group'];?>">
                             <button type="submit" class="btn btn-sm btn-primary">Save</button>
                         </div>
