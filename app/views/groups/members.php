@@ -37,7 +37,8 @@
                                     <td><?php echo $group->MemberCount;?></td>
                                     <td>
                                         <a href="<?php echo URLROOT;?>/groups/manage/<?php echo $group->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-account-cog-outline"></i></a>
-                                        <button class="action-icon btn text-danger btndel"
+                                        <button class="action-icon btn text-danger btndel 
+                                                <?php echo intval($group->MemberCount) === 0 ? 'd-none' : '';?>"
                                                 data-id="<?php echo $group->ID;?>" 
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#centermodal"
