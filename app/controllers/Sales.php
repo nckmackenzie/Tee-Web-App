@@ -86,7 +86,7 @@ class Sales extends Controller
             }
 
             $studentsorgroups = $this->fetchstudentorgroup($saletype);
-            $output = '';
+            $output = '<option value="">Select '.ucwords($saletype).'</option>';
             foreach($studentsorgroups as $studentorgroup){
                 $output .= '<option value="'.$studentorgroup->ID.'">'.$studentorgroup->CriteriaName.'</option>';
             }
