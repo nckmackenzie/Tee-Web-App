@@ -55,9 +55,9 @@
                                     <label for="studentorgroup" class="">Student/Group</label>
                                     <select name="studentorgroup" id="studentorgroup" 
                                             class="form-select form-select-sm mandatory 
-                                            <?php echo inputvalidation($data['studentgroup'],$data['studentgroup_err'],$data['touched']);?>">
+                                            <?php echo inputvalidation($data['studentorgroup'],$data['studentgroup_err'],$data['touched']);?>">
                                         <option value="" selected disabled>Select student or group</option>
-                                        <?php if($data['touched']) : ?>
+                                        <?php if($data['touched'] && !empty($data['type'])) : ?>
                                             <?php foreach($data['studentsorgroups'] as $studentorgroup) : ?>
                                                 <option value="<?php echo $studentorgroup->ID;?>" <?php selectdCheck($data['studentorgroup'],$studentorgroup->ID);?>><?php echo $studentorgroup->CriteriaName;?></option>
                                             <?php endforeach; ?>
