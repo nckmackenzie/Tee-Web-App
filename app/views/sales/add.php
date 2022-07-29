@@ -36,21 +36,26 @@
                                            class="form-control form-control-sm 
                                            <?php echo inputvalidation($data['sdate'],$data['sdate_err'],$data['touched']);?>" 
                                            value="<?php echo $data['sdate'];?>" >
-                                    <span class="invalid-feedback"><?php echo $data['sdate'];?></span>
+                                    <span class="invalid-feedback"><?php echo $data['sdate_err'];?></span>
                                 <!-- </div> -->
                             </div>
                             <div class="col-md-3">
                                 <label for="saletype">Sale Type</label>
-                                <select name="saletype" id="saletype" class="form-select form-select-sm mandatory">
+                                <select name="saletype" id="saletype" 
+                                        class="form-select form-select-sm mandatory 
+                                        <?php echo inputvalidation($data['type'],$data['type_err'],$data['touched']);?>">
                                     <option value="" selected disabled>Sale to student or group</option>
                                     <option value="student" <?php selectdCheck($data['studentorgroup'],'student');?>>Student</option>
                                     <option value="group" <?php selectdCheck($data['studentorgroup'],'group');?>>Group</option>
                                 </select>
+                                <span class="invalid-feedback"><?php echo $data['type_err'];?></span>
                             </div>
                             <div class="col-md-4">
                                 <!-- <div class="mb-3"> -->
                                     <label for="studentorgroup" class="">Student/Group</label>
-                                    <select name="studentorgroup" id="studentorgroup" class="form-select form-select-sm">
+                                    <select name="studentorgroup" id="studentorgroup" 
+                                            class="form-select form-select-sm mandatory 
+                                            <?php echo inputvalidation($data['studentgroup'],$data['studentgroup_err'],$data['touched']);?>">
                                         <option value="" selected disabled>Select student or group</option>
                                         <?php if(isset($data['type'])) : ?>
                                             <?php foreach($data['studentsorgroups'] as $studentorgroup) : ?>
@@ -58,7 +63,7 @@
                                             <?php endforeach; ?>
                                         <?php endif; ?>
                                     </select>
-                                    <span class="invalid-feedback"><?php echo $data['sdate'];?></span>
+                                    <span class="invalid-feedback"><?php echo $data['studentgroup_err'];?></span>
                                 <!-- </div> -->
                             </div>
                         </div><!-- /.row -->
