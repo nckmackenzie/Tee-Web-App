@@ -131,6 +131,7 @@
                                             <label for="discount" class="form-label">Discount</label>
                                             <div class="input-group">
                                                 <input type="number" class="form-control form-control-sm" 
+                                                       id="discount" name="discount"
                                                        placeholder="eg 10 for 10%"
                                                        value="<?php echo $data['discount'];?>" 
                                                        aria-label="Discount" aria-describedby="basic-addon2">
@@ -141,14 +142,14 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label for="net" class="form-label">Net Amount</label>
-                                            <input type="text" name="net" class="form-control form-control-sm" 
+                                            <input type="text" name="net" id="net" class="form-control form-control-sm" 
                                                        value="<?php echo $data['net'];?>" readonly> 
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="paid" class="form-label">Amount Paid</label>
-                                            <input type="number" name="paid" class="form-control form-control-sm 
+                                            <input type="number" name="paid" id="paid" class="form-control form-control-sm 
                                                        <?php echo inputvalidation($data['paid'],$data['paid_err'],$data['touched']);?>" 
                                                        value="<?php echo $data['paid'];?>" > 
                                             <span class="invalid-feedback"><?php echo $data['paid_err'];?></span>
