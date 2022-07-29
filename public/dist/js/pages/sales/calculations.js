@@ -2,6 +2,10 @@ export const qtyInput = document.getElementById('qty');
 export const valueInput = document.getElementById('value');
 export const rateInput = document.getElementById('rate');
 const subtotalInput = document.getElementById('subtotal');
+export const discountInput = document.getElementById('discount');
+const netInput = document.getElementById('net');
+export const paidInput = document.getElementById('paid');
+const balanceInput = document.getElementById('balance');
 
 //calculate total value
 export function calculateTotalValue() {
@@ -19,4 +23,14 @@ export function updateSubTotal(table) {
   }
 
   subtotalInput.value = sumVal;
+}
+
+export function summaryCalculations() {
+  const subTotal = +subtotalInput.value || 0;
+  const discount = +discountInput.value || 0;
+  const netAmount = subTotal - subTotal * (discount / 100);
+  const amountPaid = +paidInput.value || 0;
+  const balance = netAmount - amountPaid;
+  netInput.value = netAmount || 0;
+  balanceInput.value = balance || 0;
 }
