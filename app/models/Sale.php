@@ -15,11 +15,18 @@ class Sale
         return $this->db->resultset();
     }
 
-    public function GetStudents()
+    public function GetStudentsOrGroups($type)
     {
-        $this->db->query('SELECT ID,UCASE(StudentName) AS StudentName 
-                          FROM   students 
-                          WHERE  (Deleted =0)');
+        if($type === 'student'){
+            $this->db->query('SELECT ID,UCASE(StudentName) AS CriteriaName 
+                              FROM   students 
+                              WHERE  (Deleted =0) AND (StatusId = 1)');
+        }elseif ($type === 'group') {
+            $this->db->query('SELECT ID,UCASE(GroupName) AS CriteriaName 
+                              FROM   groups 
+                              WHERE  (Deleted =0) AND (Active = 1)');
+        }
+        
         return $this->db->resultset();
     }
     
