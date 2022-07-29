@@ -5,6 +5,9 @@ import {
   valueInput,
   calculateTotalValue,
   updateSubTotal,
+  summaryCalculations,
+  discountInput,
+  paidInput,
 } from './calculations.js';
 
 const table = document.getElementById('addsale');
@@ -68,6 +71,7 @@ addBtn.addEventListener('click', () => {
       cols[4].children[0].value =
         parseFloat(cols[4].children[0].value) + parseFloat(valueInput.value);
       resetAndGetTotal();
+      summaryCalculations();
       return;
     }
   }
@@ -97,6 +101,7 @@ addBtn.addEventListener('click', () => {
   let newRow = body.insertRow(body.rows.length);
   newRow.innerHTML = html;
   resetAndGetTotal();
+  summaryCalculations();
 });
 
 //remove row
@@ -105,4 +110,8 @@ table.addEventListener('click', function (e) {
   const btn = e.target;
   btn.closest('tr').remove();
   updateSubTotal(table);
+  summaryCalculations();
 });
+
+discountInput.addEventListener('change', summaryCalculations);
+paidInput.addEventListener('change', summaryCalculations);
