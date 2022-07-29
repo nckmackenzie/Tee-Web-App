@@ -1,22 +1,18 @@
 import { HOST_URL, displayAlert, getSelectedText } from '../utils.js';
+import {
+  qtyInput,
+  rateInput,
+  valueInput,
+  calculateTotalValue,
+  updateSubTotal,
+} from './calculations.js';
+
 const table = document.getElementById('addsale');
 const addBtn = document.querySelector('.btnadd');
 const bookSelect = document.getElementById('book');
-const rateInput = document.getElementById('rate');
 const stockInput = document.getElementById('stock');
 const selectedDate = document.getElementById('sdate');
-const qtyInput = document.getElementById('qty');
-const valueInput = document.getElementById('value');
 const alertBox = document.getElementById('message');
-const subtotalInput = document.getElementById('subtotal');
-
-//calculate total value
-function calculateTotalValue() {
-  const qty = qtyInput.value;
-  const rate = rateInput.value;
-  if (!qty || !rate) return;
-  valueInput.value = +qty * +rate;
-}
 
 function resetAndGetTotal() {
   bookSelect.value = '';
@@ -24,17 +20,17 @@ function resetAndGetTotal() {
   value.value = '';
   rateInput.value = '';
   stockInput.value = '';
-  updateSubTotal();
+  updateSubTotal(table);
 }
 
-function updateSubTotal() {
-  let sumVal = 0;
-  for (var i = 1; i < table.rows.length; i++) {
-    sumVal = sumVal + parseFloat(table.rows[i].cells[4].children[0].value);
-  }
+// function updateSubTotal() {
+//   let sumVal = 0;
+//   for (var i = 1; i < table.rows.length; i++) {
+//     sumVal = sumVal + parseFloat(table.rows[i].cells[4].children[0].value);
+//   }
 
-  subtotalInput.value = sumVal;
-}
+//   subtotalInput.value = sumVal;
+// }
 
 qtyInput.addEventListener('change', calculateTotalValue);
 
@@ -108,5 +104,5 @@ table.addEventListener('click', function (e) {
   if (!e.target.classList.contains('btndel')) return;
   const btn = e.target;
   btn.closest('tr').remove();
-  updateSubTotal();
+  updateSubTotal(table);
 });
