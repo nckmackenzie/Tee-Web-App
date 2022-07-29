@@ -49,8 +49,8 @@
                             </div>
                             <div class="col-md-4">
                                 <!-- <div class="mb-3"> -->
-                                    <label for="student" class="">Student/Group</label>
-                                    <select name="student" id="student" class="form-select form-select-sm">
+                                    <label for="studentorgroup" class="">Student/Group</label>
+                                    <select name="studentorgroup" id="studentorgroup" class="form-select form-select-sm">
                                         <option value="" selected disabled>Select student or group</option>
                                        
                                     </select>
