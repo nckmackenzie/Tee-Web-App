@@ -45,8 +45,8 @@
                                         class="form-select form-select-sm mandatory 
                                         <?php echo inputvalidation($data['type'],$data['type_err'],$data['touched']);?>">
                                     <option value="" selected disabled>Sale to student or group</option>
-                                    <option value="student" <?php selectdCheck($data['studentorgroup'],'student');?>>Student</option>
-                                    <option value="group" <?php selectdCheck($data['studentorgroup'],'group');?>>Group</option>
+                                    <option value="student" <?php selectdCheck($data['type'],'student');?>>Student</option>
+                                    <option value="group" <?php selectdCheck($data['type'],'group');?>>Group</option>
                                 </select>
                                 <span class="invalid-feedback"><?php echo $data['type_err'];?></span>
                             </div>
