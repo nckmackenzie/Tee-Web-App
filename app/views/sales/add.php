@@ -40,11 +40,11 @@
                                 <!-- </div> -->
                             </div>
                             <div class="col-md-3">
-                                <label for="type">Sale Type</label>
+                                <label for="saletype">Sale Type</label>
                                 <select name="saletype" id="saletype" class="form-select form-select-sm mandatory">
                                     <option value="">Select Student Or Group</option>
-                                    <option value="1">Student</option>
-                                    <option value="2">Group</option>
+                                    <option value="student">Student</option>
+                                    <option value="group">Group</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
@@ -177,4 +177,5 @@
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>  
 <script type="module" src="<?php echo URLROOT;?>/dist/js/pages/sales/add-sale.js"></script>                  
+<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/sales/studentGroupHandler.js"></script>                  
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
