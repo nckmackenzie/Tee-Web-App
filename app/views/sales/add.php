@@ -42,9 +42,9 @@
                             <div class="col-md-3">
                                 <label for="saletype">Sale Type</label>
                                 <select name="saletype" id="saletype" class="form-select form-select-sm mandatory">
-                                    <option value="">Sale to student or group</option>
-                                    <option value="student">Student</option>
-                                    <option value="group">Group</option>
+                                    <option value="" selected disabled>Sale to student or group</option>
+                                    <option value="student" <?php selectdCheck($data['studentorgroup'],'student');?>>Student</option>
+                                    <option value="group" <?php selectdCheck($data['studentorgroup'],'group');?>>Group</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
@@ -52,7 +52,11 @@
                                     <label for="studentorgroup" class="">Student/Group</label>
                                     <select name="studentorgroup" id="studentorgroup" class="form-select form-select-sm">
                                         <option value="" selected disabled>Select student or group</option>
-                                       
+                                        <?php if(isset($data['type'])) : ?>
+                                            <?php foreach($data['studentsorgroups'] as $studentorgroup) : ?>
+                                                <option value="<?php echo $studentorgroup->ID;?>" <?php selectdCheck($data['studentorgroup'],$studentorgroup->ID);?>><?php echo $studentorgroup->CriteriaName;?></option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
                                     </select>
                                     <span class="invalid-feedback"><?php echo $data['sdate'];?></span>
                                 <!-- </div> -->
