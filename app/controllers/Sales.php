@@ -24,12 +24,12 @@ class Sales extends Controller
 
     public function add()
     {
-        $students = $this->salemodel->GetStudents();
+        // $students = $this->salemodel->GetStudents();
         $salesid = $this->salemodel->GetSaleId();
         $books = $this->salemodel->GetBooks();
         $data = [
             'title' => 'Add sales',
-            'students' =>  $students,
+            // 'students' =>  $students,
             'salesid' => $salesid,
             'books' =>  $books,
             'touched' => false,
@@ -63,6 +63,35 @@ class Sales extends Controller
             $rate_stock = $this->salemodel->GetStockAndRate($date,$bookid);
             $result = ['rate' => $rate_stock->Rate,'stock' => $rate_stock->Stock];
             echo json_encode($result);
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
+
+    function fetchstudentorgroup($type){
+        $studentsorgroups = $this->salemodel->GetStudentsOrGroups($type);
+        return $studentsorgroups;
+    }
+
+    public function getstudentorgroup()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $saletype = trim($_GET['type']);
+            //validate
+            if(empty($saletype) || !isset($saletype)){
+                flash('sale_msg',null,'Invalid request',flashclass('alert', 'danger'));
+                redirect('sales');
+                exit();
+            }
+
+            $studentsorgroups = $this->fetchstudentorgroup($saletype);
+            $output = '';
+            foreach($studentsorgroups as $studentorgroup){
+                $output .= '<option value="'.$studentorgroup->ID.'">'.$studentorgroup->CriteriaName.'</option>';
+            }
+
+            echo json_encode($output);
         }else{
             redirect('auth/forbidden');
             exit();
