@@ -42,7 +42,7 @@
                             <div class="col-md-3">
                                 <label for="saletype">Sale Type</label>
                                 <select name="saletype" id="saletype" class="form-select form-select-sm mandatory">
-                                    <option value="">Select Student Or Group</option>
+                                    <option value="">Sale to student or group</option>
                                     <option value="student">Student</option>
                                     <option value="group">Group</option>
                                 </select>
