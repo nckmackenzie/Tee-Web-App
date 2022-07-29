@@ -107,7 +107,7 @@
                                         <thead class="table-light">
                                             <tr>
                                                 <th class="d-none">BookId</th>
-                                                <th width="30%">Book</th>
+                                                <th width="40%">Book</th>
                                                 <th>Rate</th>
                                                 <th>Qty</th>
                                                 <th>Value</th>
