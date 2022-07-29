@@ -21,7 +21,7 @@
                 <div class="card">
                     <div class="card-body">        
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <!-- <div class="mb-3"> -->
                                     <label for="saleid" class="">Sale ID</label>
                                     <input type="text" name="saleid" id="saleid" 
@@ -29,7 +29,7 @@
                                            value="<?php echo $data['salesid'];?>" readonly>
                                 <!-- </div> -->
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <!-- <div class="mb-3"> -->
                                     <label for="sdate" class="">Sale Date</label>
                                     <input type="date" name="sdate" id="sdate" 
@@ -39,15 +39,20 @@
                                     <span class="invalid-feedback"><?php echo $data['sdate'];?></span>
                                 <!-- </div> -->
                             </div>
+                            <div class="col-md-3">
+                                <label for="type">Sale Type</label>
+                                <select name="saletype" id="saletype" class="form-select form-select-sm mandatory">
+                                    <option value="">Select Student Or Group</option>
+                                    <option value="1">Student</option>
+                                    <option value="2">Group</option>
+                                </select>
+                            </div>
                             <div class="col-md-4">
                                 <!-- <div class="mb-3"> -->
-                                    <label for="student" class="">Student</label>
-                                    <select name="student" id="student" class="form-select form-select-sm 
-                                            <?php echo inputvalidation($data['student'],$data['student_err'],$data['touched']);?>">
-                                        <option value="" selected disabled>Select student</option>
-                                        <?php foreach($data['students'] as $student) : ?>
-                                            <option value="<?php echo $student->ID;?>" <?php selectdCheck($data['student'],$student->ID);?>><?php echo $student->StudentName;?></option>
-                                        <?php endforeach;?>
+                                    <label for="student" class="">Student/Group</label>
+                                    <select name="student" id="student" class="form-select form-select-sm">
+                                        <option value="" selected disabled>Select student or group</option>
+                                       
                                     </select>
                                     <span class="invalid-feedback"><?php echo $data['sdate'];?></span>
                                 <!-- </div> -->
