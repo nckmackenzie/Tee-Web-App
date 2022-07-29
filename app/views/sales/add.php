@@ -167,7 +167,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="balance" class="form-label">Balance</label>
-                                            <input type="text" name="balance" class="form-control form-control-sm" 
+                                            <input type="text" name="balance" id="balance" class="form-control form-control-sm" 
                                                        value="<?php echo $data['balance'];?>" readonly> 
                                         </div>
                                     </div>                
