@@ -83,7 +83,7 @@ addBtn.addEventListener('click', () => {
         <td class="d-none"><input type="text" name="booksid[]" value="${
           bookSelect.value
         }" readonly></td>
-        <td><input type="text" class="table-input" name="booksname[]" value="${getSelectedText(
+        <td><input type="text" class="table-input w-100" name="booksname[]" value="${getSelectedText(
           bookSelect
         )}" readonly></td>
         <td><input type="text" class="table-input" name="rates[]" value="${
