@@ -22,36 +22,38 @@
                     <div class="card-body">        
                         <div class="row">
                             <div class="col-md-2">
-                                <!-- <div class="mb-3"> -->
+                                <div class="mb-3">
                                     <label for="saleid" class="">Sale ID</label>
                                     <input type="text" name="saleid" id="saleid" 
                                            class="form-control form-control-sm" 
                                            value="<?php echo $data['salesid'];?>" readonly>
-                                <!-- </div> -->
+                                </div>
                             </div>
                             <div class="col-md-3">
-                                <!-- <div class="mb-3"> -->
+                                <div class="mb-3">
                                     <label for="sdate" class="">Sale Date</label>
                                     <input type="date" name="sdate" id="sdate" 
                                            class="form-control form-control-sm 
                                            <?php echo inputvalidation($data['sdate'],$data['sdate_err'],$data['touched']);?>" 
                                            value="<?php echo $data['sdate'];?>" >
                                     <span class="invalid-feedback"><?php echo $data['sdate_err'];?></span>
-                                <!-- </div> -->
+                                </div>
                             </div>
                             <div class="col-md-3">
-                                <label for="saletype">Sale Type</label>
-                                <select name="saletype" id="saletype" 
-                                        class="form-select form-select-sm mandatory 
-                                        <?php echo inputvalidation($data['type'],$data['type_err'],$data['touched']);?>">
-                                    <option value="" selected disabled>Sale to student or group</option>
-                                    <option value="student" <?php selectdCheck($data['type'],'student');?>>Student</option>
-                                    <option value="group" <?php selectdCheck($data['type'],'group');?>>Group</option>
-                                </select>
-                                <span class="invalid-feedback"><?php echo $data['type_err'];?></span>
+                                <div class="mb-3">
+                                    <label for="saletype">Sale Type</label>
+                                    <select name="saletype" id="saletype" 
+                                            class="form-select form-select-sm mandatory 
+                                            <?php echo inputvalidation($data['type'],$data['type_err'],$data['touched']);?>">
+                                        <option value="" selected disabled>Sale to student or group</option>
+                                        <option value="student" <?php selectdCheck($data['type'],'student');?>>Student</option>
+                                        <option value="group" <?php selectdCheck($data['type'],'group');?>>Group</option>
+                                    </select>
+                                    <span class="invalid-feedback"><?php echo $data['type_err'];?></span>
+                                </div>
                             </div>
                             <div class="col-md-4">
-                                <!-- <div class="mb-3"> -->
+                                <div class="mb-3">
                                     <label for="studentorgroup" class="">Student/Group</label>
                                     <select name="studentorgroup" id="studentorgroup" 
                                             class="form-select form-select-sm mandatory 
@@ -64,9 +66,31 @@
                                         <?php endif; ?>
                                     </select>
                                     <span class="invalid-feedback"><?php echo $data['studentgroup_err'];?></span>
-                                <!-- </div> -->
+                                </div>
                             </div>
                         </div><!-- /.row -->
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label for="paymethod">Pay method</label>
+                                <select name="paymethod" id="paymethod" class="form-select form-select-sm mandatory 
+                                        <?php echo inputvalidation($data['paymethod'],$data['paymethod_err'],$data['touched']);?>">
+                                    <option value="" selected disabled>Select payment method</option>
+                                    <option value="1" <?php selectdCheck($data['paymethod'],1);?>>Cash</option>            
+                                    <option value="2" <?php selectdCheck($data['paymethod'],2);?>>M-Pesa</option>            
+                                    <option value="3" <?php selectdCheck($data['paymethod'],3);?>>Bank</option>            
+                                </select>
+                                <span class="invalid-feedback"><?php echo $data['paymethod_err'];?></span>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="reference">Reference</label>
+                                <input type="text" name="reference" id="reference" 
+                                       class="form-control form-control-sm mandatory 
+                                       <?php echo inputvalidation($data['reference'],$data['reference_err'],$data['touched']);?>"
+                                       value="<?php echo $data['reference'];?>"
+                                       placeholder="eg MPESA Ref or Cheque No...">
+                                <span class="invalid-feedback"><?php echo $data['reference_err'];?></span>
+                            </div>
+                        </div>
                     </div><!-- /.card-body -->
                 </div><!-- /.card -->
                 <div class="card">
