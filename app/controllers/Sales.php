@@ -163,6 +163,14 @@ class Sales extends Controller
                 $data['studentgroup_err'] = 'Select student or group';
             }
 
+            if(empty($data['paymethod'])){
+                $data['paymethod_err'] = 'Select payment method';
+            }
+
+            if(empty($data['reference'])){
+                $data['reference_err'] = 'Enter payment reference';
+            }
+
             if(empty($data['paid'])){
                 $data['paid_err'] = 'Enter amount paid';
             }
@@ -172,7 +180,7 @@ class Sales extends Controller
             }
 
             if(!empty($data['sdate_err']) || !empty($data['type_err']) || !empty($data['paid_err']) 
-               || !empty($data['studentgroup_err'])){
+               || !empty($data['studentgroup_err']) || !empty($data['paymethod_err']) || !empty($data['reference_err'])){
                 $this->view('sales/add',$data);
                 exit();
             }
