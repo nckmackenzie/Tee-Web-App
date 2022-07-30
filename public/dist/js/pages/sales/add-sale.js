@@ -16,6 +16,7 @@ const bookSelect = document.getElementById('book');
 const stockInput = document.getElementById('stock');
 const selectedDate = document.getElementById('sdate');
 const alertBox = document.getElementById('message');
+const form = document.querySelector('form');
 
 function resetAndGetTotal() {
   bookSelect.value = '';
@@ -25,15 +26,6 @@ function resetAndGetTotal() {
   stockInput.value = '';
   updateSubTotal(table);
 }
-
-// function updateSubTotal() {
-//   let sumVal = 0;
-//   for (var i = 1; i < table.rows.length; i++) {
-//     sumVal = sumVal + parseFloat(table.rows[i].cells[4].children[0].value);
-//   }
-
-//   subtotalInput.value = sumVal;
-// }
 
 qtyInput.addEventListener('change', calculateTotalValue);
 
@@ -115,3 +107,17 @@ table.addEventListener('click', function (e) {
 
 discountInput.addEventListener('change', summaryCalculations);
 paidInput.addEventListener('change', summaryCalculations);
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const body = document
+    .getElementById('addsale')
+    .getElementsByTagName('tbody')[0];
+
+  if (Number(body.rows.length) === 0) {
+    displayAlert(alertBox, 'Add Items');
+    return false;
+  } else {
+    document.salesform.submit();
+  }
+});
