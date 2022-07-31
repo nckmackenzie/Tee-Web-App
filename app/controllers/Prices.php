@@ -29,11 +29,13 @@ class Prices extends Controller
             'bookid' => '',
             'startdate' => '',
             'enddate' => '',
+            'bprice' => '',
             'price' => '',
             'bookid_err' => '',
             'startdate_err' => '',
             'enddate_err' => '',
             'price_err' => '',
+            'bprice_err' => '',
         ];
         $this->view('prices/add',$data);
     }
@@ -53,10 +55,12 @@ class Prices extends Controller
                 'startdate' => !empty($_POST['startdate']) ? date("Y-m-d", strtotime($_POST['startdate'])) : '',
                 'enddate' => !empty($_POST['enddate']) ? date("Y-m-d", strtotime($_POST['enddate'])) : '',
                 'price' => trim($_POST['price']),
+                'bprice' => trim($_POST['bprice']),
                 'bookid_err' => '',
                 'startdate_err' => '',
                 'enddate_err' => '',
                 'price_err' => '',
+                'bprice_err' => '',
             ];
 
             //validation
@@ -122,11 +126,13 @@ class Prices extends Controller
             'bookid' => (int)$price->BookId,
             'startdate' => $price->StartDate,
             'enddate' => $price->EndDate,
-            'price' => $price->Price,
+            'price' => $price->SellingPrice,
+            'bprice' => $price->BuyingPrice,
             'bookid_err' => '',
             'startdate_err' => '',
             'enddate_err' => '',
             'price_err' => '',
+            'bprice_err' => '',
         ];
         $this->view('prices/add',$data);
     }
