@@ -21,7 +21,7 @@
                 <div class="card-body">
                     <form action="<?php echo URLROOT;?>/prices/createupdate" method="post">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="bookid" class="form-label">Book</label>
                                     <select name="bookid" id="bookid" 
@@ -37,7 +37,17 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="price" class="form-label">Price</label>
+                                    <label for="bprice" class="form-label">Buying Price</label>
+                                    <input type="number" name="bprice" id="bprice" 
+                                           class="form-control form-control-sm mandatory 
+                                           <?php echo inputvalidation($data['bprice'],$data['bprice_err'],$data['touched']);?>"
+                                           value="<?php echo $data['bprice']; ?>" placeholder="eg 600" required>
+                                    <span class="invalid-feedback"><?php echo $data['bprice_err'];?></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">Selling Price</label>
                                     <input type="number" name="price" id="price" 
                                            class="form-control form-control-sm mandatory 
                                            <?php echo inputvalidation($data['price'],$data['price_err'],$data['touched']);?>"
