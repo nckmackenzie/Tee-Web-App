@@ -64,4 +64,80 @@ class Sale
         $this->db->bind(':bid',$id);
         return $this->db->single();
     }
+
+    function GetItemBuyingPrice($date,$item){
+        $this->db->query('SELECT fn_getbuyingprice(:tdate,:bid)');
+        $this->db->bind(':tdate',date('Y-m-d',strtotime($date)));
+        $this->db->bind(':bid',intval($item));
+        return floatval($this->db->getvalue());
+    }
+
+    function GetBuyerName($type,$id){
+        $this->db->query('SELECT '.ucwords($type).'Name FROM '.$type.'s WHERE ID = :id');
+        $this->db->bind(':id',intval($id));
+        return ucwords($this->db->getvalue());
+    }   
+
+    function Save($data){
+        $desc = 'Sale of '.count($data['booksid']) . ' books to '.$this->GetBuyerName($data['type'],$data['studentorgroup']);
+        try {
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('INSERT INTO sales_header (SalesID,SalesDate,SaleType,GroupId,StudentId,SubTotal,
+                                          Discount,NetAmount,AmountPaid,Balance,CenterId) 
+                              VALUES(:saleid,:sdate,:stype,:gid,:student,:stotal,:discount,:net,:paid,:bal,:cid)');
+            $this->db->bind(':saleid',intval($data['saleid']));
+            $this->db->bind(':sdate',$data['sdate']);
+            $this->db->bind(':stype',$data['type']);
+            $this->db->bind(':gid',$data['type'] === 'group' ? $data['studentorgroup'] : null);
+            $this->db->bind(':student',$data['type'] === 'student' ? $data['studentorgroup'] : null);
+            $this->db->bind(':stotal',$data['subtotal']);
+            $this->db->bind(':discount',!empty($data['discount']) ? $data['discount'] : 0);
+            $this->db->bind(':net',!empty($data['net']) ? $data['net'] : 0);
+            $this->db->bind(':paid',!empty($data['paid']) ? $data['paid'] : 0);
+            $this->db->bind(':bal',!empty($data['balance']) ? $data['balance'] : 0);
+            $this->db->bind(':cid',$_SESSION['centerid']);
+            $this->db->execute();
+
+            $tid = $this->db->dbh->lastInsertId();
+
+            for ($i=0; $i < count($data['booksid']); $i++) { 
+                $this->db->query('INSERT INTO sales_details (HeaderId,BookId,Qty,BoughtValue,SellingValue)
+                                  VALUES(:hid,:bid,:qty,:bp.:sp)');
+                $this->db->bind(':hid',$tid);
+                $this->db->bind(':bid',$data['booksid'][$i]);
+                $this->db->bind(':qty',$data['qtys'][$i]);
+                $this->db->bind(':bp',$data['qtys'][$i] * $this->GetItemBuyingPrice($data['sdate'],$data['booksid'][$i]));
+                $this->db->bind(':sp',$data['qtys'][$i] * $data['rates'][$i]);
+                $this->db->execute();
+            }
+
+            savetoledger($this->db->dbh,$data['sdate'],'supplies',0,$data['paid'],$desc,3,1,$tid,$_SESSION['centerid']);
+            if(intval($data['paymethod']) === 1){
+                savetoledger($this->db->dbh,$data['sdate'],'cash at hand',$data['paid'],0,$desc,3,1,$tid,$_SESSION['centerid']);
+            }else{
+                savetoledger($this->db->dbh,$data['sdate'],'cash at bank',$data['paid'],0,$desc,3,1,$tid,$_SESSION['centerid']);
+            }
+
+            if(!$this->db->dbh->commit()){
+                return  false;
+            }else{
+                return true;
+            }
+
+        } catch (\Exception $e) {
+            if ($this->db->dbh->inTransaction()) {
+                $this->db->dbh->rollBack();
+            }
+            throw $e;
+            return false;
+        }
+    }
+
+    public function CreateUpdate($data)
+    {
+        if(!$data['isedit']){
+            return $this->Save($data);
+        }
+    }
 }
