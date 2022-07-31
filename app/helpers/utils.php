@@ -150,3 +150,12 @@ function validateemail($email){
         return true;
     }
 }
+
+//save to ledger
+function savetoledger($con,$date,$account,$debit,$credit,$narration,$accountId,$type,$tid,$center){
+    $sql = "INSERT INTO ledger (TransactionDate,Account,Debit,Credit,Narration,AccountId,
+                                TransactionType,TransactionId,CenterId) 
+            VALUES(?,?,?,?,?,?,?,?,?)";
+    $stmt = $con->prepare($sql);
+    $stmt->execute([$date,$account,$debit,$credit,$narration,$accountId,$type,$tid,$center]);
+}
