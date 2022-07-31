@@ -28,7 +28,7 @@ class Sales extends Controller
         $books = $this->salemodel->GetBooks();
         $data = [
             'title' => 'Add sale',
-            'salesid' => $salesid,
+            'saleid' => $salesid,
             'books' =>  $books,
             'touched' => false,
             'isedit' => false,
