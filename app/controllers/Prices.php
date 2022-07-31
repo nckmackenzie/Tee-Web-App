@@ -76,7 +76,7 @@ class Prices extends Controller
                 $data['price_err'] = 'Book selling price is required';
             }
 
-            if(!empty($data['price']) && !empty($data['bprice']) && floatval($data['price']) > floatval($data['bprice'])){
+            if(!empty($data['price']) && !empty($data['bprice']) && floatval($data['bprice']) > floatval($data['price'])){
                 $data['bprice_err'] = 'Selling price more than buying price';
             }
 
@@ -100,7 +100,7 @@ class Prices extends Controller
 
             //errors found in validation
             if(!empty($data['bookid_err']) || !empty($data['price_err']) || !empty($data['startdate_err']) 
-               || !empty($data['enddate_err'])){
+               || !empty($data['enddate_err']) || !empty($data['bprice_err'])){
                 $this->view('prices/add',$data);
                 exit();
             }
