@@ -26,7 +26,7 @@
                                     <label for="saleid" class="">Sale ID</label>
                                     <input type="text" name="saleid" id="saleid" 
                                            class="form-control form-control-sm" 
-                                           value="<?php echo $data['salesid'];?>" readonly>
+                                           value="<?php echo $data['saleid'];?>" readonly>
                                 </div>
                             </div>
                             <div class="col-md-3">
