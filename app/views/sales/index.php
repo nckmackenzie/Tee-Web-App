@@ -39,9 +39,10 @@
                         <tbody>
                             <?php foreach($data['sales'] as $sale) : ?>
                                 <tr>
-                                    <td><?php echo $sale->ID;?></td>
+                                    <td class="d-none"><?php echo $sale->ID;?></td>
+                                    <td><?php echo $sale->SalesID;?></td>
                                     <td><?php echo $sale->SalesDate;?></td>
-                                    <td><?php echo $sale->StudentName;?></td>
+                                    <td><?php echo $sale->SoldTo;?></td>
                                     <td><?php echo $sale->NetAmount;?></td>
                                     <td>
                                         <a href="<?php echo URLROOT;?>/sales/edit/<?php echo $sale->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
