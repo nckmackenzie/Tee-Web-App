@@ -68,8 +68,16 @@ class Prices extends Controller
                 $data['bookid_err'] = 'Select book';
             }
 
+            if(empty($data['bprice'])){
+                $data['bprice_err'] = 'Book buying price is required';
+            }
+
             if(empty($data['price'])){
-                $data['price_err'] = 'Book price is required';
+                $data['price_err'] = 'Book selling price is required';
+            }
+
+            if(!empty($data['price']) && !empty($data['bprice']) && floatval($data['price']) > floatval($data['bprice'])){
+                $data['bprice_err'] = 'Selling price more than buying price';
             }
 
             if(empty($data['startdate'])){
