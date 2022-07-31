@@ -105,7 +105,7 @@ class Sales extends Controller
             $books = $this->salemodel->GetBooks();
             $data = [
                 'title' => converttobool(trim($_POST['isedit'])) ? 'Edit sale' : 'Add sale',
-                'salesid' => trim($_POST['saleid']),
+                'saleid' => trim($_POST['saleid']),
                 'books' =>  $books,
                 'touched' => true,
                 'isedit' => converttobool(trim($_POST['isedit'])),
@@ -185,7 +185,7 @@ class Sales extends Controller
                 exit();
             }
 
-            if($this->salemodel->CreateUpdate($data)){
+            if(!$this->salemodel->CreateUpdate($data)){
                 flash('sale_msg',null,'Unable to save! Retry or contact admin',flashclass('alert','danger'));
                 redirect('sales');
                 exit();
