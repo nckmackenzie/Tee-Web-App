@@ -30,7 +30,8 @@
                                 <tr>
                                     <th class="d-none">ID</th>
                                     <th>Title</th>
-                                    <th>Price</th>
+                                    <th>Buying Price</th>
+                                    <th>Selling Price</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
                                     <th>Actions</th>
@@ -41,7 +42,8 @@
                                     <tr>
                                         <td class="d-none"><?php echo $price->ID;?></td>
                                         <td><?php echo $price->Title;?></td>
-                                        <td><?php echo $price->Price;?></td>
+                                        <td><?php echo $price->BuyingPrice;?></td>
+                                        <td><?php echo $price->SellingPrice;?></td>
                                         <td><?php echo $price->StartDate;?></td>
                                         <td><?php echo $price->EndDate;?></td>
                                         <td>
