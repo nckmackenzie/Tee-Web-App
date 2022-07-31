@@ -38,12 +38,13 @@ class Price
     public function CreateUpdate($data)
     {
         if(!$data['isedit']){
-            $this->db->query('INSERT INTO prices (BookId,Price,StartDate,EndDate) VALUES(:bid,:price,:sdate,:edate)');
+            $this->db->query('INSERT INTO prices (BookId,BuyingPrice,SellingPrice,StartDate,EndDate) VALUES(:bid,:bprice,:price,:sdate,:edate)');
         }else{
-            $this->db->query('UPDATE prices SET BookId=:bid,Price=:price,StartDate=:sdate,EndDate=:edate WHERE (ID=:id)');
+            $this->db->query('UPDATE prices SET BookId=:bid,BuyingPrice=:bprice,SellingPrice=:price,StartDate=:sdate,EndDate=:edate WHERE (ID=:id)');
             $this->db->bind(':id',$data['id']);
         }
         $this->db->bind(':bid',$data['bookid']);
+        $this->db->bind(':bprice',$data['bprice']);
         $this->db->bind(':price',$data['price']);
         $this->db->bind(':sdate',$data['startdate']);
         $this->db->bind(':edate',$data['enddate']);
