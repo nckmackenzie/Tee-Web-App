@@ -66,8 +66,15 @@ class Sale
     }
 
     function GetItemBuyingPrice($date,$item){
-        $this->db->query('SELECT fn_getbuyingprice(:tdate,:bid)');
-        $this->db->bind(':tdate',date('Y-m-d',strtotime($date)));
+        $this->db->query('SELECT 
+                            IFNULL(BuyingPrice, 0) AS bp
+                          FROM
+                            prices
+                          WHERE
+                            (:tdate BETWEEN StartDate AND EndDate)
+                            AND (BookId = :bid)
+                            AND (Deleted = 0)');
+        $this->db->bind(':tdate',$date);
         $this->db->bind(':bid',intval($item));
         return floatval($this->db->getvalue());
     }
@@ -79,7 +86,7 @@ class Sale
     }   
 
     function Save($data){
-        $desc = 'Sale of '.count($data['booksid']) . ' books to '.$this->GetBuyerName($data['type'],$data['studentorgroup']);
+        $desc = 'Sale of '.count($data['booksid']) . ' book(s) to '.$this->GetBuyerName($data['type'],$data['studentorgroup']);
         try {
             $this->db->dbh->beginTransaction();
 
@@ -102,13 +109,14 @@ class Sale
             $tid = $this->db->dbh->lastInsertId();
 
             for ($i=0; $i < count($data['booksid']); $i++) { 
-                $this->db->query('INSERT INTO sales_details (HeaderId,BookId,Qty,BoughtValue,SellingValue)
-                                  VALUES(:hid,:bid,:qty,:bp.:sp)');
+                $bp = $this->GetItemBuyingPrice($data['sdate'],$data['booksid'][$i]);
+                $this->db->query('INSERT INTO sales_details (HeaderId,BookId,Qty,BoughtValue,SellingValue) 
+                              VALUES(:hid,:bid,:qty,:bought,:selling)');
                 $this->db->bind(':hid',$tid);
                 $this->db->bind(':bid',$data['booksid'][$i]);
                 $this->db->bind(':qty',$data['qtys'][$i]);
-                $this->db->bind(':bp',$data['qtys'][$i] * $this->GetItemBuyingPrice($data['sdate'],$data['booksid'][$i]));
-                $this->db->bind(':sp',$data['qtys'][$i] * $data['rates'][$i]);
+                $this->db->bind(':bought',$bp);
+                $this->db->bind(':selling',$data['rates'][$i]);
                 $this->db->execute();
             }
 
