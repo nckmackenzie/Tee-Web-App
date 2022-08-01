@@ -224,7 +224,8 @@ class Stock
                                  h.TransferDate,
                                  h.MtnNo,
                                  h.ToCenter,
-                                 fn_checktransferreceived(h.ID) AS Received
+                                 fn_checktransferreceived(h.ID) AS Received,
+                                 CenterId
                           FROM   transfersheader h
                           WHERE  h.ID = :id');
         $this->db->bind(':id',$id);
