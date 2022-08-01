@@ -148,4 +148,16 @@ class Sale
             return $this->Save($data);
         }
     }
+
+    public function GetSaleHeader($id)
+    {
+        $this->db->query('SELECT * FROM sales_header WHERE id = :id');
+        $this->db->bind(':id',intval($id));
+        return $this->db->single();
+    }
+
+    public function GetSaleDetails($id)
+    {
+       
+    }
 }
