@@ -158,6 +158,8 @@ class Sale
 
     public function GetSaleDetails($id)
     {
-       
+        $this->db->query('SELECT * FROM vw_salesdetails WHERE HeaderId = :id');
+        $this->db->bind(':id',intval($id));
+        return $this->db->resultset();
     }
 }
