@@ -59,7 +59,7 @@
                                             class="form-select form-select-sm mandatory 
                                             <?php echo inputvalidation($data['studentorgroup'],$data['studentgroup_err'],$data['touched']);?>">
                                         <option value="" selected disabled>Select student or group</option>
-                                        <?php if($data['touched'] && !empty($data['type'])) : ?>
+                                        <?php if(($data['touched'] && !empty($data['type'])) || $data['isedit']) : ?>
                                             <?php foreach($data['studentsorgroups'] as $studentorgroup) : ?>
                                                 <option value="<?php echo $studentorgroup->ID;?>" <?php selectdCheck($data['studentorgroup'],$studentorgroup->ID);?>><?php echo $studentorgroup->CriteriaName;?></option>
                                             <?php endforeach; ?>
