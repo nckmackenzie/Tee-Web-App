@@ -159,3 +159,11 @@ function savetoledger($con,$date,$account,$debit,$credit,$narration,$accountId,$
     $stmt = $con->prepare($sql);
     $stmt->execute([$date,$account,$debit,$credit,$narration,$accountId,$type,$tid,$center]);
 }
+
+//disable other center edit
+function checkcenter($center){
+    if(intval($_SESSION['centerid']) !== intval($center)){
+        redirect('auth/unauthorized');
+        exit();
+    }
+}
