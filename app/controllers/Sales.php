@@ -204,6 +204,7 @@ class Sales extends Controller
     public function edit($id)
     {
         $saleheader = $this->salemodel->GetSaleHeader($id);
+        checkcenter($saleheader->CenterId);
         $saledetails = $this->salemodel->GetSaleDetails($id);
         $studentsorgroups = $this->fetchstudentorgroup($saleheader->SaleType);
         $books = $this->salemodel->GetBooks();
