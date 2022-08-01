@@ -142,10 +142,75 @@ class Sale
         }
     }
 
+    function Update($data){
+        $desc = 'Sale of '.count($data['booksid']) . ' book(s) to '.$this->GetBuyerName($data['type'],$data['studentorgroup']);
+        try {
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('UPDATE sales_header SET SalesDate=:sdate,SaleType=:stype,GroupId=:gid,StudentId=:student
+                                                      ,SubTotal=:stotal,Discount=:discount,NetAmount=:net,
+                                                      AmountPaid=:paid,Balance=:bal
+                              WHERE (ID=:id)');
+            $this->db->bind(':sdate',$data['sdate']);
+            $this->db->bind(':stype',$data['type']);
+            $this->db->bind(':gid',$data['type'] === 'group' ? $data['studentorgroup'] : null);
+            $this->db->bind(':student',$data['type'] === 'student' ? $data['studentorgroup'] : null);
+            $this->db->bind(':stotal',$data['subtotal']);
+            $this->db->bind(':discount',!empty($data['discount']) ? $data['discount'] : 0);
+            $this->db->bind(':net',!empty($data['net']) ? $data['net'] : 0);
+            $this->db->bind(':paid',!empty($data['paid']) ? $data['paid'] : 0);
+            $this->db->bind(':bal',!empty($data['balance']) ? $data['balance'] : 0);
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
+            $this->db->query('DELETE FROM sales_details WHERE HeaderId = :id');
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
+            $this->db->query('DELETE FROM ledger WHERE TransactionType = 1 AND TransactionId = :id');
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
+            for ($i=0; $i < count($data['booksid']); $i++) { 
+                $bp = $this->GetItemBuyingPrice($data['sdate'],$data['booksid'][$i]);
+                $this->db->query('INSERT INTO sales_details (HeaderId,BookId,Qty,BoughtValue,SellingValue) 
+                              VALUES(:hid,:bid,:qty,:bought,:selling)');
+                $this->db->bind(':hid',$data['id']);
+                $this->db->bind(':bid',$data['booksid'][$i]);
+                $this->db->bind(':qty',$data['qtys'][$i]);
+                $this->db->bind(':bought',$bp);
+                $this->db->bind(':selling',$data['rates'][$i]);
+                $this->db->execute();
+            }
+
+            savetoledger($this->db->dbh,$data['sdate'],'supplies',0,$data['paid'],$desc,3,1,$data['id'],$_SESSION['centerid']);
+            if(intval($data['paymethod']) === 1){
+                savetoledger($this->db->dbh,$data['sdate'],'cash at hand',$data['paid'],0,$desc,3,1,$data['id'],$_SESSION['centerid']);
+            }else{
+                savetoledger($this->db->dbh,$data['sdate'],'cash at bank',$data['paid'],0,$desc,3,1,$data['id'],$_SESSION['centerid']);
+            }
+
+            if(!$this->db->dbh->commit()){
+                return  false;
+            }else{
+                return true;
+            }
+
+        } catch (\Exception $e) {
+            if ($this->db->dbh->inTransaction()) {
+                $this->db->dbh->rollBack();
+            }
+            throw $e;
+            return false;
+        }
+    }
+
     public function CreateUpdate($data)
     {
         if(!$data['isedit']){
             return $this->Save($data);
+        }else{
+            return $this->Update($data);
         }
     }
 
