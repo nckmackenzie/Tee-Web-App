@@ -200,4 +200,50 @@ class Sales extends Controller
             exit();
         }
     }
+
+    public function edit($id)
+    {
+        $saleheader = $this->salemodel->GetSaleHeader($id);
+        $saledetails = $this->salemodel->GetSaleDetails($id);
+        $studentsorgroups = $this->fetchstudentorgroup($saleheader->SaleType);
+        $books = $this->salemodel->GetBooks();
+        $data = [
+            'title' => 'Edit sale',
+            'studentsorgroups' => $studentsorgroups,
+            'saleid' => $saleheader->SalesID,
+            'books' =>  $books,
+            'touched' => false,
+            'isedit' => true,
+            'id' => $saleheader->ID,
+            'sdate' => $saleheader->SalesDate,
+            'type' => $saleheader->SaleType,
+            'studentorgroup' => $saleheader->SaleType === 'student' ? $saleheader->StudentId : $saleheader->GroupId,
+            'paymethod' => $saleheader->PaymentMethodId,
+            'reference' => strtoupper($saleheader->Reference),
+            'subtotal' => $saleheader->SubTotal,
+            'discount' => $saleheader->Discount,
+            'net' => $saleheader->NetAmount,
+            'paid' => $saleheader->AmountPaid,
+            'balance' => $saleheader->Balance,
+            'table' => [],
+            'sdate_err' => '',
+            'type_err' => '',
+            'studentgroup_err' => '',
+            'paid_err' => '',
+            'paymethod_err' => '',
+            'reference_err' => '',
+        ];
+
+        foreach($saledetails as $detail){
+            array_push($data['table'],[
+                'bid' => $detail->BookId,
+                'bookname' => $detail->BookName,
+                'rate' => $detail->Rate,
+                'qty' => $detail->Qty,
+                'values' => $detail->SellingValue,
+            ]);
+        }
+        $this->view('sales/add',$data);
+        exit();
+    }
 }
