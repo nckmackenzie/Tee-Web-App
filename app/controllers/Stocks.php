@@ -262,6 +262,7 @@ class Stocks extends Controller
         $books = $this->stockmodel->GetBooks();
         $centers = $this->stockmodel->GetCenters();
         $transfereheader = $this->stockmodel->GetTransfereHeader($id);
+        checkcenter($transfereheader->CenterId);
         $transferdetails = $this->stockmodel->GetTransferDetails($id);
         $data = [
             'title' => 'Edit Transfer',
