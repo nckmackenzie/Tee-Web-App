@@ -247,4 +247,45 @@ class Sales extends Controller
         $this->view('sales/add',$data);
         exit();
     }
+
+    function paymentstatus($net,$paid){
+        $paymentstatus = [];
+        if(floatval($net) === floatval($paid)){
+            array_push($paymentstatus,'success');
+            array_push($paymentstatus,'paid');
+        }elseif(floatval($paid > 0) && (floatval($net) - floatval($paid)) > 0){
+            array_push($paymentstatus,'warning');
+            array_push($paymentstatus,'partially paid');
+        }elseif(floatval($net) - floatval($paid) === floatval($net)){
+            array_push($paymentstatus,'danger');
+            array_push($paymentstatus,'unpaid');
+        }
+        return $paymentstatus;
+    }
+
+    public function print($id)
+    {
+        $saleheader = $this->salemodel->GetSaleHeader($id);
+        $saledetails = $this->salemodel->GetSaleDetails($id);
+        $centerdetails = $this->salemodel->GetCenterDetails();
+        checkcenter($saleheader->CenterId);
+        $data = [
+            'title' => 'Sales Receipt',
+            'center' => $centerdetails->CenterName,
+            'contact' => $centerdetails->Contact,
+            'email' => $centerdetails->Email,
+            'sdate' => date('d-m-Y',strtotime($saleheader->SalesDate)),
+            'paystatus' => $this->paymentstatus($saleheader->NetAmount,$saleheader->AmountPaid)[1],
+            'payclass' => $this->paymentstatus($saleheader->NetAmount,$saleheader->AmountPaid)[0],
+            'saleid' => $saleheader->SalesID,
+            'reference' => strtoupper($saleheader->Reference),
+            'details' => $saledetails,
+            'subtotal' => number_format($saleheader->SubTotal,2),
+            'netamount' => number_format($saleheader->NetAmount,2),
+            'paid' => number_format($saleheader->AmountPaid,2),
+            'balance' => number_format($saleheader->Balance,2),
+            'discount' => number_format(floatval($saleheader->SubTotal) - floatval($saleheader->NetAmount),2),
+        ];
+        $this->view('sales/print',$data);
+    }
 }
