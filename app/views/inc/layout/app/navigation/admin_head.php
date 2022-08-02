@@ -68,6 +68,20 @@
     </div>
 </li>
 <li class="side-nav-item">
+    <a data-bs-toggle="collapse" href="#sidebarExams" aria-expanded="false" aria-controls="sidebarExams" class="side-nav-link">
+        <i class="uil-clipboard-notes"></i>
+        <span> Exams </span>
+        <span class="menu-arrow"></span>
+    </a>
+    <div class="collapse" id="sidebarExams">
+        <ul class="side-nav-second-level">
+            <li>
+                <a href="<?php echo URLROOT;?>/exams/">Exams</a>
+            </li>
+        </ul>
+    </div>
+</li>
+<li class="side-nav-item">
     <a data-bs-toggle="collapse" href="#sidebarFinance" aria-expanded="false" aria-controls="sidebarFinance" class="side-nav-link">
         <i class="uil-moneybag-alt"></i>
         <span> Finance </span>
