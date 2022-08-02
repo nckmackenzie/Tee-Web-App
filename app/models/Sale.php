@@ -241,4 +241,33 @@ class Sale
         $this->db->bind(':id',intval($id));
         return $this->db->resultset();
     }
+
+    public function Delete($id)
+    {
+        try {
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('UPDATE sales_header SET Deleted = 1
+                              WHERE (ID=:id)');
+            $this->db->bind(':id',$id);
+            $this->db->execute();
+
+            $this->db->query('UPDATE ledger SET Deleted =1 WHERE TransactionType = 1 AND TransactionId = :id');
+            $this->db->bind(':id',$id);
+            $this->db->execute();
+
+            if(!$this->db->dbh->commit()){
+                return  false;
+            }else{
+                return true;
+            }
+
+        } catch (\Exception $e) {
+            if ($this->db->dbh->inTransaction()) {
+                $this->db->dbh->rollBack();
+            }
+            throw $e;
+            return false;
+        }
+    }
 }
