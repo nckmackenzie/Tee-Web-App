@@ -307,7 +307,7 @@ class Sales extends Controller
                 exit();
             }
 
-            flash('sale_msg',null,'Deleted successfully',flashclass('toast','success'));
+            flash('sale_flash_msg',null,'Deleted successfully',flashclass('toast','success'));
             redirect('sales');
             exit();
 
