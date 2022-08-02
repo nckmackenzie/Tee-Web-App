@@ -34,10 +34,10 @@
                         </div>
                         <div class="col-sm-4 offset-sm-2">
                             <div class="mt-3 float-sm-end">
-                                <p class="font-13"><strong>Sale Date: </strong> &nbsp;&nbsp;&nbsp; <?php echo $data['sdate'];?></p>
-                                <p class="font-13"><strong>Sale Status: </strong> <span class="badge bg-<?php echo $data['payclass'];?> float-end"><?php echo $data['paystatus'];?></span></p>
-                                <p class="font-13"><strong>Sale ID: </strong> <span class="float-end">#<?php echo $data['saleid'];?></span></p>
-                                <p class="font-13"><strong>Reference: </strong> <span class="float-end">#<?php echo $data['reference'];?></span></p>
+                                <p class="font-13"><strong>Sale Date: </strong> <?php echo $data['sdate'];?></p>
+                                <p class="font-13"><strong>Sale Status: </strong> <span class="badge bg-<?php echo $data['payclass'];?> "><?php echo $data['paystatus'];?></span></p>
+                                <p class="font-13"><strong>Sale ID: </strong> <span class="">#<?php echo $data['saleid'];?></span></p>
+                                <p class="font-13"><strong>Reference: </strong> <span class="">#<?php echo $data['reference'];?></span></p>
                             </div>
                         </div>
                     </div><!-- end row -->
@@ -80,6 +80,11 @@
                             <div class="clearfix"></div>
                         </div>                        
                     </div><!-- end row -->
+                    <div class="d-print-none mt-4">
+                        <div class="text-end">
+                            <a href="javascript:window.print()" class="btn btn-primary"><i class="mdi mdi-printer"></i> Print</a>
+                        </div>
+                    </div> 
                 </div><!--./card-body-->
             </div><!--./card-->
         </div>
