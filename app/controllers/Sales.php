@@ -171,6 +171,10 @@ class Sales extends Controller
                 $data['reference_err'] = 'Enter payment reference';
             }
 
+            if(!empty($data['reference']) && !$this->salemodel->CheckRefExists($data['reference'])){
+                $data['reference_err'] = 'Payment reference already exists';
+            }
+
             if(empty($data['paid'])){
                 $data['paid_err'] = 'Enter amount paid';
             }
