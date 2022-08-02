@@ -301,7 +301,7 @@ class Sales extends Controller
                 exit();
             }
 
-            if(!$this->salemodel->delete($id)){
+            if(!$this->salemodel->Delete($id)){
                 flash('sale_msg',null,'Unable to get selected sale',flashclass('alert','danger'));
                 redirect('sales');
                 exit();
