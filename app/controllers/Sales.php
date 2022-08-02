@@ -287,5 +287,33 @@ class Sales extends Controller
             'discount' => number_format(floatval($saleheader->SubTotal) - floatval($saleheader->NetAmount),2),
         ];
         $this->view('sales/print',$data);
+        exit();
+    }
+
+    public function delete()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = trim($_POST['id']);
+
+            if(empty($id)){
+                flash('sale_msg',null,'centermodal','Unable to get selected sale',flashclass('alert','danger'));
+                redirect('sales');
+                exit();
+            }
+
+            if(!$this->salemodel->delete($id)){
+                flash('sale_msg',null,'Unable to get selected sale',flashclass('alert','danger'));
+                redirect('sales');
+                exit();
+            }
+
+            flash('sale_msg',null,'Deleted successfully',flashclass('toast','success'));
+            redirect('sales');
+            exit();
+
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
     }
 }
