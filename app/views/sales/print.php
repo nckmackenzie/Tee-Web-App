@@ -41,6 +41,45 @@
                             </div>
                         </div>
                     </div><!-- end row -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <table class="table mt-4">
+                                    <thead>
+                                        <tr>
+                                            <th>Book Title</th>
+                                            <th>Rate</th>
+                                            <th>Qty</th>
+                                            <th class="text-end">Line Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach($data['details'] as $detail): ?>
+                                            <tr>
+                                                <td><?php echo $detail->BookName;?></td>
+                                                <td><?php echo number_format($detail->Rate,2);?></td>
+                                                <td><?php echo $detail->Qty;?></td>
+                                                <td class="text-end"><?php echo number_format($detail->SellingValue,2);?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div><!-- end row -->
+                    <div class="row">
+                        <div class="col-sm-6"></div>                        
+                        <div class="col-sm-6">
+                            <div class="float-end mt-3 mt-sm-0">
+                                <p><b>Sub-total:</b>&nbsp; <span class="float-end"> <?php echo $data['subtotal'];?></span></p>
+                                <p><b>Discount:</b>&nbsp; <span class="float-end"> <?php echo $data['discount'];?></span></p>
+                                <p><b>Net Value:</b>&nbsp; <span class="float-end"> <?php echo $data['netamount'];?></span></p>
+                                <p><b>Paid:</b>&nbsp; <span class="float-end"> <?php echo $data['paid'];?></span></p>
+                                <p><b>Balance:</b>&nbsp; <span class="float-end"> <?php echo $data['balance'];?></span></p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>                        
+                    </div><!-- end row -->
                 </div><!--./card-body-->
             </div><!--./card-->
         </div>
