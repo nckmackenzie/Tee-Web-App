@@ -30,6 +30,20 @@ class Sale
         return $this->db->resultset();
     }
     
+    public function GetCenterDetails()
+    {
+        $this->db->query("SELECT 
+                            UCASE(CenterName) As CenterName, 
+                            Contact,
+                            IFNULL(Email,'N/A') AS Email 
+                          FROM
+                            centers
+                          WHERE 
+                            ID = :id");
+        $this->db->bind(':id',intval($_SESSION['centerid']));
+        return $this->db->single();
+    }
+
     public function GetSaleId()
     {
         $this->db->query("SELECT COUNT(*) FROM sales_header WHERE (CenterId = :cid) AND (Deleted = 0)");
