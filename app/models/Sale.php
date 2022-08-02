@@ -68,6 +68,17 @@ class Sale
         return $this->db->resultset();
     }
 
+    public function CheckRefExists($ref)
+    {
+        $this->db->query("SELECT COUNT(*) FROM sales_header WHERE (Reference = :ref) AND (Deleted = 0)");
+        $this->db->bind(':ref',strtolower($ref));
+        if(intval($this->db->getvalue()) > 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     public function GetStockAndRate($date,$id)
     {
         $this->db->query("SELECT fn_getprice(b.ID,:cdate) As Rate,
@@ -105,8 +116,8 @@ class Sale
             $this->db->dbh->beginTransaction();
 
             $this->db->query('INSERT INTO sales_header (SalesID,SalesDate,SaleType,GroupId,StudentId,SubTotal,
-                                          Discount,NetAmount,AmountPaid,Balance,CenterId) 
-                              VALUES(:saleid,:sdate,:stype,:gid,:student,:stotal,:discount,:net,:paid,:bal,:cid)');
+                                          Discount,NetAmount,AmountPaid,Balance,PaymentMethodId,Reference,CenterId) 
+                              VALUES(:saleid,:sdate,:stype,:gid,:student,:stotal,:discount,:net,:paid,:bal,:pid,:ref,:cid)');
             $this->db->bind(':saleid',intval($data['saleid']));
             $this->db->bind(':sdate',$data['sdate']);
             $this->db->bind(':stype',$data['type']);
@@ -117,6 +128,8 @@ class Sale
             $this->db->bind(':net',!empty($data['net']) ? $data['net'] : 0);
             $this->db->bind(':paid',!empty($data['paid']) ? $data['paid'] : 0);
             $this->db->bind(':bal',!empty($data['balance']) ? $data['balance'] : 0);
+            $this->db->bind(':pid',$data['paymethod']);
+            $this->db->bind(':ref',strtolower($data['reference']));
             $this->db->bind(':cid',$_SESSION['centerid']);
             $this->db->execute();
 
@@ -163,7 +176,7 @@ class Sale
 
             $this->db->query('UPDATE sales_header SET SalesDate=:sdate,SaleType=:stype,GroupId=:gid,StudentId=:student
                                                       ,SubTotal=:stotal,Discount=:discount,NetAmount=:net,
-                                                      AmountPaid=:paid,Balance=:bal
+                                                      AmountPaid=:paid,Balance=:bal,PaymentMethodId=:pid,Reference=:ref
                               WHERE (ID=:id)');
             $this->db->bind(':sdate',$data['sdate']);
             $this->db->bind(':stype',$data['type']);
@@ -174,6 +187,8 @@ class Sale
             $this->db->bind(':net',!empty($data['net']) ? $data['net'] : 0);
             $this->db->bind(':paid',!empty($data['paid']) ? $data['paid'] : 0);
             $this->db->bind(':bal',!empty($data['balance']) ? $data['balance'] : 0);
+            $this->db->bind(':pid',$data['paymethod']);
+            $this->db->bind(':ref',strtolower($data['reference']));
             $this->db->bind(':id',$data['id']);
             $this->db->execute();
 
