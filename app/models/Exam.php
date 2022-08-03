@@ -66,4 +66,15 @@ class Exam
         $this->db->bind(':id',trim($id));
         return $this->db->single();
     }
+
+    public function Delete($id)
+    {
+        $this->db->query('UPDATE exams SET Deleted = 1 WHERE ID = :id');
+        $this->db->bind(':id',trim($id));
+        if(!$this->db->execute()){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
