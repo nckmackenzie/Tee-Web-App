@@ -71,7 +71,7 @@ class Exams extends Controller
             
             if(empty($data['examname'])){
                 $data['examname_err'] = 'Enter exam name';
-            }elseif (!empty($data['examname']) && !$this->exammodel->CheckExamName($data['examname'])){ 
+            }elseif (!empty($data['examname']) && !$this->exammodel->CheckExamName($data['examname'],$data['id'])){ 
                $data['examname_err'] = 'Exam Name Already Exists';
             }
 
@@ -79,7 +79,7 @@ class Exams extends Controller
                 $data['examdate_err'] = 'Select exam date';
             }
 
-            if(!empty($data['examdate']) && $data['examdate'] > date('Y-m-d')){
+            if(!empty($data['examdate']) && $data['examdate'] < date('Y-m-d')){
                 $data['examdate_err'] = 'Invalid exam date';
             }
 
