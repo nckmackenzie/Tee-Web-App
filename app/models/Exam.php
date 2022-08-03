@@ -59,4 +59,11 @@ class Exam
             return true;
         }
     }
+
+    public function GetExam($id)
+    {
+        $this->db->query('SELECT * FROM exams WHERE ID = :id');
+        $this->db->bind(':id',trim($id));
+        return $this->db->single();
+    }
 }
