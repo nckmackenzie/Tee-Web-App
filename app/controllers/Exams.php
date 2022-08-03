@@ -58,20 +58,62 @@ class Exams extends Controller
                 'isedit' => converttobool(trim($_POST['isedit'])),
                 'touched' => true,
                 'examname' => !empty(trim($_POST['examname'])) ? trim($_POST['examname']) : '',
-                'examdate' => !empty(trim($_POST['examdate'])) ? trim($_POST['examdate']) : '',
+                'examdate' => !empty(trim($_POST['examdate'])) ? date('Y-m-d',strtotime(trim($_POST['examdate']))) : '',
                 'course' => !empty($_POST['course']) ? trim($_POST['course']) : '',
                 'totalmarks' => !empty(trim($_POST['totalmarks'])) ? trim($_POST['totalmarks']) : '',
-                'passmarks' => !empty(trim($_POST['passmark'])) ? trim($_POST['passmark']) : '',
+                'passmark' => !empty(trim($_POST['passmark'])) ? trim($_POST['passmark']) : '',
                 'examname_err' => '',
                 'examdate_err' => '',
                 'course_err' => '',
                 'totalmarks_err' => '',
-                'passmarks_err' => '',
+                'passmark_err' => '',
             ];
             
             if(empty($data['examname'])){
                 $data['examname_err'] = 'Enter exam name';
+            }elseif (!empty($data['examname']) && !$this->exammodel->CheckExamName($data['examname'])){ 
+               $data['examname_err'] = 'Exam Name Already Exists';
             }
+
+            if(empty($data['examdate'])){
+                $data['examdate_err'] = 'Select exam date';
+            }
+
+            if(!empty($data['examdate']) && $data['examdate'] > date('Y-m-d')){
+                $data['examdate_err'] = 'Invalid exam date';
+            }
+
+            if(empty($data['course'])){
+                $data['course_err'] = 'Select Course Name';
+            }
+
+            if(empty($data['totalmarks'])){
+                $data['totalmarks_err'] = 'Enter total mark';
+            }
+
+            if(empty($data['passmark'])){
+                $data['passmark_err'] = 'Enter pass mark';
+            }
+
+            if(intval($data['passmark']) > intval($data['totalmarks'])){
+                $data['passmark_err'] = 'Invalid pass mark';
+            }
+
+            if(!empty($data['examname_err']) || !empty($data['course_err']) || !empty($data['totalmarks_err'])
+               || !empty($data['passmark_err']) || !empty($data['examdate_err'])){
+                $this->view('exams/add',$data);
+                exit();
+            }
+
+            if(!$this->exammodel->CreateUpdate($data)){
+                flash('sale_msg',null,'Unable to create exam! Retry or contact admin',flashclass('alert','danger'));
+                redirect('sales');
+                exit();
+            }
+
+            flash('sale_flash_msg',null,'Saved successfully',flashclass('toast','success'));
+            redirect('sales');
+            exit();
 
         }else{
             redirect('auth/forbidden');
