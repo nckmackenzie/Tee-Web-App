@@ -27,7 +27,7 @@ class Exam
     {
         $this->db->query('SELECT COUNT(*) FROM exams WHERE (ExamName = :ename) AND (ID <> :id) AND (Deleted = 0)');
         $this->db->bind(':ename',strtolower($name));
-        $this->db->bind(':ename',intval($id));
+        $this->db->bind(':id',intval($id));
         if(intval($this->db->getvalue()) > 0) {
             return false;
         }else{
