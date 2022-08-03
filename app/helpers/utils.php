@@ -167,3 +167,29 @@ function checkcenter($center){
         exit();
     }
 }
+
+function delete($name,$model){
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $id = trim($_POST['id']);
+
+        if(empty($id)){
+            flash($name.'_msg',null,'Unable to get selected '.$name,flashclass('alert','danger'));
+            redirect($name.'s');
+            exit();
+        }
+
+        if(!$model->Delete($id)){
+            flash($name.'_msg',null,'Unable to delete selected '.$name,flashclass('alert','danger'));
+            redirect('sales');
+            exit();
+        }
+
+        flash($name.'_flash_msg',null,'Deleted successfully',flashclass('toast','success'));
+        redirect($name.'s');
+        exit();
+
+    }else{
+        redirect('auth/forbidden');
+        exit();
+    }
+}
