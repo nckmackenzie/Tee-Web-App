@@ -106,13 +106,13 @@ class Exams extends Controller
             }
 
             if(!$this->exammodel->CreateUpdate($data)){
-                flash('sale_msg',null,'Unable to create exam! Retry or contact admin',flashclass('alert','danger'));
-                redirect('sales');
+                flash('exam_msg',null,'Unable to create exam! Retry or contact admin',flashclass('alert','danger'));
+                redirect('exams');
                 exit();
             }
 
-            flash('sale_flash_msg',null,'Saved successfully',flashclass('toast','success'));
-            redirect('sales');
+            flash('exam_flash_msg',null,'Saved successfully',flashclass('toast','success'));
+            redirect('exams');
             exit();
 
         }else{
