@@ -145,4 +145,9 @@ class Exams extends Controller
         $this->view('exams/add', $data);
         exit();
     }
+
+    public function delete()
+    {
+        delete('exam',$this->exammodel);
+    }
 }
