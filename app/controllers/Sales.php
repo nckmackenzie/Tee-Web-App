@@ -300,13 +300,13 @@ class Sales extends Controller
             $id = trim($_POST['id']);
 
             if(empty($id)){
-                flash('sale_msg',null,'centermodal','Unable to get selected sale',flashclass('alert','danger'));
+                flash('sale_msg',null,'Unable to get selected sale',flashclass('alert','danger'));
                 redirect('sales');
                 exit();
             }
 
             if(!$this->salemodel->Delete($id)){
-                flash('sale_msg',null,'Unable to get selected sale',flashclass('alert','danger'));
+                flash('sale_msg',null,'Unable to delete selected sale',flashclass('alert','danger'));
                 redirect('sales');
                 exit();
             }
