@@ -60,6 +60,6 @@
     </div>
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?> 
-<?php flash('exam_flash_msg','alert');?>  
+<?php flash('exam_flash_msg','toast');?>  
 <script type="module" src="<?php echo URLROOT;?>/dist/js/pages/exams/exams.js"></script>                 
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
