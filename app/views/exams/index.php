@@ -38,9 +38,9 @@
                                 <?php foreach($data['exams'] as $exam) : ?>
                                     <tr>
                                         <td class="d-none"><?php echo $exam->ID;?></td>
-                                        <td class="d-none"><?php echo $exam->ExamName;?></td>
-                                        <td class="d-none"><?php echo $exam->ExamDate;?></td>
-                                        <td class="d-none"><?php echo $exam->CourseName;?></td>
+                                        <td><?php echo $exam->ExamName;?></td>
+                                        <td><?php echo $exam->ExamDate;?></td>
+                                        <td><?php echo $exam->CourseName;?></td>
                                         <td>
                                             <a href="<?php echo URLROOT;?>/exams/edit/<?php echo $exam->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
                                             <button class="action-icon btn text-danger btndel"
