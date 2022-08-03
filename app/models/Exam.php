@@ -34,4 +34,29 @@ class Exam
             return true;
         }
     }
+
+    public function CreateUpdate($data)
+    {
+        if(!$data['isedit']){
+            $this->db->query('INSERT INTO exams (ExamName,CourseId,TotalMarks,PassMark,ExamDate) 
+                              VALUES(:ename,:course,:total,:pass,:edate)');
+        }else{
+            $this->db->query('UPDATE exams SET ExamName=:ename,CourseId=:course,TotalMarks=:total,
+                                               PassMark=:pass,ExamDate=:edate
+                              WHERE  (ID = :id)');
+        }
+        $this->db->bind(':ename',$data['examname']);
+        $this->db->bind(':course',$data['course']);
+        $this->db->bind(':total',$data['totalmarks']);
+        $this->db->bind(':pass',$data['passmark']);
+        $this->db->bind(':edate',$data['examdate']);
+        if($data['isedit']){
+            $this->db->bind(':id',$data['id']);
+        }
+        if(!$this->db->execute()){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
