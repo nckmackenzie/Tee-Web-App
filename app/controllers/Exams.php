@@ -30,7 +30,7 @@ class Exams extends Controller
             'courses' => $courses,
             'id' => '',
             'isedit' => '',
-            'touched' => '',
+            'touched' => false,
             'examname' => '',
             'examdate' => date('Y-m-d'),
             'course' => '',
@@ -119,5 +119,30 @@ class Exams extends Controller
             redirect('auth/forbidden');
             exit();
         }
+    }
+
+    public function edit($id)
+    {
+        $courses = $this->exammodel->GetCourses();
+        $exam = $this->exammodel->GetExam($id);
+        $data = [
+            'title' => 'Edit Exam',
+            'courses' => $courses,
+            'id' => $exam->ID,
+            'isedit' => true,
+            'touched' => false,
+            'examname' => strtoupper($exam->ExamName),
+            'examdate' => $exam->ExamDate,
+            'course' => $exam->CourseId,
+            'totalmarks' => $exam->TotalMarks,
+            'passmarks' => $exam->PassMark,
+            'examname_err' => '',
+            'examdate_err' => '',
+            'course_err' => '',
+            'totalmarks_err' => '',
+            'passmarks_err' => '',
+        ];
+        $this->view('exams/add', $data);
+        exit();
     }
 }
