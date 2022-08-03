@@ -35,12 +35,12 @@ class Exams extends Controller
             'examdate' => date('Y-m-d'),
             'course' => '',
             'totalmarks' => '',
-            'passmarks' => '',
+            'passmark' => '',
             'examname_err' => '',
             'examdate_err' => '',
             'course_err' => '',
             'totalmarks_err' => '',
-            'passmarks_err' => '',
+            'passmark_err' => '',
         ];
         $this->view('exams/add', $data);
         exit();
@@ -135,12 +135,12 @@ class Exams extends Controller
             'examdate' => $exam->ExamDate,
             'course' => $exam->CourseId,
             'totalmarks' => $exam->TotalMarks,
-            'passmarks' => $exam->PassMark,
+            'passmark' => $exam->PassMark,
             'examname_err' => '',
             'examdate_err' => '',
             'course_err' => '',
             'totalmarks_err' => '',
-            'passmarks_err' => '',
+            'passmark_err' => '',
         ];
         $this->view('exams/add', $data);
         exit();
