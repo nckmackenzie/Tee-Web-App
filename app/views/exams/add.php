@@ -21,7 +21,7 @@
                 <div class="card-body">
                     <form action="<?php echo URLROOT;?>/exams/createupdate" method="post" autocomplete="off">
                         <div class="row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-12 mb-3">
                                 <label for="examname" class="form-label">Exam Name</label>
                                 <input type="text" name="examname" id="examname" 
                                        class="form-control form-control-sm mandatory 
@@ -29,14 +29,6 @@
                                        value="<?php echo $data['examname'];?>"
                                        placeholder="eg Paper 1">
                                 <span class="invalid-feedback"><?php echo $data['examname_err'];?></span>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="examdate" class="form-label">Exam Date</label>
-                                <input type="date" name="examdate" id="examdate" 
-                                       class="form-control form-control-sm mandatory 
-                                       <?php echo inputvalidation($data['examdate'],$data['examdate_err'],$data['touched']);?>"
-                                       value="<?php echo $data['examdate'];?>">
-                                <span class="invalid-feedback"><?php echo $data['examdate_err'];?></span>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="course" class="form-label">Course</label>
@@ -50,23 +42,19 @@
                                 </select>
                                 <span class="invalid-feedback"><?php echo $data['course_err'];?></span>
                             </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="totalmarks" class="form-label">Total Marks</label>
-                                <input type="number" name="totalmarks" id="totalmarks" 
-                                       class="form-control form-control-sm mandatory 
-                                       <?php echo inputvalidation($data['totalmarks'],$data['totalmarks_err'],$data['touched']);?>"
-                                       value="<?php echo $data['totalmarks'];?>"
-                                       placeholder="100">
-                                <span class="invalid-feedback"><?php echo $data['totalmarks_err'];?></span>        
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="passmark" class="form-label">Pass Mark</label>
-                                <input type="number" name="passmark" id="passmark" 
-                                       class="form-control form-control-sm mandatory 
-                                       <?php echo inputvalidation($data['passmark'],$data['passmark_err'],$data['touched']);?>"
-                                       value="<?php echo $data['passmark'];?>"
-                                       placeholder="eg 70">
-                                <span class="invalid-feedback"><?php echo $data['passmark_err'];?></span>        
+                            <div class="col-md-6 mb-3">
+                                <label for="book" class="form-label">Book</label>
+                                <select name="book" id="book" 
+                                        class="form-select form-select-sm mandatory 
+                                        <?php echo inputvalidation($data['bookid'],$data['bookid_err'],$data['touched']);?>">
+                                    <option value="">Select book</option>
+                                    <?php if($data['touched'] && !empty($data['course']) || $data['isedit']) : ?>
+                                        <?php foreach($data['books'] as $book) : ?>
+                                            <option value="<?php echo $book->ID;?>" <?php selectdCheck($data['bookid'],$book->ID);?>><?php echo $book->Title;?></option>
+                                        <?php endforeach;?>
+                                    <?php endif;?>
+                                </select>
+                                <span class="invalid-feedback"><?php echo $data['bookid_err'];?></span>
                             </div>
                         </div>
                         <div class="d-grid d-md-block">
@@ -80,5 +68,6 @@
         </div>
      </div>                   
 </div> <!-- container -->
-<?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>                    
+<?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>
+<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/exams/add-exam.js"></script>                    
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
