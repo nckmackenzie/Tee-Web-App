@@ -32,15 +32,11 @@ class Exams extends Controller
             'isedit' => '',
             'touched' => false,
             'examname' => '',
-            'examdate' => date('Y-m-d'),
             'course' => '',
-            'totalmarks' => '',
-            'passmark' => '',
+            'bookid' => '',
             'examname_err' => '',
-            'examdate_err' => '',
+            'bookid_err' => '',
             'course_err' => '',
-            'totalmarks_err' => '',
-            'passmark_err' => '',
         ];
         $this->view('exams/add', $data);
         exit();
@@ -58,15 +54,11 @@ class Exams extends Controller
                 'isedit' => converttobool(trim($_POST['isedit'])),
                 'touched' => true,
                 'examname' => !empty(trim($_POST['examname'])) ? trim($_POST['examname']) : '',
-                'examdate' => !empty(trim($_POST['examdate'])) ? date('Y-m-d',strtotime(trim($_POST['examdate']))) : '',
+                'bookid' => !empty(trim($_POST['book'])) ? date('Y-m-d',strtotime(trim($_POST['book']))) : '',
                 'course' => !empty($_POST['course']) ? trim($_POST['course']) : '',
-                'totalmarks' => !empty(trim($_POST['totalmarks'])) ? trim($_POST['totalmarks']) : '',
-                'passmark' => !empty(trim($_POST['passmark'])) ? trim($_POST['passmark']) : '',
                 'examname_err' => '',
-                'examdate_err' => '',
+                'bookid_err' => '',
                 'course_err' => '',
-                'totalmarks_err' => '',
-                'passmark_err' => '',
             ];
             
             if(empty($data['examname'])){
@@ -75,32 +67,16 @@ class Exams extends Controller
                $data['examname_err'] = 'Exam Name Already Exists';
             }
 
-            if(empty($data['examdate'])){
-                $data['examdate_err'] = 'Select exam date';
-            }
-
-            if(!empty($data['examdate']) && $data['examdate'] < date('Y-m-d')){
-                $data['examdate_err'] = 'Invalid exam date';
+            if(empty($data['bookid'])){
+                $data['bookid_err'] = 'Select book exam based on';
             }
 
             if(empty($data['course'])){
                 $data['course_err'] = 'Select Course Name';
             }
 
-            if(empty($data['totalmarks'])){
-                $data['totalmarks_err'] = 'Enter total mark';
-            }
 
-            if(empty($data['passmark'])){
-                $data['passmark_err'] = 'Enter pass mark';
-            }
-
-            if(intval($data['passmark']) > intval($data['totalmarks'])){
-                $data['passmark_err'] = 'Invalid pass mark';
-            }
-
-            if(!empty($data['examname_err']) || !empty($data['course_err']) || !empty($data['totalmarks_err'])
-               || !empty($data['passmark_err']) || !empty($data['examdate_err'])){
+            if(!empty($data['examname_err']) || !empty($data['course_err']) || !empty($data['bookid_err'])){
                 $this->view('exams/add',$data);
                 exit();
             }
@@ -132,15 +108,11 @@ class Exams extends Controller
             'isedit' => true,
             'touched' => false,
             'examname' => strtoupper($exam->ExamName),
-            'examdate' => $exam->ExamDate,
+            'bookid' => $exam->BookId,
             'course' => $exam->CourseId,
-            'totalmarks' => $exam->TotalMarks,
-            'passmark' => $exam->PassMark,
             'examname_err' => '',
-            'examdate_err' => '',
+            'bookid_err' => '',
             'course_err' => '',
-            'totalmarks_err' => '',
-            'passmark_err' => '',
         ];
         $this->view('exams/add', $data);
         exit();
