@@ -50,7 +50,7 @@
                                     <option value="">Select book</option>
                                     <?php if($data['touched'] && !empty($data['course']) || $data['isedit']) : ?>
                                         <?php foreach($data['books'] as $book) : ?>
-                                            <option value="<?php echo $book->ID;?>" <?php selectdCheck($data['bookid'],$book->ID);?>><?php echo $book->Title;?></option>
+                                            <option value="<?php echo $book->ID;?>" <?php selectdCheck($data['bookid'],$book->ID);?>><?php echo $book->BookName;?></option>
                                         <?php endforeach;?>
                                     <?php endif;?>
                                 </select>
