@@ -71,7 +71,7 @@ class Exams extends Controller
                 'isedit' => converttobool(trim($_POST['isedit'])),
                 'touched' => true,
                 'examname' => !empty(trim($_POST['examname'])) ? trim($_POST['examname']) : '',
-                'bookid' => !empty(trim($_POST['book'])) ? date('Y-m-d',strtotime(trim($_POST['book']))) : '',
+                'bookid' => !empty($_POST['book']) ? trim($_POST['book']) : '',
                 'course' => !empty($_POST['course']) ? trim($_POST['course']) : '',
                 'examname_err' => '',
                 'bookid_err' => '',
