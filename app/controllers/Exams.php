@@ -122,12 +122,14 @@ class Exams extends Controller
     {
         $courses = $this->exammodel->GetCourses();
         $exam = $this->exammodel->GetExam($id);
+        $books = $this->exammodel->GetBooks($exam->CourseId);
         $data = [
             'title' => 'Edit Exam',
             'courses' => $courses,
             'id' => $exam->ID,
             'isedit' => true,
             'touched' => false,
+            'books' => $books,
             'examname' => strtoupper($exam->ExamName),
             'bookid' => $exam->BookId,
             'course' => $exam->CourseId,
