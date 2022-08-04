@@ -23,6 +23,16 @@ class Exam
         return $this->db->resultSet();
     }
 
+    public function GetBooks($id)
+    {
+        $this->db->query('SELECT ID,UCASE(Title) AS BookName 
+                          FROM books 
+                          WHERE (CourseId = :cid) AND (Active = 1) AND (Deleted =0)
+                          ORDER BY BookName');
+        $this->db->bind(':cid',intval($id));
+        return $this->db->resultset();
+    }
+
     public function CheckExamName($name,$id)
     {
         $this->db->query('SELECT COUNT(*) FROM exams WHERE (ExamName = :ename) AND (ID <> :id) AND (Deleted = 0)');
