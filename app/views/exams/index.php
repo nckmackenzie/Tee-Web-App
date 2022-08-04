@@ -29,8 +29,8 @@
                                 <tr>
                                     <th class="d-none">ID</th>
                                     <th>Exam Name</th>
-                                    <th>Exam Date</th>
                                     <th>Course</th>
+                                    <th>Book</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -39,8 +39,8 @@
                                     <tr>
                                         <td class="d-none"><?php echo $exam->ID;?></td>
                                         <td><?php echo $exam->ExamName;?></td>
-                                        <td><?php echo $exam->ExamDate;?></td>
                                         <td><?php echo $exam->CourseName;?></td>
+                                        <td><?php echo $exam->BookName;?></td>
                                         <td>
                                             <a href="<?php echo URLROOT;?>/exams/edit/<?php echo $exam->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
                                             <button class="action-icon btn text-danger btndel"
