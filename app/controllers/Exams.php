@@ -42,6 +42,22 @@ class Exams extends Controller
         exit();
     }
 
+    public function getbooks()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $course = trim($_GET['course']);
+            $books = $this->exammodel->GetBooks($course);
+            $output = '<option value="">Select Book</option>';
+            foreach ($books as $book){
+                $output .= '<option value="'.$book->ID.'">'.$book->BookName.'</option>';
+            }
+            echo json_encode($output);
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
+
     public function createupdate()
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -51,6 +67,7 @@ class Exams extends Controller
                 'title' => converttobool(trim($_POST['isedit'])) ? 'Edit Exam' : 'Create Exam',
                 'courses' => $courses,
                 'id' => trim($_POST['id']),
+                'books' => '',
                 'isedit' => converttobool(trim($_POST['isedit'])),
                 'touched' => true,
                 'examname' => !empty(trim($_POST['examname'])) ? trim($_POST['examname']) : '',
@@ -60,6 +77,10 @@ class Exams extends Controller
                 'bookid_err' => '',
                 'course_err' => '',
             ];
+
+            if(!empty($data['course'])){
+                $data['books'] = $this->exammodel->GetBooks($data['course']);
+            }
             
             if(empty($data['examname'])){
                 $data['examname_err'] = 'Enter exam name';
