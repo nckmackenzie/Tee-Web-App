@@ -48,9 +48,11 @@ class Centers extends Controller
             'name' => '',
             'email' => '',
             'contact' => '',
+            'examcenter' => false,
             'name_err' => '',
             'email_err' => '',
             'contact_err' => '',
+            'examcenter_err' => '',
         ];
         $this->view('centers/add',$data);
         exit();
@@ -68,9 +70,11 @@ class Centers extends Controller
                 'name' => trim($_POST['name']),
                 'email' => trim($_POST['email']),
                 'contact' => trim($_POST['contact']),
+                'examcenter' => isset($_POST['examcenter']) ? true : false,
                 'name_err' => '',
                 'email_err' => '',
                 'contact_err' => '',
+                'examcenter_err' => '',
             ];
 
             //validation
@@ -93,9 +97,13 @@ class Centers extends Controller
             if(!empty($data['email']) && !filter_var($data['email'], FILTER_VALIDATE_EMAIL)){
                 $data['email_err'] = 'Invalid email provided';
             }
-            
 
-            if(!empty($data['name_err']) || !empty($data['contact_err']) || !empty($data['email_err'])){
+            if($data['examcenter'] && !$this->centermodel->CheckAvailability('ExamCenter',$data['id'],1)){
+                $data['examcenter_err'] = 'Only one exam center allowed';
+            }
+       
+            if(!empty($data['name_err']) || !empty($data['contact_err']) || !empty($data['email_err']) 
+               || !empty($data['examcenter_err'])){
                 $this->view('centers/add',$data);
             }else{
                 if(!$this->centermodel->CreateUpdate($data)){
@@ -130,9 +138,11 @@ class Centers extends Controller
             'name' => strtoupper($center->CenterName),
             'email' => $center->Email,
             'contact' => $center->Contact,
+            'examcenter' => $center->ExamCenter,
             'name_err' => '',
             'email_err' => '',
             'contact_err' => '',
+            'examcenter_err' => '',
         ];
         $this->view('centers/add',$data);
         exit();
