@@ -54,6 +54,15 @@
                                     <span class="invalid-feedback"><?php echo $data['email_err'];?></span>
                                 </div>
                             </div>
+                            <div class="col-12">
+                                <div class="form-check mb-2">
+                                    <input type="checkbox" name="examcenter"  id="examcenter" 
+                                           class="form-check-input <?php echo !empty($data['examcenter_err']) ? 'is-invalid' : '';?>"
+                                           <?php checkstate($data['examcenter']);?>>
+                                    <label class="form-check-label" for="examcenter">Exam Center</label>
+                                    <div class="invalid-feedback"><?php echo $data['examcenter_err'];?></div>
+                                </div>
+                            </div>
                             <div class="d-grid d-md-block">
                                 <input type="hidden" name="id" value=<?php echo $data['id'];?>>
                                 <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
