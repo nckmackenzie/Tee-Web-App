@@ -31,13 +31,15 @@ class Center
     public function CreateUpdate($data)
     {
         if(!$data['isedit']){
-            $this->db->query('INSERT INTO centers (CenterName,Contact,Email) VALUES(:cname,:contact,:email)');
+            $this->db->query('INSERT INTO centers (CenterName,Contact,Email,ExamCenter) VALUES(:cname,:contact,:email,:ecenter)');
         }else{
-            $this->db->query('UPDATE centers SET CenterName=:cname,Contact=:contact,Email=:email WHERE (ID=:id)');
+            $this->db->query('UPDATE centers SET CenterName=:cname,Contact=:contact,Email=:email,ExamCenter=:ecenter 
+                              WHERE (ID=:id)');
         }
         $this->db->bind(':cname',strtolower($data['name']));
         $this->db->bind(':contact',$data['contact']);
         $this->db->bind(':email',!empty($data['email']) ? $data['email'] : null);
+        $this->db->bind(':ecenter',$data['examcenter']);
         if($data['isedit']){$this->db->bind(':id',$data['id']);}
         if(!$this->db->execute()){
             return false;
