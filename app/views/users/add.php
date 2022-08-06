@@ -47,6 +47,9 @@
                                         <option value="" disabled>Select user type</option>
                                         <option value="2" <?php selectdCheck($data['usertype'],2);?>>Administrator</option>
                                         <option value="4" <?php selectdCheck($data['usertype'],4);?>>Standard User</option>
+                                        <?php if($_SESSION['examcenter']) : ?>
+                                            <option value="5" <?php selectdCheck($data['usertype'],5);?>>Exam Marker</option>
+                                        <?php endif; ?>
                                      </select>
                                     <span class="invalid-feedback"><?php echo $data['usertype_err'];?></span>
                                 </div>
