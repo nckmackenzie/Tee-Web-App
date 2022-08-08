@@ -23,8 +23,8 @@
                         <div class="col-sm-4">
                             <button type="button" class="btn btn-success mb-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> Add Receipt <span class="caret"></span> </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="<?php echo URLROOT;?>/receipts/addgrn">GRN</a>
-                                <a class="dropdown-item" href="<?php echo URLROOT;?>/receipts/addinter">Inter Transfer</a>
+                                <a class="dropdown-item" href="<?php echo URLROOT;?>/stocks/addgrn">GRN</a>
+                                <a class="dropdown-item" href="<?php echo URLROOT;?>/stocks/addinter">Inter Transfer</a>
                             </div>
                         </div>
                     </div>
