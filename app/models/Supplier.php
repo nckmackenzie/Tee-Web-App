@@ -1,0 +1,10 @@
+<?php
+class Supplier
+{
+    private $db;
+
+    public function __construct()
+    {
+        $this->db = new Database;
+    }
+}
