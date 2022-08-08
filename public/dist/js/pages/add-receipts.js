@@ -1,6 +1,5 @@
 import { getSelectedText, HOST_URL, displayAlert } from './utils.js';
 
-const mtnSelect = document.getElementById('mtn');
 const bookSelect = document.getElementById('bookid');
 const receiptDate = document.getElementById('date');
 const valueInput = document.getElementById('value');
@@ -10,24 +9,6 @@ const table = document.getElementById('receipts-table');
 const form = document.querySelector('form');
 const alertBox = document.querySelector('.alert-box');
 const tableDiv = document.querySelector('.table-responsive');
-
-// radio event handler
-document.querySelectorAll("input[name='receipttype']").forEach(input => {
-  input.addEventListener('change', e => {
-    mtnSelect.classList.remove('mandatory');
-    if (e.target.value === 'grn') {
-      mtnSelect.disabled = true;
-      btnadd.disabled = false;
-    }
-    if (e.target.value === 'internal') {
-      mtnSelect.disabled = false;
-      mtnSelect.classList.add('mandatory');
-      btnadd.disabled = true;
-    }
-    mtnSelect.value = '';
-    tableReset();
-  });
-});
 
 async function getBooksValue() {
   if (!receiptDate || !qtyInput || !bookSelect) return;
@@ -40,24 +21,6 @@ async function getBooksValue() {
   const data = await res.json();
   let qty = qtyInput.value || 1;
   valueInput.value = +qty * +data;
-}
-
-function tableReset() {
-  tableDiv.innerHTML = '';
-  const html = `
-  <table class="table-sm table" id="receipts-table">
-    <thead class="table-light">
-        <tr>
-            <th class="d-none">Pid</th>
-            <th>Product</th>
-            <th>Qty</th>
-            <th width="10%">Remove</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-  `;
-  tableDiv.insertAdjacentHTML('afterbegin', html);
 }
 
 bookSelect.addEventListener('change', getBooksValue);
@@ -121,14 +84,4 @@ form.addEventListener('submit', e => {
   } else {
     document.receiptform.submit();
   }
-});
-
-mtnSelect.addEventListener('change', async e => {
-  const selectedValue = Number(e.target.value);
-  const res = await fetch(
-    `${HOST_URL}/stocks/gettransfereditems?tid=${selectedValue}`
-  );
-  const data = await res.json();
-  tableDiv.innerHTML = '';
-  tableDiv.insertAdjacentHTML('afterbegin', data);
 });
