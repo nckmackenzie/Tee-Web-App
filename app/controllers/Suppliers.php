@@ -27,4 +27,26 @@ class Suppliers extends Controller
         $this->view('suppliers/index',$data);
         exit();
     }
+
+    public function add()
+    {
+        $data = [
+            'title' => 'Add Supplier',
+            'touched' => false,
+            'isedit' => false,
+            'id' => '',
+            'suppliername' => '',
+            'contact' => '',
+            'email' => '',  
+            'contactperson' => '',
+            'address' => '',
+            'pin' => '',
+            'suppliername_err' => '',
+            'contact_err' => '',
+            'email_err' => '', 
+            'pin_err' => '',
+        ];
+        $this->view('suppliers/add',$data);
+        exit();
+    }
 }
