@@ -23,21 +23,6 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <div class="form-check form-check-inline">
-                                        <input type="radio" id="grn" name="receipttype" class="form-check-input" 
-                                               value="grn" <?php echo $data['type'] === 'grn' ? 'checked' : ''; ?>>
-                                        <label class="form-check-label" for="grn">GRN</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input type="radio" id="internal" name="receipttype" 
-                                               class="form-check-input" 
-                                               value="internal" <?php echo $data['type'] === 'internal' ? 'checked' : ''; ?>>
-                                        <label class="form-check-label" for="internal">Inter Transfer</label>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="col-md-4">
                                 <div class="mb-1">
                                     <label for="date" class="form-label">Receipt Date</label>
@@ -50,19 +35,6 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-1">
-                                    <label for="mtn" class="form-label">Transfer Note</label>
-                                    <select name="mtn" id="mtn" class="form-select form-select-sm
-                                    <?php echo inputvalidation($data['mtn'],$data['mtn_err'],$data['touched']);?>" <?php echo $data['type'] === 'grn' ? 'disabled' : ''; ?>>
-                                        <option value="" selected disabled>Select Transfer Note</option>
-                                        <?php foreach($data['mtns'] as $mtn) : ?>
-                                            <option value="<?php echo $mtn->ID;?>"><?php echo $mtn->Mtn;?></option>
-                                        <?php endforeach;?>
-                                    </select>
-                                    <span class="invalid-feedback"><?php echo $data['mtn_err'];?></span>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-1">
                                     <label for="reference" class="form-label">GRN No</label>
                                     <input type="text" name="reference" id="reference" 
                                            class="form-control form-control-sm mandatory 
@@ -71,7 +43,19 @@
                                     <span class="invalid-feedback"><?php echo $data['reference_err'];?></span>
                                 </div>
                             </div>
-                            
+                            <div class="col-md-4">
+                                <div class="mb-1">
+                                    <label for="paymethod" class="form-label">Payment Method</label>
+                                    <select name="paymethod" id="paymethod" class="form-select form-select-sm">
+                                        <option value="" selected disabled>Select Payment Method</option>
+                                        <option value="1">Cash</option>
+                                        <option value="2">Cheque</option>
+                                        <option value="3">Cheque</option>
+                                        <option value="2">Credit</option>
+
+                                    </select>
+                                </div>
+                            </div>
                         </div><!-- /.row -->
                     </div><!-- /.card-body -->
                 </div><!-- /.card -->

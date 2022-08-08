@@ -15,4 +15,16 @@ class Suppliers extends Controller
 
         $this->suppliermodel = $this->model('Supplier');
     }
+
+    public function index()
+    {
+        $suppliers = $this->suppliermodel->GetSuppliers();
+        $data = [
+            'title' => 'Suppliers',
+            'has_datatable' => true,
+            'suppliers' => $suppliers
+        ];
+        $this->view('suppliers/add',$data);
+        exit();
+    }
 }

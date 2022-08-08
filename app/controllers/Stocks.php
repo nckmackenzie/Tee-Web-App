@@ -22,24 +22,24 @@ class Stocks extends Controller
         exit();
     }
 
-    public function addreceipt()
+    public function addgrn()
     {
         $books = $this->stockmodel->GetBooks();
-        $mtns = $this->stockmodel->GetMtns();
+        // $mtns = $this->stockmodel->GetMtns();
         $data = [
             'title' => 'Add Receipt',
             'books' => $books,
             'date' => date('Y-m-d'),
             'touched' => false,
-            'type' => 'grn',
-            'mtns' => $mtns,
+            // 'type' => 'grn',
+            // 'mtns' => $mtns,
             'id' => '',
             'isedit' => false,
-            'mtn' => '',
+            // 'mtn' => '',
             'reference' => '',
             'table' => [],
             'date_err' => '',
-            'mtn_err' => '',
+            // 'mtn_err' => '',
             'reference_err' => '',
         ];
         $this->view('stocks/addreceipt',$data);
