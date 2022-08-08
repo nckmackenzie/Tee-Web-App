@@ -21,7 +21,11 @@
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-sm-4">
-                            <a href="<?php echo URLROOT;?>/stocks/addreceipt" class="btn btn-success mb-2"><i class="mdi mdi-plus-circle me-2"></i> Add Receipt</a>
+                            <button type="button" class="btn btn-success mb-2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> Add Receipt <span class="caret"></span> </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="<?php echo URLROOT;?>/receipts/addgrn">GRN</a>
+                                <a class="dropdown-item" href="<?php echo URLROOT;?>/receipts/addinter">Inter Transfer</a>
+                            </div>
                         </div>
                     </div>
                     <div class="table-responsive">
