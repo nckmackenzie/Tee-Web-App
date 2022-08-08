@@ -27,7 +27,7 @@ class Supplier
         }
     }
 
-    public function Save($data) 
+    function Save($data) 
     {
         try {
             $this->db->dbh->beginTransaction();
