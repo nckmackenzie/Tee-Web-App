@@ -168,7 +168,7 @@ function checkcenter($center){
     }
 }
 
-function delete($name,$model){
+function delete($name,$model,$validatedelete = false){
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = trim($_POST['id']);
 
@@ -178,9 +178,15 @@ function delete($name,$model){
             exit();
         }
 
+        if($validatedelete && !$model->ValidateDelete($id)){
+            flash($name.'_msg',null,'Cannot delete as record referenced elsewhere',flashclass('alert','danger'));
+            redirect($name.'s');
+            exit();
+        }
+
         if(!$model->Delete($id)){
             flash($name.'_msg',null,'Unable to delete selected '.$name,flashclass('alert','danger'));
-            redirect('sales');
+            redirect($name.'s');
             exit();
         }
 
