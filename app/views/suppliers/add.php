@@ -19,7 +19,7 @@
             <div class="card">
                 <div class="card-header"><?php echo $data['title'];?></div>
                 <div class="card-body">
-                    <form action="<?php echo URLROOT;?>/supplers/createupdate" method="post" autocomplete="off">
+                    <form action="<?php echo URLROOT;?>/suppliers/createupdate" method="post" autocomplete="off">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
