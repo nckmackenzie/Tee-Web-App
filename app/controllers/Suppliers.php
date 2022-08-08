@@ -150,4 +150,10 @@ class Suppliers extends Controller
         $this->view('suppliers/add',$data);
         exit();
     }
+
+    public function delete()
+    {
+        delete('supplier',$this->suppliermodel,true);
+        exit();
+    }
 }
