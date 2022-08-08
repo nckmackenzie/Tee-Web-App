@@ -85,6 +85,25 @@
                                            placeholder="eg Jane Doe">  
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="openingbal" class="form-label">Opening Balance</label>
+                                    <input type="number" name="openingbal" id="openingbal" 
+                                           class="form-control form-control-sm"
+                                           value="<?php echo $data['openingbal'];?>"
+                                           placeholder="eg 25000">  
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="asof" class="form-label">As Of</label>
+                                    <input type="date" name="asof" id="asof" 
+                                           class="form-control form-control-sm 
+                                           <?php echo inputvalidation($data['asof'],$data['asof_err'],$data['touched']);?>"
+                                           value="<?php echo $data['asof'];?>">  
+                                    <span class="invalid-feedback"><?php echo $data['asof_err'];?></span>     
+                                </div>
+                            </div>
                         </div>
                         <div class="d-grid d-md-block">
                             <input type="hidden" name="id" value="<?php echo $data['id'];?>">
