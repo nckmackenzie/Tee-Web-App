@@ -193,3 +193,12 @@ function delete($name,$model){
         exit();
     }
 }
+
+//validate date not greater than today
+function validatedate($date){
+    if($date > date('Y-m-d')){
+        return false;
+    }else{
+        return true;
+    }
+}
