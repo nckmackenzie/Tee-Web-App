@@ -103,7 +103,7 @@ class Auth extends Controller {
         $_SESSION['username'] = $user->UserName;
         $_SESSION['usertypeid'] = $user->UserTypeId;
         $_SESSION['usertype'] = $user->UserType;
-        $_SESSION['ishead'] = $user->IsHead;
+        $_SESSION['ishead'] = converttobool($user->IsHead);
         $_SESSION['centerid'] = $user->CenterId;
         $_SESSION['centername'] = $user->CenterName;
         $_SESSION['examcenter'] = converttobool($user->ExamCenter);
