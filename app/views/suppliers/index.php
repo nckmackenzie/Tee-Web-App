@@ -13,7 +13,7 @@
     </div>     
     <!-- end page title --> 
     <?php flash('supplier_msg','alert'); ?>
-    <?php DeleteModal(URLROOT .'/supplers/delete','centermodal','Are you sure you want to delete this supplier','id');?>                    
+    <?php DeleteModal(URLROOT .'/suppliers/delete','centermodal','Are you sure you want to delete this supplier','id');?>                    
     <div class="row">
         <div class="col-12">
             <div class="card">
