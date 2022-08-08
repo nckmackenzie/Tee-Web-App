@@ -105,4 +105,24 @@ class Supplier
         $this->db->bind(':id',$id);
         return $this->db->single();
     }
+    public function ValidateDelete($id)
+    {
+        $this->db->query('SELECT COUNT(*) FROM invoice_payments WHERE (Deleted = 0) AND (SupplierId = :id)');
+        $this->db->bind(':id',intval($id));
+        if(intval($this->db->getvalue()) > 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    public function Delete($id)
+    {
+        $this->db->query('UPDATE suppliers SET Deleted = 1 WHERE ID = :id');
+        $this->db->bind(':id',intval($id));
+        if(!$this->db->execute()){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
