@@ -18,6 +18,11 @@
             <li>
                 <a href="<?php echo URLROOT;?>/courses">Courses</a>
             </li>
+            <ul class="side-nav-second-level">
+            <li>
+                <a href="<?php echo URLROOT;?>/suppliers">Suppliers</a>
+            </li>
+        </ul>
         </ul>
     </div>
 </li>
