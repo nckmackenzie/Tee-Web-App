@@ -24,7 +24,7 @@ class Suppliers extends Controller
             'has_datatable' => true,
             'suppliers' => $suppliers
         ];
-        $this->view('suppliers/add',$data);
+        $this->view('suppliers/index',$data);
         exit();
     }
 }
