@@ -7,4 +7,10 @@ class Supplier
     {
         $this->db = new Database;
     }
+
+    public function GetSuppliers()
+    {
+        $this->db->query('SELECT * FROM vw_suppliers');
+        return $this->db->resultset();
+    }
 }
