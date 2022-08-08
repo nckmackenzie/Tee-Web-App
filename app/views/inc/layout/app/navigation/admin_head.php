@@ -76,7 +76,16 @@
     <div class="collapse" id="sidebarExams">
         <ul class="side-nav-second-level">
             <li>
-                <a href="<?php echo URLROOT;?>/exams/">Exams</a>
+                <a href="<?php echo URLROOT;?>/exams/receiptfromgroup">Receipt From Group</a>
+            </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/exams/receiptpostmarking">Receipt Post Marking</a>
+            </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/exams/points">Attendance/Exercise/Cat Points</a>
+            </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/exams/finalpoints">Final Points</a>
             </li>
         </ul>
     </div>
