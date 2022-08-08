@@ -68,8 +68,8 @@ class Suppliers extends Controller
                 'contactperson' => !empty(trim($_POST['contactperson'])) ? trim($_POST['contactperson']) : '',
                 'address' => !empty(trim($_POST['address'])) ? trim($_POST['address']) : '',
                 'pin' => !empty(trim($_POST['pin'])) ? trim($_POST['pin']) : '',
-                'openingbal' => !empty(trim($_POST['openingbal'])) ? floatval(trim($_POST['openingbal'])) : '',
-                'asof' => !empty(trim($_POST['asof'])) ? date('Y-m-d',strtotime(trim($_POST['asof']))) : '',
+                'openingbal' => converttobool(trim($_POST['isedit'])) ? '' : (!empty(trim($_POST['openingbal'])) ? floatval(trim($_POST['openingbal'])) : ''),
+                'asof' => converttobool(trim($_POST['isedit'])) ? '' : (!empty(trim($_POST['asof'])) ? date('Y-m-d',strtotime(trim($_POST['asof']))) : ''),
                 'suppliername_err' => '',
                 'contact_err' => '',
                 'email_err' => '', 
@@ -126,5 +126,28 @@ class Suppliers extends Controller
             redirect('auth/forbidden');
             exit();
         }
+    }
+
+    public function edit($id)
+    {
+        $supplier = $this->suppliermodel->GetSupplier($id);
+        $data = [
+            'title' => 'Edit Supplier',
+            'touched' => false,
+            'isedit' => true,
+            'id' => $supplier->ID,
+            'suppliername' => strtoupper($supplier->SupplierName),
+            'contact' => $supplier->Contact,
+            'email' => $supplier->Email,  
+            'contactperson' => strtoupper($supplier->ContactPerson),
+            'address' => strtoupper($supplier->Address),
+            'pin' => strtoupper($supplier->PIN),
+            'suppliername_err' => '',
+            'contact_err' => '',
+            'email_err' => '', 
+            'pin_err' => '',
+        ];
+        $this->view('suppliers/add',$data);
+        exit();
     }
 }
