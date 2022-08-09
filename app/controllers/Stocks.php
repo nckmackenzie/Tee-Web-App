@@ -60,6 +60,7 @@ class Stocks extends Controller
             'date_err' => '',
             'reference_err' => '',
             'mtn_err' => '',
+            'qty_err' => 0,
         ];
         $this->view('stocks/addreceiptinter',$data);
     }
@@ -97,21 +98,36 @@ class Stocks extends Controller
                 'reference' => !empty($_POST['reference']) ? strtolower(trim($_POST['reference'])) : '',
                 'booksid' => $_POST['booksid'],
                 'booksname' => $_POST['booksname'],
+                'trqtys' => '',
                 'qtys' => $_POST['qtys'],
                 'table' => [],
                 'date_err' => '',
                 'mtn_err' => '',
                 'reference_err' => '',
+                'qty_err' => 0,
             ];
+
+            if($data['type'] === 'internal'){
+                $data['trqtys'] = $_POST['trqtys'];
+            }
 
             for ($i=0; $i < count($data['booksid']); $i++) { 
                 array_push($data['table'],[
                     'pid' => $data['booksid'][$i],
                     'book' => $data['booksname'][$i],
                     'qty' => $data['qtys'][$i],
+                    'trqty' => $data['type'] === 'internal' ? $data['trqtys'][$i] : '',
                 ]);
             }
 
+            if($data['type'] === 'internal'){
+                foreach($data['table'] as $table){
+                    if(intval($table['qty']) > intval($table['trqty'])){
+                        $data['qty_err'] ++;
+                    }
+                }
+            }
+            
             //validate
             if(empty($data['date'])){
                 $data['date_err'] = 'Select receipt date';
@@ -139,8 +155,14 @@ class Stocks extends Controller
                 }
             }
 
-            if(!empty($data['date_err']) || !empty($data['mtn_err']) || !empty($data['reference_err'])){
-                $this->view('stocks/addreceipt',$data);
+            if(!empty($data['date_err']) || !empty($data['mtn_err']) || !empty($data['reference_err'])
+                || !empty($data['qty_err'])){
+
+                if($data['type'] === 'grn') {
+                    $this->view('stocks/addreceipt',$data);
+                }elseif($data['type'] === 'internal'){
+                    $this->view('stocks/addreceiptinter',$data);
+                }
                 exit();
             }
 
