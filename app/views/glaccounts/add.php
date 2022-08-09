@@ -24,7 +24,7 @@
                             <div class="col-12">
                                 <div class="mb-3">
                                     <label for="accountname" class="form-label">Account Name</label>
-                                    <input type="text" class="form-control form-control-sm mandatory 
+                                    <input type="text" name="accountname" id="accountname" class="form-control form-control-sm mandatory 
                                         <?php echo inputvalidation($data['accountname'],$data['accountname_err'],$data['touched']);?>"
                                         value="<?php echo $data['accountname'];?>"
                                         placeholder="eg Accounts Receivable">
@@ -34,7 +34,7 @@
                             <div class="col-12">
                                 <div class="mb-3">
                                     <label for="accounttype" class="form-label">Account Type</label>
-                                    <select name="accounttype" id="accounttype" class="form-select form-select-sm mandatory 
+                                    <select name="accounttype" name="accounttype" id="accounttype" id="accounttype" class="form-select form-select-sm mandatory 
                                             <?php echo inputvalidation($data['accounttype'],$data['accounttype_err'],$data['touched']);?>">
                                         <option value="">Select account type</option>
                                         <?php foreach($data['accounttypes'] as $accounttype) : ?>
