@@ -16,7 +16,12 @@
     <!-- end page title --> 
     <div class="row">
         <div class="col-12">
-            <div class="alert-box"></div>
+            <?php if(intval($data['qty_err']) > 0) : ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error!</strong> One or more received qty more than transfered qty.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif ;?>
         </div>
         <div class="col-12">
             <form action="<?php echo URLROOT;?>/stocks/createupdatereceipt" method="post" autocomplete="off" name="receiptform">
