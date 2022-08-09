@@ -10,10 +10,13 @@ class Glaccount
 
     public function GetGLAccounts()
     {
-        $this->db->query('SELECT ID,UCASE(AccountName) AS AccountName
-                          FROM   accounttypes
-                          WHERE  (AccountTypeId IS NOT NULL) AND (IsBank = 0)
-                          ORDER BY AccountName');
+        $this->db->query('SELECT 
+                            c.ID,
+                            UCASE(c.AccountName) AS AccountName,
+                            UCASE(p.AccountName) As AccountType
+                          FROM `accounttypes` p JOIN accounttypes c on p.ID = c.AccountTypeId
+                          WHERE c.IsBank = 0
+                          ORDER BY AccountType,AccountName');
         return $this->db->resultset();
     }
 }
