@@ -22,7 +22,7 @@ class Stock
         $this->db->query('SELECT ID,UCASE(Title) As Title FROM books WHERE Deleted = 0 ORDER BY Title ASC');
         return $this->db->resultset();
     }
-
+   
     //get mtns
     public function GetMtns()
     {
