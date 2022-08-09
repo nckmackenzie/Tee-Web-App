@@ -109,6 +109,7 @@
                 <div class="d-grid d-md-block">
                     <input type="hidden" name="id" value="<?php echo $data['id'];?>">
                     <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
+                    <input type="hidden" name="receipttype" value="<?php echo $data['type'];?>">
                     <button class="btn btn-primary" type="submit"> Save </button>
                 </div>
             </form>
