@@ -47,5 +47,6 @@
     </div> 
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>
+<?php flash('glaccount_flash_msg','toast');?>
 <script type="module" src="<?php echo URLROOT;?>/dist/js/pages/glaccounts/glaccounts.js"></script>                    
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
