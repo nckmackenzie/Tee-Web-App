@@ -51,7 +51,8 @@
                             <div class="col-md-4">
                                 <div class="mb-1">
                                     <label for="mtn" class="form-label">MTN</label>
-                                    <select name="mtn" id="mtn" class="form-select form-select-sm mandatory">
+                                    <select name="mtn" id="mtn" class="form-select form-select-sm mandatory 
+                                            <?php inputvalidation($data['mtn'],$data['mtn_err'],$data['touched']);?>">
                                         <option value="">Select MTN</option>
                                         <?php foreach($data['mtns'] as $mtn) : ?>
                                             <option value="<?php echo $mtn->ID;?>" <?php selectdCheck($data['mtn'],$mtn->ID);?>><?php echo $mtn->Mtn;?></option>
