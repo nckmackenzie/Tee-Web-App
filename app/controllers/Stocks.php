@@ -41,6 +41,29 @@ class Stocks extends Controller
         $this->view('stocks/addreceipt',$data);
     }
 
+    public function addinter()
+    {
+        $books = $this->stockmodel->GetBooks();
+        $mtns = $this->stockmodel->GetMtns();
+        $data = [
+            'title' => 'Add Receipt',
+            'mtns' => $mtns,
+            'books' => $books,
+            'date' => date('Y-m-d'),
+            'touched' => false,
+            'type' => 'internal',
+            'mtn' => '',
+            'id' => '',
+            'isedit' => false,
+            'reference' => '',
+            'table' => [],
+            'date_err' => '',
+            'reference_err' => '',
+            'mtn_err' => '',
+        ];
+        $this->view('stocks/addreceiptinter',$data);
+    }
+
     public function getprice()
     {
         if($_SERVER['REQUEST_METHOD'] === 'GET'){
@@ -324,31 +347,16 @@ class Stocks extends Controller
 
             $transfers = $this->stockmodel->GetTransferDetails($tid);
             $output = '';
-            $output .= '<table class="table-sm table" id="receipts-table">
-                            <thead class="table-light">
-                                <tr>
-                                    <th class="d-none">Pid</th>
-                                    <th>Product</th>
-                                    <th>Transfered Qty</th>
-                                    <th>Received Qty</th>
-                                    <th width="10%">Remove</th>
-                                </tr>
-                            </thead>
-                            <tbody>';
-                            foreach($transfers as $transfer){
-                                $output .='
-                                <tr>
-                                    <td class="d-none"><input type="text" name="booksid[]" value="'.$transfer->BookId.'" readonly></td>
-                                    <td><input type="text" class="table-input" name="booksname[]" value="'.$transfer->Title.'" readonly></td>
-                                    <td><input type="text" class="table-input" name="trqtys[]" value="'.$transfer->Qty.'" readonly></td>
-                                    <td><input type="number" class="table-input" name="qtys[]" value="" ></td>
-                                    <td><button type="button" class="action-icon btn btn-sm text-danger fs-5 btndel">Remove</button></td>
-                                </tr>
-                                '; 
-                            }
-                        $output .='   
-                            </tbody>
-                        </table>';
+            foreach($transfers as $transfer){
+                $output .='
+                <tr>
+                    <td class="d-none"><input type="text" name="booksid[]" value="'.$transfer->BookId.'" readonly></td>
+                    <td><input type="text" class="table-input" name="booksname[]" value="'.$transfer->Title.'" readonly></td>
+                    <td><input type="text" class="table-input" name="trqtys[]" value="'.$transfer->Qty.'" readonly></td>
+                    <td><input type="number" class="table-input" name="qtys[]" value="" ></td>
+                </tr>
+                '; 
+            }
             echo json_encode($output);
         }else{
             redirect('auth/forbidden');
