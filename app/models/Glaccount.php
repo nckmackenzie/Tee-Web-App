@@ -42,9 +42,9 @@ class Glaccount
 
     public function CreateUpdate($data)
     {
-        $this->db->query('INSERT INTO accounttypes (AccountName,AccountTypeId) VALUEStyp,:atype)');
+        $this->db->query('INSERT INTO accounttypes (AccountName,AccountTypeId) VALUES(:aname,:atype)');
         $this->db->bind(':aname',!empty($data['accountname']) ? strtolower($data['accountname']) : null);
-        $this->db->bind(':atype',!empty($data['accounttypee']) ? strtolower($data['accounttypee']) : null);
+        $this->db->bind(':atype',!empty($data['accounttype']) ? strtolower($data['accounttype']) : null);
         if(!$this->db->execute()){
             return false;
         }else{
