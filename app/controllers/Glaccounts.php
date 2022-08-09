@@ -24,4 +24,22 @@ class Glaccounts extends Controller
         ];
         $this->view('glaccounts/index',$data);
     }
+
+    public function add()
+    {
+        $accounttypes = $this->glaccountmodel->GetAccountTypes();
+        $data = [
+            'title' => 'Add G/L Account',
+            'accounttypes' => $accounttypes,
+            'touched' => false,
+            'isedit' => false,
+            'id' => '',
+            'accountname' => '',
+            'accounttype' => '',
+            'accountname_err' => '',
+            'accounttype_err' => '',
+        ];
+        $this->view('glaccounts/add',$data);
+        exit();
+    }
 }
