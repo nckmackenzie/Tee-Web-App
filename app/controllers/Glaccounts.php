@@ -3,7 +3,7 @@ class Glaccounts extends Controller
 {
     public function __construct()
     {
-        if(isset($_SESSION['userid'])){
+        if(!isset($_SESSION['userid'])){
             redirect('auth');
             exit();
         }
@@ -12,5 +12,16 @@ class Glaccounts extends Controller
             exit();
         }
         $this->glaccountmodel = $this->model('Glaccount');
+    }
+
+    public function index()
+    {
+        $glaccounts = $this->glaccountmodel->GetGLAccounts();
+        $data = [
+            'title' => 'G/L Accounts',
+            'has_datatable' => true,
+            'glaccounts' => $glaccounts
+        ];
+        $this->view('glaccounts/index',$data);
     }
 }
