@@ -19,4 +19,10 @@ class Glaccount
                           ORDER BY AccountType,AccountName');
         return $this->db->resultset();
     }
+
+    public function GetAccountTypes()
+    {
+        $this->db->query('SELECT ID,UCASE(AccountName) As AccountName FROM accounttypes WHERE AccountTypeId IS NULL');
+        return $this->db->resultset();
+    }
 }
