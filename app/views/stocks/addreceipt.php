@@ -43,19 +43,6 @@
                                     <span class="invalid-feedback"><?php echo $data['reference_err'];?></span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="mb-1">
-                                    <label for="paymethod" class="form-label">Payment Method</label>
-                                    <select name="paymethod" id="paymethod" class="form-select form-select-sm">
-                                        <option value="" selected disabled>Select Payment Method</option>
-                                        <option value="1">Cash</option>
-                                        <option value="2">Cheque</option>
-                                        <option value="3">Cheque</option>
-                                        <option value="2">Credit</option>
-
-                                    </select>
-                                </div>
-                            </div>
                         </div><!-- /.row -->
                     </div><!-- /.card-body -->
                 </div><!-- /.card -->
