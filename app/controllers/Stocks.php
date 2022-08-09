@@ -25,21 +25,17 @@ class Stocks extends Controller
     public function addgrn()
     {
         $books = $this->stockmodel->GetBooks();
-        // $mtns = $this->stockmodel->GetMtns();
         $data = [
             'title' => 'Add Receipt',
             'books' => $books,
             'date' => date('Y-m-d'),
             'touched' => false,
-            // 'type' => 'grn',
-            // 'mtns' => $mtns,
+            'type' => 'grn',
             'id' => '',
             'isedit' => false,
-            // 'mtn' => '',
             'reference' => '',
             'table' => [],
             'date_err' => '',
-            // 'mtn_err' => '',
             'reference_err' => '',
         ];
         $this->view('stocks/addreceipt',$data);
@@ -74,7 +70,7 @@ class Stocks extends Controller
                 'isedit' => converttobool($_POST['isedit']),
                 'type' => !empty(trim($_POST['receipttype'])) ? trim($_POST['receipttype']) : 'grn',
                 'date' => !empty($_POST['date']) ? date('Y-m-d',strtotime($_POST['date'])) : date('Y-m-d'),
-                'mtn' => !empty($_POST['mtn']) ? trim($_POST['mtn']) : '',
+                'mtn' => isset($_POST['mtn']) && !empty($_POST['mtn']) ? trim($_POST['mtn']) : '',
                 'reference' => !empty($_POST['reference']) ? strtolower(trim($_POST['reference'])) : '',
                 'booksid' => $_POST['booksid'],
                 'booksname' => $_POST['booksname'],
