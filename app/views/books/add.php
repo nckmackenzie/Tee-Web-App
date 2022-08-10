@@ -57,7 +57,7 @@
                                     <span class="invalid-feedback"><?php echo $data['publisher_err'];?></span>
                                 </div>
                             </div>
-                            <div class="col-12 mb-3">
+                            <div class="col-6 mb-3">
                                 <label for="course" class="form-label">Course</label>
                                 <select name="course" id="course" class="form-select form-select-sm mandatory
                                         <?php echo inputvalidation($data['course'],$data['course_err'],$data['touched']);?>">
@@ -67,6 +67,17 @@
                                     <?php endforeach;?>
                                 </select>
                                 <span class="invalid-feedback"><?php echo $data['course_err'];?></span>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label for="glaccount" class="form-label">Associated G/L Account</label>
+                                <select name="glaccount" id="glaccount" class="form-select form-select-sm mandatory
+                                        <?php echo inputvalidation($data['glaccount'],$data['glaccount_err'],$data['touched']);?>">
+                                    <option value="" selected disabled>Select G/L account</option>
+                                    <?php foreach($data['glaccounts'] as $glaccount) : ?>
+                                        <option value="<?php echo $glaccount->ID;?>" <?php selectdCheck($data['glaccount'],$glaccount->ID);?>><?php echo $glaccount->AccountName;?></option>
+                                    <?php endforeach;?>
+                                </select>
+                                <span class="invalid-feedback"><?php echo $data['glaccount_err'];?></span>
                             </div>
                             <?php if($data['allowedit'] || !$data['isedit']) : ?>
                                 <div class="col-md-6">
