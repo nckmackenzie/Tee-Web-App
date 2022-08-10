@@ -167,4 +167,33 @@ class Exams extends Controller
         $this->view('exams/receiptfromgroup',$data);
         exit();
     }
+
+    public function getstudents()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $gid = intval(trim($_GET['gid']));
+            if(empty($gid)){
+                exit();
+            }
+            $output = '';
+            $students = $this->exammodel->GetStudentsByGroup($gid);
+            foreach($students as $student) {
+                $output .= '
+                    <tr>
+                        <td class="d-none"><input type="text" name="studentsid[]" value="'.$student->ID.'"></td>
+                        <td><input type="text" class="table-input w-100" name="names[]" value="'.$student->StudentName.'" readonly></td>
+                        <td>
+                            <button type="button" class="action-icon btn btn-sm text-danger fs-5 btndel">Remove</button>
+                        </td>
+                    </tr>
+                ';
+            }
+
+            echo json_encode($output);
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
