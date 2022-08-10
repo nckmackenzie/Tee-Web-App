@@ -23,6 +23,7 @@ class Books extends Controller
         $data = [
             'title' => 'Add Book',
             'courses' => $courses,
+            'glaccounts' => $this->bookmodel->GetGLAccounts(),
             'isedit' => false,
             'touched' => false,
             'id' => '',
@@ -32,6 +33,7 @@ class Books extends Controller
             'course' => '',
             'publisher' => '',
             'openingbal' => '',
+            'glaccount' => '',
             'asat' => '',
             'allowedit' => false,
             'active' => true,
@@ -42,6 +44,7 @@ class Books extends Controller
             'openingbal_err' => '',
             'asat_err' => '',
             'course_err' => '',
+            'glaccount_err' => '',
         ];
         $this->view('books/add',$data);
     }
@@ -54,6 +57,7 @@ class Books extends Controller
             $data = [
                 'title' => converttobool($_POST['isedit']) ? 'Edit Book' : 'Add Book',
                 'courses' => $courses,
+                'glaccounts' => $this->bookmodel->GetGLAccounts(),
                 'isedit' => converttobool($_POST['isedit']),
                 'touched' => true,
                 'id' => trim($_POST['id']),
@@ -66,6 +70,8 @@ class Books extends Controller
                 'asat' => !empty($_POST['asat']) ? date("Y-m-d", strtotime($_POST['asat'])) : date('Y-m-d'),
                 'active' => converttobool($_POST['isedit']) ? (isset($_POST['active']) ? true : false) : true,
                 'allowedit' => converttobool($_POST['allowedit']),
+                'glaccount' => !empty($_POST['glaccount']) ? trim($_POST['glaccount']) : '',
+                'glaccount_err' => '',
                 'name_err' => '',
                 'code_err' => '',
                 'author_err' => '',
@@ -103,8 +109,12 @@ class Books extends Controller
                 }
             }
 
+            if(empty($data['glaccount'])){
+                $data['glaccount_err'] = 'Select G/L account';
+            }
+
             if(!empty($data['name_err']) || !empty($data['code_err']) || !empty($data['asat_err']) ||
-               !empty($data['openingbal_err'])){
+               !empty($data['openingbal_err']) || !empty($data['glaccount_err'])){
                 $this->view('books/add',$data);
                 exit();
             }
@@ -132,6 +142,7 @@ class Books extends Controller
         $data = [
             'title' => 'Edit Book',
             'courses' => $courses,
+            'glaccounts' => $this->bookmodel->GetGLAccounts(),
             'isedit' => true,
             'touched' => false,
             'id' => (int)$book->ID,
@@ -144,13 +155,15 @@ class Books extends Controller
             'allowedit' => converttobool($book->AllowBalEdit),
             'active' => converttobool($book->Active),
             'asat' => $book->AsAtDate,
+            'glaccount' => $book->GlAccountId,
             'name_err' => '',
             'code_err' => '',
             'author_err' => '',
-            'publisher_err' => '',
+            'publisher_err' => '',-+
             'openingbal_err' => '',
             'asat_err' => '',
             'course_err' => '',
+            'glaccount_err' => ''
         ];
         $this->view('books/add',$data);
     }
