@@ -1,6 +1,7 @@
 import { HOST_URL } from '../utils.js';
 const table = document.getElementById('groupmembers');
 const groupSelect = document.getElementById('group');
+const form = document.querySelector('form');
 
 groupSelect.addEventListener('change', async function (e) {
   const tbody = table.getElementsByTagName('tbody')[0];
@@ -15,4 +16,15 @@ table.addEventListener('click', function (e) {
   if (!e.target.classList.contains('btndel')) return;
   const btn = e.target;
   btn.closest('tr').remove();
+});
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const tbody = table.getElementsByTagName('tbody')[0];
+  if (Number(tbody.rows.length) === 0) {
+    alert('No group members were selected');
+    return false;
+  } else {
+    document.groupform.submit();
+  }
 });
