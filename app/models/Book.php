@@ -15,6 +15,15 @@ class Book
         return $this->db->resultSet();
     }
 
+    public function GetGLAccounts()
+    {
+        $this->db->query('SELECT ID,UCASE(AccountName) AS AccountName 
+                          FROM accounttypes 
+                          WHERE (IsBank = 0) AND (AccountTypeId IS NOT NULL)
+                          ORDER BY AccountName');
+        return $this->db->resultset();
+    }
+
     //check if book exists
     public function CheckAvailability($id,$code)
     {
@@ -44,13 +53,14 @@ class Book
             $this->db->dbh->beginTransaction();
 
             if(!$data['isedit']){
-                $this->db->query('INSERT INTO books (Title,BookCode,Author,Publisher,CourseId) 
-                                  VALUES(:title, :code, :author, :publisher,:cid)');
+                $this->db->query('INSERT INTO books (Title,BookCode,Author,Publisher,CourseId,GlAccountId) 
+                                  VALUES(:title, :code, :author, :publisher,:cid,:gl)');
                 $this->db->bind(':title',$data['name']);
                 $this->db->bind(':code',$data['code']);
                 $this->db->bind(':author',!empty($data['author']) ? $data['author'] : null);
                 $this->db->bind(':publisher',!empty($data['publisher']) ? $data['publisher'] : null);
                 $this->db->bind(':cid',$data['course']);
+                $this->db->bind(':gl',$data['glaccount']);
                 $this->db->execute();
 
                 $id = $this->db->dbh->lastInsertId();
@@ -74,13 +84,14 @@ class Book
                     $this->db->execute();
                 }
                 $this->db->query('UPDATE books SET Title = :title, BookCode = :code, Author = :author, 
-                                         Publisher = :publisher,CourseId = :cid, Active = :active 
+                                         Publisher = :publisher,CourseId = :cid, GlAccountId=:gl, Active = :active 
                                   WHERE (ID=:id)');
                 $this->db->bind(':title',$data['name']);
                 $this->db->bind(':code',$data['code']);
                 $this->db->bind(':author',!empty($data['author']) ? $data['author'] : null);
                 $this->db->bind(':publisher',!empty($data['publisher']) ? $data['publisher'] : null);
                 $this->db->bind(':cid',$data['course']);
+                $this->db->bind(':gl',$data['glaccount']);
                 $this->db->bind(':active',$data['active']);
                 $this->db->bind(':id',$data['id']);
                 $this->db->execute();
