@@ -159,7 +159,7 @@ class Books extends Controller
             'name_err' => '',
             'code_err' => '',
             'author_err' => '',
-            'publisher_err' => '',-+
+            'publisher_err' => '',
             'openingbal_err' => '',
             'asat_err' => '',
             'course_err' => '',
