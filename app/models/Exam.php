@@ -92,4 +92,14 @@ class Exam
                           WHERE (Active = 1) AND (Deleted = 0) ORDER BY GroupName');
         return $this->db->resultSet();
     }
+
+    public function GetStudentsByGroup($id)
+    {
+        $this->db->query('SELECT ID,StudentName 
+                          FROM vw_membersbygroup
+                          WHERE GroupId = :gid
+                          ORDER BY StudentName');
+        $this->db->bind(':gid',$id);
+        return $this->db->resultSet();
+    }
 }
