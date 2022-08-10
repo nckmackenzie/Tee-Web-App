@@ -145,4 +145,26 @@ class Exams extends Controller
     {
         delete('exam',$this->exammodel);
     }
+
+    public function receiptfromgroup()
+    {
+        $data = [
+            'title' => 'Receive from Group',
+            'receiptdate' => date('Y-m-d'),
+            'groups' => $this->exammodel->GetGroups(),
+            'exams' => $this->exammodel->GetExams(),
+            'touched' => false,
+            'id' => '',
+            'group' => '',
+            'exam' => '',
+            'submitdate' => '',
+            'table' => [],
+            'receiptdate_err' => '',
+            'exam_err' => '',
+            'group_err' => '',
+            'submitdate_err' => '',
+        ];
+        $this->view('exams/receiptfromgroup',$data);
+        exit();
+    }
 }
