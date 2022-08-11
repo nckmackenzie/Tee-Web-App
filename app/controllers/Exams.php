@@ -277,4 +277,27 @@ class Exams extends Controller
             exit();
         }
     }
+
+    public function receiptmarking()
+    {
+        $data = [
+            'title' => 'Exam points entry',
+            'fromcenters' => $this->exammodel->GetCentersByStatus(1),
+            'exams' => '',
+            'groups' => '',
+            'touched' => false,
+            'id' => '',
+            'receiptdate' => '',
+            'fromcenter' => '',
+            'exam' => '',
+            'group' => '',
+            'table' => [],
+            'receiptdate_err' => '',
+            'fromcenter_err' => '',
+            'exam_err' => '',
+            'group_err' => '',
+            'save_err' => '',
+        ];
+        $this->view('exams/receiptmarking', $data);
+    }
 }
