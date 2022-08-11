@@ -102,4 +102,18 @@ class Exam
         $this->db->bind(':gid',$id);
         return $this->db->resultSet();
     }
+
+    public function CheckExamSubmission($group,$exam)
+    {
+        $this->db->query('SELECT COUNT(*) 
+                          FROM exam_marking_header
+                          WHERE (GroupId = :group) AND (ExamId = :exam)');
+        $this->db->bind(':group',$group);
+        $this->db->bind(':exam',$exam);
+        if(intval($this->db->getvalue()) > 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
