@@ -34,6 +34,7 @@ examSelect.addEventListener('change', async function (e) {
   const examId = examSelect.value;
   const groupId = groupSelect.value;
   const centerId = centerSelect.value;
+  const idInput = document.getElementById('id');
 
   if (!examId || !groupId || !centerId) return;
 
@@ -42,6 +43,7 @@ examSelect.addEventListener('change', async function (e) {
   );
   const data = await response.json();
   if (!data) return;
+  idInput.value = data;
 
   const tbody = table.getElementsByTagName('tbody')[0];
   tbody.innerHTML = '';
