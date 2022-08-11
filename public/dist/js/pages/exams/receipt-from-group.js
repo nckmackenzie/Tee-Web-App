@@ -6,8 +6,11 @@ const form = document.querySelector('form');
 groupSelect.addEventListener('change', async function (e) {
   const tbody = table.getElementsByTagName('tbody')[0];
   tbody.innerHTML = '';
+  const type = 'fromgroup';
   const groupId = +e.target.value;
-  const res = await fetch(`${HOST_URL}/exams/getstudents?gid=${groupId}`);
+  const res = await fetch(
+    `${HOST_URL}/exams/getstudents?gid=${groupId}&type=${type}`
+  );
   const data = await res.json();
   tbody.innerHTML = data;
 });
