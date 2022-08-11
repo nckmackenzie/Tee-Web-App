@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="mb-3">
+                                <div class="mb-2">
                                     <label for="exam">Exam</label>
                                     <select name="exam" id="exam" class="form-select form-select-sm mandatory 
                                             <?php echo inputvalidation($data['exam'],$data['exam_err'],$data['touched']);?>">
@@ -59,13 +59,21 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="mb-3">
+                                <div class="mb-2">
                                     <label for="submitdate">Submited For Marking Date</label>
                                     <input type="date" name="submitdate" id="submittdate" 
                                            class="form-control form-control-sm mandatory 
                                            <?php echo inputvalidation($data['submitdate'],$data['submitdate_err'],$data['touched']);?>"
                                            value="<?php echo $data['submitdate'];?>">
                                     <span class="invalid-feedback"><?php echo $data['submitdate_err'];?></span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="remarks">Remarks</label>
+                                    <input type="text" id="remarks" name="remarks" 
+                                           class="form-control form-control-sm"
+                                           value="<?php echo $data['remarks'];?>">
                                 </div>
                             </div>
                             <div class="col-9 mx-auto">
