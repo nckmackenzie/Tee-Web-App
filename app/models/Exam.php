@@ -116,4 +116,50 @@ class Exam
             return true;
         }
     }
+
+    public function CreateReceiptFromGroup($data)
+    {
+        try {
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('INSERT INTO exam_marking_header (FromCenter,ExamId,GroupId,ReceiptFromGroupDate
+                                                               ,SubmitMarkingDate,ExamStatus) 
+                              VALUES(:fcenter,:eid,:gid,:rdate,:sdate,:estatus)');
+            $this->db->bind(':fcenter',$_SESSION['centerid']);
+            $this->db->bind(':eid',!empty($data['exam']) ? $data['exam'] : null);
+            $this->db->bind(':gid',!empty($data['group']) ? $data['group'] : null);
+            $this->db->bind(':rdate',!empty($data['receiptdate']) ? $data['receiptdate'] : null);
+            $this->db->bind(':sdate',!empty($data['submitdate']) ? $data['submitdate'] : null);
+            $this->db->bind(':estatus',1);
+            $this->db->execute();
+            $tid = $this->db->dbh->lastInsertId();
+            
+            $this->db->query('INSERT INTO exam_marking_remarks (HeaderId,ExamStatusId,Remarks) 
+                              VALUES(:hid,:eid,:remark)');
+            $this->db->bind(':hid',$tid);
+            $this->db->bind(':eid',1);
+            $this->db->bind(':remark',!empty($data['remarks']) ? strtolower($data['remarks']) : null);
+            $this->db->execute();
+
+            for($i = 0; $i < count($data['studentsid']); $i++){
+                $this->db->query('INSERT INTO exam_marking_details (HeaderId,StudentId) VALUES(:hid,:student)');
+                $this->db->bind(':hid',$tid);
+                $this->db->bind(':student',$data['studentsid'][$i]);
+                $this->db->execute();
+            }
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+
+        } catch (\Exception $e) {
+            if($this->db->dbh->inTransaction()){
+                $this->db->dbh->rollBack();
+            }
+            throw $e;
+            return false;
+        }
+    }
 }
