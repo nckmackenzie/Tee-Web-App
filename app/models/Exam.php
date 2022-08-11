@@ -93,13 +93,23 @@ class Exam
         return $this->db->resultSet();
     }
 
-    public function GetStudentsByGroup($id)
+    public function GetStudentsByGroup($id,$type)
     {
-        $this->db->query('SELECT ID,StudentName 
-                          FROM vw_membersbygroup
-                          WHERE GroupId = :gid
-                          ORDER BY StudentName');
-        $this->db->bind(':gid',$id);
+        if($type === 'fromgroup'){
+            $this->db->query('SELECT ID,StudentName 
+                              FROM vw_membersbygroup
+                              WHERE GroupId = :gid
+                              ORDER BY StudentName');
+            $this->db->bind(':gid',$id);
+        }
+        if($type === 'formarking'){
+            $this->db->query('SELECT e.StudentId As ID,
+                                     UCASE(s.StudentName) As StudentName
+                              FROM exam_marking_details e join students s on e.StudentId = s.ID
+                              WHERE HeaderId = :hid
+                              ORDER BY StudentName');
+            $this->db->bind(':hid',$id);
+        }
         return $this->db->resultSet();
     }
 
@@ -161,5 +171,40 @@ class Exam
             throw $e;
             return false;
         }
+    }
+
+    public function GetCentersByStatus($id)
+    {
+        $this->db->query('SELECT 
+                            DISTINCT e.FromCenter AS ID,
+                            UCASE(c.CenterName) As CenterName
+                          FROM exam_marking_header e join centers c on e.FromCenter = c.ID
+                          WHERE e.ExamStatus = :id');
+        $this->db->bind(':id', $id);
+        return $this->db->resultSet();
+    }
+
+    public function GetSelectOptions($type,$value,$status)
+    {
+        // $sql= '';
+        if($type === 'group'){
+            $sql = 'SELECT 
+                        DISTINCT e.GroupId As ID,
+                        UCASE(g.GroupName) AS CriteriaName
+                    FROM exam_marking_header e join groups g On e.GroupId = g.ID
+                    WHERE  e.FromCenter = :val AND (e.ExamStatus = :stat)';
+        }
+        if($type === 'exam'){
+            $sql = 'SELECT 
+                        DISTINCT e.ExamId As ID,
+                        UCASE(x.ExamName) AS CriteriaName
+                    FROM exam_marking_header e join exams x On e.ExamId = x.ID
+                    WHERE  e.GroupId = :val AND (e.ExamStatus = :stat)';
+        }
+
+        $this->db->query($sql);
+        $this->db->bind(':val',$value);
+        $this->db->bind(':stat',$status);
+        return $this->db->resultSet();
     }
 }
