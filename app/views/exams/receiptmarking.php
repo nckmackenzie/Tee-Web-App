@@ -59,7 +59,7 @@
                                         <label for="group">From Group</label>
                                         <select name="group" id="group" class="form-select form-select-sm mandatory">
                                             <option value="">Select group</option>
-                                            <?php if($data['touched']) : ?>
+                                            <?php if($data['touched'] && !empty($data['groups'])) : ?>
                                                 <?php foreach($data['groups'] as $group) : ?>
                                                     <option value="<?php echo $group->ID;?>" <?php selectdCheck($data['group'],$group->ID);?>><?php echo $group->GroupName;?></option>
                                                 <?php endforeach; ?>
@@ -73,7 +73,7 @@
                                         <label for="exam">Exam</label>
                                         <select name="exam" id="exam" class="form-select form-select-sm mandatory">
                                             <option value="">Select exam</option>
-                                            <?php if($data['touched']) : ?>
+                                            <?php if($data['touched'] && !empty($data['exams'])) : ?>
                                                 <?php foreach($data['exams'] as $exam) : ?>
                                                     <option value="<?php echo $exam->ID;?>" <?php selectdCheck($data['exam'],$exam->ID);?>><?php echo $exam->ExamName;?></option>
                                                 <?php endforeach; ?>
