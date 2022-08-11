@@ -158,6 +158,7 @@ class Exams extends Controller
             'group' => '',
             'exam' => '',
             'submitdate' => '',
+            'remarks' => '',
             'table' => [],
             'receiptdate_err' => '',
             'exam_err' => '',
