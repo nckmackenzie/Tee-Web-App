@@ -56,20 +56,6 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="exam">From Center</label>
-                                        <select name="exam" id="exam" class="form-select form-select-sm mandatory">
-                                            <option value="">Select exam</option>
-                                            <?php if($data['touched']) : ?>
-                                                <?php foreach($data['exams'] as $exam) : ?>
-                                                    <option value="<?php echo $exam->ID;?>" <?php selectdCheck($data['exam'],$exam->ID);?>><?php echo $exam->ExamName;?></option>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                        </select>
-                                        <span class="invalid-feedback"><?php echo $data['exam_err'];?></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
                                         <label for="group">From Group</label>
                                         <select name="group" id="group" class="form-select form-select-sm mandatory">
                                             <option value="">Select group received from</option>
@@ -80,6 +66,20 @@
                                             <?php endif; ?>
                                         </select>
                                         <span class="invalid-feedback"><?php echo $data['group_err'];?></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="exam">Exam</label>
+                                        <select name="exam" id="exam" class="form-select form-select-sm mandatory">
+                                            <option value="">Select exam</option>
+                                            <?php if($data['touched']) : ?>
+                                                <?php foreach($data['exams'] as $exam) : ?>
+                                                    <option value="<?php echo $exam->ID;?>" <?php selectdCheck($data['exam'],$exam->ID);?>><?php echo $exam->ExamName;?></option>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </select>
+                                        <span class="invalid-feedback"><?php echo $data['exam_err'];?></span>
                                     </div>
                                 </div>
                                 <div class="col-12 mb-1">
