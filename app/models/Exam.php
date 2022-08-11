@@ -210,6 +210,7 @@ class Exam
 
     public function GetId($data)
     {
+        $fields = [];
         $this->db->query('SELECT ID FROM exam_marking_header
                           WHERE (FromCenter = :center) AND (ExamId = :eid) AND (GroupId = :gid)');
         $this->db->bind(':center', $data['centerid']);
@@ -219,12 +220,58 @@ class Exam
         if(!$value){
             return false;
         }else{
-            return $value;
+           array_push($fields,$value);
+           $this->db->query('SELECT UCASE(Remarks) AS Remarks FROM exam_marking_remarks WHERE (HeaderId = :hid)');
+           $this->db->bind(':hid',$value);
+           array_push($fields,$this->db->getvalue());
+           return $fields;
         }
-        // if(!$this->db->getvalue()){
-        //     return false;
-        // }else{
-        //     return true;
-        // }
+    }
+
+    public function CreateReceiptMarking($data)
+    {
+        try {
+            $this->db->dbh->beginTransaction();
+            $this->db->query('UPDATE exam_marking_header SET ReceiptForMarkingDate = :edate,ExamStatus =:stat 
+                              WHERE (ID = :id)');
+            $this->db->bind(':edate',!empty($data['receiptdate']) ? $data['receiptdate'] : null);
+            $this->db->bind(':stat',2);
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
+            $this->db->query('INSERT INTO exam_marking_remarks (HeaderId,ExamStatusId,Remarks) 
+                              VALUES(:hid,:stat,:remark)');
+            $this->db->bind(':hid',$data['id']);
+            $this->db->bind(':stat',2);
+            $this->db->bind(':remark',!empty($data['markingremarks']) ? strtolower($data['markingremarks']) : null);
+            $this->db->execute();
+
+            $this->db->query('DELETE FROM exam_marking_details WHERE HeaderId = :hid');
+            $this->db->bind(':hid',$data['id']);
+            $this->db->execute();
+
+            for($i = 0; $i < count($data['studentsid']); $i++){
+                $this->db->query('INSERT INTO exam_marking_details (HeaderId,StudentId,Marks) 
+                                  VALUES(:hid,:student,:marks)');
+                $this->db->bind(':hid',$data['id']);
+                $this->db->bind(':student',$data['studentsid'][$i]);
+                $this->db->bind(':marks', !empty($data['marks']) ? $data['marks'][$i] : 0);
+                $this->db->execute();
+            }
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+
+
+        } catch (\Exception $e) {
+            if($this->db->dbh->inTransaction()){
+                $this->db->dbh->rollBack();
+            }
+            throw $e;
+            return false;
+        }
     }
 }
