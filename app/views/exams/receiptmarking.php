@@ -55,7 +55,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="mb-3">
+                                    <div class="mb-2">
                                         <label for="group">From Group</label>
                                         <select name="group" id="group" class="form-select form-select-sm mandatory">
                                             <option value="">Select group</option>
@@ -69,7 +69,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="mb-3">
+                                    <div class="mb-2">
                                         <label for="exam">Exam</label>
                                         <select name="exam" id="exam" class="form-select form-select-sm mandatory">
                                             <option value="">Select exam</option>
@@ -80,6 +80,21 @@
                                             <?php endif; ?>
                                         </select>
                                         <span class="invalid-feedback"><?php echo $data['exam_err'];?></span>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-2">
+                                        <label for="centerremarks">Remarks From Center</label>
+                                        <input type="text" name="centerremarks" class="form-control form-control-sm" 
+                                               id="centerremarks" value="<?php echo $data['centerremarks'];?>" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-2">
+                                        <label for="markingremarks">Remarks From Marking</label>
+                                        <input type="text" name="markingremarks" class="form-control form-control-sm" 
+                                               id="markingremarks" value="<?php echo $data['markingremarks'];?>"
+                                               placeholder="Enter any remarks from marking exams to center...">
                                     </div>
                                 </div>
                                 <div class="col-12 mb-1">
