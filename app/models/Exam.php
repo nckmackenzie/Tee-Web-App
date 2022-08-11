@@ -207,4 +207,24 @@ class Exam
         $this->db->bind(':stat',$status);
         return $this->db->resultSet();
     }
+
+    public function GetId($data)
+    {
+        $this->db->query('SELECT ID FROM exam_marking_header
+                          WHERE (FromCenter = :center) AND (ExamId = :eid) AND (GroupId = :gid)');
+        $this->db->bind(':center', $data['centerid']);
+        $this->db->bind(':eid', $data['examid']);
+        $this->db->bind(':gid', $data['groupid']);
+        $value = $this->db->getvalue();
+        if(!$value){
+            return false;
+        }else{
+            return $value;
+        }
+        // if(!$this->db->getvalue()){
+        //     return false;
+        // }else{
+        //     return true;
+        // }
+    }
 }
