@@ -164,6 +164,7 @@ class Exams extends Controller
             'exam_err' => '',
             'group_err' => '',
             'submitdate_err' => '',
+            'save_err' => ''
         ];
         $this->view('exams/receiptfromgroup',$data);
         exit();
@@ -192,6 +193,85 @@ class Exams extends Controller
             }
 
             echo json_encode($output);
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
+
+    public function createreceiptfromgroup()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
+            $data = [
+                'title' => 'Receive from Group',
+                'groups' => $this->exammodel->GetGroups(),
+                'exams' => $this->exammodel->GetExams(),
+                'touched' => true,
+                'id' => '',
+                'receiptdate' => !empty(trim($_POST['receiptdate'])) ? date('Y-m-d',strtotime(trim($_POST['receiptdate']))) : '',
+                'group' => !empty($_POST['group']) ? $_POST['group'] : '',
+                'exam' => !empty($_POST['exam']) ? $_POST['exam'] : '',
+                'submitdate' => !empty(trim($_POST['submitdate'])) ? date('Y-m-d',strtotime(trim($_POST['submitdate']))) : '',
+                'remarks' => !empty(trim($_POST['remarks'])) ? trim($_POST['remarks']) : '',
+                'table' => [],
+                'studentsid' => $_POST['studentsid'],
+                'names' => $_POST['names'],
+                'receiptdate_err' => '',
+                'exam_err' => '',
+                'group_err' => '',
+                'submitdate_err' => '',
+                'save_err' => ''
+            ];
+
+            for($i = 0; $i < count($data['studentsid']); $i++){
+                array_push($data['table'],[
+                    'sid' => $data['studentsid'][$i],
+                    'name' => $data['names'][$i],
+                ]);
+            }
+
+            if(empty($data['receiptdate']) || date('Y-m-d') < $data['receiptdate']){
+                $data['receiptdate_err'] = 'Invalid receipt date.';
+            }
+
+            if(empty($data['exam'])){
+                $data['exam_err'] = 'Select exam';
+            }
+
+            if(empty($data['group'])){
+                $data['group_err'] = 'Select group';
+            }
+
+            if(empty($data['submitdate']) || date('Y-m-d') < $data['submitdate']){
+                $data['submitdate_err'] = 'Invalid submit date.';
+            }
+
+            if(!empty($data['receiptdate']) && !empty($data['submitdate']) && $data['receiptdate'] > $data['submitdate']){
+                $data['submitdate_err'] = 'Submit date earlier than receipt date';
+            }
+
+            if(!empty($data['exam']) && !empty($data['group']) 
+                && !$this->exammodel->CheckExamSubmission($data['group'],$data['exam'])){
+                $data['exam_err'] = 'Exam already submitted for this group';    
+            }
+
+            if(!empty($data['exam_err']) || !empty($data['group_err']) || !empty($data['submitdate_err'])
+               || !empty($data['receiptdate_err'])){
+                $this->view('exams/receiptfromgroup',$data);
+                exit();
+            }
+
+            if(!$this->exammodel->CreateReceiptFromGroup($data)){
+                $data['save_err'] = 'Error creating this transaction';
+                $this->view('exams/receiptfromgroup',$data);
+                exit();
+            }
+
+            flash('home_msg',null,'Exam Receipt successfully!',flashclass('toast','success'));
+            redirect('home');
+            exit();
+
         }else{
             redirect('auth/forbidden');
             exit();
