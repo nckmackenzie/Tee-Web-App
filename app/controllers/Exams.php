@@ -300,6 +300,8 @@ class Exams extends Controller
             'fromcenter' => '',
             'exam' => '',
             'group' => '',
+            'centerremarks' => '',
+            'markingremarks' => '',
             'table' => [],
             'receiptdate_err' => '',
             'fromcenter_err' => '',
@@ -342,6 +344,92 @@ class Exams extends Controller
 
             $headerid = $this->exammodel->GetId($data);
             echo json_encode($headerid);
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
+
+    public function createreceiptmarking()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
+            $data = [
+                'title' => 'Exam points entry',
+                'fromcenters' => $this->exammodel->GetCentersByStatus(1),
+                'touched' => true,
+                'exams' => '',
+                'groups' => '',
+                'id' => trim($_POST['id']),
+                'receiptdate' => !empty(trim($_POST['receiptdate'])) ? date('Y-m-d',strtotime($_POST['receiptdate'])) : '',
+                'fromcenter' => !empty($_POST['fromcenter']) ? $_POST['fromcenter'] : '',
+                'group' => !empty($_POST['group']) ? $_POST['group'] : '',
+                'exam' => !empty($_POST['exam']) ? $_POST['exam'] : '',
+                'centerremarks' => trim($_POST['centerremarks']),  
+                'markingremarks' => !empty(trim($_POST['markingremarks'])) ? trim($_POST['markingremarks']) : '',
+                'table' => [],
+                'studentsid' => $_POST['studentsid'],
+                'names' => $_POST['names'],
+                'marks' => $_POST['marks'],
+                'receiptdate_err' => '',
+                'fromcenter_err' => '',
+                'exam_err' => '',
+                'group_err' => '',
+                'save_err' => '',
+            ];
+            
+            for($i = 0; $i < count($data['studentsid']); $i++){
+                array_push($data['table'],[
+                    'sid' => $data['studentsid'][$i],
+                    'name' => $data['names'][$i],
+                    'marks' => !empty($data['marks'][$i]) ? $data['marks'][$i] : 0,
+                ]);
+            }
+
+            if(empty($data['receiptdate'])){
+                $data['receiptdate_err'] = 'Select receipt date';
+            }
+
+            if(!empty($data['receiptdate']) && $data['receiptdate'] > date('Y-m-d')){
+                $data['receiptdate_err'] = 'Receipt date cannot be greater than today';
+            }
+
+            if(empty($data['fromcenter'])){
+                $data['fromcenter_err'] = 'Select center';
+            }
+
+            if(empty($data['group'])){
+                $data['group_err'] = 'Select group';
+            }
+
+            if(empty($data['exam'])){
+                $data['exam_err'] = 'Select exam';
+            }
+
+            if(!empty($data['fromcenter'])){
+                $data['groups'] = $this->exammodel->GetSelectOptions('group', $data['fromcenter'],1);
+            }
+
+            if(!empty($data['group'])){
+                $data['exams'] = $this->exammodel->GetSelectOptions('exam', $data['group'],1);
+            }
+
+            if(!empty($data['fromcenter_err']) || !empty($data['receiptdate_err']) || !empty($data['group_err'])
+               || !empty($data['exam_err'])){
+                $this->view('exams/receiptmarking',$data);
+                exit();
+            }
+
+            if(!$this->exammodel->CreateReceiptMarking($data)){
+                $data['save_err'] = 'Unable to save this transaction';
+                $this->view('exams/receiptmarking',$data);
+                exit();
+            }
+
+            flash('home_msg',null,'Saved successfully!',flashclass('toast','success'));
+            redirect('home');
+            exit();
+
         }else{
             redirect('auth/forbidden');
             exit();
