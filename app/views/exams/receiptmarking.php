@@ -105,7 +105,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <input type="hidden" name="id" value="<?php echo $data['id'];?>">
+                            <input type="hidden" name="id" id="id value="<?php echo $data['id'];?>">
                             <button type="submit" class="btn btn-sm btn-primary">Save</button>
                         </div>
                     </form>
