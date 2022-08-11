@@ -35,6 +35,7 @@ examSelect.addEventListener('change', async function (e) {
   const groupId = groupSelect.value;
   const centerId = centerSelect.value;
   const idInput = document.getElementById('id');
+  const remarksInput = document.getElementById('centerremarks');
 
   if (!examId || !groupId || !centerId) return;
 
@@ -42,14 +43,15 @@ examSelect.addEventListener('change', async function (e) {
     `${HOST_URL}/exams/getheaderid?examId=${examId}&groupId=${groupId}&centerId=${centerId}`
   );
   const data = await response.json();
-  if (!data) return;
-  idInput.value = data;
+  if (!data || !data.id) return;
+  idInput.value = 11;
+  remarksInput.value = data.remarks;
 
   const tbody = table.getElementsByTagName('tbody')[0];
   tbody.innerHTML = '';
   const fetchtype = 'formarking';
   const res = await fetch(
-    `${HOST_URL}/exams/getstudents?gid=${data}&type=${fetchtype}`
+    `${HOST_URL}/exams/getstudents?gid=${data.id}&type=${fetchtype}`
   );
   const studentdata = await res.json();
   tbody.innerHTML = studentdata;
