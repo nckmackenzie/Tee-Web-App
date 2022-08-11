@@ -44,7 +44,7 @@ examSelect.addEventListener('change', async function (e) {
   );
   const data = await response.json();
   if (!data || !data.id) return;
-  idInput.value = 11;
+  idInput.value = +data.id;
   remarksInput.value = data.remarks;
 
   const tbody = table.getElementsByTagName('tbody')[0];
