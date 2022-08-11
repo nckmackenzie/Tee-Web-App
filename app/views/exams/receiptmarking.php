@@ -58,7 +58,7 @@
                                     <div class="mb-3">
                                         <label for="group">From Group</label>
                                         <select name="group" id="group" class="form-select form-select-sm mandatory">
-                                            <option value="">Select group received from</option>
+                                            <option value="">Select group</option>
                                             <?php if($data['touched']) : ?>
                                                 <?php foreach($data['groups'] as $group) : ?>
                                                     <option value="<?php echo $group->ID;?>" <?php selectdCheck($data['group'],$group->ID);?>><?php echo $group->GroupName;?></option>
