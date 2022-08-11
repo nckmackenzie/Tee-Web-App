@@ -329,4 +329,22 @@ class Exams extends Controller
             exit();
         }
     }
+
+    public function getheaderid()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $_GET = filter_input_array(INPUT_GET, FILTER_UNSAFE_RAW);
+            $data = [
+                'examid' => (int)trim($_GET['examId']),
+                'groupid' => (int)trim($_GET['groupId']),
+                'centerid' => (int)trim($_GET['centerId']),
+            ];
+
+            $headerid = $this->exammodel->GetId($data);
+            echo json_encode($headerid);
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
