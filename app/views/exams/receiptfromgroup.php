@@ -7,10 +7,12 @@
         <div class="col-12">
             <div class="page-title-box">
                 <div class="page-title-right"></div>
-                <div class="mt-1 alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong>Alert!</strong> You will be unable to undo this transaction after saving. Confirm details before saving.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+                <?php if(!$data['touched']) : ?>
+                    <div class="mt-1 alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Alert!</strong> You will be unable to undo this transaction after saving. Confirm details before saving.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>     
@@ -73,7 +75,8 @@
                                     <label for="remarks">Remarks</label>
                                     <input type="text" id="remarks" name="remarks" 
                                            class="form-control form-control-sm"
-                                           value="<?php echo $data['remarks'];?>">
+                                           value="<?php echo $data['remarks'];?>"
+                                           placeholder="Enter any remarks you wish for examiner here...">
                                 </div>
                             </div>
                             <div class="col-9 mx-auto">
