@@ -175,19 +175,28 @@ class Exams extends Controller
         if($_SERVER['REQUEST_METHOD'] === 'GET'){
             $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
             $gid = intval(trim($_GET['gid']));
+            $type = trim($_GET['type']);
             if(empty($gid)){
                 exit();
             }
             $output = '';
-            $students = $this->exammodel->GetStudentsByGroup($gid);
+            $students = $this->exammodel->GetStudentsByGroup($gid,$type);
             foreach($students as $student) {
                 $output .= '
                     <tr>
                         <td class="d-none"><input type="text" name="studentsid[]" value="'.$student->ID.'"></td>
                         <td><input type="text" class="table-input w-100" name="names[]" value="'.$student->StudentName.'" readonly></td>
-                        <td>
-                            <button type="button" class="action-icon btn btn-sm text-danger fs-5 btndel">Remove</button>
-                        </td>
+                        ';
+                        if($type === 'fromgroup'){
+                            $output .= '
+                            <td>
+                                <button type="button" class="action-icon btn btn-sm text-danger fs-5 btndel">Remove</button>
+                            </td>';
+                        }elseif($type ==='formarking'){
+                            $output .= '
+                            <td><input type="number" class="table-input" name="marks[]" value=""></td>';    
+                        }
+                    $output .= '    
                     </tr>
                 ';
             }
@@ -299,5 +308,25 @@ class Exams extends Controller
             'save_err' => '',
         ];
         $this->view('exams/receiptmarking', $data);
+    }
+    public function getselectoptions()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $data = [
+                'type' => trim($_GET['type']),
+                'value' => trim($_GET['value']),
+            ];
+
+            $values = $this->exammodel->GetSelectOptions($data['type'], $data['value'],1);
+            $output = '<option value="" selected disabled>Select '.$data['type'].'</option>';
+            foreach($values as $value){
+                $output .= '<option value="'.$value->ID.'">'.$value->CriteriaName.'</option>';
+            }
+            echo json_encode($output);
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
     }
 }
