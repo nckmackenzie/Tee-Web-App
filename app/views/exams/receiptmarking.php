@@ -61,7 +61,7 @@
                                             <option value="">Select group</option>
                                             <?php if($data['touched'] && !empty($data['groups'])) : ?>
                                                 <?php foreach($data['groups'] as $group) : ?>
-                                                    <option value="<?php echo $group->ID;?>" <?php selectdCheck($data['group'],$group->ID);?>><?php echo $group->GroupName;?></option>
+                                                    <option value="<?php echo $group->ID;?>" <?php selectdCheck($data['group'],$group->ID);?>><?php echo $group->CriteriaName;?></option>
                                                 <?php endforeach; ?>
                                             <?php endif; ?>
                                         </select>
@@ -75,7 +75,7 @@
                                             <option value="">Select exam</option>
                                             <?php if($data['touched'] && !empty($data['exams'])) : ?>
                                                 <?php foreach($data['exams'] as $exam) : ?>
-                                                    <option value="<?php echo $exam->ID;?>" <?php selectdCheck($data['exam'],$exam->ID);?>><?php echo $exam->ExamName;?></option>
+                                                    <option value="<?php echo $exam->ID;?>" <?php selectdCheck($data['exam'],$exam->ID);?>><?php echo $exam->CriteriaName;?></option>
                                                 <?php endforeach; ?>
                                             <?php endif; ?>
                                         </select>
