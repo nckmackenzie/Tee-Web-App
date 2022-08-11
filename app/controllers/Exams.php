@@ -342,8 +342,13 @@ class Exams extends Controller
                 'centerid' => (int)trim($_GET['centerId']),
             ];
 
-            $headerid = $this->exammodel->GetId($data);
-            echo json_encode($headerid);
+            $headerid = $this->exammodel->GetId($data)[0];
+            $remarks = $this->exammodel->GetId($data)[1];
+            $results = [
+                'id' => $headerid,
+                'remarks' => $remarks,
+            ];
+            echo json_encode($results);
         }else{
             redirect('auth/forbidden');
             exit();
