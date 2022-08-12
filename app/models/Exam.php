@@ -8,6 +8,13 @@ class Exam
         $this->db = new Database;
     }
 
+    public function GetCenterName($id)
+    {
+        $this->db->query('SELECT UCASE(CenterName) As CenterName FROM centers WHERE ID = :id');
+        $this->db->bind(':id',(int)$id);
+        return $this->db->getvalue();
+    }
+
     public function GetExams()
     {
         $this->db->query('SELECT * FROM vw_exams');
