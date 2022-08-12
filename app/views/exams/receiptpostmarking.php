@@ -29,7 +29,7 @@
             <div class="card">
                 <div class="card-header"><?php echo $data['title'];?></div>
                 <div class="card-body">
-                    <form action="<?php echo URLROOT;?>/exams/createreceiptmarking" name="form" method="post" autocomplete="off">
+                    <form action="<?php echo URLROOT;?>/exams/createreceiptpostmarking" name="form" method="post" autocomplete="off">
                         <div class="row">
                             <div class="col-md-6 mb-2">
                                 <label for="receiptdate">Receipt Date</label>
