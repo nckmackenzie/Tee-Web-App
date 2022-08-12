@@ -6,9 +6,9 @@ const examSelect = document.getElementById('exam');
 const table = document.getElementById('groupmembers');
 const form = document.querySelector('form');
 
-async function getSelectOptions(type, value) {
+async function getSelectOptions(type, value, status) {
   const res = await fetch(
-    `${HOST_URL}/exams/getselectoptions?type=${type}&value=${value}`
+    `${HOST_URL}/exams/getselectoptions?type=${type}&value=${value}&status-${status}`
   );
   const data = await res.json();
   return data;
@@ -16,17 +16,19 @@ async function getSelectOptions(type, value) {
 
 centerSelect.addEventListener('change', async function (e) {
   groupSelect.innerHTML = '';
+  const status = 1;
   const centerId = +e.target.value;
   const type = 'group';
-  const data = await getSelectOptions(type, centerId);
+  const data = await getSelectOptions(type, centerId, status);
   groupSelect.innerHTML = data;
 });
 
 groupSelect.addEventListener('change', async function (e) {
   examSelect.innerHTML = '';
   const groupId = +e.target.value;
+  const status = 1;
   const type = 'exam';
-  const data = await getSelectOptions(type, groupId);
+  const data = await getSelectOptions(type, groupId, status);
   examSelect.innerHTML = data;
 });
 
