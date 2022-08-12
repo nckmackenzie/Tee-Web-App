@@ -37,7 +37,7 @@
                                        class="form-control form-control-sm mandatory 
                                        <?php echo inputvalidation($data['receiptdate'],$data['receiptdate_err'],$data['touched']);?>"
                                        value="<?php echo $data['receiptdate'];?>">
-                                <span class="invalid-feedback"><?php echo $data['receiptdate'];?></span>
+                                <span class="invalid-feedback"><?php echo $data['receiptdate_err'];?></span>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-2">
@@ -46,7 +46,7 @@
                                             <?php echo inputvalidation($data['fromcenter'],$data['fromcenter_err'],$data['touched']);?>">
                                         <option value="">Select center</option>
                                         <?php if($data['center_available'] && !$_SESSION['examcenter']) : ?>
-                                            <option value="<?php echo $_SESSION['centerid'];?>" <?php selectdCheck($data['group'],$_SESSION['centerid']);?>><?php echo $data['centername'];?></option>
+                                            <option value="<?php echo $_SESSION['centerid'];?>" <?php selectdCheck($data['fromcenter'],$_SESSION['centerid']);?>><?php echo $data['centername'];?></option>
                                         <?php elseif($_SESSION['examcenter']) : ?>
                                             <?php foreach($data['centers'] as $center) : ?>
                                                 <option value="<?php echo $center->ID;?>"><?php echo $center->CenterName;?></option>
@@ -64,7 +64,7 @@
                                         <option value="">Select group</option>
                                         <?php if($data['touched'] && !empty($data['groups'])) : ?>
                                             <?php foreach($data['groups'] as $group) : ?>
-                                                <option value="<?php echo $group->ID;?>" <?php selectdCheck($data['group'],$group->ID);?>><?php echo $center->CriteriaName;?></option>
+                                                <option value="<?php echo $group->ID;?>" <?php selectdCheck($data['group'],$group->ID);?>><?php echo $group->CriteriaName;?></option>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
                                     </select>

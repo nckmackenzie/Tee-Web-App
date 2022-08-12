@@ -520,7 +520,7 @@ class Exams extends Controller
                 'receiptdate' => !empty(trim($_POST['receiptdate'])) ? date('Y-m-d',strtotime(trim($_POST['receiptdate']))) : '',
                 'fromcenter' => !empty($_POST['fromcenter']) ? $_POST['fromcenter'] : '',
                 'group' => !empty($_POST['group']) ? $_POST['group'] : '',
-                'exam' => !empty($_POST['fromcenter']) ? $_POST['fromcenter'] : '',
+                'exam' => !empty($_POST['exam']) ? $_POST['exam'] : '',
                 'center_available' => converttobool(trim($_POST['centeravailable'])),
                 'markerremarks' => !empty($_POST['markerremarks']) ? $_POST['markerremarks'] : '',
                 'receiptremarks' => !empty($_POST['receiptremarks']) ? $_POST['receiptremarks'] : '',
@@ -535,6 +535,10 @@ class Exams extends Controller
                 'exam_err' => '',
                 'save_err' => ''
             ];
+
+            if($data['center_available']){
+                $data['centername'] = $this->exammodel->GetCenterName((int)$data['fromcenter']);
+            }
 
             for($i = 0; $i < count($data['studentsid']); $i++){
                 array_push($data['table'],[
