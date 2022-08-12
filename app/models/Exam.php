@@ -228,8 +228,9 @@ class Exam
             return false;
         }else{
            array_push($fields,$value);
-           $this->db->query('SELECT UCASE(Remarks) AS Remarks FROM exam_marking_remarks WHERE (HeaderId = :hid)');
+           $this->db->query('SELECT UCASE(Remarks) AS Remarks FROM exam_marking_remarks WHERE (HeaderId = :hid) AND (ExamStatusId = :stat)');
            $this->db->bind(':hid',$value);
+           $this->db->bind(':stat',$data['status']);
            array_push($fields,$this->db->getvalue());
            return $fields;
         }
