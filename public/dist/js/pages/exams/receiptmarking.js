@@ -38,11 +38,12 @@ examSelect.addEventListener('change', async function (e) {
   const centerId = centerSelect.value;
   const idInput = document.getElementById('id');
   const remarksInput = document.getElementById('centerremarks');
+  const status = 1;
 
   if (!examId || !groupId || !centerId) return;
 
   const response = await fetch(
-    `${HOST_URL}/exams/getheaderid?examId=${examId}&groupId=${groupId}&centerId=${centerId}`
+    `${HOST_URL}/exams/getheaderid?examId=${examId}&groupId=${groupId}&centerId=${centerId}&status=${status}`
   );
   const data = await response.json();
   if (!data || !data.id) return;
