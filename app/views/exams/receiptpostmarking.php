@@ -125,6 +125,7 @@
                         </div><!-- /.row -->
                         <div class="d-grid d-md-block">
                             <input type="hidden" name="id" id="id" value="<?php echo $data['id']; ?>">
+                            <input type="hidden" name="centeravailable" id="centeravailable" value="<?php echo $data['center_available']; ?>">
                             <button type="submit" class="btn btn-sm btn-primary">Save</button>
                         </div>
                     </form>
