@@ -8,7 +8,7 @@ const form = document.querySelector('form');
 
 async function getSelectOptions(type, value, status) {
   const res = await fetch(
-    `${HOST_URL}/exams/getselectoptions?type=${type}&value=${value}&status-${status}`
+    `${HOST_URL}/exams/getselectoptions?type=${type}&value=${value}&status=${status}`
   );
   const data = await res.json();
   return data;
