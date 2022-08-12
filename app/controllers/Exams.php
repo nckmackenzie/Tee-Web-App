@@ -596,4 +596,14 @@ class Exams extends Controller
             exit();
         }
     }
+    public function points()
+    {
+        $data = [
+            'title' => 'Points',
+            'has_datatable' => true,
+            'points' => $this->exammodel->GetPoints(),
+        ];
+        $this->view('exams/points',$data);
+        exit();
+    }
 }
