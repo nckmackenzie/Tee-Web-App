@@ -341,6 +341,7 @@ class Exams extends Controller
                 'examid' => (int)trim($_GET['examId']),
                 'groupid' => (int)trim($_GET['groupId']),
                 'centerid' => (int)trim($_GET['centerId']),
+                'status' => (int)trim($_GET['status'])
             ];
 
             $headerid = $this->exammodel->GetId($data)[0];
