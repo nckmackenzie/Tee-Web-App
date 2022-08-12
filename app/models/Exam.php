@@ -282,4 +282,49 @@ class Exam
             return false;
         }
     }
+
+    public function GetStudentsMarks($id)
+    {
+        $this->db->query('SELECT e.StudentId As ID,
+                                 UCASE(s.StudentName) As StudentName,
+                                 IFNULL(e.Marks,0) As Marks
+                          FROM   exam_marking_details e join students s on e.StudentId = s.ID
+                          WHERE  HeaderId = :hid
+                          ORDER BY StudentName');
+        $this->db->bind(':hid',$id);
+        return $this->db->resultset();
+    }
+
+    public function CreateReceiptPostMarking($data)
+    {
+        try {
+            $this->db->dbh->beginTransaction();
+            $this->db->query('UPDATE exam_marking_header SET ReceiptPostMarkingDate = :edate,ExamStatus =:stat 
+                              WHERE (ID = :id)');
+            $this->db->bind(':edate',!empty($data['receiptdate']) ? $data['receiptdate'] : null);
+            $this->db->bind(':stat',3);
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
+            $this->db->query('INSERT INTO exam_marking_remarks (HeaderId,ExamStatusId,Remarks) 
+                              VALUES(:hid,:stat,:remark)');
+            $this->db->bind(':hid',$data['id']);
+            $this->db->bind(':stat',3);
+            $this->db->bind(':remark',!empty($data['receiptremarks']) ? strtolower($data['receiptremarks']) : null);
+            $this->db->execute();
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+
+        } catch (\Exception $e) {
+            if($this->db->dbh->inTransaction()){
+                $this->db->dbh->rollBack();
+            }
+            throw $e;
+            return false;
+        }
+    }
 }
