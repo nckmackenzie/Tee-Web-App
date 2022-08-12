@@ -318,9 +318,10 @@ class Exams extends Controller
             $data = [
                 'type' => trim($_GET['type']),
                 'value' => trim($_GET['value']),
+                'status' => (int)trim($_GET['status'])
             ];
 
-            $values = $this->exammodel->GetSelectOptions($data['type'], $data['value'],1);
+            $values = $this->exammodel->GetSelectOptions($data['type'], $data['value'],$data['status']);
             $output = '<option value="" selected disabled>Select '.$data['type'].'</option>';
             foreach($values as $value){
                 $output .= '<option value="'.$value->ID.'">'.$value->CriteriaName.'</option>';
