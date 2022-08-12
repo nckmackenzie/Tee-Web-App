@@ -440,4 +440,39 @@ class Exams extends Controller
             exit();
         }
     }
+
+    public function receiptpostmarking()
+    {
+        $centers = $this->exammodel->GetCentersByStatus(2);
+        $data = [
+            'title' => 'Receipt Post Marking',
+            'centers' => $centers,
+            'groups' => '',
+            'exams' => '',
+            'touched' => false,
+            'id' => '',
+            'receiptdate' => '',
+            'fromcenter' => '',
+            'group' => '',
+            'exam' => '',
+            'table' => [],
+            'center_available' => '',
+            'markerremarks' => '',
+            'receiptremarks' => '',
+            'receiptdate_err' => '',
+            'fromcenter_err' => '',
+            'centername' => '',
+            'group_err' => '',
+            'exam_err' => '',
+            'save_err' => ''
+        ];
+        foreach($centers as $center){
+            if((int)$_SESSION['centerid'] === (int)$center->ID){
+                $data['center_available'] = true;
+                $data['centername'] = $this->exammodel->GetCenterName($center->ID);
+            }
+        }
+        $this->view('exams/receiptpostmarking', $data);
+        exit();
+    }
 }
