@@ -327,4 +327,10 @@ class Exam
             return false;
         }
     }
+
+    public function GetPoints()
+    {
+        $this->db->query('SELECT * FROM vw_points');
+        return $this->db->resultset();
+    }
 }
