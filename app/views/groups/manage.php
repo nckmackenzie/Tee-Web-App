@@ -73,6 +73,7 @@
                         </div>
                         <div class="d-grid d-md-block">
                             <input type="hidden" name="id" value="<?php echo $data['id'];?>">
+                            <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
                             <input type="hidden" name="group" value="<?php echo $data['group'];?>">
                             <button type="submit" class="btn btn-sm btn-primary">Save</button>
                         </div>
