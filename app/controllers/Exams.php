@@ -775,4 +775,31 @@ class Exams extends Controller
         $this->view('exams/addpoints',$data);
         exit();
     }
+
+    public function deletepoints()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = trim($_POST['id']);
+    
+            if(empty($id)){
+                flash('point_msg',null,'Unable to get selected points',flashclass('alert','danger'));
+                redirect('exams/points');
+                exit();
+            }
+    
+            if(!$this->exammodel->DeletePoints($id)){
+                flash('point_msg',null,'Unable to delete selected points',flashclass('alert','danger'));
+                redirect('exams/points');
+                exit();
+            }
+    
+            flash('point_flash_msg',null,'Deleted successfully',flashclass('toast','success'));
+            redirect('exams/points');
+            exit();
+    
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
