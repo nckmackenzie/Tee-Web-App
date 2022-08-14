@@ -357,4 +357,42 @@ class Exam
             return true;
         }
     }
+
+    public function CreateUpdatePoints($data)
+    {
+        try {
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('INSERT INTO points_header (CourseId,BookId,GroupId,CategoryId) 
+                              VALUES(:cid,:bid,:gid,:cat)');
+            $this->db->bind(':cid',!empty($data['course']) ? $data['course'] : null);
+            $this->db->bind(':bid',!empty($data['book']) ? $data['book'] : null);
+            $this->db->bind(':gid',!empty($data['group']) ? $data['group'] : null);
+            $this->db->bind(':cat',!empty($data['category']) ? $data['category'] : null);
+            $this->db->execute();
+            $tid = $this->db->dbh->lastInsertId();
+
+            for($i = 0; $i < count($data['studentsid']); $i++){
+                $this->db->query('INSERT INTO points_details (HeaderId,StudentId,Points,Remarks) 
+                                  VALUES(:hid,:student,:points,:remark)');
+                $this->db->bind(':hid',$tid);
+                $this->db->bind(':student',!empty($data['studentsid'][$i]) ? $data['studentsid'][$i] : null);
+                $this->db->bind(':points',!empty($data['points'][$i]) ? $data['points'][$i] : 0);
+                $this->db->bind(':remark',!empty($data['remarks'][$i]) ? trim(strtolower($data['remarks'][$i])) : null);
+                $this->db->execute();
+            }
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+        } catch (\Exception $e) {
+            if($this->db->dbh->inTransaction()){
+                $this->db->dbh->rollBack();
+            }
+            throw $e;
+            return false;
+        }
+    }
 }
