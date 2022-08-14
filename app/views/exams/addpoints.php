@@ -93,8 +93,8 @@
                                                 <tr>
                                                     <td class="d-none"><input type="text" name="studentsid[]" value="<?php echo $table['sid'];?>"></td>
                                                     <td><input type="text" class="table-input w-100" name="names[]" value="<?php echo $table['name'];?>" readonly></td>
-                                                    <td><input type="number" class="table-input w-100" name="points[]" value="<?php echo $table['point'];?>" readonly></td>
-                                                    <td><input type="text" class="table-input w-100" name="remarks[]" value="<?php echo $table['remark'];?>" readonly></td>
+                                                    <td><input type="number" class="table-input w-100" name="points[]" value="<?php echo $table['point'];?>"></td>
+                                                    <td><input type="text" class="table-input w-100" name="remarks[]" value="<?php echo $table['remark'];?>"></td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
