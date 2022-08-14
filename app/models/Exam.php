@@ -358,7 +358,7 @@ class Exam
         }
     }
 
-    public function CreateUpdatePoints($data)
+    function SavePoints($data)
     {
         try {
             $this->db->dbh->beginTransaction();
@@ -394,5 +394,70 @@ class Exam
             throw $e;
             return false;
         }
+    }
+
+    function UpdatePoints($data)
+    {
+        try {
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('UPDATE points_header SET CourseId=:cid,BookId=:bid,GroupId=:gid,CategoryId=:cat 
+                              WHERE (ID = :id)');
+            $this->db->bind(':cid',!empty($data['course']) ? $data['course'] : null);
+            $this->db->bind(':bid',!empty($data['book']) ? $data['book'] : null);
+            $this->db->bind(':gid',!empty($data['group']) ? $data['group'] : null);
+            $this->db->bind(':cat',!empty($data['category']) ? $data['category'] : null);
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
+            $this->db->query('DELETE FROM points_details WHERE (HeaderId = :hid)');
+            $this->db->bind(':hid',$data['id']);
+            $this->db->execute();
+
+            for($i = 0; $i < count($data['studentsid']); $i++){
+                $this->db->query('INSERT INTO points_details (HeaderId,StudentId,Points,Remarks) 
+                                  VALUES(:hid,:student,:points,:remark)');
+                $this->db->bind(':hid',$data['id']);
+                $this->db->bind(':student',!empty($data['studentsid'][$i]) ? $data['studentsid'][$i] : null);
+                $this->db->bind(':points',!empty($data['points'][$i]) ? $data['points'][$i] : 0);
+                $this->db->bind(':remark',!empty($data['remarks'][$i]) ? trim(strtolower($data['remarks'][$i])) : null);
+                $this->db->execute();
+            }
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+        } catch (\Exception $e) {
+            if($this->db->dbh->inTransaction()){
+                $this->db->dbh->rollBack();
+            }
+            throw $e;
+            return false;
+        }
+    }
+
+    public function CreateUpdatePoints($data)
+    {
+        if(!$data['isedit']){
+            return $this->SavePoints($data);
+        }else{
+            return $this->UpdatePoints($data);
+        }
+    }
+    
+    public function GetPointsHeader($id)
+    {
+        $this->db->query('SELECT * FROM points_header WHERE (ID = :id)');
+        $this->db->bind(':id',$id);
+        return $this->db->single();
+    }
+
+    public function GetPointsDetails($id)
+    {
+        $this->db->query('SELECT * FROM vw_pointsdetails WHERE HeaderId = :hid');
+        $this->db->bind(':hid',$id);
+        return $this->db->resultset();
     }
 }
