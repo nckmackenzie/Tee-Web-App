@@ -460,4 +460,15 @@ class Exam
         $this->db->bind(':hid',$id);
         return $this->db->resultset();
     }
+
+    public function DeletePoints($id)
+    {
+        $this->db->query('UPDATE points_header SET Deleted = 1 WHERE (ID = :id)');
+        $this->db->bind(':id',$id);
+        if(!$this->db->execute()){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
