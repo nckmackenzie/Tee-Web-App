@@ -340,4 +340,21 @@ class Exam
         $this->db->query('SELECT * FROM vw_exampoints');
         return $this->db->resultset();
     }
+
+    public function CheckPointsEntered($course,$book,$cat,$group,$id)
+    {
+        $this->db->query('SELECT COUNT(*) FROM points_header
+                          WHERE (CourseId = :course) AND (GroupId = :group) AND (BookId = :book)
+                                AND (CategoryId = :cat) AND (ID <> :id) AND (Deleted =0)');
+        $this->db->bind(':course',$course);
+        $this->db->bind(':group',$group);
+        $this->db->bind(':book',$book);
+        $this->db->bind(':cat',$cat);
+        $this->db->bind(':id',$id);
+        if((int)$this->db->getvalue() > 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
