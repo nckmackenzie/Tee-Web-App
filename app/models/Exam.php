@@ -330,7 +330,7 @@ class Exam
 
     public function GetPoints()
     {
-        $this->db->query('SELECT * FROM vw_points');
+        $this->db->query('SELECT * FROM vw_exampoints');
         return $this->db->resultset();
     }
 }
