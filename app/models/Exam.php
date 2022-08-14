@@ -100,6 +100,13 @@ class Exam
         return $this->db->resultSet();
     }
 
+    public function GetCategories()
+    {
+        $this->db->query('SELECT ID, UCASE(Category ) AS Category
+                          FROM point_categories');
+        return $this->db->resultSet();
+    }
+
     public function GetStudentsByGroup($id,$type)
     {
         if($type === 'fromgroup'){
