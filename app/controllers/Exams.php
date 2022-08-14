@@ -45,7 +45,7 @@ class Exams extends Controller
     public function getbooks()
     {
         if($_SERVER['REQUEST_METHOD'] === 'GET'){
-            $course = trim($_GET['course']);
+            $course = (int)trim($_GET['course']);
             $books = $this->exammodel->GetBooks($course);
             $output = '<option value="">Select Book</option>';
             foreach ($books as $book){
@@ -605,5 +605,58 @@ class Exams extends Controller
         ];
         $this->view('exams/points',$data);
         exit();
+    }
+
+    public function addpoints()
+    {
+        $data = [
+            'title' => 'Add Points',
+            'groups' => $this->exammodel->GetGroups(),
+            'courses' => $this->exammodel->GetCourses(),
+            'categories' => $this->exammodel->GetCategories(),
+            'touched' => false,
+            'id' => '',
+            'group' => '',
+            'course' => '',
+            'category' => '',
+            'book' => '',
+            'table' => [],
+            'group_err' => '',
+            'book_err' => '',
+            'course_err' => '',
+            'category_err' => '',
+        ];
+        $this->view('exams/addpoints',$data);
+        exit();
+    }
+
+    public function getstudentspoints()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $gid = intval(trim($_GET['gid']));
+            $type = trim($_GET['type']);
+            if(empty($gid)){
+                exit();
+            }
+            $output = '';
+            $students = $this->exammodel->GetStudentsByGroup($gid,$type);
+            foreach($students as $student) {
+                $output .= '
+                    <tr>
+                        <td class="d-none"><input type="text" name="studentsid[]" value="'.$student->ID.'"></td>
+                        <td><input type="text" class="table-input w-100" name="names[]" value="'.$student->StudentName.'" readonly></td>
+                        <td><input type="text" class="table-input w-100" name="points[]" value="" ></td>
+                        <td><input type="text" class="table-input w-100" name="remarks[]" value="" ></td>
+                            
+                    </tr>
+                ';
+            }
+
+            echo json_encode($output);
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
     }
 }
