@@ -740,4 +740,39 @@ class Exams extends Controller
             exit();
         }
     }
+
+    public function editpoints($id)
+    {
+        $header= $this->exammodel->GetPointsHeader($id);
+        $details= $this->exammodel->GetPointsDetails($id);
+        $data = [
+            'title' => 'Edit Points',
+            'groups' => $this->exammodel->GetGroups(),
+            'courses' => $this->exammodel->GetCourses(),
+            'categories' => $this->exammodel->GetCategories(),
+            'books' => $this->exammodel->GetBooks($header->CourseId),
+            'touched' => false,
+            'isedit' => true,
+            'id' => (int)$header->ID,
+            'group' => $header->GroupId,
+            'course' => $header->CourseId,
+            'category' => $header->CategoryId,
+            'book' => $header->BookId,
+            'table' => [],
+            'group_err' => '',
+            'book_err' => '',
+            'course_err' => '',
+            'category_err' => '',
+        ];
+        foreach($details as $detail){
+            array_push($data['table'],[
+                'sid' => $detail->StudentId,
+                'name' => $detail->StudentName,
+                'point' => $detail->Points,
+                'remark' => $detail->Remarks
+            ]);
+        }
+        $this->view('exams/addpoints',$data);
+        exit();
+    }
 }
