@@ -615,6 +615,7 @@ class Exams extends Controller
             'courses' => $this->exammodel->GetCourses(),
             'categories' => $this->exammodel->GetCategories(),
             'touched' => false,
+            'isedit' => false,
             'id' => '',
             'group' => '',
             'course' => '',
@@ -654,6 +655,86 @@ class Exams extends Controller
             }
 
             echo json_encode($output);
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
+
+    public function createupdatepoints()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
+            $data = [
+                'title' => !converttobool(trim($_POST['isedit'])) ? 'Add Points' : 'Edit points',
+                'groups' => $this->exammodel->GetGroups(),
+                'courses' => $this->exammodel->GetCourses(),
+                'categories' => $this->exammodel->GetCategories(),
+                'books' => '',
+                'isedit' => converttobool(trim($_POST['isedit'])),
+                'touched' => true,
+                'id' => trim($_POST['id']),
+                'group' => !empty($_POST['group']) ? trim($_POST['group']) : '',
+                'course' => !empty($_POST['course']) ? trim($_POST['course']) : '',
+                'category' => !empty($_POST['category']) ? trim($_POST['category']) : '',
+                'book' => !empty($_POST['book']) ? trim($_POST['book']) : '',
+                'studentsid' => $_POST['studentsid'],
+                'names' => $_POST['names'],
+                'points' => $_POST['points'],
+                'remarks' => $_POST['remarks'],
+                'table' => [],
+                'group_err' => '',
+                'book_err' => '',
+                'course_err' => '',
+                'category_err' => '',
+            ];
+
+            for($i = 0; $i < count($data['studentsid']); $i++){
+                array_push($data['table'],[
+                    'sid' => $data['studentsid'][$i],
+                    'name' => $data['names'][$i],
+                    'point' => !empty($data['points'][$i]) ? $data['points'][$i] : 0,
+                    'remark' => !empty($data['remarks'][$i]) ? $data['remarks'][$i] : ''
+                ]);
+            }
+
+            if(empty($data['group'])){
+                $data['group_err'] = 'Select group';
+            }
+            if(empty($data['course'])){
+                $data['course_err'] = 'Select course';
+            }else{
+                $data['books'] = $this->exammodel->GetBooks($data['course']);
+            }
+            if(empty($data['book'])){
+                $data['book_err'] = 'Select book';
+            }
+            if(empty($data['category'])){
+                $data['category_err'] = 'Select category';
+            }
+
+            if(!empty($data['group']) && !empty($data['category']) && !empty($data['course']) 
+               && !empty($data['book']) && !$this->exammodel->CheckPointsEntered($data['course'],$data['book'],$data['category'],$data['group'],$data['id'])){
+                $data['group_err'] = 'Selected group points entered already';
+                $data['category_err'] = 'Selected category points entered already for group';
+            }
+
+            if(!empty($data['group_err']) || !empty($data['category_err']) || !empty($data['book_err']) 
+                || !empty($data['course_err'])){
+                $this->view('exams/addpoints',$data);
+                exit();     
+            }
+
+            if(!$this->exammodel->CreateUpdatePoints($data)){
+                flash('point_msg',null,'Unable to save points. Retry or contact admin.',flashclass('alert','danger'));
+                redirect('exams/points');
+                exit();
+            }
+
+            flash('point_flash_msg',null,'Saved successfully.',flashclass('toast','success'));
+            redirect('exams/points');
+            exit();
+
         }else{
             redirect('auth/forbidden');
             exit();
