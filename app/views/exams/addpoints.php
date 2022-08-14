@@ -42,7 +42,7 @@
                                             class="form-select form-select-sm mandatory 
                                             <?php echo inputvalidation($data['book'],$data['book_err'],$data['touched']);?>">
                                         <option value="" selected disabled>Select book</option>
-                                        <?php if($data['touched'] && !empty($data['course'])) : ?>
+                                        <?php if($data['touched'] && !empty($data['course']) || $data['isedit']) : ?>
                                             <?php foreach($data['books'] as $book) : ?>
                                                 <option value="<?php echo $book->ID;?>" <?php selectdCheck($data['book'],$book->ID);?>><?php echo $book->BookName;?></option>
                                             <?php endforeach; ?>
