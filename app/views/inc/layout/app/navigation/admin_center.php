@@ -96,7 +96,7 @@
                 <a href="<?php echo URLROOT;?>/finances/expenses">Expenses</a>
             </li>
             <li>
-                <a href="<?php echo URLROOT;?>/finances/invoices">Invoices</a>
+                <a href="<?php echo URLROOT;?>/invoices">Invoices</a>
             </li>
         </ul>
     </div>
