@@ -62,26 +62,6 @@
     </div>
 </li>
 <li class="side-nav-item">
-    <a data-bs-toggle="collapse" href="#sidebarFinance" aria-expanded="false" aria-controls="sidebarFinance" class="side-nav-link">
-        <i class="uil-moneybag-alt"></i>
-        <span> Finance </span>
-        <span class="menu-arrow"></span>
-    </a>
-    <div class="collapse" id="sidebarFinance">
-        <ul class="side-nav-second-level">
-            <li>
-                <a href="<?php echo URLROOT;?>/finances/fees">Fees</a>
-            </li>
-            <li>
-                <a href="<?php echo URLROOT;?>/finances/expenses">Expenses</a>
-            </li>
-            <li>
-                <a href="<?php echo URLROOT;?>/finances/invoices">Invoices</a>
-            </li>
-        </ul>
-    </div>
-</li>
-<li class="side-nav-item">
     <a data-bs-toggle="collapse" href="#sidebarReports" aria-expanded="false" aria-controls="sidebarReports" class="side-nav-link">
         <i class="uil-receipt-alt"></i>
         <span> Reports </span>
