@@ -802,4 +802,16 @@ class Exams extends Controller
             exit();
         }
     }
+
+    public function finalpoints()
+    {
+        $data = [
+            'title' => 'Final Points',
+            'has_datatable' => true,
+            'groups' => $this->exammodel->GetGroups(),
+            'courses' => $this->exammodel->GetCourses(),
+        ];
+        $this->view('exams/finalpoints', $data);
+        exit();
+    }
 }
