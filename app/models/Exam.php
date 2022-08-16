@@ -146,11 +146,12 @@ class Exam
         try {
             $this->db->dbh->beginTransaction();
 
-            $this->db->query('INSERT INTO exam_marking_header (FromCenter,ExamId,GroupId,ReceiptFromGroupDate
+            $this->db->query('INSERT INTO exam_marking_header (FromCenter,ExamId,BookId,GroupId,ReceiptFromGroupDate
                                                                ,SubmitMarkingDate,ExamStatus) 
-                              VALUES(:fcenter,:eid,:gid,:rdate,:sdate,:estatus)');
+                              VALUES(:fcenter,:eid,:bid,:gid,:rdate,:sdate,:estatus)');
             $this->db->bind(':fcenter',$_SESSION['centerid']);
             $this->db->bind(':eid',!empty($data['exam']) ? $data['exam'] : null);
+            $this->db->bind(':bid',!empty($data['bookid']) ? $data['bookid'] : null);
             $this->db->bind(':gid',!empty($data['group']) ? $data['group'] : null);
             $this->db->bind(':rdate',!empty($data['receiptdate']) ? $data['receiptdate'] : null);
             $this->db->bind(':sdate',!empty($data['submitdate']) ? $data['submitdate'] : null);
