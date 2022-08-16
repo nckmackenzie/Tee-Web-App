@@ -156,6 +156,7 @@ class Exams extends Controller
             'touched' => false,
             'id' => '',
             'group' => '',
+            'bookid' => '',
             'exam' => '',
             'submitdate' => '',
             'remarks' => '',
@@ -220,6 +221,7 @@ class Exams extends Controller
                 'id' => '',
                 'receiptdate' => !empty(trim($_POST['receiptdate'])) ? date('Y-m-d',strtotime(trim($_POST['receiptdate']))) : '',
                 'group' => !empty($_POST['group']) ? $_POST['group'] : '',
+                'bookid' => !empty($_POST['bookid']) ? $_POST['bookid'] : '',
                 'exam' => !empty($_POST['exam']) ? $_POST['exam'] : '',
                 'submitdate' => !empty(trim($_POST['submitdate'])) ? date('Y-m-d',strtotime(trim($_POST['submitdate']))) : '',
                 'remarks' => !empty(trim($_POST['remarks'])) ? trim($_POST['remarks']) : '',
@@ -238,6 +240,15 @@ class Exams extends Controller
                     'sid' => $data['studentsid'][$i],
                     'name' => $data['names'][$i],
                 ]);
+            }
+
+            if(!isset($data['bookid']) || empty($data['bookid'])){
+                $data['exam_err'] = 'No book set for this exam';
+            }
+
+            if(!empty($data['bookid']) && !$this->exammodel->CheckBookIdExistForGroup($data['bookid'],$data['group'])){
+                $data['exam_err'] = 'Other exam received for same group for same book';
+                $data['group_err'] = 'Other exam received for same group for same book';
             }
 
             if(empty($data['receiptdate']) || date('Y-m-d') < $data['receiptdate']){
