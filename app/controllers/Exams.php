@@ -855,4 +855,53 @@ class Exams extends Controller
         $this->view('exams/finalpoints', $data);
         exit();
     }
+
+    public function getfinalpoints()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $data = [
+                'gid' => !empty($_GET['gid']) ? (int)trim($_GET['gid']) : '',
+                'bid' => !empty($_GET['bid']) ? (int)trim($_GET['bid']) : '',
+            ];
+
+            $points = $this->exammodel->GetFinalPoints($data);
+            $output = '';
+            $output .='
+                <table class="table table-sm table-striped table-bordered w-100 dt-responsive nowrap" id="table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Exam</th>
+                            <th>CAT</th>
+                            <th>Exercises</th>
+                            <th>Attendance</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
+                        foreach($points as $point){
+                            $output.='
+                                <tr>
+                                    <td>'.$point->StudentName.'</td>
+                                    <td>'.$point->Exam.'</td>
+                                    <td>'.$point->CAT.'</td>
+                                    <td>'.$point->Exercise.'</td>
+                                    <td>'.$point->Attendance.'</td>
+                                    <td>'.$point->TotalPoints.'</td>
+                                    <td>'.$point->Status.'</td>
+                                </tr>
+                            ';
+                        }
+                    $output .='
+                    </tbody>
+                </table>
+            ';
+            echo json_encode($output);
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
