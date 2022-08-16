@@ -493,4 +493,12 @@ class Exam
             return true;
         }
     }
+
+    public function GetFinalPoints($data)
+    {
+        $this->db->query('CALL sp_getfinalpoints(:bid,:gid)');
+        $this->db->bind(':bid',$data['bid']);
+        $this->db->bind(':gid',$data['gid']);
+        return $this->db->resultset();
+    }
 }
