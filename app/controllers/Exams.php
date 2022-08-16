@@ -334,6 +334,7 @@ class Exams extends Controller
             'fromcenter_err' => '',
             'exam_err' => '',
             'group_err' => '',
+            'mark_err' => '',
             'save_err' => '',
         ];
         $this->view('exams/receiptmarking', $data);
@@ -405,10 +406,12 @@ class Exams extends Controller
                 'studentsid' => $_POST['studentsid'],
                 'names' => $_POST['names'],
                 'marks' => $_POST['marks'],
+                'marks_over' => 0,
                 'receiptdate_err' => '',
                 'fromcenter_err' => '',
                 'exam_err' => '',
                 'group_err' => '',
+                'mark_err' => '',
                 'save_err' => '',
             ];
             
@@ -420,6 +423,17 @@ class Exams extends Controller
                 ]);
             }
 
+            foreach($data['table'] as $mark){
+                if((int)$mark['marks'] > 60){
+                    $data['marks_over'] ++;
+                }
+            }
+
+            if($data['marks_over'] > 0){
+                $data['mark_err'] = $data['marks_over'] . ' student marks execeed 60';
+            }
+
+            
             if(empty($data['receiptdate'])){
                 $data['receiptdate_err'] = 'Select receipt date';
             }
@@ -449,7 +463,7 @@ class Exams extends Controller
             }
 
             if(!empty($data['fromcenter_err']) || !empty($data['receiptdate_err']) || !empty($data['group_err'])
-               || !empty($data['exam_err'])){
+               || !empty($data['exam_err']) || !empty($data['mark_err'])){
                 $this->view('exams/receiptmarking',$data);
                 exit();
             }
