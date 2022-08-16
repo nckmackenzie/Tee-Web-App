@@ -141,6 +141,20 @@ class Exam
         }
     }
 
+    public function CheckBookIdExistForGroup($bid,$gid)
+    {
+        $this->db->query('SELECT COUNT(*)
+                          FROM exam_marking_header 
+                          WHERE (BookId = :bid) AND (GroupId = :gid)');
+        $this->db->bind(':bid',(int)trim($bid));
+        $this->db->bind(':gid',(int)trim($gid));
+        if((int)$this->db->getvalue() > 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     public function CreateReceiptFromGroup($data)
     {
         try {
