@@ -141,6 +141,13 @@ class Exam
         }
     }
 
+    public function GetBookId($id)
+    {
+        $this->db->query('SELECT BookId FROM exams WHERE ID = :id');
+        $this->db->bind(':id',$id);
+        return $this->db->getvalue();
+    }
+
     public function CheckBookIdExistForGroup($bid,$gid)
     {
         $this->db->query('SELECT COUNT(*)
