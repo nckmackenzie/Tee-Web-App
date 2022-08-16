@@ -14,9 +14,9 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <?php endif; ?>
-                <?php if(isset($data['save_err']) && !empty($data['save_err'])) : ?>
+                <?php if(!empty($data['mark_err']) || !empty($data['save_err'])) : ?>
                     <div class="mt-1 alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Error!</strong> <?php echo $data['save_err'];?>
+                        <strong>Error!</strong> <?php echo !empty($data['mark_err']) ? $data['mark_err'] : $data['save_err'];?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <?php endif; ?>
