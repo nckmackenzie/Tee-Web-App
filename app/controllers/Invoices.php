@@ -9,4 +9,15 @@ class Invoices extends Controller
         }
         $this->invoicemodel = $this->model('Invoice');
     }
+
+    public function index()
+    {
+        $data = [
+            'title' => 'Invoices',
+            'has_datatable' => true,
+            'invoices' => $this->invoicemodel->GetInvoices(),
+        ];
+        $this->view('invoices/index', $data);
+        exit();
+    }
 }
