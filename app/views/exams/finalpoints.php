@@ -13,6 +13,7 @@
     </div>     
     <!-- end page title --> 
     <div class="row">
+        <div class="col-12" id="alertBox"></div>
         <div class="card">
             <div class="card-body">
                 <div class="row">
@@ -43,8 +44,13 @@
                         </select>
                         <span class="invalid-feedback">Please select a book</span>
                     </div>
-                    <div class="col-md-1 mt-2">
+                    <div class="col-md-1 mt-2 mb-3">
                         <button type="button" class="btn btn-sm btn-success w-full" data-id="btn">Preview</button>
+                    </div>
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <div id="results"></div>
+                        </div>
                     </div>
                 </div> <!-- /.row --> 
             </div>
