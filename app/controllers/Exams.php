@@ -209,6 +209,22 @@ class Exams extends Controller
         }
     }
 
+    public function getbookid()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $_GET = filter_input_array(INPUT_GET, FILTER_UNSAFE_RAW);
+            $examid = isset($_GET['examid']) ? (int)trim($_GET['examid']) : '';
+            if(empty($examid)){
+                echo json_encode(null);
+                exit();
+            }
+            echo json_encode($this->exammodel->GetBookId($examid));
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
+
     public function createreceiptfromgroup()
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
