@@ -1,6 +1,6 @@
 export const qtyInput = document.querySelector('#qty');
-const rateInput = document.querySelector('#rate');
-const grossInput = document.querySelector('#gross');
+export const rateInput = document.querySelector('#rate');
+export const grossInput = document.querySelector('#gross');
 
 export function getGrossValue() {
   const qtyValue = qtyInput.value;
