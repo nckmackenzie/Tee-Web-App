@@ -90,13 +90,19 @@
     <div class="collapse" id="sidebarFinance">
         <ul class="side-nav-second-level">
             <li>
-                <a href="<?php echo URLROOT;?>/finances/fees">Fees</a>
+                <a href="<?php echo URLROOT;?>/fees">Fees Payments</a>
             </li>
             <li>
-                <a href="<?php echo URLROOT;?>/finances/expenses">Expenses</a>
+                <a href="<?php echo URLROOT;?>/expenses">Expenses</a>
+            </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/budgets">Budgets</a>
             </li>
             <li>
                 <a href="<?php echo URLROOT;?>/invoices">Invoices</a>
+            </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/journals">Journal Entries</a>
             </li>
         </ul>
     </div>
