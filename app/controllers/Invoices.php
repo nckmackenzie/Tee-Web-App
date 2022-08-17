@@ -26,24 +26,26 @@ class Invoices extends Controller
         $data = [
             'title' => 'Add Invoice',
             'suppliers' => $this->invoicemodel->GetSuppliers(),
-            'vattype' => $this->invoicemodel->GetVatTypes(),
-            'vat' => $this->invoicemodel->GetVats(),
+            'vattypes' => $this->invoicemodel->GetVatTypes(),
+            'vats' => $this->invoicemodel->GetVats(),
             'books' => $this->invoicemodel->GetBooks(),
             'touched' => false,
             'isedit' => '',
             'id' => '',
             'invoicedate' => date('Y-m-d'),
+            'supplier' => '',
             'duedate' => '',
-            'vattype' => '',
+            'vattype' => 1,
             'vat' => '',
             'invoiceno' => '',
             'invoicedate_err' => '',
             'duedate_err' => '',
+            'supplier_err' => '',
             'vattype_err' => '',
             'vat_err' => '',
             'invoiceno_err' => '',
             'table' => [],
-            'save_err'=> ''
+            'save_err'=> '',
         ];
         $this->view('invoices/add', $data);
         exit();
