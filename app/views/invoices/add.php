@@ -24,7 +24,7 @@
                                 <label for="supplier">Supplier</label>
                                 <select name="supplier" id="supplier" class="form-select form-select-sm mandatory 
                                         <?php echo inputvalidation($data['supplier'],$data['supplier_err'],$data['touched']);?>">
-                                    <option value="">Select supplier</option>
+                                    <option value="" selected disabled>Select supplier</option>
                                     <?php foreach($data['suppliers'] as $supplier) : ?>
                                         <option value="<?php echo $supplier->ID;?>" <?php selectdCheck($data['supplier'],$supplier->ID);?>><?php echo $supplier->SupplierName;?></option>
                                     <?php endforeach; ?>
@@ -51,7 +51,7 @@
                                 <label for="vattype">Vat Type</label>
                                 <select name="vattype" id="vattype" class="form-select form-select-sm mandatory 
                                         <?php echo inputvalidation($data['vattype'],$data['vattype_err'],$data['touched']);?>">
-                                    <option value="">Select vat type</option>
+                                    <option value="" selected disabled>Select vat type</option>
                                     <?php foreach($data['vattypes'] as $vattype) : ?>
                                         <option value="<?php echo $vattype->ID;?>" <?php selectdCheck($data['vattype'],$vattype->ID);?>><?php echo $vattype->VatType;?></option>
                                     <?php endforeach; ?>
@@ -62,7 +62,7 @@
                                 <label for="vat">Vat</label>
                                 <select name="vat" id="vat" class="form-select form-select-sm mandatory 
                                         <?php echo inputvalidation($data['vat'],$data['vat_err'],$data['touched']);?>" disabled>
-                                    <option value="">Select vat</option>
+                                    <option value="" selected disabled>Select vat</option>
                                     <?php foreach($data['vats'] as $vat) : ?>
                                         <option value="<?php echo $vat->ID;?>" <?php selectdCheck($data['vat'],$vat->ID);?>><?php echo $vat->Vat;?></option>
                                     <?php endforeach; ?>
