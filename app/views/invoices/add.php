@@ -143,6 +143,7 @@
                                             <th width="5%">Remove</th>
                                         </tr>
                                     </thead>
+                                    <tbody></tbody>
                                 </table>
                             </div>
                           </div>              
