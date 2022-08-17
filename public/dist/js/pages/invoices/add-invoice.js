@@ -1,4 +1,5 @@
 import { HOST_URL } from '../utils.js';
+import { getGrossValue } from './calculations.js';
 
 const invoiceDateInput = document.querySelector('#invoicedate');
 const dueDateInput = document.querySelector('#duedate');
@@ -43,4 +44,5 @@ productSelect.addEventListener('change', async function (e) {
   );
   const data = await res.json();
   rateInput.value = data;
+  getGrossValue();
 });
