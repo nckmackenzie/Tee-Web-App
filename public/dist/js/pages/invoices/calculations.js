@@ -1,4 +1,4 @@
-const qtyInput = document.querySelector('#qty');
+export const qtyInput = document.querySelector('#qty');
 const rateInput = document.querySelector('#rate');
 const grossInput = document.querySelector('#gross');
 
