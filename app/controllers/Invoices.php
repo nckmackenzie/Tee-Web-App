@@ -32,7 +32,7 @@ class Invoices extends Controller
             'touched' => false,
             'isedit' => '',
             'id' => '',
-            'invoicedate' => date('Y-m-d'),
+            'invoicedate' => '',
             'supplier' => '',
             'duedate' => '',
             'vattype' => 1,
