@@ -118,6 +118,9 @@
                                        readonly>
                                 <span class="invalid-feedback grossspan"></span>
                             </div>
+                            <div class="col-md-1 mt-2">
+                                <button type="button" class="btn btn-sm btn-success w-100 btnadd">Add</button>
+                            </div>
                        </div> 
                     </div>
                 </div>
