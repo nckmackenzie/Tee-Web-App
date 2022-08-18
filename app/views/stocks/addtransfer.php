@@ -59,7 +59,7 @@
                                     <input type="text" name="mtn" id="mtn" 
                                            class="form-control form-control-sm mandatory 
                                            <?php echo inputvalidation($data['mtn'],$data['mtn_err'],$data['touched']);?>" 
-                                           value="<?php echo $data['mtn'];?>" required>
+                                           value="<?php echo $data['mtn'];?>" required readonly>
                                     <span class="invalid-feedback"><?php echo $data['mtn_err'];?></span>
                                 </div>
                             </div>

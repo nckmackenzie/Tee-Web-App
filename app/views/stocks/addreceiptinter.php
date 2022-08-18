@@ -44,7 +44,7 @@
                                     <input type="text" name="reference" id="reference" 
                                            class="form-control form-control-sm mandatory 
                                            <?php echo inputvalidation($data['reference'],$data['reference_err'],$data['touched']);?>" 
-                                           value="<?php echo $data['reference'];?>" required>
+                                           value="<?php echo $data['reference'];?>" required readonly>
                                     <span class="invalid-feedback"><?php echo $data['reference_err'];?></span>
                                 </div>
                             </div>
