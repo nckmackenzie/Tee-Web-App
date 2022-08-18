@@ -61,7 +61,7 @@
                             <div class="col-md-4">
                                 <label for="vat">Vat</label>
                                 <select name="vat" id="vat" class="form-select form-select-sm mandatory 
-                                        <?php echo inputvalidation($data['vat'],$data['vat_err'],$data['touched']);?>" disabled>
+                                        <?php echo inputvalidation($data['vat'],$data['vat_err'],$data['touched']);?>" <?php echo (int)$data['vattype'] === 1 ? 'disabled' : '';?>>
                                     <option value="" selected disabled>Select vat</option>
                                     <?php foreach($data['vats'] as $vat) : ?>
                                         <option value="<?php echo $vat->ID;?>" <?php selectdCheck($data['vat'],$vat->ID);?>><?php echo $vat->Vat;?></option>
