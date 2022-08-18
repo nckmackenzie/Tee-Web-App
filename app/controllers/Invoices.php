@@ -38,6 +38,7 @@ class Invoices extends Controller
             'vattype' => 1,
             'vat' => '',
             'invoiceno' => '',
+            'description' => '',
             'invoicedate_err' => '',
             'duedate_err' => '',
             'supplier_err' => '',
@@ -49,5 +50,107 @@ class Invoices extends Controller
         ];
         $this->view('invoices/add', $data);
         exit();
+    }
+
+    public function createupdate()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
+            $data = [
+                'title' => !converttobool(trim($_POST['isedit'])) ?  'Add Invoice' : 'Edit Invoice',
+                'suppliers' => $this->invoicemodel->GetSuppliers(),
+                'vattypes' => $this->invoicemodel->GetVatTypes(),
+                'vats' => $this->invoicemodel->GetVats(),
+                'books' => $this->invoicemodel->GetBooks(),
+                'touched' => true,
+                'isedit' => converttobool(trim($_POST['isedit'])),
+                'id' => trim($_POST['isedit']),
+                'invoicedate' => !empty(trim($_POST['invoicedate'])) ? date('Y-m-d', strtotime(trim($_POST['invoicedate']))) : '',
+                'supplier' => !empty($_POST['supplier']) ? $_POST['supplier'] : '',
+                'duedate' => !empty(trim($_POST['duedate'])) ? date('Y-m-d', strtotime(trim($_POST['duedate']))) : '',
+                'vattype' => !empty($_POST['vattype']) ? (int)$_POST['vattype'] : '',
+                'vat' => !empty($_POST['vat']) ? (int)$_POST['vat'] : '',
+                'vatrate' => '',
+                'invoiceno' => !empty(trim($_POST['invoiceno'])) ? trim($_POST['invoiceno']) : '',
+                'description' => !empty(trim($_POST['description'])) ? trim($_POST['description']) : '',
+                'booksid' => $_POST['booksid'],
+                'booksname' => $_POST['booksname'],
+                'qtys' => $_POST['qtys'],
+                'rates' => $_POST['rates'],
+                'gross' => $_POST['gross'],
+                'table' => [],
+                'total' => 0,
+                'invoicedate_err' => '',
+                'duedate_err' => '',
+                'supplier_err' => '',
+                'vattype_err' => '',
+                'vat_err' => '',
+                'invoiceno_err' => '',
+                'save_err'=> '',
+            ];
+
+            for($i = 0; $i < count($data['booksid']); $i++){
+                array_push($data['table'],[
+                    'pid' => $data['booksid'][$i],
+                    'name' => $data['booksname'][$i],
+                    'rate' => $data['rates'][$i],
+                    'gross' => $data['gross'][$i],
+                ]);
+            }
+
+            foreach($data['table'] as $entry){
+                $data['total'] = floatval($data['total']) + floatval($entry['gross']);
+            }
+
+            if(empty($data['supplier'])){
+                $data['supplier_err'] = 'Select supplier';
+            }
+
+            if(empty($data['invoicedate'])){
+                $data['invoicedate_err'] = 'Select invoice date';
+            }elseif(!empty($data['invoicedate']) && !validatedate($data['invoicedate'])){
+                $data['invoicedate_err'] = 'Invalid invoice date';
+            }
+
+            if(!empty($data['duedate']) && $data['duedate'] < $data['invoicedate']){
+                $data['duedate_err'] = 'Invalid due date';
+            }
+
+            if(empty($data['vattype'])){
+                $data['vattype_err'] = 'Select type of VAT';
+            }
+
+            if((int)$data['vattype'] > 1 && empty($data['vat'])){
+                $data['vat_err'] = 'Select VAT rate';
+            }
+
+            if(empty($data['invoiceno'])){
+                $data['invoiceno_err'] = 'Enter invoice no';
+            }
+
+            if((int)$data['vattype'] >1 && !empty($data['vat'])){
+                $data['vatrate'] = floatval($this->invoicemodel->GetVatRate($data['vat']));
+            }
+
+            if(!empty($data['invoicedate_err']) || !empty($data['duedate_err']) || !empty($data['supplier_err'])
+               || !empty($data['vattype_errr']) || !empty($data['vat_err']) || !empty($data['invoiceno_err'])){
+                $this->view('invoices/add',$data);
+                exit();
+            }
+
+            if(!$this->invoicemodel->CreateUpdate($data)){
+                flash('invoice_msg',null,'Unable to save this invoice. Retry or contact admin',flashclass('alert','danger'));
+                redirect('invoices');
+                exit();
+            }
+
+            flash('invoice_flash_msg',null,'Saved successfully',flashclass('toast','success'));
+            redirect('invoices');
+            exit();
+
+        }else{
+            redirect('auth/login');
+            exit();
+        }
     }
 }
