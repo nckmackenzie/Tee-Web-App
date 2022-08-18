@@ -252,7 +252,7 @@ function calculatevat($type,$amount,$rate){
         $results = [$amount,0,$amount];
     }elseif ((int)$type === 2) {
         $incamount = $amount;
-        $excamount = ($amount)/((100 + $rate)*100);
+        $excamount = ($amount)/(100 + $rate)*100;
         $vat = $incamount - $excamount;
         $results = [$excamount,$vat,$incamount];
     }elseif ((int)$type === 3) {
