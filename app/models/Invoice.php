@@ -138,10 +138,88 @@ class Invoice
         }
     }
 
+    function Update($data)
+    {
+        try {
+            $this->db->dbh->beginTransaction();
+            $amountinc = calculatevat($data['vattype'],$data['total'],$data['vatrate'])[2];
+            
+            $this->db->query('UPDATE invoice_header SET InvoiceDate=:idate,DueDate=:ddate,SupplierId=:supplier,
+                                                        InvoiceNo=:invoice,`Description`=:narr,VatType=:vtype,
+                                                        VatId=:vid,ExclusiveVat=:excl,Vat=:vat,
+                                                        InclusiveVat=:incl 
+                              WHERE (ID = :id)');
+            $this->db->bind(':idate',!empty($data['invoicedate']) ? $data['invoicedate'] : null);
+            $this->db->bind(':ddate',!empty($data['duedate']) ? $data['duedate'] : null);
+            $this->db->bind(':supplier',!empty($data['supplier']) ? $data['supplier'] : null);
+            $this->db->bind(':invoice',!empty($data['invoiceno']) ? $data['invoiceno'] : null);
+            $this->db->bind(':narr',!empty($data['description']) ? strtolower($data['description']) : null);
+            $this->db->bind(':vtype',!empty($data['vattype']) ? $data['vattype'] : null);
+            $this->db->bind(':vid',!empty($data['vat']) ? $data['vat'] : null);
+            $this->db->bind(':excl',calculatevat($data['vattype'],$data['total'],$data['vatrate'])[0]);
+            $this->db->bind(':vat',calculatevat($data['vattype'],$data['total'],$data['vatrate'])[1]);
+            $this->db->bind(':incl',$amountinc);
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+            
+            $this->db->query('DELETE FROM invoice_details WHERE HeaderId = :hid');
+            $this->db->bind(':hid',$data['id']);
+            $this->db->execute();
+
+            $this->db->query('DELETE FROM ledger WHERE TransactionType = 3 AND TransactionId = :id');
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
+            for($i = 0; $i < count($data['booksid']); $i++){
+               $this->db->query('INSERT INTO invoice_details (HeaderId,ProductId,Qty,Rate)
+                                 VALUES(:hid,:pid,:qty,:rate)');
+               $this->db->bind(':hid',$data['id']);
+               $this->db->bind(':pid',$data['booksid'][$i]);
+               $this->db->bind(':qty',$data['qtys'][$i]);
+               $this->db->bind(':rate',$data['rates'][$i]);
+               $this->db->execute();
+
+               $accountname = $this->GetGlDetails($data['booksid'][$i])[0];
+               $accountid = $this->GetGlDetails($data['booksid'][$i])[1];
+               $amountwithvat = calculatevat($data['vattype'],$data['gross'][$i],$data['vatrate'])[2];
+               savetoledger($this->db->dbh,$data['invoicedate'],$accountname,$amountwithvat,0,
+                            strtolower($data['description']),$accountid,3,$data['id'],$_SESSION['centerid']);
+            }
+
+            $this->db->query('UPDATE invoice_payments SET TransactionDate=:tdate,SupplierId=:supplier,Credit=:credit,
+                                                          Narration=:narr 
+                              WHERE (HeaderId =:id)');
+            $this->db->bind(':tdate',!empty($data['invoicedate']) ? $data['invoicedate'] : null);
+            $this->db->bind(':supplier',!empty($data['supplier']) ? $data['supplier'] : null);
+            $this->db->bind(':credit',$amountinc);
+            $this->db->bind(':narr',!empty($data['description']) ? strtolower($data['description']) : null);
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
+            savetoledger($this->db->dbh,$data['invoicedate'],'accounts payable',0,$amountinc,
+                            strtolower($data['description']),4,3,$data['id'],$_SESSION['centerid']);
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+
+        } catch (\Exception $e) {
+            if($this->db->dbh->inTransaction()){
+                $this->db->dbh->rollback();
+            }
+            throw $e;
+            return false;
+        }
+    }
+
     public function CreateUpdate($data)
     {
         if(!$data['isedit']){
            return $this->Save($data);
+        }else{
+            return $this->Update($data);
         }
     }
 
