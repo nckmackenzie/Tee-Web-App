@@ -78,6 +78,13 @@
                                        placeholder="eg 1001">
                                 <span class="invalid-feedback"><?php echo $data['invoiceno_err'];?></span>
                             </div>
+                            <div class="col-12 mt-2">
+                                <label for="description">Description</label>
+                                <input type="text" name="description" id="description" 
+                                       class="form-control form-control-sm"
+                                       value="<?php echo $data['description'];?>"
+                                       placeholder="eg purchases for new books">
+                            </div>
                        </div> 
                     </div>
                 </div>
