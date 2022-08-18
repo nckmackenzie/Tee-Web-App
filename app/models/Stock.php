@@ -16,6 +16,16 @@ class Stock
         return $this->db->resultset();
     }
 
+    public function GetGrnNo()
+    {
+        return getuniqueid($this->db->dbh,'GrnNo','receiptsheader',$_SESSION['centerid']);
+    }
+
+    public function GetMtnNo()
+    {
+        return getuniqueid($this->db->dbh,'MtnNo','transfersheader',$_SESSION['centerid']);
+    }
+
     //get books
     public function GetBooks()
     {
