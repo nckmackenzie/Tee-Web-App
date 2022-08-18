@@ -91,8 +91,9 @@ class Invoices extends Controller
 
             for($i = 0; $i < count($data['booksid']); $i++){
                 array_push($data['table'],[
-                    'pid' => $data['booksid'][$i],
+                    'bid' => $data['booksid'][$i],
                     'name' => $data['booksname'][$i],
+                    'qty' => $data['qtys'][$i],
                     'rate' => $data['rates'][$i],
                     'gross' => $data['gross'][$i],
                 ]);
