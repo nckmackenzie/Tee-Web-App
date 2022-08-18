@@ -64,7 +64,7 @@ class Invoices extends Controller
                 'books' => $this->invoicemodel->GetBooks(),
                 'touched' => true,
                 'isedit' => converttobool(trim($_POST['isedit'])),
-                'id' => trim($_POST['isedit']),
+                'id' => trim($_POST['id']),
                 'invoicedate' => !empty(trim($_POST['invoicedate'])) ? date('Y-m-d', strtotime(trim($_POST['invoicedate']))) : '',
                 'supplier' => !empty($_POST['supplier']) ? $_POST['supplier'] : '',
                 'duedate' => !empty(trim($_POST['duedate'])) ? date('Y-m-d', strtotime(trim($_POST['duedate']))) : '',
