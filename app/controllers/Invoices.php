@@ -30,7 +30,7 @@ class Invoices extends Controller
             'vats' => $this->invoicemodel->GetVats(),
             'books' => $this->invoicemodel->GetBooks(),
             'touched' => false,
-            'isedit' => '',
+            'isedit' => false,
             'id' => '',
             'invoicedate' => '',
             'supplier' => '',
@@ -153,5 +153,51 @@ class Invoices extends Controller
             redirect('auth/login');
             exit();
         }
+    }
+
+    public function edit($id)
+    {
+        $header = $this->invoicemodel->GetInvoiceHeader($id);
+        $details = $this->invoicemodel->GetInvoiceDetails($id);
+        $data = [
+            'title' => 'Edit Invoice',
+            'suppliers' => $this->invoicemodel->GetSuppliers(),
+            'vattypes' => $this->invoicemodel->GetVatTypes(),
+            'vats' => $this->invoicemodel->GetVats(),
+            'books' => $this->invoicemodel->GetBooks(),
+            'touched' => false,
+            'isedit' => true,
+            'id' => $header->ID,
+            'invoicedate' => date('Y-m-d',strtotime($header->InvoiceDate)),
+            'supplier' => $header->SupplierId,
+            'duedate' => date('Y-m-d',strtotime($header->DueDate)),
+            'vattype' => $header->VatType,
+            'vat' => $header->VatId,
+            'invoiceno' => $header->InvoiceNo,
+            'description' => isset($header->Description) ? strtoupper($header->Description) : '',
+            'invoicedate_err' => '',
+            'duedate_err' => '',
+            'supplier_err' => '',
+            'vattype_err' => '',
+            'vat_err' => '',
+            'invoiceno_err' => '',
+            'table' => [],
+            'save_err'=> '',
+        ];
+        foreach($details as $detail){
+            array_push($data['table'],[
+                'bid' => $detail->ProductId,
+                'name' => $detail->BookTitle,
+                'qty' => $detail->Qty,
+                'rate' => $detail->Rate,
+                'gross' => $detail->Gross,
+            ]);
+        }
+        if((int)$header->CenterId !== (int)$_SESSION['centerid']){
+            redirect('auth/unauthorized');
+            exit();
+        }
+        $this->view('invoices/add', $data);
+        exit();
     }
 }
