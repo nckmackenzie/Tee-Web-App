@@ -144,4 +144,27 @@ class Invoice
            return $this->Save($data);
         }
     }
+
+    public function GetInvoiceHeader($id)
+    {
+        $this->db->query('SELECT * FROM invoice_header WHERE ID = :id');
+        $this->db->bind(':id',(int)$id);
+        return $this->db->single();
+    }
+
+    public function GetInvoiceDetails($id)
+    {
+        $this->db->query('SELECT 
+                            ProductId,
+                            BookTitle,
+                            Qty,
+                            Rate,
+                            Gross
+                          FROM 
+                            vw_invoiceheader
+                          WHERE 
+                            HeaderId = :id');
+        $this->db->bind(':id',(int)$id);
+        return $this->db->resultset();                  
+    }
 }
