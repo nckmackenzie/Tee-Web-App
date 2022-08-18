@@ -104,7 +104,7 @@ class Auth extends Controller {
         $_SESSION['usertypeid'] = $user->UserTypeId;
         $_SESSION['usertype'] = $user->UserType;
         $_SESSION['ishead'] = converttobool($user->IsHead);
-        $_SESSION['centerid'] = $user->CenterId;
+        $_SESSION['centerid'] = (int)$user->CenterId;
         $_SESSION['centername'] = $user->CenterName;
         $_SESSION['examcenter'] = converttobool($user->ExamCenter);
         flash('home_msg',null,'Login Success!',flashclass('toast','success'));
