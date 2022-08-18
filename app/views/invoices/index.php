@@ -12,6 +12,14 @@
             return 'bg-info';
         }
     }
+
+    function paymentnotmade($amount,$balance){
+        if(floatval($amount) === floatval($balance)){
+            return true;
+        }else{
+            return false;
+        }
+    }
 ?>
 <!-- Start Content-->
 <div class="container-fluid">
@@ -61,13 +69,23 @@
                                         <td><?php echo $invoice->Balance;?></td>
                                         <td><span class="badge <?php echo paymentstatus($invoice->State);?>"><?php echo $invoice->State;?></span></td>
                                         <td>
-                                            <a href="<?php echo URLROOT;?>/invoices/edit/<?php echo $invoice->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                            <a href="<?php echo URLROOT;?>/invoices/print/<?php echo $invoice->ID;?>" class="action-icon btn text-primary"> <i class="mdi mdi-printer"></i></a>
-                                            <button class="action-icon btn text-danger btndel"
-                                                    data-id="<?php echo $invoice->ID;?>" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#centermodal"
-                                                    ><i class="mdi mdi-delete"></i></button>
+                                            <?php if(paymentnotmade($invoice->InvoiceAmount,$invoice->Balance)) : ?>
+                                                <a href="<?php echo URLROOT;?>/invoices/edit/<?php echo $invoice->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                            <?php endif; ?>
+                                            <?php if(floatval($invoice->Balance) > 0) : ?>
+                                                <a href="<?php echo URLROOT;?>/invoices/pay/<?php echo $invoice->ID;?>"
+                                                   class="action-icon btn text-warning"> <i class="mdi mdi-cash-check"></i></a>
+                                            <?php endif; ?>
+                                            <a href="<?php echo URLROOT;?>/invoices/print/<?php echo $invoice->ID;?>"
+                                               class="action-icon btn text-primary"> <i class="mdi mdi-printer"></i></a>
+                                            <?php if((int)$_SESSION['usertypeid'] < 2 && 
+                                                      paymentnotmade($invoice->InvoiceAmount,$invoice->Balance)): ?>   
+                                                <button class="action-icon btn text-danger btndel"
+                                                        data-id="<?php echo $invoice->ID;?>" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#centermodal"
+                                                        ><i class="mdi mdi-delete"></i></button>
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
