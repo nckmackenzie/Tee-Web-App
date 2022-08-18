@@ -1,5 +1,18 @@
 <?php require APPROOT .'/views/inc/layout/app/header.php'; ?>
 <?php require APPROOT .'/views/inc/layout/app/sidebar.php'; ?>
+<?php 
+    function paymentstatus($status){
+        if($status === 'Paid'){
+            return 'bg-success';
+        }elseif($status === 'Partially Paid'){
+            return 'bg-warning';
+        }elseif($status === 'Not Paid'){
+            return 'bg-danger';
+        }else{
+            return 'bg-info';
+        }
+    }
+?>
 <!-- Start Content-->
 <div class="container-fluid">
     <!-- start page title -->
@@ -46,7 +59,7 @@
                                         <td><?php echo $invoice->SupplierName;?></td>
                                         <td><?php echo $invoice->InvoiceAmount;?></td>
                                         <td><?php echo $invoice->Balance;?></td>
-                                        <td><?php echo $invoice->State;?></td>
+                                        <td><span class="badge <?php echo paymentstatus($invoice->State);?>"><?php echo $invoice->State;?></span></td>
                                         <td>
                                             <a href="<?php echo URLROOT;?>/invoices/edit/<?php echo $invoice->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
                                             <a href="<?php echo URLROOT;?>/invoices/print/<?php echo $invoice->ID;?>" class="action-icon btn text-primary"> <i class="mdi mdi-printer"></i></a>
