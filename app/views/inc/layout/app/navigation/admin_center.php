@@ -32,9 +32,6 @@
             <li>
                 <a href="<?php echo URLROOT;?>/stocks/transfers">Transfers</a>
             </li>
-            <li>
-                <a href="<?php echo URLROOT;?>/sales">Sales</a>
-            </li>
         </ul>
     </div>
 </li>
@@ -57,6 +54,12 @@
             </li>
         </ul>
     </div>
+</li>
+<li class="side-nav-item">
+    <a href="<?php echo URLROOT;?>/sales" class="side-nav-link">
+        <i class="uil-dollar-sign"></i>
+        <span> Sales </span>
+    </a>
 </li>
 <li class="side-nav-item">
     <a data-bs-toggle="collapse" href="#sidebarExams" aria-expanded="false" aria-controls="sidebarExams" class="side-nav-link">
