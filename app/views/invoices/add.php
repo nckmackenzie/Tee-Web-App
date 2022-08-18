@@ -143,7 +143,18 @@
                                             <th width="5%">Remove</th>
                                         </tr>
                                     </thead>
-                                    <tbody></tbody>
+                                    <tbody>
+                                        <?php foreach($data['table'] as $table) : ?>
+                                            <tr>
+                                                <td class="d-none"><input type="text" name="booksid[]" value="<?php echo $table['bid'];?>" readonly></td>
+                                                <td><input type="text" class="table-input w-100" name="booksname[]" value="<?php echo $table['name'];?>" readonly></td>
+                                                <td><input type="text" class="table-input" name="qtys[]" value="<?php echo $table['qty'];?>" readonly></td>
+                                                <td><input type="text" class="table-input" name="rates[]" value="<?php echo $table['rate'];?>" readonly></td>
+                                                <td><input type="text" class="table-input" name="gross[]" value="<?php echo $table['gross'];?>" readonly></td>
+                                                <td><button type="button" class="action-icon btn btn-sm text-danger fs-5 btndel">Remove</button></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
                                 </table>
                             </div>
                           </div>              
