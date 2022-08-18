@@ -42,7 +42,7 @@
                             <div class="col-md-4 mb-2">
                                 <label for="duedate">Due Date</label>
                                 <input type="date" name="duedate" id="duedate" 
-                                       class="form-control form-control-sm mandatory 
+                                       class="form-control form-control-sm  
                                        <?php echo inputvalidation($data['duedate'],$data['duedate_err'],$data['touched']);?>"
                                        value="<?php echo $data['duedate'];?>">
                                 <span class="invalid-feedback"><?php echo $data['duedate_err'];?></span>
