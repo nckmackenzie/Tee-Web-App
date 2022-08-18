@@ -98,6 +98,6 @@
     </div>                    
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?> 
-<?php flash('invoice_flash_msg','alert');?>  
+<?php flash('invoice_flash_msg','toast');?>  
 <script type="module" src="<?php echo URLROOT;?>/dist/js/pages/invoices/index.js"></script>                 
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
