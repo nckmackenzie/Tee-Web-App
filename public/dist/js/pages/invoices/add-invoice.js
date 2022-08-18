@@ -11,6 +11,7 @@ const table = document.querySelector('#detailstable');
 const addBtn = document.querySelector('.btnadd');
 const qtySpan = document.querySelector('.qtyspan');
 const bookSpan = document.querySelector('.bookspan');
+const form = document.querySelector('form');
 
 invoiceDateInput.addEventListener('change', function (e) {
   const currDate = new Date(e.target.value);
@@ -110,4 +111,18 @@ table.addEventListener('click', function (e) {
   if (!e.target.classList.contains('btndel')) return;
   const btn = e.target;
   btn.closest('tr').remove();
+});
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const body = document
+    .getElementById('detailstable')
+    .getElementsByTagName('tbody')[0];
+
+  if (Number(body.rows.length) === 0) {
+    alert('Add products');
+    return;
+  } else {
+    document.form.submit();
+  }
 });
