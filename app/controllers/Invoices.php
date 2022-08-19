@@ -304,4 +304,17 @@ class Invoices extends Controller
             exit();
         }
     }
+
+    public function checkglcode()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $_GET = filter_input_array(INPUT_GET, FILTER_UNSAFE_RAW);
+            $bookid = (int)trim($_GET['bookid']);
+            echo json_encode($this->invoicemodel->CheckGlCode($bookid));
+            exit();
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
