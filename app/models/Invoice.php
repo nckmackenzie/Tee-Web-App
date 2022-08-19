@@ -317,4 +317,15 @@ class Invoice
             return false;
         }
     }
+
+    public function CheckGlCode($id)
+    {
+        $this->db->query('SELECT IFNULL(GlAccountId,0) AS GlCodeId FROM books WHERE ID =:id');
+        $this->db->bind(':id', $id);
+        if((int)$this->db->getvalue() === 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
