@@ -19,7 +19,7 @@
             <div class="card">
                 <div class="card-header"><?php echo $data['title'];?></div>
                 <div class="card-body">
-                    <form action="<?php echo URLROOT;?>/invoices/payinvoice" method="post">
+                    <form action="<?php echo URLROOT;?>/invoices/payinvoice" method="post" autocomplete="off">
                         <div class="row">
                             <div class="col-md-8 mb-3">
                                 <label for="supplier">Supplier</label>
@@ -74,13 +74,15 @@
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="paymethod">Pay Method</label>
-                                <select name="paymethod" id="paymethod" class="form-select form-select-sm mandatory">
+                                <select name="paymethod" id="paymethod" 
+                                        class="form-select form-select-sm mandatory 
+                                        <?php echo inputvalidation($data['paymethod'],$data['paymethod_err'],$data['touched']);?>">
                                     <option value=""selected disabled>Select pay method</option>
                                     <option value="1" <?php selectdCheck($data['paymethod'],1);?>>Cash</option>
                                     <option value="2" <?php selectdCheck($data['paymethod'],2);?>>Cheque</option>
                                     <option value="3" <?php selectdCheck($data['paymethod'],3);?>>Bank</option>
                                 </select>
-                                <span class="invalid-feedback"><?php echo $data['currentamount_err'];?></span>
+                                <span class="invalid-feedback"><?php echo $data['paymethod_err'];?></span>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="reference">Payment Reference</label>
