@@ -218,15 +218,90 @@ class Invoices extends Controller
             'currentamount' => '',
             'currentbalance' => '',
             'paymethod' => 2,
-            'narration' => '',
             'reference' => '',
+            'paydate' => '',
+            'narration' => '',
             'currentamount_err' => '',
             'currentbalance_err' => '',
             'paymethod_err' => '',
+            'paydate_err' => '',
             'reference_err' => '',
         ];
         $this->view('invoices/pay', $data);
         exit();
     }
 
+    
+    public function payinvoice()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
+            $id = trim($_POST['id']);
+            $invoicedetail = $this->invoicemodel->GetInvoiceDetail($id);
+            $data = [
+                'title' => 'Pay Invoice',
+                'touched' => true,
+                'isedit' => false,
+                'id' => $invoicedetail->ID,
+                'supplierid' => $invoicedetail->SupplierId ,
+                'supplier' => $invoicedetail->SupplierName,
+                'invoiceno' => $invoicedetail->InvoiceNo,
+                'invoiceamount' => floatval($invoicedetail->InvoiceAmount),
+                'balance' => floatval($invoicedetail->Balance),
+                'amountpaid' => floatval($invoicedetail->InvoiceAmount) - floatval($invoicedetail->Balance),
+                'currentamount' => !empty(trim($_POST['currentamount'])) ? floatval(trim($_POST['currentamount'])) : '',
+                'currentbalance' => '',
+                'paymethod' => !empty($_POST['paymethod']) ? trim($_POST['paymethod']) : '',
+                'reference' => !empty(trim($_POST['reference'])) ? trim($_POST['reference']) : '',
+                'paydate' => !empty(trim($_POST['paydate'])) ? date('Y-m-d',strtotime(trim($_POST['paydate']))) : '',
+                'narration' => !empty(trim($_POST['narration'])) ? trim($_POST['narration']) : '',
+                'currentamount_err' => '',
+                'currentbalance_err' => '',
+                'paymethod_err' => '',
+                'paydate_err' => '',
+                'reference_err' => '',
+            ];
+
+            if(empty($data['currentamount'])){
+                $data['currentamount_err'] = 'Enter current payment';
+            }
+            if(empty($data['paymethod'])){
+                $data['paymethod_err'] = 'Select pay method';
+            }
+            if(empty($data['reference'])){
+                $data['reference_err'] = 'Enter payment reference';
+            }
+            if(empty($data['paydate'])){
+                $data['paydate_err'] = 'Select payment date';
+            }
+            if(!empty($data['reference']) && !$this->invoicemodel->CheckPaymethodAvailability($data['reference'])){
+                $data['reference_err'] = 'Reference already exists';
+            }
+            if(!empty($data['paydate']) && !validatedate($data['paydate'])){
+                $data['paydate_err'] = 'Invalid date selected';
+            }
+            if(!empty($data['currentamount'])){
+                $data['currentbalance'] = floatval($data['invoiceamount']) - (floatval($data['amountpaid']) + floatval($data['currentamount']));
+            }
+            if(!empty($data['paydate_err']) || !empty($data['reference_err']) || !empty($data['paymethod_err']) 
+               || !empty($data['currentamount_err'])){
+                $this->view('invoices/pay',$data);
+                exit();
+            }
+
+            if(!$this->invoicemodel->PayInvoice($data)){
+                flash('invoice_msg',null,'Unable to save invoice payment!Retry or contact admin!',flashclass('alert','danger'));
+                redirect('invoices');
+                exit();
+            }
+
+            flash('invoice_flash_msg',null,'Saved successfully',flashclass('toast','success'));
+            redirect('invoices');
+            exit();
+
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
