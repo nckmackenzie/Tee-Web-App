@@ -245,4 +245,11 @@ class Invoice
         $this->db->bind(':id',(int)$id);
         return $this->db->resultset();                  
     }
+
+    public function GetInvoiceDetail($id)
+    {
+        $this->db->query('SELECT * FROM vw_invoices WHERE ID = :id');
+        $this->db->bind(':id',(int)$id);
+        return $this->db->single();
+    }
 }
