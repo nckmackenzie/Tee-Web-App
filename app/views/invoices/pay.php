@@ -92,6 +92,14 @@
                                 <span class="invalid-feedback"><?php echo $data['reference_err'];?></span>
                             </div>
                             <div class="col-md-6 mb-3">
+                                <label for="paydate">Payment Date</label>
+                                <input type="date" name="paydate" id="paydate" 
+                                       class="form-control form-control-sm mandatory 
+                                       <?php echo inputvalidation($data['paydate'],$data['paydate_err'],$data['touched']); ?>"
+                                       value="<?php echo $data['paydate'];?>">
+                                <span class="invalid-feedback"><?php echo $data['paydate_err'];?></span>
+                            </div>
+                            <div class="col-md-12 mb-3">
                                 <label for="narration">Narration</label>
                                 <input type="text" name="narration" id="narration" 
                                        class="form-control form-control-sm"
@@ -102,7 +110,7 @@
                         <div class="d-grid d-md-block">
                             <input type="hidden" name="id" value="<?php echo $data['id'];?>">
                             <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
-                            <input type="hidden" name="supplierid " value="<?php echo $data['supplierid '];?>">
+                            <input type="hidden" name="supplierid " value="<?php echo $data['supplierid'];?>">
                             <button type="submit" class="btn btn-sm btn-primary">Save</button>
                         </div>
                     </form>
