@@ -64,7 +64,7 @@ function resetBeforeAndAfterAdd() {
   bookSpan.textContent = '';
 }
 
-addBtn.addEventListener('click', () => {
+addBtn.addEventListener('click', async () => {
   const product = productSelect.value;
   const qty = qtyInput.value;
   if (!product) {
@@ -76,6 +76,12 @@ addBtn.addEventListener('click', () => {
     qtySpan.textContent = 'Please enter qty';
   }
   if (!qty || !product) return;
+  if (!(await checkglcode(product))) {
+    productSelect.classList.add('is-invalid');
+    bookSpan.textContent = 'Set G/L Code for this product';
+    return;
+  }
+
   const selectedBook = getSelectedText(productSelect);
   const gross = grossInput.value;
   const rate = rateInput.value;
@@ -126,3 +132,9 @@ form.addEventListener('submit', function (e) {
     document.form.submit();
   }
 });
+
+async function checkglcode(bookid) {
+  const res = await fetch(`${HOST_URL}/invoices/checkglcode?bookid=${bookid}`);
+  const data = await res.json();
+  return data;
+}
