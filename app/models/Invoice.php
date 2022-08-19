@@ -275,7 +275,7 @@ class Invoice
                 
             $this->db->query('UPDATE invoice_header SET PayStatus = :pstatus
                               WHERE (ID = :id)');
-            $this->db->bind(':pstatus', floatval($data['currentbalance']) === 0 ? 1 : 2);
+            $this->db->bind(':pstatus', floatval($data['currentbalance']) == 0 ? 1 : 2);
             $this->db->bind(':id',$data['id']);
             $this->db->execute();
 
