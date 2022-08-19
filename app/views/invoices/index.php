@@ -65,8 +65,8 @@
                                         <td><?php echo $invoice->InvoiceDate;?></td>
                                         <td><?php echo $invoice->InvoiceNo;?></td>
                                         <td><?php echo $invoice->SupplierName;?></td>
-                                        <td><?php echo $invoice->InvoiceAmount;?></td>
-                                        <td><?php echo $invoice->Balance;?></td>
+                                        <td><?php echo number_format($invoice->InvoiceAmount,2);?></td>
+                                        <td><?php echo number_format($invoice->Balance,2);?></td>
                                         <td><span class="badge <?php echo paymentstatus($invoice->State);?>"><?php echo $invoice->State;?></span></td>
                                         <td>
                                             <?php if(paymentnotmade($invoice->InvoiceAmount,$invoice->Balance)) : ?>
