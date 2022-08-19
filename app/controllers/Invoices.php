@@ -150,7 +150,7 @@ class Invoices extends Controller
             exit();
 
         }else{
-            redirect('auth/login');
+            redirect('auth/forbidden');
             exit();
         }
     }
@@ -200,4 +200,33 @@ class Invoices extends Controller
         $this->view('invoices/add', $data);
         exit();
     }
+
+    public function pay($id)
+    {
+        $invoicedetail = $this->invoicemodel->GetInvoiceDetail($id);
+        $data = [
+            'title' => 'Pay Invoice',
+            'touched' => false,
+            'isedit' => false,
+            'id' => $invoicedetail->ID,
+            'supplierid' => $invoicedetail->SupplierId ,
+            'supplier' => $invoicedetail->SupplierName,
+            'invoiceno' => $invoicedetail->InvoiceNo,
+            'invoiceamount' => floatval($invoicedetail->InvoiceAmount),
+            'balance' => floatval($invoicedetail->Balance),
+            'amountpaid' => floatval($invoicedetail->InvoiceAmount) - floatval($invoicedetail->Balance),
+            'currentamount' => '',
+            'currentbalance' => '',
+            'paymethod' => 2,
+            'narration' => '',
+            'reference' => '',
+            'currentamount_err' => '',
+            'currentbalance_err' => '',
+            'paymethod_err' => '',
+            'reference_err' => '',
+        ];
+        $this->view('invoices/pay', $data);
+        exit();
+    }
+
 }
