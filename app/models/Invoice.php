@@ -252,4 +252,69 @@ class Invoice
         $this->db->bind(':id',(int)$id);
         return $this->db->single();
     }
+
+    public function CheckPaymethodAvailability($ref)
+    {
+        $this->db->query('SELECT 
+                            COUNT(*) 
+                          FROM 
+                            invoice_payments
+                          WHERE (PaymentReference=:ref) AND (Deleted=0)');
+        $this->db->bind(':ref',strtolower($ref));
+        if((int)$this->db->getvalue() > 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public function PayInvoice($data)
+    {
+        try {
+            $this->db->dbh->beginTransaction();
+                
+            $this->db->query('UPDATE invoice_header SET PayStatus = :pstatus
+                              WHERE (ID = :id)');
+            $this->db->bind(':pstatus', floatval($data['currentbalance']) === 0 ? 1 : 2);
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
+            $this->db->query('INSERT INTO invoice_payments (TransactionDate,HeaderId,SupplierId,Debit,
+                                                            Narration,PaymentMethod,PaymentReference,CenterId) 
+                              VALUES(:tdate,:hid,:supplier,:debit,:narr,:pmethod,:ref,:cid)');
+            $this->db->bind(':tdate',!empty($data['paydate']) ? $data['paydate'] : null);
+            $this->db->bind(':hid',$data['id']);
+            $this->db->bind(':supplier',!empty($data['supplierid']) ? $data['supplierid'] : null);
+            $this->db->bind(':debit',$data['currentamount']);
+            $this->db->bind(':narr',!empty($data['narration']) ? strtolower($data['narration']) : null);
+            $this->db->bind(':pmethod',!empty($data['paymethod']) ? strtolower($data['paymethod']) : null);
+            $this->db->bind(':ref',!empty($data['reference']) ? strtolower($data['reference']) : null);
+            $this->db->bind(':cid',$_SESSION['centerid']);
+            $this->db->execute();
+            $tid = $this->db->dbh->lastInsertId();
+            
+            savetoledger($this->db->dbh,$data['paydate'],'accounts payable',$data['currentamount'],0,
+                         strtolower($data['narration']),4,4,$tid,$_SESSION['centerid']);
+            if((int)$data['paymethod'] === 1){
+                savetoledger($this->db->dbh,$data['paydate'],'cash at hand',0,$data['currentamount'],
+                             strtolower($data['narration']),3,4,$tid,$_SESSION['centerid']);
+            }else{
+                savetoledger($this->db->dbh,$data['paydate'],'cash at bank',0,$data['currentamount'],
+                             strtolower($data['narration']),3,4,$tid,$_SESSION['centerid']);
+            }
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+
+        } catch (\Exception $e) {
+            if($this->db->dbh->inTransaction()){
+                $this->db->dbh->rollback();
+            }
+            throw $e;
+            return false;
+        }
+    }
 }
