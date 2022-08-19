@@ -21,42 +21,42 @@
                 <div class="card-body">
                     <form action="<?php echo URLROOT;?>/invoices/payinvoice" method="post">
                         <div class="row">
-                            <div class="col-md-8 mb-2">
+                            <div class="col-md-8 mb-3">
                                 <label for="supplier">Supplier</label>
                                 <input type="text" name="supplier" id="supplier" 
                                        class="form-control form-control-sm"
                                        value="<?php echo $data['supplier'];?>"
                                        readonly>
                             </div>
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4 mb-3">
                                 <label for="invoiceno">Invoice #</label>
                                 <input type="text" name="invoiceno" id="invoiceno" 
                                        class="form-control form-control-sm"
                                        value="<?php echo $data['invoiceno'];?>"
                                        readonly>
                             </div>
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4 mb-3">
                                 <label for="invoiceamount">Invoice Value</label>
                                 <input type="text" name="invoiceamount" id="invoiceamount" 
                                        class="form-control form-control-sm"
                                        value="<?php echo number_format($data['invoiceamount'],2);?>"
                                        readonly>
                             </div>
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4 mb-3">
                                 <label for="amountpaid">Amount Paid</label>
                                 <input type="text" name="amountpaid" id="amountpaid" 
                                        class="form-control form-control-sm"
                                        value="<?php echo number_format($data['amountpaid'],2);?>"
                                        readonly>
                             </div>
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4 mb-3">
                                 <label for="balance">Balance</label>
                                 <input type="text" name="balance" id="balance" 
                                        class="form-control form-control-sm"
                                        value="<?php echo number_format($data['balance'],2);?>"
                                        readonly>
                             </div>
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4 mb-3">
                                 <label for="currentamount">Current Payment</label>
                                 <input type="text" name="currentamount" id="currentamount" 
                                        class="form-control form-control-sm mandatory 
@@ -65,14 +65,14 @@
                                        placeholder="eg 25,000">
                                 <span class="invalid-feedback"><?php echo $data['currentamount_err'];?></span>
                             </div>
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4 mb-3">
                                 <label for="currentbalance">Closing Bal</label>
                                 <input type="text" name="currentbalance" id="currentbalance" 
                                        class="form-control form-control-sm"
                                        value="<?php echo $data['currentbalance'];?>"
                                        readonly>
                             </div>
-                            <div class="col-md-4 mb-2">
+                            <div class="col-md-4 mb-3">
                                 <label for="paymethod">Pay Method</label>
                                 <select name="paymethod" id="paymethod" class="form-select form-select-sm mandatory">
                                     <option value=""selected disabled>Select pay method</option>
@@ -82,7 +82,7 @@
                                 </select>
                                 <span class="invalid-feedback"><?php echo $data['currentamount_err'];?></span>
                             </div>
-                            <div class="col-md-6 mb-2">
+                            <div class="col-md-6 mb-3">
                                 <label for="reference">Payment Reference</label>
                                 <input type="text" name="reference" id="reference" 
                                        class="form-control form-control-sm mandatory 
@@ -91,7 +91,7 @@
                                        placeholder="eg chq001256">
                                 <span class="invalid-feedback"><?php echo $data['reference_err'];?></span>
                             </div>
-                            <div class="col-md-6 mb-2">
+                            <div class="col-md-6 mb-3">
                                 <label for="narration">Narration</label>
                                 <input type="text" name="narration" id="narration" 
                                        class="form-control form-control-sm"
