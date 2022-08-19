@@ -26,3 +26,7 @@ export function displayAlert(elm, message) {
     elm.innerHTML = '';
   }, 5000);
 }
+
+export function formatcurrencyvalue(val) {
+  return val.replace(/,/g, '');
+}
