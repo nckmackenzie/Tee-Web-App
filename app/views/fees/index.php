@@ -30,7 +30,7 @@
                                     <th class="d-none">ID</th>
                                     <th>Payment Date</th>
                                     <th>Receipt #</th>
-                                    <th>Student</th>
+                                    <th width="30%">Student</th>
                                     <th>Amount</th>
                                     <th>Actions</th>
                                 </tr>
