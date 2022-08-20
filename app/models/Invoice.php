@@ -335,4 +335,39 @@ class Invoice
         $this->db->bind(':id', (int)$id);
         return $this->db->single();
     }
+
+    public function Delete($id)
+    {
+        try {
+            $this->db->dbh->beginTransaction();
+                
+            $this->db->query('UPDATE invoice_header SET Deleted = 1
+                              WHERE (ID = :id)');
+            $this->db->bind(':id',$id);
+            $this->db->execute();
+
+            $this->db->query('UPDATE invoice_payments SET Deleted =1  
+                              WHERE (HeaderId = :id)');
+            $this->db->bind(':id',$id);
+            $this->db->execute();
+            
+            $this->db->query('UPDATE ledger SET Deleted = 1  
+                              WHERE (TransactionType = 3) AND (TransactionId = :id)');
+            $this->db->bind(':id',$id);
+            $this->db->execute();
+            
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+
+        } catch (\Exception $e) {
+            if($this->db->dbh->inTransaction()){
+                $this->db->dbh->rollback();
+            }
+            throw $e;
+            return false;
+        }
+    }
 }

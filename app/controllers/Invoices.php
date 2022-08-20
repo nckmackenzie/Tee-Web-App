@@ -341,4 +341,10 @@ class Invoices extends Controller
         $this->view('invoices/print', $data);
         exit();
     }
+
+    public function delete()
+    {
+        delete('invoice',$this->invoicemodel);
+        exit();
+    }
 }
