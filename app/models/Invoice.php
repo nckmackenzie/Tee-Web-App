@@ -328,4 +328,11 @@ class Invoice
             return true;
         }
     }
+
+    public function GetSupplier($id)
+    {
+        $this->db->query('SELECT * FROM suppliers WHERE ID = :id');
+        $this->db->bind(':id', (int)$id);
+        return $this->db->single();
+    }
 }
