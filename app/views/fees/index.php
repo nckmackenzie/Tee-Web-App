@@ -42,7 +42,7 @@
                                         <td><?php echo $fee->PaymentDate;?></td>
                                         <td><?php echo $fee->ReceiptNo;?></td>
                                         <td><?php echo $fee->StudentName;?></td>
-                                        <td><?php echo $fee->Amount;?></td>
+                                        <td><?php echo $fee->AmountPaid;?></td>
                                         <td>
                                             <?php if((int)$_SESSION['usertypeid'] <3 ) : ?>
                                                 <a href="<?php echo URLROOT;?>/fees/edit/<?php echo $fee->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
