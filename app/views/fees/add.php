@@ -74,9 +74,9 @@
                                         class="form-select form-select-sm mandatory 
                                         <?php echo inputvalidation($data['paymethod'],$data['paymethod_err'],$data['paymethod']);?>">
                                     <option value="" selected disabled>Select pay method</option>
-                                    <option value="1">Cash</option>
-                                    <option value="2">Cheque</option>
-                                    <option value="3">Bank</option>
+                                    <option value="1" <?php selectdCheck($data['paymethod'],1);?>>Cash</option>
+                                    <option value="2" <?php selectdCheck($data['paymethod'],2);?>>Cheque</option>
+                                    <option value="3" <?php selectdCheck($data['paymethod'],3);?>>Bank</option>
                                 </select>
                                 <span class="invalid-feedback"><?php echo $data['paymethod_err'];?></span>
                             </div>
@@ -93,7 +93,7 @@
                                 <label for="narration">Narration</label>
                                 <input type="text" name="narration" id="narration" 
                                        class="form-control form-control-sm"
-                                       value="<?php echo $data['reference'];?>"
+                                       value="<?php echo $data['narration'];?>"
                                        placeholder="description on fee payment">
                             </div>
                         </div>
