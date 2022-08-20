@@ -149,4 +149,10 @@ class Fees extends Controller
         $this->view('fees/add',$data);
         exit();
     }
+
+    public function delete()
+    {
+        delete('fee',$this->feemodel);
+        exit();
+    }
 }

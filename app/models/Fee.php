@@ -138,4 +138,34 @@ class Fee
         $this->db->bind(':id',$id);
         return $this->db->single();
     }
+
+    public function Delete($id)
+    {
+        try {
+            $this->db->dbh->beginTransaction();
+
+            $sql = 'UPDATE fees_payment SET Deleted = 1
+                    WHERE (ID = :id)';
+            $this->db->query($sql);
+            $this->db->bind(':id',$id);
+            $this->db->execute();
+            
+            $this->db->query('UPDATE ledger SET Deleted = 1 WHERE TransactionType = 5 AND TransactionId = :id');
+            $this->db->bind(':id',$id);
+            $this->db->execute(); 
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+            
+        } catch (\Exception $e) {
+            if(!$this->db->dbh->inTransaction()){
+                $this->db->dbh->rollback();
+            }
+            throw $e;
+            return false;
+        }
+    }
 }
