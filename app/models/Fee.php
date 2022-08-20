@@ -80,7 +80,7 @@ class Fee
                         VALUES(:pdate,:receipt,:student,:amount,:account,:paymethod,:reference,:narr,:cid)';
             }else{
                 $sql = 'UPDATE fees_payment SET PaymentDate=:pdate,ReceiptNo=:receipt,StudentId=:student,AmountPaid
-                                                ,GlAccountId=:account,PaymentMethodId=:paymethod,Reference=:reference
+                                                =:amount,GlAccountId=:account,PaymentMethodId=:paymethod,Reference=:reference
                                                 ,Narration=:narr 
                         WHERE (ID = :id)';
             }
@@ -130,5 +130,12 @@ class Fee
             throw $e;
             return false;
         }
+    }
+
+    public function GetPayment($id)
+    {
+        $this->db->query('SELECT * FROM fees_payment WHERE ID = :id');
+        $this->db->bind(':id',$id);
+        return $this->db->single();
     }
 }
