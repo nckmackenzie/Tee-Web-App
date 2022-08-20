@@ -19,4 +19,32 @@ class Fees extends Controller
         ];
         $this->view('fees/index',$data);
     }
+
+    public function add()
+    {
+        $data = [
+            'title' => 'Add fee payment',
+            'students' => $this->feemodel->GetStudents(),
+            'accounts' => $this->feemodel->GetAccounts(),
+            'touched' => false,
+            'isedit' => false,
+            'id' => '',
+            'pdate' => '',
+            'receiptno' => $this->feemodel->GetReceiptNo(),
+            'student' => '',
+            'amount' => '',
+            'account' => '',
+            'paymethod' => '',
+            'reference' => '',
+            'narration' => '',
+            'pdate_err' => '',
+            'student_err' => '',
+            'amount_err' => '',
+            'account_err' => '',
+            'paymethod_err' => '',
+            'reference_err' => '',
+        ];
+        $this->view('fees/add',$data);
+        exit();
+    }
 }
