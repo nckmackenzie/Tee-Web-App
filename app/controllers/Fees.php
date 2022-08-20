@@ -8,5 +8,15 @@ class Fees extends Controller
             exit();
         }
         $this->feemodel = $this->model('Fee');
-    }    
+    }
+    
+    public function index()
+    {
+        $data = [
+            'title' => 'Fees',
+            'has_datatable' => true,
+            'fees' => $this->feemodel->GetFees(),
+        ];
+        $this->view('fees/index',$data);
+    }
 }
