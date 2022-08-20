@@ -227,6 +227,10 @@ class Invoices extends Controller
             'paydate_err' => '',
             'reference_err' => '',
         ];
+        if((int)$invoicedetail->CenterId !== (int)$_SESSION['centerid']){
+            redirect('auth/unauthorized');
+            exit();
+        }
         $this->view('invoices/pay', $data);
         exit();
     }
@@ -316,5 +320,25 @@ class Invoices extends Controller
             redirect('auth/forbidden');
             exit();
         }
+    }
+
+    public function print($id)
+    {
+        $header = $this->invoicemodel->GetInvoiceHeader($id);
+        $details = $this->invoicemodel->GetInvoiceDetails($id);
+        $supplier = $this->invoicemodel->GetSupplier($header->SupplierId);
+        $data = [
+            'title' => 'Print Invoice',
+            'header' => $header,
+            'details' => $details,
+            'supplier' => $supplier,
+        ];
+
+        if((int)$header->CenterId !== (int)$_SESSION['centerid']){
+            redirect('auth/unauthorized');
+            exit();
+        }
+        $this->view('invoices/print', $data);
+        exit();
     }
 }
