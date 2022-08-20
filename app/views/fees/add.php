@@ -39,7 +39,7 @@
                                 <label for="student">Student</label>
                                 <select name="student" id="student" 
                                         class="form-select form-select-sm mandatory 
-                                        <?php echo inputvalidation($data['student'],$data['student_err'],$data['student']);?>">
+                                        <?php echo inputvalidation($data['student'],$data['student_err'],$data['touched']);?>">
                                     <option value="" selected disabled>Select student</option>
                                     <?php foreach($data['students'] as $student) : ?>
                                         <option value="<?php echo $student->ID;?>" <?php selectdCheck($data['student'],$student->ID);?>><?php echo $student->StudentName;?></option>
