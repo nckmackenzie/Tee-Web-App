@@ -121,4 +121,32 @@ class Fees extends Controller
             exit();
         }
     }
+    public function edit($id)
+    {
+        $payment = $this->feemodel->GetPayment($id);
+        $data = [
+            'title' => 'Edit fee payment',
+            'students' => $this->feemodel->GetStudents(),
+            'accounts' => $this->feemodel->GetAccounts(),
+            'touched' => false,
+            'isedit' => true,
+            'id' => $payment->ID,
+            'pdate' => $payment->PaymentDate,
+            'receiptno' => $payment->ReceiptNo,
+            'student' => $payment->StudentId,
+            'amount' => $payment->AmountPaid,
+            'account' => $payment->GlAccountId,
+            'paymethod' => $payment->PaymentMethodId,
+            'reference' => strtoupper($payment->Reference),
+            'narration' => isset($payment->Narration) ? strtoupper($payment->Narration) : '',
+            'pdate_err' => '',
+            'student_err' => '',
+            'amount_err' => '',
+            'account_err' => '',
+            'paymethod_err' => '',
+            'reference_err' => '',
+        ];
+        $this->view('fees/add',$data);
+        exit();
+    }
 }
