@@ -46,11 +46,13 @@
                                         <td><?php echo $expense->ExpenseAmount;?></td>
                                         <td>
                                             <a href="<?php echo URLROOT;?>/expenses/edit/<?php echo $expense->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                            <button class="action-icon btn text-danger btndel"
-                                                        data-id="<?php echo $expense->ID;?>" 
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#centermodal"
-                                                        ><i class="mdi mdi-delete"></i></button>
+                                            <?php if((int)$_SESSION['usertypeid'] < 3) : ?>
+                                                <button class="action-icon btn text-danger btndel"
+                                                            data-id="<?php echo $expense->ID;?>" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#centermodal"
+                                                            ><i class="mdi mdi-delete"></i></button>
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
