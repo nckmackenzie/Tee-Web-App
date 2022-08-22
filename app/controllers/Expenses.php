@@ -120,4 +120,35 @@ class Expenses extends Controller
             exit();
         }
     }
+
+    public function edit($id)
+    {
+        $expense = $this->expensemodel->GetExpense($id);
+        $data = [
+            'title' => 'Edit Expense',
+            'accounts' => $this->expensemodel->GetExpenseAccounts(),
+            'isedit' => true,
+            'touched' => false,
+            'id' => $expense->ID,
+            'edate' => $expense->ExpenseDate,
+            'voucherno' => $expense->VoucherNo,
+            'account' => $expense->AccountId,
+            'amount' => $expense->Amount,
+            'paymethod' => $expense->PaymentMethodId,
+            'reference' => strtoupper($expense->PaymentReference),
+            'narration' => strtoupper($expense->Narration),
+            'edate_err' => '',
+            'voucherno_err' => '',
+            'account_err' => '',
+            'amount_err' => '',
+            'paymethod_err' => '',
+            'reference_err' => '',
+        ];
+        if((int)$expense->CenterId !== (int)$_SESSION['centerid']){
+            redirect('auth/unauthorized');
+            exit();
+        }
+        $this->view('expenses/add',$data);
+        exit();
+    }
 }
