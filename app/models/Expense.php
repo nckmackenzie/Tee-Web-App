@@ -57,7 +57,7 @@ class Expense
                                               PaymentMethodId,PaymentReference,Narration,CenterId) 
                         VALUES(:edate,:voucher,:account,:amount,:paymethod,:reference,:narr,:cid)';
             }else{
-                $sql = 'UPDATE expenses SET ExpenseDate=:edate,VoucherNo=:voucher,AmountPaid=:amount,AccountId 
+                $sql = 'UPDATE expenses SET ExpenseDate=:edate,VoucherNo=:voucher,Amount=:amount,AccountId 
                                             =:account,PaymentMethodId=:paymethod,PaymentReference=:reference
                                             ,Narration=:narr 
                         WHERE (ID = :id)';
@@ -107,5 +107,12 @@ class Expense
             throw $e;
             return false;
         }
+    }
+
+    public function GetExpense($id)
+    {
+        $this->db->query('SELECT * FROM expenses WHERE ID = :id');
+        $this->db->bind(':id',(int)$id);
+        return $this->db->single();
     }
 }
