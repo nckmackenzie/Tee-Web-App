@@ -151,4 +151,10 @@ class Expenses extends Controller
         $this->view('expenses/add',$data);
         exit();
     }
+
+    public function delete()
+    {
+        delete('expense',$this->expensemodel);
+        exit();
+    }
 }
