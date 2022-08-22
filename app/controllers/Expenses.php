@@ -9,4 +9,14 @@ class Expenses extends Controller
         }
         $this->expensemodel = $this->model('Expense');
     }
+
+    public function index()
+    {
+        $data = [
+            'title' => 'Expenses',
+            'has_datatable' => true,
+            'expenses' => $this->expensemodel->GetExpenses()
+        ];
+        $this->view('expenses/index',$data);
+    }
 }
