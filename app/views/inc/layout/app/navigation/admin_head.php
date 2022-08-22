@@ -113,7 +113,7 @@
                 <a href="<?php echo URLROOT;?>/fees">Fee Payments</a>
             </li>
             <li>
-                <a href="<?php echo URLROOT;?>/finances/expenses">Expenses</a>
+                <a href="<?php echo URLROOT;?>/expenses">Expenses</a>
             </li>
             <li>
                 <a href="<?php echo URLROOT;?>/budgets">Budgets</a>
