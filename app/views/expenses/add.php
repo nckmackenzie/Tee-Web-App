@@ -45,7 +45,7 @@
                                         <?php echo inputvalidation($data['account'],$data['account_err'],$data['touched']);?>">
                                     <option value="" selected disabled>Select Account</option>
                                     <?php foreach($data['accounts'] as $account): ?>
-                                        <option value="<?php echo $account->ID;?>"><?php echo $account->AccountName;?></option>
+                                        <option value="<?php echo $account->ID;?>" <?php selectdCheck($data['account'],$account->ID);?>><?php echo $account->AccountName;?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <span class="invalid-feedback"><?php echo $data['account_err'];?></span>
