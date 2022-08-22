@@ -19,4 +19,30 @@ class Expenses extends Controller
         ];
         $this->view('expenses/index',$data);
     }
+
+    public function add()
+    {
+        $data = [
+            'title' => 'Add Expense',
+            'accounts' => $this->expensemodel->GetExpenseAccounts(),
+            'isedit' => false,
+            'touch' => false,
+            'id' => '',
+            'edate' => '',
+            'voucherno' => '',
+            'account' => '',
+            'amount' => '',
+            'paymethod' => '',
+            'reference' => '',
+            'narration' => '',
+            'edate_err' => '',
+            'voucherno_err' => '',
+            'account_err' => '',
+            'amount_err' => '',
+            'paymethod_err' => '',
+            'reference_err' => '',
+        ];
+        $this->view('expenses/add',$data);
+        exit();
+    }
 }
