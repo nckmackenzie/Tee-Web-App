@@ -11,5 +11,6 @@ class Budgets extends Controller
             redirect('auth/unauthorized');
             exit();
         }
+        $this->budgetmodel = $this->model('Budget');
     }
 }
