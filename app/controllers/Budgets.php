@@ -13,4 +13,15 @@ class Budgets extends Controller
         }
         $this->budgetmodel = $this->model('Budget');
     }
+
+    public function index()
+    {
+        $data = [
+            'title' => 'Budgets',
+            'has_datatable' => true,
+            'budgets' => $this->budgetmodel->GetBudgets()
+        ];
+        $this->view('budgets/index',$data);
+        exit();
+    }
 }
