@@ -52,7 +52,7 @@
                             </div>
                             <div class="col-12">
                                 <table class="table table-sm nowrap dt-responsive w-100">
-                                    <thead>
+                                    <thead class="table-light">
                                         <tr>
                                             <th class="d-none">ID</th>
                                             <th>Expense Account</th>
