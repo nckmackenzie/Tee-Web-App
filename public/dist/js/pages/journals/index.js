@@ -1,5 +1,9 @@
 import { getSelectedText, dateFormat, displayAlert } from '../utils.js';
-import { getDebitsCreditsTotal } from './calculations.js';
+import {
+  getDebitsCreditsTotal,
+  debitsTotalInput,
+  creditsTotalInput,
+} from './calculations.js';
 const jdateInput = document.getElementById('jdate');
 const accountSelect = document.getElementById('account');
 const typeSelect = document.getElementById('type');
@@ -108,9 +112,14 @@ form.addEventListener('submit', function (e) {
     .getElementsByTagName('tbody')[0];
 
   if (Number(body.rows.length) === 0) {
-    displayAlert(alertBox, 'Add Items');
-    return false;
-  } else {
-    document.form.submit();
+    displayAlert(alertBox, 'Add journal entries');
+    return;
   }
+  if (
+    parseFloat(debitsTotalInput.value) !== parseFloat(creditsTotalInput.value)
+  ) {
+    displayAlert(alertBox, "Debit and Credits don't match");
+    return;
+  }
+  document.form.submit();
 });
