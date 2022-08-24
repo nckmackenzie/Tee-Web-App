@@ -83,7 +83,7 @@
                                 <span class="invalid-feedback" id="amount_span"></span>
                             </div>
                             <div class="col-2 my-2">
-                                <button type="button" class="btn btn-sm btn-success w-100">Add</button>
+                                <button type="button" class="btn btn-sm btn-success w-100" id="addbtn">Add</button>
                             </div>
                             <div class="col-12">
                                 <div class="table-responsive">
@@ -91,6 +91,7 @@
                                         <thead class="table-light">
                                             <tr>
                                                 <th width="15%">Date</th>
+                                                <th class="d-none">Aid</th>
                                                 <th>G/L Account</th>
                                                 <th width="15%">Debit/Credit</th>
                                                 <th width="15%">Amount</th>
