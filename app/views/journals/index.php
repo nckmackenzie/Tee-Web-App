@@ -33,29 +33,17 @@
                                     readonly>
                                 <input type="hidden" name="journalnohidden" id="journalnohidden" value="<?php echo $data['journalno']; ?>" >
                             </div>
-                            <div class="col-md-2 mb-2">
-                                <label for="debits">Total Debits</label>
-                                <input type="text" id="debits"
-                                    class="form-control form-control-sm"  
-                                    readonly>    
+                            <div class="col-md-3">
+                                <label for="jdate">Journal Date</label>
+                                <input type="date" name="jdate" id="jdate" class="form-control form-control-sm mandatory">
+                                <span class="invalid-feedback" id="jdate_span"><?php echo $data['jdate']; ?></span>
                             </div>
-                            <div class="col-md-2 mb-2">
-                                <label for="credits">Total Credits</label>
-                                <input type="text" id="credits"
-                                    class="form-control form-control-sm"  
-                                    readonly>    
-                            </div>
-                            <div class="col-md-6 mb-2">
+                            <div class="col-md-7 mb-2">
                                 <label for="description">Description</label>
                                 <input type="text" id="credits"
                                     class="form-control form-control-sm"  
                                     value="<?php echo $data['description']; ?>"
                                     placeholder="Enter description for journal..optional">    
-                            </div>
-                            <div class="col-md-3">
-                                <label for="jdate">Journal Date</label>
-                                <input type="date" name="jdate" id="jdate" class="form-control form-control-sm mandatory">
-                                <span class="invalid-feedback" id="jdate_span"></span>
                             </div>
                             <div class="col-md-4">
                                 <label for="account">G/L Account</label>
@@ -67,7 +55,7 @@
                                 </select>
                                 <span class="invalid-feedback" id="account_span"></span>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label for="type">Debit/Credit</label>
                                 <select name="type" id="type" class="form-select form-select-sm mandatory">
                                     <option value="" selected disabled>Select debit/credit</option>
@@ -83,6 +71,18 @@
                                        placeholder="eg 1,200">
                                 <span class="invalid-feedback" id="amount_span"></span>
                             </div>
+                            <div class="col-md-2">
+                                <label for="debits">Total Debits</label>
+                                <input type="text" id="debits"
+                                    class="form-control form-control-sm"  
+                                    readonly>    
+                            </div>
+                            <div class="col-md-2">
+                                <label for="credits">Total Credits</label>
+                                <input type="text" id="credits"
+                                    class="form-control form-control-sm"  
+                                    readonly>    
+                            </div>
                             <div class="col-2 my-2">
                                 <button type="button" class="btn btn-sm btn-success w-100" id="addbtn">Add</button>
                             </div>
@@ -91,7 +91,6 @@
                                     <table class="table table-sm table-bordered dt-responsive w-100" id="details">
                                         <thead class="table-light">
                                             <tr>
-                                                <th width="15%">Date</th>
                                                 <th class="d-none">Aid</th>
                                                 <th>G/L Account</th>
                                                 <th width="15%">Debit/Credit</th>
@@ -99,7 +98,17 @@
                                                 <th width="10%">Remove</th>
                                             </tr>
                                         </thead>
-                                        <tbody></tbody>
+                                        <tbody>
+                                            <?php foreach ($data['accounts'] as $account) : ?>
+                                                <tr>
+                                                    <td class="d-none"><input type="text" name="accountsid[]" value="<?php echo $account['aid'];?>" readonly></td>
+                                                    <td><input type="text" class="table-input w-100" name="accountsname[]" value="<?php echo $account['name'];?>" readonly></td>
+                                                    <td style="width:15%"><input type="text" class="table-input" name="types[]" value="<?php echo $account['type'];?>" readonly></td>
+                                                    <td style="width:15%"><input type="text" class="table-input" name="amounts[]" value="<?php echo $account['amount'];?>" readonly></td>
+                                                    <td style="width:10%"><button type="button" class="action-icon btn btn-sm text-danger fs-5 btndel">Remove</button></td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
