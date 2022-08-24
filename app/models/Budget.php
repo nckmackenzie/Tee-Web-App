@@ -95,10 +95,75 @@ class Budget
         
     }
 
+    public function Update($data)
+    {
+        try{
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('UPDATE budget_header SET BudgetName=:bname,YearId=:yid 
+                              WHERE (ID = :id)');
+            $this->db->bind(':bname',!empty($data['budgetname']) ? strtolower($data['budgetname']) : null);
+            $this->db->bind(':yid',!empty($data['year']) ? strtolower($data['year']) : null);
+            $this->db->bind(':id',(int)$data['id']);
+            $this->db->execute();
+           
+            $this->db->query('DELETE FROM budget_details WHERE HeaderId = :id');
+            $this->db->bind(':id',(int)$data['id']);
+            $this->db->execute();
+
+            for($i = 0; $i < count($data['accountsid']); $i++){
+                $this->db->query('INSERT INTO budget_details (HeaderId,AccountId,Amount) 
+                                  VALUES(:hid,:aid,:amount)');
+                $this->db->bind(':hid',$data['id']);
+                $this->db->bind(':aid',$data['accountsid'][$i]);
+                $this->db->bind(':amount',$data['amounts'][$i]);
+                $this->db->execute();
+            }
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+
+        }catch(\Exception $e){
+            if(!$this->db->dbh->inTransaction()){
+                $this->db->dbh->rollback();
+            }
+            throw $e;
+            return false;
+        }
+        
+    }
+
     public function CreateUpdate($data)
     {
         if(!$data['isedit']){
             return $this->Save($data);
+        }elseif($data['isedit']){
+            return $this->Update($data);
         }
+    }
+
+    public function GetBudgetHeader($id)
+    {
+        $this->db->query('SELECT * FROM budget_header WHERE ID = :id');
+        $this->db->bind(':id', (int)$id); 
+        return $this->db->single();
+    }
+
+    public function GetBudgetDetails($id)
+    {
+        $this->db->query('SELECT 
+                            b.AccountId,
+                            UCASE(a.AccountName) As AccountName,
+                            b.Amount
+                          FROM 
+                            budget_details b JOIN accounttypes a ON b.AccountId = a.ID
+                          WHERE 
+                            HeaderId = :id
+                          ORDER BY AccountName');
+        $this->db->bind(':id', (int)$id); 
+        return $this->db->resultset();
     }
 }
