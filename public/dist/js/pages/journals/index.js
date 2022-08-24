@@ -1,4 +1,4 @@
-import { getSelectedText, dateFormat } from '../utils.js';
+import { getSelectedText, dateFormat, displayAlert } from '../utils.js';
 import { getDebitsCreditsTotal } from './calculations.js';
 const jdateInput = document.getElementById('jdate');
 const accountSelect = document.getElementById('account');
@@ -10,6 +10,8 @@ const typeSpan = document.getElementById('type_span');
 const amountSpan = document.getElementById('amount_span');
 const addBtn = document.getElementById('addbtn');
 const table = document.getElementById('details');
+const form = document.querySelector('form');
+const alertBox = document.getElementById('alertBox');
 
 function singleValidate(elm, msg, span, span_err) {
   if (!elm.value) {
@@ -97,4 +99,18 @@ table.addEventListener('click', function (e) {
   if (!e.target.classList.contains('btndel')) return;
   const btn = e.target;
   btn.closest('tr').remove();
+});
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const body = document
+    .getElementById('details')
+    .getElementsByTagName('tbody')[0];
+
+  if (Number(body.rows.length) === 0) {
+    displayAlert(alertBox, 'Add Items');
+    return false;
+  } else {
+    document.form.submit();
+  }
 });
