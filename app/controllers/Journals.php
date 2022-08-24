@@ -21,7 +21,7 @@ class Journals extends Controller
             'accounts' => $this->journalmodel->GetGlAccounts(),
             'isedit' => false,
             'id' => '',
-            'journalno' => '',
+            'journalno' => $this->journalmodel->GetJournalNo(),
             'description' => '',
         ];
         $this->view('journals/index',$data);
