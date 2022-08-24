@@ -56,7 +56,6 @@ function clear() {
 function appendToTable() {
   const accountName = getSelectedText(accountSelect);
   const accountValue = accountSelect.value;
-  const jdateValue = dateFormat(jdateInput.value);
   const typeName = getSelectedText(typeSelect);
   const amountValue = amountInput.value;
   const body = table.getElementsByTagName('tbody')[0];
@@ -97,6 +96,7 @@ form.addEventListener('submit', function (e) {
     displayAlert(alertBox, 'Add journal entries');
     return;
   }
+  getDebitsCreditsTotal(table);
   if (
     parseFloat(debitsTotalInput.value) !== parseFloat(creditsTotalInput.value)
   ) {
