@@ -75,13 +75,13 @@
                             </div>
                             <div class="col-md-2">
                                 <label for="debits">Total Debits</label>
-                                <input type="text" id="debits"
+                                <input type="text" id="debits" name="debits
                                     class="form-control form-control-sm"  
                                     readonly>    
                             </div>
                             <div class="col-md-2">
                                 <label for="credits">Total Credits</label>
-                                <input type="text" id="credits"
+                                <input type="text" id="credits" name="credits
                                     class="form-control form-control-sm"  
                                     readonly>    
                             </div>
