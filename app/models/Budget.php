@@ -166,4 +166,15 @@ class Budget
         $this->db->bind(':id', (int)$id); 
         return $this->db->resultset();
     }
+
+    public function Delete($id)
+    {
+        $this->db->query('UPDATE budget_header SET Deleted = 1 WHERE ID = :id');
+        $this->db->bind(':id', (int)$id);
+        if(!$this->db->execute()){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }

@@ -153,4 +153,10 @@ class Budgets extends Controller
         $this->view('budgets/add',$data);
         exit();
     }
+
+    public function delete()
+    {
+        delete('budget',$this->budgetmodel);
+        exit();
+    }
 }
