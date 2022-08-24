@@ -35,8 +35,10 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="jdate">Journal Date</label>
-                                <input type="date" name="jdate" id="jdate" class="form-control form-control-sm mandatory">
-                                <span class="invalid-feedback" id="jdate_span"><?php echo $data['jdate']; ?></span>
+                                <input type="date" name="jdate" id="jdate" 
+                                       class="form-control form-control-sm mandatory 
+                                       <?php echo inputvalidation($data['jdate'],$data['jdate_err'],$data['touched']);?>">
+                                <span class="invalid-feedback" id="jdate_span"><?php echo $data['jdate_err']; ?></span>
                             </div>
                             <div class="col-md-7 mb-2">
                                 <label for="description">Description</label>
