@@ -30,3 +30,14 @@ export function displayAlert(elm, message) {
 export function formatcurrencyvalue(val) {
   return val.replace(/,/g, '');
 }
+
+export function dateFormat(pdate) {
+  const newDate = new Date(pdate);
+  const formatedDate =
+    ('0' + newDate.getDate()).slice(-2) +
+    '-' +
+    ('0' + (newDate.getMonth() + 1)).slice(-2) +
+    '-' +
+    newDate.getFullYear();
+  return formatedDate;
+}
