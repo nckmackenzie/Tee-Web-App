@@ -31,7 +31,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="<?php URLROOT;?>/journals/createupdate" name="form" method="post" autocomplete="off">
+                    <form action="<?php echo URLROOT;?>/journals/createupdate" name="form" method="post" autocomplete="off">
                         <div class="row">
                             <div class="col-md-2 mb-2">
                                 <label for="journalno">Journal No</label>
