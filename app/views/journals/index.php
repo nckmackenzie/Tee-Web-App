@@ -20,7 +20,14 @@
     </div>     
     <!-- end page title --> 
     <div class="row">
-        <div class="col-12" id="alertBox"></div>
+        <div class="col-12" id="alertBox">
+            <?php if(!empty($data['save_err'])) : ?>
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Error!</strong> <?php echo $data['save_err'];?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+        </div>
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
@@ -42,7 +49,7 @@
                             </div>
                             <div class="col-md-7 mb-2">
                                 <label for="description">Description</label>
-                                <input type="text" id="credits"
+                                <input type="text" id="description"
                                     class="form-control form-control-sm"  
                                     value="<?php echo $data['description']; ?>"
                                     placeholder="Enter description for journal..optional">    
@@ -51,7 +58,7 @@
                                 <label for="account">G/L Account</label>
                                 <select name="account" id="account" class="form-select form-select-sm mandatory">
                                     <option value="" selected disabled>Select account</option>
-                                    <?php foreach($data['accounts'] as $account) : ?>
+                                    <?php foreach($data['glaccounts'] as $account) : ?>
                                         <option value="<?php echo $account->ID;?>"><?php echo $account->AccountName;?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -75,13 +82,13 @@
                             </div>
                             <div class="col-md-2">
                                 <label for="debits">Total Debits</label>
-                                <input type="text" id="debits" name="debits
+                                <input type="text" id="debits" name="debits"
                                     class="form-control form-control-sm"  
                                     readonly>    
                             </div>
                             <div class="col-md-2">
                                 <label for="credits">Total Credits</label>
-                                <input type="text" id="credits" name="credits
+                                <input type="text" id="credits" name="credits"
                                     class="form-control form-control-sm"  
                                     readonly>    
                             </div>
@@ -96,7 +103,8 @@
                                                 <th class="d-none">Aid</th>
                                                 <th>G/L Account</th>
                                                 <th width="15%">Debit/Credit</th>
-                                                <th width="15%">Amount</th>
+                                                <th width="15%">Debit</th>
+                                                <th width="15%">Credit</th>
                                                 <th width="10%">Remove</th>
                                             </tr>
                                         </thead>
@@ -106,7 +114,8 @@
                                                     <td class="d-none"><input type="text" name="accountsid[]" value="<?php echo $account['aid'];?>" readonly></td>
                                                     <td><input type="text" class="table-input w-100" name="accountsname[]" value="<?php echo $account['name'];?>" readonly></td>
                                                     <td style="width:15%"><input type="text" class="table-input" name="types[]" value="<?php echo $account['type'];?>" readonly></td>
-                                                    <td style="width:15%"><input type="text" class="table-input" name="amounts[]" value="<?php echo $account['amount'];?>" readonly></td>
+                                                    <td style="width:15%"><input type="text" class="table-input" name="debits[]" value="<?php echo $account['debit'];?>" readonly></td>
+                                                    <td style="width:15%"><input type="text" class="table-input" name="credits[]" value="<?php echo $account['credit'];?>" readonly></td>
                                                     <td style="width:10%"><button type="button" class="action-icon btn btn-sm text-danger fs-5 btndel">Remove</button></td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -126,7 +135,8 @@
         </div>
     </div>                    
 </div> <!-- container -->
-<?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>  
+<?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>
+<?php flash('journal_flash_msg','toast');?>  
 <script type="module" src="dist/js/pages/journals/index.js"></script>                  
 <script type="module" src="dist/js/pages/journals/calculations.js"></script>                  
 <script type="module" src="dist/js/pages/journals/ajax-requests.js"></script>                  
