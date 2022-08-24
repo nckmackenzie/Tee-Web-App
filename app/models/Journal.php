@@ -19,4 +19,11 @@ class Journal
                           ORDER BY AccountName ASC');
         return $this->db->resultset();
     }
+
+    public function GetJournalNo()
+    {
+        $this->db->query('SELECT fn_getjournalno(:cid) AS journalno');
+        $this->db->bind(':cid',(int)$_SESSION['centerid']);
+        return $this->db->getvalue();
+    }
 }
