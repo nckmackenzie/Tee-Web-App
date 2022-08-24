@@ -4,6 +4,7 @@ import {
   debitsTotalInput,
   creditsTotalInput,
 } from './calculations.js';
+
 const accountSelect = document.getElementById('account');
 const typeSelect = document.getElementById('type');
 const amountInput = document.getElementById('amount');
