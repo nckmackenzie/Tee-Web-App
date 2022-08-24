@@ -13,4 +13,17 @@ class Journals extends Controller
         }
         $this->journalmodel = $this->model('Journal');
     }
+
+    public function index()
+    {
+        $data = [
+            'title' => 'Journal Entries',
+            'accounts' => $this->journalmodel->GetGlAccounts(),
+            'isedit' => false,
+            'id' => '',
+            'journalno' => '',
+            'description' => '',
+        ];
+        $this->view('journals/index',$data);
+    }
 }
