@@ -86,6 +86,7 @@ table.addEventListener('click', function (e) {
   if (!e.target.classList.contains('btndel')) return;
   const btn = e.target;
   btn.closest('tr').remove();
+  getDebitsCreditsTotal(table);
 });
 
 form.addEventListener('submit', function (e) {
