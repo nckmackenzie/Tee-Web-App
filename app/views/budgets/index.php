@@ -43,7 +43,7 @@
                                         <td><?php echo $budget->YearName;?></td>
                                         <td><?php echo number_format($budget->BudgetValue,2);?></td>
                                         <td>
-                                            <?php if(!converttobool($budget->YearClosed)) : ?>
+                                            <?php if(!converttobool($budget->YearClosed) && (int)$_SESSION['usertypeid'] < 3) : ?>
                                                 <a href="<?php echo URLROOT;?>/budgets/edit/<?php echo $budget->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
                                                 <button class="action-icon btn text-danger btndel"
                                                         data-id="<?php echo $budget->ID;?>" 
