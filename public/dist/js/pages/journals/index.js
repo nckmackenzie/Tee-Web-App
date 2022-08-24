@@ -84,7 +84,7 @@ function appendToTable() {
         <td class="d-none"><input type="text" name="accountsid[]" value="${accountValue}" readonly></td>
         <td><input type="text" class="table-input w-100" name="accountsname[]" value="${accountName}" readonly></td>
         <td style="width:15%"><input type="text" class="table-input" name="types[]" value="${typeName}" readonly></td>
-        <td style="width:15%"><input type="text" class="table-input" name="gross[]" value="${amountValue}" readonly></td>
+        <td style="width:15%"><input type="text" class="table-input" name="amounts[]" value="${amountValue}" readonly></td>
         <td style="width:10%"><button type="button" class="action-icon btn btn-sm text-danger fs-5 btndel">Remove</button></td>
       </tr>
   `;
