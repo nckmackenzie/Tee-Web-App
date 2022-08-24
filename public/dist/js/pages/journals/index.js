@@ -1,4 +1,5 @@
 import { getSelectedText, dateFormat } from '../utils.js';
+import { getDebitsCreditsTotal } from './calculations.js';
 const jdateInput = document.getElementById('jdate');
 const accountSelect = document.getElementById('account');
 const typeSelect = document.getElementById('type');
@@ -84,6 +85,7 @@ function appendToTable() {
   let newRow = body.insertRow(body.rows.length);
   newRow.innerHTML = html;
   clear();
+  getDebitsCreditsTotal(table);
 }
 
 addBtn.addEventListener('click', function () {
