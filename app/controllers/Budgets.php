@@ -120,4 +120,37 @@ class Budgets extends Controller
             exit();
         }
     }
+
+    public function edit($id)
+    {
+        $header = $this->budgetmodel->GetBudgetHeader($id);
+        $details = $this->budgetmodel->GetBudgetDetails($id);
+        $data = [
+            'title' => 'Edit Budget',
+            'years' => $this->budgetmodel->GetOpenYears(),
+            'id' => $header->ID,
+            'isedit' => true,
+            'touched' => false,
+            'budgetname' => strtoupper($header->BudgetName),
+            'year' => $header->YearId,
+            'table' => [],
+            'budgetname_err' => '',
+            'year_err' => '',
+            'save_err' => '',
+        ];
+        foreach($details as $detail){
+            array_push($data['table'],[
+                'aid' => $detail->AccountId,
+                'name' => $detail->AccountName,
+                'amount' => $detail->Amount
+            ]);
+        }
+            
+        if((int)$header->CenterId !== (int)$_SESSION['centerid']){
+            redirect('auth/unauthorized');
+            exit();
+        }
+        $this->view('budgets/add',$data);
+        exit();
+    }
 }
