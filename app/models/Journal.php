@@ -63,6 +63,17 @@ class Journal
     {
         try{
             $this->db->dbh->beginTransaction();
+
+            if($data['isedit']){
+                $this->db->query('DELETE 
+                                  FROM 
+                                    ledger 
+                                  WHERE 
+                                    (IsJournal = 1) AND (JournalNo = :jno) AND (CenterId = :cid) AND (Deleted = 0)');
+                $this->db->bind(':jno',(int)$data['journalno']);
+                $this->db->bind(':cid', (int)$_SESSION['centerid']);
+                $this->db->execute();
+            }
            
             for($i = 0; $i < count($data['accountsid']); $i++){
                 $accountname = $this->GetAccountDetails($data['accountsid'][$i])[0];
