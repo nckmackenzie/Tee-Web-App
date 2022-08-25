@@ -21,7 +21,7 @@ class Journals extends Controller
             'glaccounts' => $this->journalmodel->GetGlAccounts(),
             'isedit' => false,
             'touched' => false,
-            'firstjournalno' => '',
+            'firstjournalno' => $this->journalmodel->GetJournalNo('first'),
             'id' => '',
             'jdate' => '',
             'journalno' => $this->journalmodel->GetJournalNo(),
