@@ -12,9 +12,9 @@ const accountSpan = document.getElementById('account_span');
 const typeSpan = document.getElementById('type_span');
 const amountSpan = document.getElementById('amount_span');
 const addBtn = document.getElementById('addbtn');
-const table = document.getElementById('details');
+export const table = document.getElementById('details');
 const form = document.querySelector('form');
-const alertBox = document.getElementById('alertBox');
+export const alertBox = document.getElementById('alertBox');
 
 function singleValidate(elm, msg, span, span_err) {
   if (!elm.value) {
