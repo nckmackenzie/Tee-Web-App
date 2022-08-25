@@ -22,9 +22,26 @@ class Journal
 
     public function GetJournalNo()
     {
-        $this->db->query('SELECT fn_getjournalno(:cid) AS journalno');
+        $this->db->query('SELECT 
+                            COUNT(*) 
+                          FROM
+                            ledger
+                          WHERE
+                            (IsJournal = 1) AND (Deleted = 0) AND (CenterId = :cid)');
         $this->db->bind(':cid',(int)$_SESSION['centerid']);
-        return $this->db->getvalue();
+        $count = (int)$this->db->getvalue();
+        if((int)$count === 0){
+            return 1;
+        }elseif ((int)$count > 0) {
+            $this->db->query('SELECT 
+                                COUNT(*) 
+                              FROM
+                                ledger
+                              WHERE
+                                (IsJournal = 1) AND (Deleted = 0) AND (CenterId = :cid)');
+            $this->db->bind(':cid',(int)$_SESSION['centerid']);
+            return (int)$this->db->getvalue();
+        }
     }
 
     function GetAccountDetails($id){
