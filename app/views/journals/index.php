@@ -133,7 +133,7 @@
                                 <input type="hidden" name="id" value="<?php echo $data['id'];?>">
                                 <input type="hidden" name="isedit" id="isedit" value="<?php echo $data['isedit'];?>">
                                 <input type="hidden" name="isfirst" value="<?php echo $data['isfirst'];?>">
-                                <button class="btn btn-primary" type="submit"> Save </button>            
+                                <button class="btn btn-sm btn-primary" type="submit"> Save </button>            
                             </div>
                         </div><!-- /.row -->
                     </form>
