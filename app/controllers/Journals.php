@@ -108,4 +108,34 @@ class Journals extends Controller
             exit();
         }
     }
+
+    public function getjournaldetails()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $_GET  = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $id = (int)trim($_GET['id']);
+            $arr = [];
+
+            $header = $this->journalmodel->GetJournalHeader($id);
+            $details = $this->journalmodel->GetJournalDetails($id);
+            foreach($details as $detail){
+                array_push($arr,[
+                    'aid' => $detail->AccountId,
+                    'name' => $detail->AccountName,
+                    'type' => $detail->Type,
+                    'debit' => $detail->Debit,
+                    'credit' => $detail->Credit,
+                ]);
+            }
+            $details = [
+                'jdate' => $header->TransactionDate,
+                'narration' => $header->Narration,
+                'fields' => $arr
+            ];
+            echo json_encode($details);
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
