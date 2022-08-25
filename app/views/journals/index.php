@@ -44,12 +44,13 @@
                                 <label for="jdate">Journal Date</label>
                                 <input type="date" name="jdate" id="jdate" 
                                        class="form-control form-control-sm mandatory 
-                                       <?php echo inputvalidation($data['jdate'],$data['jdate_err'],$data['touched']);?>">
+                                       <?php echo inputvalidation($data['jdate'],$data['jdate_err'],$data['touched']);?>"
+                                       value="<?php echo $data['jdate'];?>">
                                 <span class="invalid-feedback" id="jdate_span"><?php echo $data['jdate_err']; ?></span>
                             </div>
                             <div class="col-md-7 mb-2">
                                 <label for="description">Description</label>
-                                <input type="text" id="description"
+                                <input type="text" id="description" name="description"
                                     class="form-control form-control-sm"  
                                     value="<?php echo $data['description']; ?>"
                                     placeholder="Enter description for journal..optional">    
@@ -82,15 +83,17 @@
                             </div>
                             <div class="col-md-2">
                                 <label for="debits">Total Debits</label>
-                                <input type="text" id="debits" name="debits"
-                                    class="form-control form-control-sm"  
+                                <input type="text" id="debits" name="debitstotal"
+                                    class="form-control form-control-sm"
+                                    value="<?php echo $data['debitstotal'];?>"  
                                     readonly>    
                             </div>
                             <div class="col-md-2">
                                 <label for="credits">Total Credits</label>
-                                <input type="text" id="credits" name="credits"
-                                    class="form-control form-control-sm"  
-                                    readonly>    
+                                <input type="text" id="credits" name="creditstotal"
+                                       class="form-control form-control-sm"
+                                       value="<?php echo $data['creditstotal'];?>"  
+                                       readonly>    
                             </div>
                             <div class="col-2 my-2">
                                 <button type="button" class="btn btn-sm btn-success w-100" id="addbtn">Add</button>
@@ -137,7 +140,7 @@
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>
 <?php flash('journal_flash_msg','toast');?>  
-<script type="module" src="dist/js/pages/journals/index.js"></script>                  
-<script type="module" src="dist/js/pages/journals/calculations.js"></script>                  
-<script type="module" src="dist/js/pages/journals/ajax-requests.js"></script>                  
+<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/journals/index.js"></script>                  
+<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/journals/calculations.js"></script>                  
+<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/journals/ajax-requests.js"></script>                  
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
