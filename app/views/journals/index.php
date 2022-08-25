@@ -12,13 +12,15 @@
                     <div class="actions">
                         <button type="button" class="btn btn-sm btn-info" id="prevbtn" <?php echo $data['isfirst'] ? 'disabled' : '';?>>&larr; Prev</button>
                         <button type="button" class="btn btn-sm btn-info" id="nextbtn" disabled>&rarr; Next</button>
-                        <button type="button" class="btn btn-sm btn-danger" id="deletbtn" disabled>Delete</button>
+                        <button type="button" class="btn btn-sm btn-danger" id="deletbtn"
+                                data-id="" data-bs-toggle="modal" data-bs-target="#centermodal" disabled>Delete</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>     
-    <!-- end page title --> 
+    <!-- end page title -->
+    <?php DeleteModal(URLROOT .'/journals/delete','centermodal','Are you sure you want to delete this journal entry?','id');?> 
     <div class="row">
         <div class="col-12" id="alertBox">
             <?php if(!empty($data['save_err'])) : ?>
