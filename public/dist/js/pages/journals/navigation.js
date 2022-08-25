@@ -45,8 +45,6 @@ prevBtn.addEventListener('click', async function () {
   journalNoInput.value = prevJournalNo;
   enableDisableNavBtns();
   clear();
-  // const isFirst = +journalNoInput.value === +firstJournalNoInput.value;
-  // if (isFirst) return;
   bindData(prevJournalNo);
 });
 
@@ -68,6 +66,7 @@ async function bindData(no) {
   narrationInput.value = data.narration;
   jdateInput.value = data.jdate;
   const body = table.getElementsByTagName('tbody')[0];
+  deleteBtn.setAttribute('data-id', no);
 
   data?.fields?.forEach(field => {
     const html = `
