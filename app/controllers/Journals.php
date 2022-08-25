@@ -130,6 +130,8 @@ class Journals extends Controller
             $details = [
                 'jdate' => $header->TransactionDate,
                 'narration' => $header->Narration,
+                'debitstotal' => $header->DebitTotal,
+                'creditstotal' => $header->CreditTotal,
                 'fields' => $arr
             ];
             echo json_encode($details);
