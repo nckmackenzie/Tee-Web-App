@@ -145,4 +145,5 @@
 <script type="module" src="<?php echo URLROOT;?>/dist/js/pages/journals/index.js"></script>                  
 <script type="module" src="<?php echo URLROOT;?>/dist/js/pages/journals/calculations.js"></script>                  
 <script type="module" src="<?php echo URLROOT;?>/dist/js/pages/journals/ajax-requests.js"></script>                  
+<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/journals/navigation.js"></script>                  
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
