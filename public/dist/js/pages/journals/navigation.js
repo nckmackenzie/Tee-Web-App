@@ -1,3 +1,4 @@
+import { btnClick } from '../utils.js';
 import { getData } from './ajax-requests.js';
 import { debitsTotalInput, creditsTotalInput } from './calculations.js';
 import { table } from './index.js';
@@ -10,6 +11,8 @@ const lastJournalNoInput = document.getElementById('journalnohidden');
 const jdateInput = document.getElementById('jdate');
 const narrationInput = document.getElementById('description');
 const iseditInput = document.getElementById('isedit');
+
+btnClick('.btndel', 'id');
 
 function enableDisableNavBtns() {
   if (+journalNoInput.value === +firstJournalNoInput.value)
