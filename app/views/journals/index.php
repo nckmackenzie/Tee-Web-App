@@ -10,7 +10,7 @@
                 <div class="d-flex align-items-center justify-content-between gap-1 my-1">
                     <h4 class="page-title lh-1">Journal Entries</h4>
                     <div class="actions">
-                        <button type="button" class="btn btn-sm btn-info" id="prevbtn">&larr; Prev</button>
+                        <button type="button" class="btn btn-sm btn-info" id="prevbtn" <?php echo $data['isfirst'] ? 'disabled' : '';?>>&larr; Prev</button>
                         <button type="button" class="btn btn-sm btn-info" id="nextbtn" disabled>&rarr; Next</button>
                         <button type="button" class="btn btn-sm btn-danger" id="deletbtn" disabled>Delete</button>
                     </div>
@@ -130,6 +130,7 @@
                             <div class="d-grid d-md-block">
                                 <input type="hidden" name="id" value="<?php echo $data['id'];?>">
                                 <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
+                                <input type="hidden" name="isfirst" value="<?php echo $data['isfirst'];?>">
                                 <button class="btn btn-primary" type="submit"> Save </button>            
                             </div>
                         </div><!-- /.row -->
