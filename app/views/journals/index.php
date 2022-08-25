@@ -39,6 +39,7 @@
                                     class="form-control form-control-sm"  
                                     readonly>
                                 <input type="hidden" name="journalnohidden" id="journalnohidden" value="<?php echo $data['journalno']; ?>" >
+                                <input type="hidden" name="firstjournalno" id="firstjournalno" value="<?php echo $data['firstjournalno']; ?>" >
                             </div>
                             <div class="col-md-3">
                                 <label for="jdate">Journal Date</label>
