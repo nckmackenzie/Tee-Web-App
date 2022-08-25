@@ -12,7 +12,7 @@
                     <div class="actions">
                         <button type="button" class="btn btn-sm btn-info" id="prevbtn" <?php echo $data['isfirst'] ? 'disabled' : '';?>>&larr; Prev</button>
                         <button type="button" class="btn btn-sm btn-info" id="nextbtn" disabled>&rarr; Next</button>
-                        <button type="button" class="btn btn-sm btn-danger" id="deletbtn"
+                        <button type="button" class="btn btn-sm btn-danger btndel" id="deletbtn"
                                 data-id="" data-bs-toggle="modal" data-bs-target="#centermodal" disabled>Delete</button>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="<?php echo URLROOT;?>/journals/createupdate" name="form" method="post" autocomplete="off">
+                    <form action="<?php echo URLROOT;?>/journals/createupdate" name="form" id="journalform" method="post" autocomplete="off">
                         <div class="row">
                             <div class="col-md-2 mb-2">
                                 <label for="journalno">Journal No</label>
