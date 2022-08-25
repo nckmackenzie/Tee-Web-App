@@ -1,7 +1,7 @@
 import { btnClick } from '../utils.js';
 import { getData } from './ajax-requests.js';
 import { debitsTotalInput, creditsTotalInput } from './calculations.js';
-import { table } from './index.js';
+import { table, alertBox } from './index.js';
 const prevBtn = document.getElementById('prevbtn');
 const nextBtn = document.getElementById('nextbtn');
 const deleteBtn = document.getElementById('deletbtn');
@@ -62,7 +62,33 @@ nextBtn.addEventListener('click', function () {
   bindData(+journalNoInput.value);
 });
 
+function setSpinner() {
+  alertBox.innerHTML = '';
+  const allBtns = document.querySelectorAll('.btn');
+  allBtns.forEach(btn => {
+    btn.disabled = true;
+  });
+  const html = `
+    <div class="d-flex justify-content-center mb-3">
+      <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  `;
+  alertBox.insertAdjacentHTML('afterbegin', html);
+}
+
+function stopSpinner() {
+  alertBox.innerHTML = '';
+  const allBtns = document.querySelectorAll('.btn');
+  allBtns.forEach(btn => {
+    btn.disabled = false;
+  });
+  enableDisableNavBtns();
+}
+
 async function bindData(no) {
+  setSpinner();
   const data = await getData(no);
   debitsTotalInput.value = data.debitstotal;
   creditsTotalInput.value = data.creditstotal;
@@ -85,4 +111,5 @@ async function bindData(no) {
     let newRow = body.insertRow(body.rows.length);
     newRow.innerHTML = html;
   });
+  stopSpinner();
 }
