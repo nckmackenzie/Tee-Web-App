@@ -140,4 +140,10 @@ class Journals extends Controller
             exit();
         }
     }
+
+    public function delete()
+    {
+        delete('journal',$this->journalmodel);
+        exit();
+    }
 }

@@ -63,8 +63,7 @@ class Journal
     {
         try{
             $this->db->dbh->beginTransaction();
-            $test = [];
-
+           
             for($i = 0; $i < count($data['accountsid']); $i++){
                 $accountname = $this->GetAccountDetails($data['accountsid'][$i])[0];
                 $accountid = $this->GetAccountDetails($data['accountsid'][$i])[1];
@@ -122,5 +121,21 @@ class Journal
         $this->db->bind(':jno',$id);
         $this->db->bind(':cid',(int)$_SESSION['centerid']);
         return $this->db->resultset();
+    }
+
+    public function Delete($id)
+    {
+       
+        $this->db->query('UPDATE ledger SET Deleted = 1 
+                          WHERE (IsJournal = 1) AND (JournalNo = :jno) AND (CenterId = :cid) AND (Deleted = 0)');
+        $this->db->bind(':jno', $id);
+        $this->db->bind(':cid', $_SESSION['centerid']);
+        $this->db->execute();
+    
+        if(!$this->db->execute()){
+            return false;
+        }else{
+            return true;
+        }
     }
 }
