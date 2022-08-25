@@ -98,4 +98,29 @@ class Journal
             return false;
         }
     }
+
+    public function GetJournalHeader($id)
+    {
+        $this->db->query('SELECT 
+                            TransactionDate,
+                            UCASE(Narration) AS Narration,
+                            SUM(Debit) AS DebitTotal,
+                            SUM(Credit) AS CreditTotal
+                          FROM
+                            ledger
+                          WHERE
+                            (IsJournal = 1) AND (JournalNo = :id) AND (CenterId = :cid)
+                          GROUP BY TransactionDate , Narration');
+        $this->db->bind(':id',$id);
+        $this->db->bind(':cid',(int)$_SESSION['centerid']);
+        return $this->db->single();
+    }
+
+    public function GetJournalDetails($id)
+    {
+        $this->db->query('CALL sp_getjournaldetails(:jno,:cid)');
+        $this->db->bind(':jno',$id);
+        $this->db->bind(':cid',(int)$_SESSION['centerid']);
+        return $this->db->resultset();
+    }
 }
