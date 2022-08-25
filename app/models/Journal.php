@@ -20,7 +20,7 @@ class Journal
         return $this->db->resultset();
     }
 
-    public function GetJournalNo()
+    public function GetJournalNo($type = 'current')
     {
         $this->db->query('SELECT 
                             COUNT(*) 
@@ -33,14 +33,22 @@ class Journal
         if((int)$count === 0){
             return 1;
         }elseif ((int)$count > 0) {
+            $dir = $type === 'current' ? 'DESC' : 'ASC';
             $this->db->query('SELECT 
-                                COUNT(*) 
+                                JournalNo 
                               FROM
                                 ledger
                               WHERE
-                                (IsJournal = 1) AND (Deleted = 0) AND (CenterId = :cid)');
+                                (IsJournal = 1) AND (Deleted = 0) AND (CenterId = :cid)
+                              ORDER BY JournalNo '.$dir.'
+                              LIMIT 1');
             $this->db->bind(':cid',(int)$_SESSION['centerid']);
-            return (int)$this->db->getvalue();
+            if($type === 'current'){
+                return (int)$this->db->getvalue() + 1;
+            }else{
+                return (int)$this->db->getvalue();
+            }
+            
         }
     }
 
