@@ -13,7 +13,7 @@ const typeSpan = document.getElementById('type_span');
 const amountSpan = document.getElementById('amount_span');
 const addBtn = document.getElementById('addbtn');
 export const table = document.getElementById('details');
-const form = document.querySelector('form');
+const form = document.getElementById('journalform');
 export const alertBox = document.getElementById('alertBox');
 
 function singleValidate(elm, msg, span, span_err) {
