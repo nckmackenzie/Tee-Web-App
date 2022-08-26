@@ -108,7 +108,7 @@ class Centers extends Controller
             }else{
                 if(!$this->centermodel->CreateUpdate($data)){
                     flash('center_msg',null,'Something went wrong creating the center.',flashclass('alert','danger'));
-                    redirect('users');
+                    redirect('centers');
                     exit();
                 }else{
                     flash('center_toast_msg',null,'Saved successfully!',flashclass('toast','success'));
