@@ -81,7 +81,7 @@ class Sale
 
     public function GetStockAndRate($date,$id)
     {
-        $this->db->query("SELECT fn_getprice(b.ID,:cdate) As Rate,
+        $this->db->query("SELECT fn_getsellingprice(b.ID,:cdate) As Rate,
                                  fn_getstock(b.ID,:cdate,:cid) As Stock 
                           FROM `books` b WHERE b.ID = :bid");
         $this->db->bind(':cdate',$date);
@@ -108,7 +108,21 @@ class Sale
         $this->db->query('SELECT '.ucwords($type).'Name FROM '.$type.'s WHERE ID = :id');
         $this->db->bind(':id',intval($id));
         return ucwords($this->db->getvalue());
-    }   
+    } 
+    
+    function GetGlDetails($bookid){
+        $values = [];
+        $this->db->query('SELECT GlAccountId FROM books WHERE ID = :id');
+        $this->db->bind(':id',(int)$bookid);
+        $glaccount = (int)$this->db->getvalue();
+
+        $this->db->query('SELECT AccountName,AccountTypeId FROM accounttypes WHERE ID = :id');
+        $this->db->bind(':id',$glaccount);
+        $details = $this->db->single();
+        array_push($values,$details->AccountName);
+        array_push($values,$details->AccountTypeId);
+        return $values;
+    }
 
     function Save($data){
         $desc = 'Sale of '.count($data['booksid']) . ' book(s) to '.$this->GetBuyerName($data['type'],$data['studentorgroup']);
@@ -137,17 +151,22 @@ class Sale
 
             for ($i=0; $i < count($data['booksid']); $i++) { 
                 $bp = $this->GetItemBuyingPrice($data['sdate'],$data['booksid'][$i]);
+                $buyingvalue = $data['qtys'][$i] * $bp;
+                $sellingvalue =$data['qtys'][$i] * $data['rates'][$i];
                 $this->db->query('INSERT INTO sales_details (HeaderId,BookId,Qty,BoughtValue,SellingValue) 
                               VALUES(:hid,:bid,:qty,:bought,:selling)');
                 $this->db->bind(':hid',$tid);
                 $this->db->bind(':bid',$data['booksid'][$i]);
                 $this->db->bind(':qty',$data['qtys'][$i]);
-                $this->db->bind(':bought',$bp);
-                $this->db->bind(':selling',$data['rates'][$i]);
+                $this->db->bind(':bought',$buyingvalue);
+                $this->db->bind(':selling',$sellingvalue);
                 $this->db->execute();
+
+                $accountname = $this->GetGlDetails($data['booksid'][$i])[0];
+                $accountid = $this->GetGlDetails($data['booksid'][$i])[1];
+                savetoledger($this->db->dbh,$data['sdate'],$accountname,0,$sellingvalue,$desc,$accountid,1,$tid,$_SESSION['centerid']);
             }
 
-            savetoledger($this->db->dbh,$data['sdate'],'supplies',0,$data['paid'],$desc,3,1,$tid,$_SESSION['centerid']);
             if(intval($data['paymethod']) === 1){
                 savetoledger($this->db->dbh,$data['sdate'],'cash at hand',$data['paid'],0,$desc,3,1,$tid,$_SESSION['centerid']);
             }else{
@@ -202,17 +221,22 @@ class Sale
 
             for ($i=0; $i < count($data['booksid']); $i++) { 
                 $bp = $this->GetItemBuyingPrice($data['sdate'],$data['booksid'][$i]);
+                $buyingvalue = $data['qtys'][$i] * $bp;
+                $sellingvalue =$data['qtys'][$i] * $data['rates'][$i];
                 $this->db->query('INSERT INTO sales_details (HeaderId,BookId,Qty,BoughtValue,SellingValue) 
                               VALUES(:hid,:bid,:qty,:bought,:selling)');
                 $this->db->bind(':hid',$data['id']);
                 $this->db->bind(':bid',$data['booksid'][$i]);
                 $this->db->bind(':qty',$data['qtys'][$i]);
-                $this->db->bind(':bought',$bp);
-                $this->db->bind(':selling',$data['rates'][$i]);
+                $this->db->bind(':bought',$buyingvalue);
+                $this->db->bind(':selling',$sellingvalue);
                 $this->db->execute();
-            }
 
-            savetoledger($this->db->dbh,$data['sdate'],'supplies',0,$data['paid'],$desc,3,1,$data['id'],$_SESSION['centerid']);
+                $accountname = $this->GetGlDetails($data['booksid'][$i])[0];
+                $accountid = $this->GetGlDetails($data['booksid'][$i])[1];
+                savetoledger($this->db->dbh,$data['sdate'],$accountname,0,$sellingvalue,$desc,$accountid,1,$data['id'],$_SESSION['centerid']);
+            }
+            
             if(intval($data['paymethod']) === 1){
                 savetoledger($this->db->dbh,$data['sdate'],'cash at hand',$data['paid'],0,$desc,3,1,$data['id'],$_SESSION['centerid']);
             }else{
