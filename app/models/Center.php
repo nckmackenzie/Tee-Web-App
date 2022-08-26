@@ -28,23 +28,60 @@ class Center
         }
     }
 
+    function Save($data){
+        try {
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('INSERT INTO centers (CenterName,Contact,Email,ExamCenter) 
+                              VALUES(:cname,:contact,:email,:ecenter)');
+            $this->db->bind(':cname',strtolower($data['name']));
+            $this->db->bind(':contact',$data['contact']);
+            $this->db->bind(':email',!empty($data['email']) ? $data['email'] : null);
+            $this->db->bind(':ecenter',$data['examcenter']);
+            $this->db->execute();
+            $tid = $this->db->dbh->lastInsertId();
+
+            $this->db->query('INSERT INTO users (UserName,`Password`,Contact,UserTypeId,CenterId) 
+                              VALUES(:uname,:pwd,:contact,:utype,:cid)');
+            $this->db->bind(':uname','administrator');
+            $this->db->bind(':pwd',password_hash(123456,PASSWORD_DEFAULT));
+            $this->db->bind(':contact',trim($data['contact']));
+            $this->db->bind(':utype',2);
+            $this->db->bind(':cid',(int)$tid);
+            $this->db->execute();
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+
+        } catch (\Exception $e) {
+            if($this->db->dbh->inTransaction()){
+                $this->db->dbh->rollback();
+            }
+            throw $e;
+            return false;
+        }
+    }
+
     public function CreateUpdate($data)
     {
         if(!$data['isedit']){
-            $this->db->query('INSERT INTO centers (CenterName,Contact,Email,ExamCenter) VALUES(:cname,:contact,:email,:ecenter)');
+            return $this->Save($data);
         }else{
             $this->db->query('UPDATE centers SET CenterName=:cname,Contact=:contact,Email=:email,ExamCenter=:ecenter 
                               WHERE (ID=:id)');
-        }
-        $this->db->bind(':cname',strtolower($data['name']));
-        $this->db->bind(':contact',$data['contact']);
-        $this->db->bind(':email',!empty($data['email']) ? $data['email'] : null);
-        $this->db->bind(':ecenter',$data['examcenter']);
-        if($data['isedit']){$this->db->bind(':id',$data['id']);}
-        if(!$this->db->execute()){
-            return false;
-        }else{
-            return true;
+            $this->db->bind(':cname',strtolower($data['name']));
+            $this->db->bind(':contact',$data['contact']);
+            $this->db->bind(':email',!empty($data['email']) ? $data['email'] : null);
+            $this->db->bind(':ecenter',$data['examcenter']);
+            $this->db->bind(':id',$data['id']);
+            if(!$this->db->execute()){
+                return false;
+            }else{
+                return true;
+            }
         }
     }
 
