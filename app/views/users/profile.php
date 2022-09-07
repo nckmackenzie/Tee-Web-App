@@ -26,7 +26,7 @@
                             <span class="invalid-feedback"><?php echo $data['username_err'];?></span>
                         </div>
                         <div class="mb-3">
-                            <label for="contact" id="form-label">Full Name</label>
+                            <label for="contact" id="form-label">Contact</label>
                             <input type="text" class="form-control form-control-sm 
                                    <?php echo inputvalidation($data['contact'],$data['contact_err'],$data['touched']);?>" 
                                    name="contact"
