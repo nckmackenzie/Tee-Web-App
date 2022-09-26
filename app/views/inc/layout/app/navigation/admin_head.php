@@ -134,7 +134,11 @@
         <span class="menu-arrow"></span>
     </a>
     <div class="collapse" id="sidebarReports">
-        <ul class="side-nav-second-level"></ul>
+        <ul class="side-nav-second-level">
+            <li>
+                <a href="<?php echo URLROOT;?>/reports/feepayments">Fees Payments</a>
+            </li>
+        </ul>
     </div>
 </li>
 
