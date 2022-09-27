@@ -51,4 +51,44 @@ class Stockreports extends Controller
             exit;;
         }
     }
+    //load view for transfers report
+    public function transfers()
+    {
+        $data = [
+            'title' => 'Transfers Report',
+            'has_datatable' => true,
+            'centers' => $this->reportmodel->GetCenters()
+        ];
+        $this->view('stockreports/transfers', $data);
+        exit;
+    }
+    //get transfers
+    public function transfersrpt()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $data = [
+                'sdate' => date('Y-m-d',strtotime($_GET['sdate'])),
+                'edate' => date('Y-m-d',strtotime($_GET['edate'])),
+                'center' => trim($_GET['center']),
+                'results' => []
+            ];
+
+            $results = $this->reportmodel->GetTransfers($data);
+            foreach($results as $result):
+                array_push($data['results'],[
+                    'transferDate' => $result->TransferDate,
+                    'mtnNo' => $result->MtnNo,
+                    'centerTo' => $result->CenterTo,
+                    'bookTitle' => strtoupper($result->BookTitle),
+                    'qty' => $result->Qty
+                ]);
+            endforeach;
+
+            echo json_encode($data['results']);
+        }else{
+            redirect('auth/forbidden');
+            exit;;
+        }
+    }
 }
