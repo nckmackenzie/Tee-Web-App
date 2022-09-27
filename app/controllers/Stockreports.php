@@ -91,4 +91,45 @@ class Stockreports extends Controller
             exit;;
         }
     }
+
+    //stock movements view set up
+    public function stockmovement()
+    {
+        $data = [
+            'title' => 'Stock Movements Report',
+            'has_datatable' => true,
+        ];
+        $this->view('stockreports/stockmovement', $data);
+        exit;
+    }
+
+    //get stock movements
+    public function movementsrpt()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $data = [
+                'sdate' => date('Y-m-d',strtotime($_GET['sdate'])),
+                'edate' => date('Y-m-d',strtotime($_GET['edate'])),
+                'results' => []
+            ];
+
+            $results = $this->reportmodel->GetMovements($data);
+            foreach($results as $result):
+                array_push($data['results'],[
+                    'bookTitle' => $result->BookTitle,
+                    'openingBal' => $result->OpeningBal,
+                    'receipts' => $result->Receipt,
+                    'transfers' => $result->Transfers,
+                    'sales' => $result->Sales,
+                    'balance' => $result->Balance
+                ]);
+            endforeach;
+
+            echo json_encode($data['results']);
+        }else{
+            redirect('auth/forbidden');
+            exit;;
+        }
+    }
 }
