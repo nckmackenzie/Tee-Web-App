@@ -15,4 +15,13 @@ class Report
         $this->db->bind(':cid',(int)$_SESSION['centerid']);
         return $this->db->resultset();
     }
+
+    public function GetSalesReport($data)
+    {
+        $this->db->query('CALL sp_get_sales(:sdate,:edate,:cid)');
+        $this->db->bind(':sdate',date('Y-m-d',strtotime($data['sdate'])));
+        $this->db->bind(':edate',date('Y-m-d',strtotime($data['edate'])));
+        $this->db->bind(':cid',(int)$_SESSION['centerid']);
+        return $this->db->resultset();
+    }
 }
