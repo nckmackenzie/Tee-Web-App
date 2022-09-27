@@ -27,6 +27,7 @@ export function setdatatable(tbl) {
       .DataTable({
         lengthChange: !1,
         buttons: ['copy', 'print'],
+        ordering: false,
         language: {
           paginate: {
             previous: "<i class='mdi mdi-chevron-left'>",
