@@ -45,4 +45,42 @@ class Reports extends Controller
             exit();
         }
     }
+
+    public function salesreport()
+    {
+        $data = [
+            'title' => 'Sales Report',
+            'has_datatable' => true
+        ];
+        $this->view('reports/salesreport', $data);
+        exit;
+    }
+
+    public function salesrpt()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $data = [
+                'sdate' => date('Y-m-d',strtotime($_GET['sdate'])),
+                'edate' => date('Y-m-d',strtotime($_GET['edate'])),
+                'results' => []
+            ];
+            $results = $this->reportmodel->GetSalesReport($data);
+            foreach ($results as $result):
+                array_push($data['results'],[
+                    'saleId' => $result->SalesID,
+                    'salesDate' => $result->SalesDate,
+                    'soldTo' => $result->SoldTo,
+                    'subTotal' => $result->SubTotal,
+                    'discount' => $result->Discount,
+                    'netAmount' => $result->NetAmount,
+                    'reference' => $result->Reference,
+                ]);
+            endforeach;
+            echo json_encode($data['results']);
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
