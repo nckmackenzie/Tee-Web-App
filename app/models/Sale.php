@@ -162,6 +162,18 @@ class Sale
                 $this->db->bind(':selling',$sellingvalue);
                 $this->db->execute();
 
+                $this->db->query('INSERT INTO stockmovements (TransactionDate,BookId,Qty,Reference,
+                                          TransactionType,TransactionId,CenterId) 
+                              VALUES(:tdate,:bid,:qty,:ref,:ttype,:tid,:cid)');
+                $this->db->bind(':tdate',$data['sdate']);
+                $this->db->bind(':bid',$data['booksid'][$i]);
+                $this->db->bind(':qty',$data['qtys'][$i]);
+                $this->db->bind(':ref',$data['reference']); 
+                $this->db->bind(':ttype',4);
+                $this->db->bind(':tid',$tid);
+                $this->db->bind(':cid',$_SESSION['centerid']);
+                $this->db->execute();
+
                 $accountname = $this->GetGlDetails($data['booksid'][$i])[0];
                 $accountid = $this->GetGlDetails($data['booksid'][$i])[1];
                 savetoledger($this->db->dbh,$data['sdate'],$accountname,0,$sellingvalue,$desc,$accountid,1,$tid,$_SESSION['centerid']);
@@ -219,6 +231,10 @@ class Sale
             $this->db->bind(':id',$data['id']);
             $this->db->execute();
 
+            $this->db->query('DELETE FROM stockmovements WHERE TransactionType = 4 AND TransactionId = :id');
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
             for ($i=0; $i < count($data['booksid']); $i++) { 
                 $bp = $this->GetItemBuyingPrice($data['sdate'],$data['booksid'][$i]);
                 $buyingvalue = $data['qtys'][$i] * $bp;
@@ -230,6 +246,18 @@ class Sale
                 $this->db->bind(':qty',$data['qtys'][$i]);
                 $this->db->bind(':bought',$buyingvalue);
                 $this->db->bind(':selling',$sellingvalue);
+                $this->db->execute();
+
+                $this->db->query('INSERT INTO stockmovements (TransactionDate,BookId,Qty,Reference,
+                                          TransactionType,TransactionId,CenterId) 
+                              VALUES(:tdate,:bid,:qty,:ref,:ttype,:tid,:cid)');
+                $this->db->bind(':tdate',$data['sdate']);
+                $this->db->bind(':bid',$data['booksid'][$i]);
+                $this->db->bind(':qty',$data['qtys'][$i]);
+                $this->db->bind(':ref',$data['reference']); 
+                $this->db->bind(':ttype',4);
+                $this->db->bind(':tid',$data['id']);
+                $this->db->bind(':cid',$_SESSION['centerid']);
                 $this->db->execute();
 
                 $accountname = $this->GetGlDetails($data['booksid'][$i])[0];
@@ -288,6 +316,10 @@ class Sale
 
             $this->db->query('UPDATE sales_header SET Deleted = 1
                               WHERE (ID=:id)');
+            $this->db->bind(':id',$id);
+            $this->db->execute();
+
+            $this->db->query('UPDATE stockmovements SET Deleted=1 WHERE TransactionType = 4 AND TransactionId = :id');
             $this->db->bind(':id',$id);
             $this->db->execute();
 
