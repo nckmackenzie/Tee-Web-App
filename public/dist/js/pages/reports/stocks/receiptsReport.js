@@ -14,18 +14,19 @@ preview.addEventListener('click', async () => {
   const edate = end.value;
   const typeValue = +typeSelect.value;
   const res = await fetch(
-    `${HOST_URL}/stockreports/receiptsrpt?sdate=${sdate}&edate=${edate}`
+    `${HOST_URL}/stockreports/receiptsrpt?sdate=${sdate}&edate=${edate}&type=${typeValue}`
   );
   const data = await res.json();
   let table = `
   <table class="table table-sm w-100 dt-responsive nowrap" id="table">
     <thead class="table-light">
       <tr>
-        <th>Payment Date</th>
-        <th>Receipt No</th>
-        <th>Student</th>
-        <th>Amount</th>
-        <th>Reference</th>
+        <th>Receipt Date</th>
+        <th>Receipt Type</th>
+        <th>GRN</th>
+        <th>Center From</th>
+        <th>Book Title</th>
+        <th>Qty</th>
       </tr>
     </thead>
     <tbody>`;
@@ -33,11 +34,12 @@ preview.addEventListener('click', async () => {
     data.forEach(dt => {
       table += `
           <tr>
-            <td>${dt.paymentDate}</td>
-            <td>${dt.receiptNo}</td>
-            <td>${dt.studentName}</td>
-            <td>${dt.amount}</td>
-            <td>${dt.paymentReference}</td>
+            <td>${dt.receiptDate}</td>
+            <td>${dt.receiptType}</td>
+            <td>${dt.grnNo}</td>
+            <td>${dt.fromCenter}</td>
+            <td>${dt.book}</td>
+            <td>${dt.qty}</td>
           </tr>
         `;
     });
