@@ -119,6 +119,9 @@
     <div class="collapse" id="sidebarReports">
         <ul class="side-nav-second-level">
             <li>
+                <a href="<?php echo URLROOT;?>/reports/salesreport">Sales Report</a>
+            </li>
+            <li>
                 <a href="<?php echo URLROOT;?>/reports/feepayments">Fees Payments</a>
             </li>
         </ul>
