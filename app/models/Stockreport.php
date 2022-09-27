@@ -40,4 +40,14 @@ class Stockreport
         $this->db->bind(':cid',(int)$_SESSION['centerid']);
         return $this->db->resultset();
     }
+
+    //fetch stock movements from db
+    public function GetMovements($data)
+    {
+        $this->db->query('CALL sp_get_stock_movement(:sdate,:edate,:cid)');
+        $this->db->bind(':sdate',$data['sdate']);
+        $this->db->bind(':edate',$data['edate']);
+        $this->db->bind(':cid',(int)$_SESSION['centerid']);
+        return $this->db->resultset();
+    }
 }
