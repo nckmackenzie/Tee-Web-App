@@ -118,6 +118,25 @@
     </a>
     <div class="collapse" id="sidebarReports">
         <ul class="side-nav-second-level">
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarSecondLevel" aria-expanded="false" aria-controls="sidebarSecondLevel">
+                    <span> Stock Reports </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarSecondLevel">
+                    <ul class="side-nav-third-level">
+                        <li>
+                            <a href="<?php echo URLROOT;?>/stockreports/receipts">Receipts Report</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo URLROOT;?>/stockreports/transfers">Transfers Report</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo URLROOT;?>/stockreports/stockmovement">Stock Movement</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
             <li>
                 <a href="<?php echo URLROOT;?>/reports/salesreport">Sales Report</a>
             </li>
