@@ -18,7 +18,7 @@
   padding: 0.28rem 0.8rem !important;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 768px) {
   .sm-m-3 {
     margin: 0.875rem 0;
   }
