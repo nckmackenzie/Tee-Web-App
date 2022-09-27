@@ -14,6 +14,30 @@ class Stockreport
         $this->db->bind(':edate',$data['edate']);
         $this->db->bind(':rtype',(int)$data['type']);
         $this->db->bind(':cid',(int)$_SESSION['centerid']);
-        return $this->db->resultSet();
+        return $this->db->resultset();
+    }
+    //get centers
+    public function GetCenters()
+    {
+        $this->db->query('SELECT 
+                            ID,
+                            ucase(CenterName) As CenterName
+                          FROM
+                            centers
+                          WHERE
+                            (Deleted = 0) AND (ID <> :id)');
+        $this->db->bind(':id',(int)$_SESSION['centerid']);
+        return $this->db->resultset();
+    }
+
+    //fetch transfers from db
+    public function GetTransfers($data)
+    {
+        $this->db->query('CALL sp_get_transfers(:sdate,:edate,:tocenter,:cid)');
+        $this->db->bind(':sdate',$data['sdate']);
+        $this->db->bind(':edate',$data['edate']);
+        $this->db->bind(':tocenter',(int)$data['center']);
+        $this->db->bind(':cid',(int)$_SESSION['centerid']);
+        return $this->db->resultset();
     }
 }
