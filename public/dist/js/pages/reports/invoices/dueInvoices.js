@@ -43,8 +43,13 @@ previewBtn.addEventListener('click', function () {
 
 export async function fetchReport() {
   let res;
-  if (reportTypeSelect.value === 'due') {
-    res = await fetch(`${HOST_URL}/invoicereports/duerpt`);
+  if (
+    reportTypeSelect.value === 'due' ||
+    reportTypeSelect.value === 'balances'
+  ) {
+    res = await fetch(
+      `${HOST_URL}/invoicereports/due_with_balance_rpt?type=${reportTypeSelect.value}`
+    );
   }
 
   return await res.json();
