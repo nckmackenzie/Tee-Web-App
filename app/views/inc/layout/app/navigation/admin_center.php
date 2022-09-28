@@ -151,13 +151,10 @@
                 <div class="collapse" id="invoiceReports">
                     <ul class="side-nav-third-level">
                         <li>
-                            <a href="<?php echo URLROOT;?>/invoicereports/bydate">Invoices By Date</a>
+                            <a href="<?php echo URLROOT;?>/invoicereports">Invoices Reports</a>
                         </li>
                         <li>
-                            <a href="<?php echo URLROOT;?>/invoicereports/due">Due Invoices</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo URLROOT;?>/invoicereports/withbalances">Invoice with balances</a>
+                            <a href="<?php echo URLROOT;?>/invoicereports/payment">Invoices Payment Statements</a>
                         </li>
                     </ul>
                 </div>
