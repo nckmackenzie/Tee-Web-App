@@ -20,7 +20,7 @@ class Invoicereports extends Controller
         $data = [
             'title' => 'Invoices Reports',
             'has_datatable' => true,
-            'suppliers' => $this->reportmodel->GetSuppliers()
+            'suppliers' => $this->reportmodel->GetSuppliers('ASC')
         ];
         $this->view('invoicereports/index', $data);
         exit;
@@ -87,7 +87,7 @@ class Invoicereports extends Controller
         $data = [
             'title' => 'Invoices Payments',
             'has_datatable' => true,
-            'suppliers' => $this->reportmodel->GetSuppliers(),
+            'suppliers' => $this->reportmodel->GetSuppliers('ASC'),
         ];
         $this->view('invoicereports/payments', $data);
         exit;
@@ -99,7 +99,7 @@ class Invoicereports extends Controller
         if($_SERVER['REQUEST_METHOD'] === 'GET'){
             $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
             $type = trim($_GET['type']);
-            $results = $type === 'bysupplier' ? $this->reportmodel->GetSuppliers() : $this->reportmodel->GetInvoices();
+            $results = $type === 'bysupplier' ? $this->reportmodel->GetSuppliers('DESC') : $this->reportmodel->GetInvoices();
             $data = [];
             foreach($results as $result){
                 array_push($data,[
@@ -143,5 +143,16 @@ class Invoicereports extends Controller
             redirect('auth/forbidden');
             exit;
         }
+    }
+
+    //load view for supplier statement
+    public function statement()
+    {
+        $data = [
+            'title' => 'Supplier Statement',
+            'has_datatable' => true,
+            'suppliers' => $this->reportmodel->GetSuppliers('ASC'),
+        ];
+        $this->view('invoicereports/statement', $data);
     }
 }
