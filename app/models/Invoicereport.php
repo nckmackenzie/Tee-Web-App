@@ -10,7 +10,20 @@ class Invoicereport
 
     public function GetSuppliers()
     {
-        $this->db->query('SELECT ID,UCASE(SupplierName) As SupplierName FROM suppliers WHERE (Deleted = 0)');
+        $this->db->query('SELECT ID,UCASE(SupplierName) As FieldName 
+                          FROM suppliers 
+                          WHERE (Deleted = 0)
+                          ORDER BY FieldName DESC');
+        return $this->db->resultset();
+    }
+
+    public function GetInvoices()
+    {
+        $this->db->query('SELECT ID,UCASE(InvoiceNo) As FieldName 
+                          FROM invoice_header 
+                          WHERE (Deleted = 0) AND (CenterId = :cid)
+                          ORDER BY FieldName DESC');
+        $this->db->bind(':cid',(int)$_SESSION['centerid']);
         return $this->db->resultset();
     }
 
