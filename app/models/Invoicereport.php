@@ -24,4 +24,14 @@ class Invoicereport
         $this->db->bind(':cid',(int)$_SESSION['centerid']);
         return $this->db->resultset();
     }
+
+    public function GetInvoicesByDateAndSupplier($data)
+    {
+        $this->db->query('CALL sp_get_invoices_by_supplier_date(:sdate,:edate,:cid,:supplier)');
+        $this->db->bind(':sdate',$data['sdate']);
+        $this->db->bind(':edate',$data['edate']);
+        $this->db->bind(':cid',(int)$_SESSION['centerid']);
+        $this->db->bind(':supplier',$data['type'] === 'bysupplier' ? (int)$data['supplier'] : NULL);
+        return $this->db->resultset();
+    }
 }
