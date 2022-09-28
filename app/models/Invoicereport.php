@@ -8,12 +8,12 @@ class Invoicereport
         $this->db = new Database;
     }
 
-    public function GetSuppliers()
+    public function GetSuppliers($sort)
     {
         $this->db->query('SELECT ID,UCASE(SupplierName) As FieldName 
                           FROM suppliers 
                           WHERE (Deleted = 0)
-                          ORDER BY FieldName DESC');
+                          ORDER BY FieldName '.$sort.'');
         return $this->db->resultset();
     }
 
@@ -73,6 +73,16 @@ class Invoicereport
             $this->db->bind(':invoice',!is_null($data['invoiceno']) ? $data['invoiceno'] : '');
         endif;
         $this->db->bind(':cid',(int)$_SESSION['centerid'] );
+        return $this->db->resultset();
+    }
+
+    //get supplier statement
+    public function GetStatement($data)
+    {
+        $this->db->query('CALL sp_get_supplier_statement(:sid,:sdate,:edate)');
+        $this->db->bind(':sid',!is_null($data['supplier']) ? (int)$data['supplier'] : '');
+        $this->db->bind(':sdate',!is_null($data['sdate']) ? date('Y-m-d',strtotime($data['sdate'])) : '');
+        $this->db->bind(':edate',!is_null($data['edate']) ? date('Y-m-d',strtotime($data['edate'])) : '');
         return $this->db->resultset();
     }
 }
