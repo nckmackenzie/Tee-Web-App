@@ -50,4 +50,34 @@ class Invoicereports extends Controller
             exit;
         }
     }
+
+    public function bydate_bysupplier()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $data = [
+                'type' => trim($_GET['type']),
+                'sdate' => !empty(trim($_GET['sdate'])) ? date('Y-m-d',strtotime(trim($_GET['sdate']))) : '',
+                'edate' => !empty(trim($_GET['edate'])) ? date('Y-m-d',strtotime(trim($_GET['edate']))) : '',
+                'supplier' => isset($_GET['supplier']) ? trim($_GET['supplier']) : '',
+                'results' => []
+            ];
+            $results = $this->reportmodel->GetInvoicesByDateAndSupplier($data);
+            foreach($results as $result){
+                array_push($data['results'],[
+                    'invoiceDate' => $result->InvoiceDate,
+                    'dueDate' => $result->DueDate,
+                    'supplierName' => $result->SupplierName,
+                    'invoiceNo' => $result->InvoiceNo,
+                    'invoiceValue' => $result->InclusiveVat,
+                    'amountPaid' => $result->AmountPaid,
+                    'balance' => $result->Balance
+                ]);
+            }
+            echo json_encode($data['results']);
+        }else{
+            redirect('auth/forbidden');
+            exit;
+        }
+    }
 }
