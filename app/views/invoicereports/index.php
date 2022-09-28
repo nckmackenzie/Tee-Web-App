@@ -29,7 +29,7 @@
             <select name="supplier" id="supplier" class="control form-select form-select-sm" disabled>
                 <option value="" selected disabled>Select supplier</option>
                 <?php foreach($data['suppliers'] as $supplier) : ?>
-                    <option value="<?php echo $supplier->ID;?>"><?php echo $supplier->SupplierName;?></option>
+                    <option value="<?php echo $supplier->ID;?>"><?php echo $supplier->FieldName;?></option>
                 <?php endforeach; ?>
             </select>
             <span class="invalid-feedback supplierspan"></span>
