@@ -14,9 +14,13 @@ class Invoicereport
         return $this->db->resultset();
     }
 
-    public function GetDue()
+    public function GetDueOrWithBalances($type)
     {
-        $this->db->query('CALL sp_get_due_invoices(:cid)');
+        if($type === 'due'){
+            $this->db->query('CALL sp_get_due_invoices(:cid)');
+        }elseif ($type === 'balances') {
+            $this->db->query('CALL sp_get_invoices_with_balances(:cid)');
+        }
         $this->db->bind(':cid',(int)$_SESSION['centerid']);
         return $this->db->resultset();
     }
