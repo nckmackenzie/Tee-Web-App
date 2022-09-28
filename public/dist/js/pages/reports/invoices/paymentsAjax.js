@@ -7,3 +7,27 @@ export async function getSupplierOrInvoice(type) {
 
   return await res.json();
 }
+
+export async function getSupplierPayments(
+  type,
+  sdate = null,
+  edate = null,
+  criteria = null
+) {
+  let res;
+  if (type === 'bysupplier') {
+    res = await fetch(
+      `${url}/getpaymentsrpt?type=${type}&sdate=${sdate}&edate=${edate}&supplier=${criteria}`
+    );
+  } else if (type === 'bydate') {
+    res = await fetch(
+      `${url}/getpaymentsrpt?type=${type}&sdate=${sdate}&edate=${edate}`
+    );
+  } else if (type === 'byinvoice') {
+    res = await fetch(
+      `${url}/getpaymentsrpt?type=${type}&invoiceno=${criteria}`
+    );
+  }
+
+  return await res.json();
+}
