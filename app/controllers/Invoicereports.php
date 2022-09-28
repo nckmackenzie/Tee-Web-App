@@ -113,4 +113,35 @@ class Invoicereports extends Controller
             exit;
         }
     }
+
+    //get invoice payments
+    public function getpaymentsrpt()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $data = [
+                'type' => trim($_GET['type']),
+                'sdate' => isset($_GET['sdate']) ? trim($_GET['sdate']) : null,
+                'edate' => isset($_GET['edate']) ? trim($_GET['edate']) : null,
+                'supplier' => isset($_GET['supplier']) ? trim($_GET['supplier']) : null,
+                'invoiceno' => isset($_GET['invoiceno']) ? trim($_GET['invoiceno']) : null,
+                'results' => []
+            ];
+            
+            $results = $this->reportmodel->GetPayments($data);
+            foreach($results as $result){
+                array_push($data['results'],[
+                    'paymentDate' => date('d-m-Y',strtotime($result->PaymentDate)),
+                    'invoiceNo' => $result->InvoiceNo,
+                    'supplierName' => $result->SupplierName,
+                    'amount' => $result->Debit,
+                    'paymentReference' => $result->PaymentReference
+                ]);
+            }
+            echo json_encode($data['results']);
+        }else{
+            redirect('auth/forbidden');
+            exit;
+        }
+    }
 }
