@@ -1,5 +1,5 @@
 import { fetchReport } from './dueInvoices.js';
-import { setdatatable, updateColumnTotal } from '../utils.js';
+import { setdatatable, updateColumnTotal, numberWithCommas } from '../utils.js';
 export async function loadDueDate() {
   const data = await fetchReport();
   let table = `
@@ -24,9 +24,9 @@ export async function loadDueDate() {
               <td>${dt.dueDate}</td>
               <td>${dt.invoiceNo}</td>
               <td>${dt.supplierName}</td>
-              <td>${dt.invoiceValue}</td>
-              <td>${dt.amountPaid}</td>
-              <td>${dt.balance}</td>
+              <td>${numberWithCommas(dt.invoiceValue)}</td>
+              <td>${numberWithCommas(dt.amountPaid)}</td>
+              <td>${numberWithCommas(dt.balance)}</td>
             </tr>
           `;
     });
