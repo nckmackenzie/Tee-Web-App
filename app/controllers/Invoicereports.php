@@ -26,10 +26,12 @@ class Invoicereports extends Controller
         exit;
     }
 
-    public function duerpt()
+    public function due_with_balance_rpt()
     {
         if($_SERVER['REQUEST_METHOD'] === 'GET'){
-            $results = $this->reportmodel->GetDue();
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $type = trim($_GET['type']);
+            $results = $this->reportmodel->GetDueOrWithBalances($type);
             $data = [];
             foreach($results as $result){
                 array_push($data,[
