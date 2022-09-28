@@ -46,12 +46,26 @@ export function setdatatable(tbl) {
   });
 }
 
+export function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+export const formatToNumber = value => {
+  if (typeof value === 'string' && value.includes(',')) {
+    const passedVal = value.replaceAll(',', '');
+    return parseFloat(passedVal);
+  }
+  return parseFloat(value);
+};
+
 export function updateColumnTotal(tbl, i, col) {
   var mytable = document.getElementById(tbl).getElementsByTagName('tbody')[0]; //
   let subTotal = Array.from(mytable.rows)
     .slice(0)
     .reduce((total, row) => {
-      return total + parseFloat(row.cells[i].innerHTML);
+      return total + formatToNumber(row.cells[i].innerHTML);
     }, 0);
-  document.getElementById(col).innerHTML = subTotal.toFixed(2);
+  document.getElementById(col).innerHTML = numberWithCommas(
+    subTotal.toFixed(2)
+  );
 }
