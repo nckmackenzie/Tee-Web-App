@@ -161,11 +161,11 @@
                 <a href="<?php echo URLROOT;?>/reports/feepayments">Fees Payments</a>
             </li>
             <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarSecondLevel" aria-expanded="false" aria-controls="sidebarSecondLevel">
+                <a data-bs-toggle="collapse" href="#invoiceReports" aria-expanded="false" aria-controls="invoiceReports">
                     <span> Invoice Reports </span>
                     <span class="menu-arrow"></span>
                 </a>
-                <div class="collapse" id="sidebarSecondLevel">
+                <div class="collapse" id="invoiceReports">
                     <ul class="side-nav-third-level">
                         <li>
                             <a href="<?php echo URLROOT;?>/invoicereports/bydate">Invoices By Date</a>
