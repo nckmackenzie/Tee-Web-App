@@ -69,3 +69,12 @@ export function updateColumnTotal(tbl, i, col) {
     subTotal.toFixed(2)
   );
 }
+
+export function clearErrors() {
+  document.querySelectorAll('.control').forEach(select => {
+    select.classList.remove('is-invalid');
+  });
+  document.querySelectorAll('.invalid-feedback').forEach(span => {
+    span.textContent = '';
+  });
+}
