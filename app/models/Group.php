@@ -11,7 +11,7 @@ class Group
     public function GetGroups()
     {
         $this->db->query('SELECT * FROM vw_groups');
-        return $this->db->resultSet();
+        return $this->db->resultset();
     }
 
     public function GetStudents()
@@ -22,13 +22,13 @@ class Group
                           FROM students 
                           WHERE (StatusId = 1) AND (Deleted = 0)
                           ORDER BY StudentName');
-        return $this->db->resultSet();
+        return $this->db->resultset();
     }
 
     public function GetGroupMembers()
     {
         $this->db->query('SELECT * FROM vw_groupmembers');
-        return $this->db->resultSet();
+        return $this->db->resultset();
     }
 
     public function CheckGroupName($name,$parish,$id)

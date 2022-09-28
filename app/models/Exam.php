@@ -18,7 +18,7 @@ class Exam
     public function GetExams()
     {
         $this->db->query('SELECT * FROM vw_exams');
-        return $this->db->resultSet();
+        return $this->db->resultset();
     }
 
     public function GetCourses()
@@ -27,7 +27,7 @@ class Exam
                           FROM courses
                           WHERE (Deleted = 0) AND (Active = 1)
                           ORDER BY CourseName');
-        return $this->db->resultSet();
+        return $this->db->resultset();
     }
 
     public function GetBooks($id)
@@ -97,14 +97,14 @@ class Exam
         $this->db->query('SELECT ID, UCASE(GroupName ) AS GroupName
                           FROM groups 
                           WHERE (Active = 1) AND (Deleted = 0) ORDER BY GroupName');
-        return $this->db->resultSet();
+        return $this->db->resultset();
     }
 
     public function GetCategories()
     {
         $this->db->query('SELECT ID, UCASE(Category ) AS Category
                           FROM point_categories');
-        return $this->db->resultSet();
+        return $this->db->resultset();
     }
 
     public function GetStudentsByGroup($id,$type)
@@ -124,7 +124,7 @@ class Exam
                               ORDER BY StudentName');
             $this->db->bind(':hid',$id);
         }
-        return $this->db->resultSet();
+        return $this->db->resultset();
     }
 
     public function CheckExamSubmission($group,$exam)
@@ -217,7 +217,7 @@ class Exam
                           FROM exam_marking_header e join centers c on e.FromCenter = c.ID
                           WHERE e.ExamStatus = :id');
         $this->db->bind(':id', $id);
-        return $this->db->resultSet();
+        return $this->db->resultset();
     }
 
     public function GetSelectOptions($type,$value,$status)
@@ -241,7 +241,7 @@ class Exam
         $this->db->query($sql);
         $this->db->bind(':val',$value);
         $this->db->bind(':stat',$status);
-        return $this->db->resultSet();
+        return $this->db->resultset();
     }
 
     public function GetId($data)

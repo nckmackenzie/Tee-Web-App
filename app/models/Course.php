@@ -12,7 +12,7 @@ class Course
     public function GetCourses()
     {
         $this->db->query('SELECT * FROM vw_courses');
-        return $this->db->resultSet();
+        return $this->db->resultset();
     }
 
     public function CheckFieldAvailability($field,$value,$id)

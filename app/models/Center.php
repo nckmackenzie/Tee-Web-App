@@ -11,7 +11,7 @@ class Center
     public function GetCenters()
     {
         $this->db->query('CALL sp_getcenters()');
-        return $this->db->resultSet();
+        return $this->db->resultset();
     }
 
     public function CheckAvailability($field,$id,$param)

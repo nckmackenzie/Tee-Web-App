@@ -12,7 +12,7 @@ class Book
         $this->db->query('CALL sp_bookslist(:tdate,:cid)');
         $this->db->bind(':tdate',date('Y-m-d'));
         $this->db->bind(':cid',$_SESSION['centerid']);
-        return $this->db->resultSet();
+        return $this->db->resultset();
     }
 
     public function GetGLAccounts()
