@@ -143,6 +143,25 @@
             <li>
                 <a href="<?php echo URLROOT;?>/reports/feepayments">Fees Payments</a>
             </li>
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#sidebarSecondLevel" aria-expanded="false" aria-controls="sidebarSecondLevel">
+                    <span> Invoice Reports </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="sidebarSecondLevel">
+                    <ul class="side-nav-third-level">
+                        <li>
+                            <a href="<?php echo URLROOT;?>/invoicereports/bydate">Invoices By Date</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo URLROOT;?>/invoicereports/due">Due Invoices</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo URLROOT;?>/invoicereports/withbalances">Invoice with balances</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
         </ul>
     </div>
 </li>
