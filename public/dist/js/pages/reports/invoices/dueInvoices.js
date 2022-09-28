@@ -18,7 +18,7 @@ reportTypeSelect.addEventListener('change', e => {
     startInput.disabled = endInput.disabled = false;
     supplierSelect.disabled = true;
   } else if (String(e.target.value) === 'bysupplier') {
-    startInput.disabled = endInput.disabled = true;
+    startInput.disabled = endInput.disabled = false;
     supplierSelect.disabled = false;
   } else {
     startInput.disabled = endInput.disabled = supplierSelect.disabled = true;
@@ -31,11 +31,19 @@ previewBtn.addEventListener('click', function () {
     reportTypeSelect.classList.add('is-invalid');
     typespan.textContent = 'Select report type';
     return;
-  } else if (reportTypeSelect.value === 'bysupplier') {
+  } else if (
+    reportTypeSelect.value === 'bysupplier' &&
+    supplierSelect.value == ''
+  ) {
     supplierSelect.classList.add('is-invalid');
     supplierspan.textContent = 'Select report type';
     return;
   } else if (reportTypeSelect.value === 'bydate') {
+    if (!validatedate(startInput, endInput, startspan, endspan)) return;
+  } else if (
+    reportTypeSelect.value === 'bysupplier' &&
+    supplierSelect.value !== ''
+  ) {
     if (!validatedate(startInput, endInput, startspan, endspan)) return;
   }
   loadDueDate();
@@ -49,6 +57,19 @@ export async function fetchReport() {
   ) {
     res = await fetch(
       `${HOST_URL}/invoicereports/due_with_balance_rpt?type=${reportTypeSelect.value}`
+    );
+  } else if (reportTypeSelect.value === 'bydate') {
+    const sdate = startInput.value;
+    const edate = endInput.value;
+    res = await fetch(
+      `${HOST_URL}/invoicereports/bydate_bysupplier?type=${reportTypeSelect.value}&sdate=${sdate}&edate=${edate}`
+    );
+  } else if (reportTypeSelect.value === 'bysupplier') {
+    const sdate = startInput.value;
+    const edate = endInput.value;
+    const supplier = supplierSelect.value;
+    res = await fetch(
+      `${HOST_URL}/invoicereports/bydate_bysupplier?type=${reportTypeSelect.value}&supplier=${supplier}&sdate=${sdate}&edate=${edate}`
     );
   }
 
