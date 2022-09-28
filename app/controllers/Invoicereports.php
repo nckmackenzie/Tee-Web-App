@@ -80,4 +80,37 @@ class Invoicereports extends Controller
             exit;
         }
     }
+
+    //invoice payments
+    public function payments()
+    {
+        $data = [
+            'title' => 'Invoices Payments',
+            'has_datatable' => true,
+            'suppliers' => $this->reportmodel->GetSuppliers(),
+        ];
+        $this->view('invoicereports/payments', $data);
+        exit;
+    }
+
+    //get invoices or supplier
+    public function get_invoice_or_supplier()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $type = trim($_GET['type']);
+            $results = $type === 'bysupplier' ? $this->reportmodel->GetSuppliers() : $this->reportmodel->GetInvoices();
+            $data = [];
+            foreach($results as $result){
+                array_push($data,[
+                    'id' => $result->ID,
+                    'field' => $result->FieldName,
+                ]);
+            }
+            echo json_encode($data);
+        }else{
+            redirect('auth/forbidden');
+            exit;
+        }
+    }
 }
