@@ -1,4 +1,4 @@
-import { validatedate, setdatatable } from '../utils.js';
+import { validatedate, setdatatable, updateColumnTotal } from '../utils.js';
 import { HOST_URL } from '../../utils.js';
 const start = document.querySelector('#start');
 const startspan = document.querySelector('.startspan');
@@ -44,8 +44,23 @@ preview.addEventListener('click', async () => {
   }
   table += `
     </tbody>
+    <tfoot class="table-light">
+      <tr>
+        <th>Total</th>
+        <th id="opening"></th>
+        <th id="receipts"></th>
+        <th id="transfers"></th>
+        <th id="sales"></th>
+        <th id="balance"></th>
+      </tr>
+    </tfoot>
   </table>
 `;
   results.innerHTML = table;
   setdatatable('table');
+  updateColumnTotal('table', 1, 'opening');
+  updateColumnTotal('table', 2, 'receipts');
+  updateColumnTotal('table', 3, 'transfers');
+  updateColumnTotal('table', 4, 'sales');
+  updateColumnTotal('table', 5, 'balance');
 });
