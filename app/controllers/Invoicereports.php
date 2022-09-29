@@ -155,4 +155,45 @@ class Invoicereports extends Controller
         ];
         $this->view('invoicereports/statement', $data);
     }
+
+    //get statement api
+    public function statementrpt()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            //filter data received from GET request
+            $_GET = filter_input_array(INPUT_GET, FILTER_UNSAFE_RAW);
+            $data = [
+                'supplier' => isset($_GET['supplier']) ? trim($_GET['supplier']) : null,
+                'sdate' => isset($_GET['sdate']) ? trim($_GET['sdate']) : null,
+                'edate' => isset($_GET['edate']) ? trim($_GET['edate']) : null,
+                'results' => []
+            ];
+
+            //validation
+            if(is_null($data['supplier']) || is_null($data['sdate']) || is_null($data['edate'])) :
+                http_response_code(400);
+                echo json_encode('Fill all required fields');
+                exit;
+            endif;
+
+            //get data from model
+            $results = $this->reportmodel->GetStatement($data);
+            //loop through results & convert to associative array
+            foreach ($results as $result):
+                array_push($data['results'],[
+                    'transactionDate' => date('d-m-Y',strtotime($result->TransactionDate)),
+                    'narration' => $result->Narration,
+                    'reference' => $result->Reference,
+                    'credit' => $result->Credit,
+                    'debit' => $result->Debit
+                ]);
+            endforeach;
+            
+            echo json_encode($data['results']);
+
+        }else{
+            redirect('auth/forbidden');
+            exit;
+        }
+    }
 }
