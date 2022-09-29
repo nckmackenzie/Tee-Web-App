@@ -31,3 +31,11 @@ export async function getSupplierPayments(
 
   return await res.json();
 }
+
+//ajax request form getting supplier statement
+export async function getSupplierStatement(supplier, sdate, edate) {
+  const res = await fetch(
+    `${url}/statementrpt?supplier=${supplier}&sdate=${sdate}&edate=${edate}`
+  );
+  return await res.json();
+}
