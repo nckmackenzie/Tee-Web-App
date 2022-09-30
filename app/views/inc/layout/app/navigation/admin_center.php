@@ -9,6 +9,12 @@
             <li>
                 <a href="<?php echo URLROOT;?>/users">Users</a>
             </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/userrights">Users rights</a>
+            </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/userrights/clone">Clone rights</a>
+            </li>
         </ul>
     </div>
 </li>
