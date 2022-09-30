@@ -488,4 +488,62 @@ class Stocks extends Controller
             exit;
         }
     }
+
+    //edit return
+    public function returnedit($id)
+    {
+        $returnheader = $this->stockmodel->GetReturnHeader($id);
+        $returndetails = $this->stockmodel->GetReturnDetails($id);
+        checkcenter($returnheader->CenterId);
+        $data = [
+            'title' => 'Edit Return',
+            'books' => $this->stockmodel->GetBooks(),
+            'isedit' => true,
+            'touched' => false,
+            'id' => $returnheader->ID,
+            'returndate' => $returnheader->ReturnDate,
+            'from' => strtoupper($returnheader->ReturnFrom),
+            'reason' => strtoupper($returnheader->Reason),
+            'table' => [],
+            'returndate_err' => '',
+            'from_err' => '',
+            'reason_err' => '',
+        ];
+        foreach($returndetails as $returndetail):
+            array_push($data['table'],[
+                'pid' => $returndetail->BookId,
+                'book' => $returndetail->BookTitle,
+                'qty' => $returndetail->Qty,
+            ]);
+        endforeach;
+        $this->view('stocks/addreturn', $data);
+        exit;
+    }
+
+    public function deletereturn()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $id = trim($_POST['id']);
+
+            if(empty($id)){
+                flash('return_msg',null,'Unable to get selected return.Retry or contact admin',flashclass('alert','danger'));
+                redirect('stocks/returns');
+                exit;
+            }
+
+            if(!$this->stockmodel->DeleteReturn($id)){
+                flash('return_msg',null,'Unable to delete the return.Retry or contact admin',flashclass('alert','danger'));
+                redirect('stocks/returns');
+                exit;
+            }
+
+            flash('return_toast_msg',null,'Deleted successfully!',flashclass('alert','danger'));
+            redirect('stocks/returns');
+            exit;
+
+        }else {
+            redirect('auth/forbidden');
+            exit;
+        }
+    }
 }
