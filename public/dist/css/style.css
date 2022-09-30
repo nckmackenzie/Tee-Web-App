@@ -18,6 +18,9 @@
   padding: 0.28rem 0.8rem !important;
 }
 
+.bg-transparent {
+  background: transparent !important;
+}
 @media screen and (max-width: 768px) {
   .sm-m-3 {
     margin: 0.875rem 0;
