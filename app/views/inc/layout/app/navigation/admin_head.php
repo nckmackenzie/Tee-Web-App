@@ -55,6 +55,9 @@
             <li>
                 <a href="<?php echo URLROOT;?>/stocks/transfers">Transfers</a>
             </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/stocks/returns">Returns</a>
+            </li>
         </ul>
     </div>
 </li>
