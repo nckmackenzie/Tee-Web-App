@@ -385,4 +385,16 @@ class Stocks extends Controller
             exit();
         }
     }
+
+    //stock returns
+    public function returns()
+    {
+        $data = [
+            'title' => 'Returns',
+            'has_datatable' => true,
+            'returns' => $this->stockmodel->GetReturns()
+        ];
+        $this->view('stocks/returns', $data);
+        exit;
+    }
 }
