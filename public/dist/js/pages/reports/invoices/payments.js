@@ -1,5 +1,6 @@
 import { validatedate, clearErrors } from '../utils.js';
-import { getSupplierOrInvoice } from './paymentsAjax.js';
+import { getSupplierOrInvoice, getSupplierPayments } from './paymentsAjax.js';
+import { numberWithCommas, setdatatable, updateColumnTotal } from '../utils.js';
 const reportTypeSelect = document.getElementById('type');
 const criteriaSelect = document.getElementById('criteria');
 const startInput = document.getElementById('start');
@@ -73,4 +74,73 @@ previewBtn.addEventListener('click', function () {
     criteriaspan.textContent = 'Select invoice';
     return;
   }
+  createTable();
 });
+
+async function getData() {
+  let data;
+  if (reportTypeSelect.value === 'byinvoice') {
+    data = await getSupplierPayments(
+      'byinvoice',
+      null,
+      null,
+      String(criteriaSelect.value).trim()
+    );
+  } else if (reportTypeSelect.value === 'bysupplier') {
+    data = await getSupplierPayments(
+      'bysupplier',
+      startInput.value,
+      endInput.value,
+      String(criteriaSelect.value).trim()
+    );
+  } else if (reportTypeSelect.value === 'bydate') {
+    data = await getSupplierPayments(
+      'bydate',
+      startInput.value,
+      endInput.value
+    );
+  }
+  return data;
+}
+
+async function createTable() {
+  const data = await getData();
+  if (!data) return;
+  let table = `
+  <table class="table table-sm w-100 dt-responsive nowrap" id="table">
+    <thead class="table-light">
+      <tr>
+        <th>Payment Date</th>
+        <th>Invoice #</th>
+        <th>Supplier</th>
+        <th>Amount Paid</th>
+        <th>Reference</th>
+      </tr>
+    </thead>
+    <tbody>`;
+  if (data.length > 0) {
+    data.forEach(dt => {
+      table += `
+          <tr>
+            <td>${dt.paymentDate}</td>
+            <td>${dt.invoiceNo}</td>
+            <td>${dt.supplierName}</td>
+            <td>${numberWithCommas(dt.amount)}</td>
+            <td>${dt.paymentReference}</td>
+          </tr>
+        `;
+    });
+  }
+  table += `
+    </tbody>
+    <tfoot class="table-light">
+      <th colspan="3" style="text-align:center">Total:</th>
+      <th id="total"></th>
+      <th></th>
+    </tfoot>
+  </table>
+`;
+  results.innerHTML = table;
+  setdatatable('table');
+  updateColumnTotal('table', 3, 'total');
+}

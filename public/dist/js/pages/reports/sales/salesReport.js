@@ -1,4 +1,9 @@
-import { validatedate, setdatatable, updateColumnTotal } from '../utils.js';
+import {
+  validatedate,
+  setdatatable,
+  updateColumnTotal,
+  numberWithCommas,
+} from '../utils.js';
 import { HOST_URL } from '../../utils.js';
 const start = document.querySelector('#start');
 const startspan = document.querySelector('.startspan');
@@ -36,9 +41,9 @@ preview.addEventListener('click', async () => {
               <td>${dt.saleId}</td>
               <td>${dt.salesDate}</td>
               <td>${dt.soldTo}</td>
-              <td>${dt.subTotal}</td>
-              <td>${dt.discount}</td>
-              <td>${dt.netAmount}</td>
+              <td>${numberWithCommas(dt.subTotal)}</td>
+              <td>${numberWithCommas(dt.discount)}</td>
+              <td>${numberWithCommas(dt.netAmount)}</td>
               <td>${dt.reference}</td>
             </tr>
           `;

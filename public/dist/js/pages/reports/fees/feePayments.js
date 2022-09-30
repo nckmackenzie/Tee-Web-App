@@ -1,4 +1,9 @@
-import { validatedate, setdatatable } from '../utils.js';
+import {
+  validatedate,
+  setdatatable,
+  numberWithCommas,
+  updateColumnTotal,
+} from '../utils.js';
 import { HOST_URL } from '../../utils.js';
 const start = document.querySelector('#start');
 const startspan = document.querySelector('.startspan');
@@ -34,7 +39,7 @@ preview.addEventListener('click', async () => {
             <td>${dt.paymentDate}</td>
             <td>${dt.receiptNo}</td>
             <td>${dt.studentName}</td>
-            <td>${dt.amount}</td>
+            <td>${numberWithCommas(dt.amount)}</td>
             <td>${dt.paymentReference}</td>
           </tr>
         `;
@@ -42,8 +47,16 @@ preview.addEventListener('click', async () => {
   }
   table += `
     </tbody>
+    <tfoot class="table-light">
+      <tr>
+        <th colspan="3" style="text-align:center">Total:</th>
+        <th id="amount"></th>
+        <th></th>
+      </tr>
+    </tfoot>
   </table>
 `;
   results.innerHTML = table;
   setdatatable('table');
+  updateColumnTotal('table', 3, 'amount');
 });
