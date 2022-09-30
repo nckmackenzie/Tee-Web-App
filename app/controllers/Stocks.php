@@ -397,4 +397,95 @@ class Stocks extends Controller
         $this->view('stocks/returns', $data);
         exit;
     }
+
+    //add stock returns view
+    public function addreturn()
+    {
+        $data = [
+            'title' => 'Add Return',
+            'books' => $this->stockmodel->GetBooks(),
+            'isedit' => false,
+            'touched' => false,
+            'id' => '',
+            'returndate' => '',
+            'from' => '',
+            'reason' => '',
+            'table' => [],
+            'returndate_err' => '',
+            'from_err' => '',
+            'reason_err' => '',
+        ];
+        $this->view('stocks/addreturn', $data);
+        exit;
+    }
+
+    public function createupdatereturn()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
+            $data = [
+                'title' => !converttobool($_POST['isedit']) ? 'Add Return' : 'Edit Return',
+                'books' => $this->stockmodel->GetBooks(),
+                'isedit' => converttobool($_POST['isedit']),
+                'touched' => true,
+                'id' => trim($_POST['id']),
+                'returndate' => !empty(trim($_POST['returndate'])) ? date('Y-m-d',strtotime(trim($_POST['returndate']))) : '',
+                'from' => !empty(trim($_POST['from'])) ? trim($_POST['from']) : '',
+                'reason' => !empty(trim($_POST['reason'])) ? trim($_POST['reason']) : '',
+                'table' => [],
+                'booksid' => $_POST['booksid'],
+                'booksname' => $_POST['booksname'],
+                'qtys' => $_POST['qtys'],
+                'returndate_err' => '',
+                'from_err' => '',
+                'reason_err' => '',
+            ];
+
+            if(count($data['booksid']) == 0){
+                $data['error'] = 'No items added for transfer';
+            }else{
+                for ($i=0; $i < count($data['booksid']); $i++) { 
+                    array_push($data['table'],[
+                        'pid' => $data['booksid'][$i],
+                        'book' => $data['booksname'][$i],
+                        'qty' => $data['qtys'][$i],
+                    ]);
+                }
+            }
+
+            //validation
+            if(empty($data['returndate'])){
+                $data['returndate_err'] = 'Select return date';
+            }else{
+                if(!validatedate($data['returndate'])){
+                    $data['returndate_err'] = 'Invalid return date';
+                }
+            }
+            if(empty($data['from'])){
+                $data['from_err'] = 'Enter returnee';
+            }
+            if(empty($data['reason'])){
+                $data['reason_err'] = 'Enter reason for returning';
+            }
+
+            //errors found
+            if(!empty($data['returndate_err']) || !empty($data['from_err']) || !empty($data['reason_err'])){
+                $this->view('stocks/addreturn',$data);
+                exit;
+            }
+
+            if(!$this->stockmodel->CreateUpdateReturn($data)){
+                flash('return_msg',null,'Unable to save the return.Retry or contact admin',flashclass('alert','danger'));
+                redirect('stocks/returns');
+            }
+
+            flash('return_toast_msg',null,'Saved successfully!',flashclass('toast','success'));
+            redirect('stocks/returns');
+            exit();
+
+        }else {
+            redirect('auth/forbidden');
+            exit;
+        }
+    }
 }
