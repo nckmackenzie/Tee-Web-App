@@ -334,4 +334,122 @@ class Stock
         $this->db->bind(':cid',(int)$_SESSION['centerid']);
         return $this->db->resultset();
     }
+
+    public function SaveReturn($data)
+    {
+        try {
+            //begin transaction
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('INSERT INTO returns_header(ReturnDate,ReturnFrom,Reason,CenterId) 
+                              VALUES(:rdate,:returnee,:reason,:cid)');
+            $this->db->bind(':rdate',!empty($data['returndate']) ? $data['returndate'] : null);
+            $this->db->bind(':returnee',!empty($data['from']) ? strtolower($data['from']) : null);
+            $this->db->bind(':reason',!empty($data['reason']) ? strtolower($data['reason']) : null);
+            $this->db->bind(':cid',(int)$_SESSION['centerid']);
+            $this->db->execute();
+            $tid = $this->db->dbh->lastInsertId();
+
+            //loop and save to details table and stock movements table
+            for($i = 0; $i < count($data['booksid']); $i++){
+                $this->db->query('INSERT INTO returns_details (HeaderId,BookId,Qty) VALUES(:hid,:bid,:qty)');
+                $this->db->bind(':hid',$tid);
+                $this->db->bind(':bid',$data['booksid'][$i]);
+                $this->db->bind(':qty',$data['qtys'][$i]);
+                $this->db->execute();
+
+                $this->db->query('INSERT INTO stockmovements (TransactionDate,BookId,Qty,Reference,
+                                          TransactionType,TransactionId,CenterId) 
+                              VALUES(:tdate,:bid,:qty,:ref,:ttype,:tid,:cid)');
+                $this->db->bind(':tdate',$data['returndate']);
+                $this->db->bind(':bid',$data['booksid'][$i]);
+                $this->db->bind(':qty',$data['qtys'][$i]);
+                $this->db->bind(':ref',null); 
+                $this->db->bind(':ttype',5);
+                $this->db->bind(':tid',$tid);
+                $this->db->bind(':cid',$_SESSION['centerid']);
+                $this->db->execute();
+            }
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }
+
+            return true;
+        } catch (\Exception $th) {
+            if($this->db->dbh->inTransaction()){
+                $this->db->dbh->rollBack();
+            }
+            throw $th;
+            return false;
+        }
+    }
+
+    //edit return
+    public function UpdateReturn($data)
+    {
+        try {
+            //begin transaction
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('UPDATE returns_header SET ReturnDate=:rdate,ReturnFrom=:returnee,Reason=:reason 
+                              WHERE (ID = :id)');
+            $this->db->bind(':rdate',!empty($data['returndate']) ? $data['returndate'] : null);
+            $this->db->bind(':returnee',!empty($data['from']) ? strtolower($data['from']) : null);
+            $this->db->bind(':reason',!empty($data['reason']) ? strtolower($data['reason']) : null);
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+            
+            $this->db->query('DELETE FROM returns_details WHERE HeaderId = :id');
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
+            $this->db->query('DELETE FROM stockmovements WHERE TransactionType = 5 AND TransactionId = :id');
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
+            //loop and save to details table and stock movements table
+            for($i = 0; $i < count($data['booksid']); $i++){
+                $this->db->query('INSERT INTO returns_details (HeaderId,BookId,Qty) VALUES(:hid,:bid,:qty)');
+                $this->db->bind(':hid',$data['id']);
+                $this->db->bind(':bid',$data['booksid'][$i]);
+                $this->db->bind(':qty',$data['qtys'][$i]);
+                $this->db->execute();
+
+                $this->db->query('INSERT INTO stockmovements (TransactionDate,BookId,Qty,Reference,
+                                          TransactionType,TransactionId,CenterId) 
+                              VALUES(:tdate,:bid,:qty,:ref,:ttype,:tid,:cid)');
+                $this->db->bind(':tdate',$data['returndate']);
+                $this->db->bind(':bid',$data['booksid'][$i]);
+                $this->db->bind(':qty',$data['qtys'][$i]);
+                $this->db->bind(':ref',null); 
+                $this->db->bind(':ttype',5);
+                $this->db->bind(':tid',$data['id']);
+                $this->db->bind(':cid',$_SESSION['centerid']);
+                $this->db->execute();
+            }
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }
+
+            return true;
+        } catch (\Exception $th) {
+            if($this->db->dbh->inTransaction()){
+                $this->db->dbh->rollBack();
+            }
+            throw $th;
+            return false;
+        }
+    }
+
+    //create and update returns
+    public function CreateUpdateReturn($data)
+    {
+        if(!$data['isedit']){
+            return $this->SaveReturn($data);
+        }else{
+            return $this->UpdateReturn($data);
+        }
+    }
 }
