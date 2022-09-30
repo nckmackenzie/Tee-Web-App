@@ -12,7 +12,7 @@
         </div>
     </div>     
     <!-- end page title --> 
-    <?php flash('transfer_msg','alert'); ?>
+    <?php flash('return_msg','alert'); ?>
     <?php DeleteModal(URLROOT .'/stocks/deletereturn','centermodal','Are you sure you want to delete this return?','id') ; ?>
     
     <div class="row">
@@ -61,6 +61,6 @@
     </div>                    
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?> 
-<?php flash('transfer_toast_msg', 'toast'); ?> 
+<?php flash('return_toast_msg', 'toast'); ?> 
 <script type="module" src="<?php echo URLROOT;?>/dist/js/pages/returns.js"></script>                  
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
