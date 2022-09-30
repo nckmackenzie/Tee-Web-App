@@ -28,7 +28,7 @@
                                 <input type="date" name="returndate" id="returndate"
                                     class="form-control form-control-sm mandatory 
                                     <?php echo inputvalidation($data['returndate'],$data['returndate_err'],$data['touched']);?>"
-                                    value="<?php echo $data['returndate'];?>>
+                                    value="<?php echo $data['returndate'];?>">
                                 <span class="invalid-feedback"><?php echo $data['returndate_err'];?></span>
                             </div>
                             <div class="col-md-6 mb-2">
