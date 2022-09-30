@@ -326,4 +326,12 @@ class Stock
             return true;
         }
     }
+
+    //get returns
+    public function GetReturns()
+    {
+        $this->db->query('SELECT * FROM vw_returns WHERE CenterId = :cid');
+        $this->db->bind(':cid',(int)$_SESSION['centerid']);
+        return $this->db->resultset();
+    }
 }
