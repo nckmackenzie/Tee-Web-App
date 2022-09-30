@@ -452,4 +452,51 @@ class Stock
             return $this->UpdateReturn($data);
         }
     }
+
+    //return header fetch
+    public function GetReturnHeader($id)
+    {
+        $this->db->query('SELECT * FROM returns_header WHERE (ID = :id)');
+        $this->db->bind(':id',(int)$id);
+        return $this->db->single();
+    }
+
+    //return details fetch
+    public function GetReturnDetails($id)
+    {
+        $this->db->query('SELECT * FROM vw_return_details WHERE (HeaderId = :id)');
+        $this->db->bind(':id',(int)$id);
+        return $this->db->resultset();
+    }
+
+    //delete return'
+    public function DeleteReturn($id)
+    {
+        try {
+            //begin transaction
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('UPDATE returns_header SET Deleted = 1 
+                              WHERE (ID = :id)');
+            $this->db->bind(':id',(int)$id);
+            $this->db->execute();
+            
+
+            $this->db->query('UPDATE stockmovements SET Deleted = 1 WHERE TransactionType = 5 AND TransactionId = :id');
+            $this->db->bind(':id',(int)$id);
+            $this->db->execute();
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }
+
+            return true;
+        } catch (\Exception $th) {
+            if($this->db->dbh->inTransaction()){
+                $this->db->dbh->rollBack();
+            }
+            throw $th;
+            return false;
+        }
+    }
 }
