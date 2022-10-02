@@ -172,10 +172,42 @@ class Stocks extends Controller
                 exit();
             }
 
-            flash('receipt_toast_msg',null,'Receipt created.',flashclass('toast','success'));
+            flash('receipt_toast_msg',null,'Receipt saved successfully!.',flashclass('toast','success'));
             redirect('stocks/receipts');
             exit();
         }
+    }
+
+    public function receiptedit($id)
+    {
+        $header = $this->stockmodel->GetReceiptHeader($id);
+        $details = $this->stockmodel->GetReceiptDetails($id);
+        $books = $this->stockmodel->GetBooks();
+        checkcenter($header->CenterId);
+        $data = [
+            'title' => 'Edit Receipt',
+            'touched' => false,
+            'isedit' => true,
+            'books' => $books,
+            'type' => (int)$header->ReceiptType === 1 ? 'grn' : 'internal',
+            'id' => $header->ID,
+            'date' => $header->ReceiptDate,
+            'reference' => $header->GrnNo,
+            'mtn' => $header->ReceiptType === 1 ? NULL : $this->stockmodel->GetMtnNo(true,$header->TransferId),
+            'table' => [],
+            'date_err' => '',
+            'qty_err' =>''
+        ];
+        foreach($details as $detail) : 
+            array_push($data['table'],[
+                'pid' => $detail->BookId,
+                'book' => $detail->BookTitle,
+                'trqty' => $detail->TransferedQty,
+                'qty' => $detail->Qty
+            ]);
+        endforeach;
+        $this->view('stocks/editreceipt',$data);
+        exit;
     }
 
     public function transfers()

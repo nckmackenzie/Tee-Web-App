@@ -21,8 +21,9 @@ class Stock
         return getuniqueid($this->db->dbh,'GrnNo','receiptsheader',$_SESSION['centerid']);
     }
 
-    public function GetMtnNo()
+    public function GetMtnNo($isedit = false,$id = '')
     {
+        if($isedit) return getdbvalue($this->db->dbh,'SELECT fn_getmtnno(?)',[$id]);
         return getuniqueid($this->db->dbh,'MtnNo','transfersheader',$_SESSION['centerid']);
     }
 
@@ -59,17 +60,34 @@ class Stock
         try {
 
             $this->db->dbh->beginTransaction();
-
-            $this->db->query('INSERT INTO receiptsheader (ReceiptDate,ReceiptType,TransferId,GrnNo,CenterId) 
+            if(!$data['isedit']){
+                $this->db->query('INSERT INTO receiptsheader (ReceiptDate,ReceiptType,TransferId,GrnNo,CenterId) 
                               VALUES(:rdate,:rtype,:mtn,:grn,:cid)');
-            $this->db->bind(':rdate',$data['date']);
-            $this->db->bind(':rtype',$data['type'] === 'grn' ? 1 : 2);
-            $this->db->bind(':mtn',!empty($data['mtn']) ? $data['mtn'] : null);
-            $this->db->bind(':grn',$data['reference']);
-            $this->db->bind(':cid',$_SESSION['centerid']);
-            $this->db->execute();
+                $this->db->bind(':rdate',$data['date']);
+                $this->db->bind(':rtype',$data['type'] === 'grn' ? 1 : 2);
+                $this->db->bind(':mtn',!empty($data['mtn']) ? $data['mtn'] : null);
+                $this->db->bind(':grn',$data['reference']);
+                $this->db->bind(':cid',$_SESSION['centerid']);
+                $this->db->execute();
+            }else{
+                $this->db->query('UPDATE receiptsheader SET ReceiptDate=:rdate 
+                                 WHERE (ID = :id)');
+                $this->db->bind(':rdate',$data['date']);
+                $this->db->bind(':id',$data['id']);
+                $this->db->execute();
+            }
+            
+            $id = !$data['isedit'] ? $this->db->dbh->lastInsertId() : $data['id'];
 
-            $id = $this->db->dbh->lastInsertId();
+            if($data['isedit']) :
+                $this->db->query('DELETE FROM receiptsdetails WHERE (HeaderID=:id)');
+                $this->db->bind(':id',$id);
+                $this->db->execute();
+
+                $this->db->query('DELETE FROM stockmovements WHERE (TransactionType = 2) AND (TransactionId = :id)');
+                $this->db->bind(':id',$id);
+                $this->db->execute();
+            endif;
 
             for ($i=0; $i < count($data['booksid']); $i++) { 
                 $this->db->query('INSERT INTO receiptsdetails(HeaderID,BookId,Qty) VALUES(:hid,:bid,:qty)');
