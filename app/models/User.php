@@ -37,10 +37,11 @@ class User
             $this->db->bind(':utype',trim($data['usertype']));
             $this->db->bind(':cid',(int)$_SESSION['centerid']);
         }else{
-            $this->db->query('UPDATE users SET UserName=:uname,Contact=:contact,UserTypeId=:utype WHERE ID=:id');
+            $this->db->query('UPDATE users SET UserName=:uname,Contact=:contact,UserTypeId=:utype,Active=:active WHERE ID=:id');
             $this->db->bind(':uname',strtolower(trim($data['username'])));
             $this->db->bind(':contact',trim($data['contact']));
             $this->db->bind(':utype',trim($data['usertype']));
+            $this->db->bind(':active',$data['active']);
             $this->db->bind(':id',(int)$data['id']);
         }
         
