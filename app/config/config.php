@@ -11,3 +11,5 @@ define('URLROOT','http://localhost/pcea_tee');
 //SITE NAME
 define('SITENAME','PCEA TEE');
 define('ENCRYPTION_KEY', '^!*#%&@^$^&$@$^$@%%^');
+//ENVIRONMENT
+define('ENV','production');
