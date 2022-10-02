@@ -36,7 +36,10 @@ class Stock
     //get mtns
     public function GetMtns()
     {
-        $this->db->query('SELECT ID,UCASE(MtnNo) AS Mtn FROM transfersheader WHERE (Deleted=0) AND (ToCenter =:cid)');
+        $this->db->query('SELECT ID,UCASE(MtnNo) AS Mtn 
+                          FROM transfersheader 
+                          WHERE (Deleted=0) AND (ToCenter =:cid)
+                          HAVING NOT fn_checktransferreceived(ID);');
         $this->db->bind(':cid',$_SESSION['centerid']);
         return $this->db->resultset();
     }
@@ -101,6 +104,20 @@ class Stock
             throw $e;
             return false;
         }
+    }
+
+    public function GetReceiptHeader($id)
+    {
+        $this->db->query('SELECT * FROM receiptsheader WHERE ID = :id');
+        $this->db->bind(':id',(int)$id);
+        return $this->db->single();
+    }
+
+    public function GetReceiptDetails($id)
+    {
+        $this->db->query('SELECT * FROM vw_receipts_details WHERE ID = :id');
+        $this->db->bind(':id',(int)$id);
+        return $this->db->resultset();
     }
 
     public function GetCenters()
