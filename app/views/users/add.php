@@ -78,6 +78,14 @@
                                 </div>
                             </div>
                             <?php endif; ?>
+                            <?php if($data['isedit']) :?>
+                                <div class="col-12">
+                                    <div class="form-check mb-2">
+                                        <input type="checkbox" name="active" class="form-check-input" id="active" <?php checkstate($data['active']);?>>
+                                        <label class="form-check-label" for="active">Active</label>
+                                    </div>
+                                </div>
+                            <?php endif;?>
                         </div>
                         <div class="d-grid d-md-block">
                             <input type="hidden" name="id" value=<?php echo $data['id'];?>>
