@@ -1,5 +1,10 @@
 <?php require APPROOT .'/views/inc/layout/auth/header.php'; ?>
-
+    <?php if(ENV === 'development') : ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        FOR <strong>TEST</strong> PURPOSES <strong>ONLY</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+   <?php endif; ?>
     <form action="<?php echo URLROOT;?>/auth/login_act" autocomplete="off" id="login-form" method="POST">
         <div class="mb-3">
             <label for="contact" class="form-label">Contact</label>

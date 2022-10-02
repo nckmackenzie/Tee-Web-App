@@ -12,7 +12,12 @@
         </div>
     </div>     
     <!-- end page title --> 
-   
+   <?php if(ENV === 'development') : ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        FOR <strong>TEST</strong> PURPOSES <strong>ONLY</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+   <?php endif; ?>
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>                    
 <?php flash('home_msg','toast');?>
