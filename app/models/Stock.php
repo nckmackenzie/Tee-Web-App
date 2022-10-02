@@ -115,7 +115,7 @@ class Stock
 
     public function GetReceiptDetails($id)
     {
-        $this->db->query('SELECT * FROM vw_receipts_details WHERE ID = :id');
+        $this->db->query('SELECT * FROM vw_receipts_details WHERE HeaderID = :id');
         $this->db->bind(':id',(int)$id);
         return $this->db->resultset();
     }
