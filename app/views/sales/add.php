@@ -16,12 +16,12 @@
     <!-- end page title --> 
     <div class="row">
         <div class="col-12" id="message"></div>
-        <div class="col-12">
+        <div class="col-lg-8">
             <form action="<?php echo URLROOT;?>/sales/createupdate" method="post" autocomplete="off" name="salesform">
                 <div class="card">
                     <div class="card-body">        
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-lg-2">
                                 <div class="mb-3">
                                     <label for="saleid" class="">Sale ID</label>
                                     <input type="text" name="saleid" id="saleid" 
@@ -29,7 +29,7 @@
                                            value="<?php echo $data['saleid'];?>" readonly>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-lg-3">
                                 <div class="mb-3">
                                     <label for="sdate" class="">Sale Date</label>
                                     <input type="date" name="sdate" id="sdate" 
@@ -39,7 +39,7 @@
                                     <span class="invalid-feedback"><?php echo $data['sdate_err'];?></span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-lg-3">
                                 <div class="mb-3">
                                     <label for="pdate" class="">Payment Date</label>
                                     <input type="date" name="pdate" id="pdate" 
@@ -49,7 +49,7 @@
                                     <span class="invalid-feedback"><?php echo $data['pdate_err'];?></span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-lg-4">
                                 <div class="mb-3">
                                     <label for="saletype">Sale Type</label>
                                     <select name="saletype" id="saletype" 
@@ -62,7 +62,7 @@
                                     <span class="invalid-feedback"><?php echo $data['type_err'];?></span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-lg-4">
                                 <div class="mb-3">
                                     <label for="studentorgroup" class="">Student/Group</label>
                                     <select name="studentorgroup" id="studentorgroup" 
@@ -78,7 +78,7 @@
                                     <span class="invalid-feedback"><?php echo $data['studentgroup_err'];?></span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-lg-4">
                                 <label for="paymethod">Pay method</label>
                                 <select name="paymethod" id="paymethod" class="form-select form-select-sm mandatory 
                                         <?php echo inputvalidation($data['paymethod'],$data['paymethod_err'],$data['touched']);?>">
@@ -89,7 +89,7 @@
                                 </select>
                                 <span class="invalid-feedback"><?php echo $data['paymethod_err'];?></span>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-lg-4">
                                 <label for="reference">Reference</label>
                                 <input type="text" name="reference" id="reference" 
                                        class="form-control form-control-sm mandatory 
@@ -104,7 +104,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-lg-4">
                                 <label for="book">Book</label>
                                 <select name="book" id="book" class="form-select form-select-sm">
                                     <option value="">Select book</option>
@@ -113,23 +113,23 @@
                                     <?php endforeach;?>
                                 </select>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-lg-2">
                                 <label for="stock" class="">Stock</label>
                                 <input type="text" id="stock" class="form-control form-control-sm" readonly>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-lg-2">
                                 <label for="rate" class="">Rate</label>
                                 <input type="text" id="rate" class="form-control form-control-sm" readonly>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-lg-2">
                                 <label for="qty" class="">Qty</label>
                                 <input type="number" id="qty" class="form-control form-control-sm">
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-lg-2">
                                 <label for="value" class="">Value</label>
                                 <input type="text" id="value" class="form-control form-control-sm" readonly>
                             </div> 
-                            <div class="col-2 mt-1">
+                            <div class="col-xs-4 col-lg-2 mt-1">
                                 <button type="button" class="btn btn-sm btn-success w-100 btnadd">Add</button>
                             </div>                
                         </div><!-- /.row -->
@@ -225,6 +225,15 @@
                     </div>
                 </div>  
             </form>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Group Members</span>
+                    <button type="button" id="selectAll" class="btn btn-info btn-sm" disabled>Select all</button>
+                </div>
+                <div class="card-body p-0" id="studentList"></div>
+            </div>
         </div>
     </div>                    
 </div> <!-- container -->
