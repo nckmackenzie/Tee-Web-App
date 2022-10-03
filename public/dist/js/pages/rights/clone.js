@@ -1,4 +1,4 @@
-import { HOST_URL, displayAlert } from '../utils.js';
+import { HOST_URL, displayAlert, sendHttpRequest } from '../utils.js';
 const fromUserSelect = document.getElementById('fromuser');
 const userToSelect = document.getElementById('touser');
 const form = document.getElementById('cloneForm');
@@ -32,7 +32,21 @@ function validate() {
 
 //onchange
 selects.forEach(select => {
-  select.addEventListener('change', clearErrors);
+  select.addEventListener('change', async function () {
+    clearErrors();
+    saveBtn.disabled = false;
+    if (select.name !== 'fromuser') return;
+    const data = await sendHttpRequest(
+      `${HOST_URL}/userrights/checkuserrights&userid=${select.value}`
+    );
+
+    saveBtn.disabled = !data;
+    if (!data) {
+      select.classList.add('is-invalid');
+      select.nextSibling.nextSibling.textContent =
+        'Users has no rights assigned!';
+    }
+  });
 });
 
 //clear error state
