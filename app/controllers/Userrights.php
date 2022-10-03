@@ -81,6 +81,12 @@ class Userrights extends Controller
                 exit;
             endif;
 
+            if(!$this->rightsmodel->CheckRights((int)$data['from'])) :
+                http_response_code(404);
+                echo json_encode(['message' => 'User has no rights assigned to them!']);
+                exit;
+            endif;
+
             //rights didn't clone
             if(!$this->rightsmodel->Clone($data)) :
                 http_response_code(500);
@@ -93,6 +99,20 @@ class Userrights extends Controller
             exit;
 
         }else{
+            redirect('auth/forbidden');
+            exit;
+        }
+    }
+
+    //check if selected user has rights assigned
+    public function checkuserrights()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $userid = htmlspecialchars(trim($_GET['userid']));
+
+            echo json_encode($this->rightsmodel->CheckRights((int)$userid));
+
+        }else {
             redirect('auth/forbidden');
             exit;
         }
