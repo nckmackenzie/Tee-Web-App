@@ -15,9 +15,9 @@ export function getSelectedText(sel) {
 
 export const HOST_URL = 'http://localhost/pcea_tee';
 
-export function displayAlert(elm, message) {
+export function displayAlert(elm, message, status = 'danger') {
   const html = `
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-${status}" role="alert">
       ${message}
     </div>
   `;
