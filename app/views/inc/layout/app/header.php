@@ -17,7 +17,6 @@
         <link href="<?php echo URLROOT;?>/dist/css/icons.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo URLROOT;?>/dist/css/app.min.css" rel="stylesheet" type="text/css" id="light-style" />
         <link href="<?php echo URLROOT;?>/dist/css/app-dark.min.css" rel="stylesheet" type="text/css" id="dark-style" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
         <link href="<?php echo URLROOT;?>/dist/css/style.css" rel="stylesheet" type="text/css" />
     </head>
 
