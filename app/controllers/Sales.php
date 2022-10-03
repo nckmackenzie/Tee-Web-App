@@ -8,6 +8,7 @@ class Sales extends Controller
             exit();
         }
         $this->salemodel = $this->model('Sale');
+        $this->exammodel = $this->model('Exam');
     }
 
     public function index()
@@ -326,6 +327,34 @@ class Sales extends Controller
             flash('sale_flash_msg',null,'Deleted successfully',flashclass('toast','success'));
             redirect('sales');
             exit();
+
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
+
+    public function getgroupmembers()
+    {
+        if($_SERVER['REQUEST_METHOD'] == 'GET'){
+            $id = isset($_GET['groupid']) ? htmlentities(trim($_GET['groupid'])) : null;
+
+            if(is_null($id)) :
+                http_response_code(404);
+                echo json_encode(['message' => 'Select group']);
+                exit;
+            endif;
+            $students = $this->salemodel->GetStudentsByGroup($id);
+            $results = [];
+            foreach($students as $student) :
+                array_push($results,[
+                    'id' => $student->ID,
+                    'studentName' => $student->StudentName,
+                    'contact' => decrypt($student->Contact)
+                ]);
+            endforeach;
+
+            echo json_encode($results);
 
         }else{
             redirect('auth/forbidden');
