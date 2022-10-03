@@ -343,4 +343,14 @@ class Sale
             return false;
         }
     }
+
+    public function GetStudentsByGroup($gid)
+    {
+        $this->db->query('SELECT ID,StudentName,Contact 
+                          FROM vw_membersbygroup
+                          WHERE GroupId = :gid
+                          ORDER BY StudentName');
+        $this->db->bind(':gid',$gid);
+        return $this->db->resultset();
+    }
 }
