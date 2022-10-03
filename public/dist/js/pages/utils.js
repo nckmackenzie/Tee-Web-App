@@ -41,3 +41,26 @@ export function dateFormat(pdate) {
     newDate.getFullYear();
   return formatedDate;
 }
+
+//function to make http requests
+export async function sendHttpRequest(
+  url,
+  method = 'GET',
+  body = null,
+  headers = {},
+  alertBox
+) {
+  try {
+    const res = await fetch(url, {
+      method,
+      body,
+      headers,
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+    return data;
+  } catch (error) {
+    displayAlert(alertBox, error.message);
+  }
+}
