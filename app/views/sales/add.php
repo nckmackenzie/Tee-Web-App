@@ -21,7 +21,7 @@
                 <div class="card">
                     <div class="card-body">        
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="mb-3">
                                     <label for="saleid" class="">Sale ID</label>
                                     <input type="text" name="saleid" id="saleid" 
@@ -33,10 +33,20 @@
                                 <div class="mb-3">
                                     <label for="sdate" class="">Sale Date</label>
                                     <input type="date" name="sdate" id="sdate" 
-                                           class="form-control form-control-sm 
+                                           class="form-control form-control-sm mandatory
                                            <?php echo inputvalidation($data['sdate'],$data['sdate_err'],$data['touched']);?>" 
                                            value="<?php echo $data['sdate'];?>" >
                                     <span class="invalid-feedback"><?php echo $data['sdate_err'];?></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <label for="pdate" class="">Payment Date</label>
+                                    <input type="date" name="pdate" id="pdate" 
+                                           class="form-control form-control-sm mandatory
+                                           <?php echo inputvalidation($data['pdate'],$data['pdate_err'],$data['touched']);?>" 
+                                           value="<?php echo $data['pdate'];?>" >
+                                    <span class="invalid-feedback"><?php echo $data['pdate_err'];?></span>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -68,9 +78,7 @@
                                     <span class="invalid-feedback"><?php echo $data['studentgroup_err'];?></span>
                                 </div>
                             </div>
-                        </div><!-- /.row -->
-                        <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <label for="paymethod">Pay method</label>
                                 <select name="paymethod" id="paymethod" class="form-select form-select-sm mandatory 
                                         <?php echo inputvalidation($data['paymethod'],$data['paymethod_err'],$data['touched']);?>">
@@ -81,7 +89,7 @@
                                 </select>
                                 <span class="invalid-feedback"><?php echo $data['paymethod_err'];?></span>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label for="reference">Reference</label>
                                 <input type="text" name="reference" id="reference" 
                                        class="form-control form-control-sm mandatory 
@@ -90,7 +98,7 @@
                                        placeholder="eg MPESA Ref or Cheque No...">
                                 <span class="invalid-feedback"><?php echo $data['reference_err'];?></span>
                             </div>
-                        </div>
+                        </div><!-- /.row -->
                     </div><!-- /.card-body -->
                 </div><!-- /.card -->
                 <div class="card">

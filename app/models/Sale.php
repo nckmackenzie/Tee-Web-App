@@ -129,11 +129,12 @@ class Sale
         try {
             $this->db->dbh->beginTransaction();
 
-            $this->db->query('INSERT INTO sales_header (SalesID,SalesDate,SaleType,GroupId,StudentId,SubTotal,
+            $this->db->query('INSERT INTO sales_header (SalesID,SalesDate,PayDate,SaleType,GroupId,StudentId,SubTotal,
                                           Discount,NetAmount,AmountPaid,Balance,PaymentMethodId,Reference,CenterId) 
-                              VALUES(:saleid,:sdate,:stype,:gid,:student,:stotal,:discount,:net,:paid,:bal,:pid,:ref,:cid)');
+                              VALUES(:saleid,:sdate,:pdate,:stype,:gid,:student,:stotal,:discount,:net,:paid,:bal,:pid,:ref,:cid)');
             $this->db->bind(':saleid',intval($data['saleid']));
             $this->db->bind(':sdate',$data['sdate']);
+            $this->db->bind(':pdate',$data['pdate']);
             $this->db->bind(':stype',$data['type']);
             $this->db->bind(':gid',$data['type'] === 'group' ? $data['studentorgroup'] : null);
             $this->db->bind(':student',$data['type'] === 'student' ? $data['studentorgroup'] : null);
@@ -176,13 +177,13 @@ class Sale
 
                 $accountname = $this->GetGlDetails($data['booksid'][$i])[0];
                 $accountid = $this->GetGlDetails($data['booksid'][$i])[1];
-                savetoledger($this->db->dbh,$data['sdate'],$accountname,0,$sellingvalue,$desc,$accountid,1,$tid,$_SESSION['centerid']);
+                savetoledger($this->db->dbh,$data['pdate'],$accountname,0,$sellingvalue,$desc,$accountid,1,$tid,$_SESSION['centerid']);
             }
 
             if(intval($data['paymethod']) === 1){
-                savetoledger($this->db->dbh,$data['sdate'],'cash at hand',$data['paid'],0,$desc,3,1,$tid,$_SESSION['centerid']);
+                savetoledger($this->db->dbh,$data['pdate'],'cash at hand',$data['paid'],0,$desc,3,1,$tid,$_SESSION['centerid']);
             }else{
-                savetoledger($this->db->dbh,$data['sdate'],'cash at bank',$data['paid'],0,$desc,3,1,$tid,$_SESSION['centerid']);
+                savetoledger($this->db->dbh,$data['pdate'],'cash at bank',$data['paid'],0,$desc,3,1,$tid,$_SESSION['centerid']);
             }
 
             if(!$this->db->dbh->commit()){
@@ -205,11 +206,12 @@ class Sale
         try {
             $this->db->dbh->beginTransaction();
 
-            $this->db->query('UPDATE sales_header SET SalesDate=:sdate,SaleType=:stype,GroupId=:gid,StudentId=:student
+            $this->db->query('UPDATE sales_header SET SalesDate=:sdate,PayDate=:pdate,SaleType=:stype,GroupId=:gid,StudentId=:student
                                                       ,SubTotal=:stotal,Discount=:discount,NetAmount=:net,
                                                       AmountPaid=:paid,Balance=:bal,PaymentMethodId=:pid,Reference=:ref
                               WHERE (ID=:id)');
             $this->db->bind(':sdate',$data['sdate']);
+            $this->db->bind(':pdate',$data['pdate']);
             $this->db->bind(':stype',$data['type']);
             $this->db->bind(':gid',$data['type'] === 'group' ? $data['studentorgroup'] : null);
             $this->db->bind(':student',$data['type'] === 'student' ? $data['studentorgroup'] : null);
@@ -262,13 +264,13 @@ class Sale
 
                 $accountname = $this->GetGlDetails($data['booksid'][$i])[0];
                 $accountid = $this->GetGlDetails($data['booksid'][$i])[1];
-                savetoledger($this->db->dbh,$data['sdate'],$accountname,0,$sellingvalue,$desc,$accountid,1,$data['id'],$_SESSION['centerid']);
+                savetoledger($this->db->dbh,$data['pdate'],$accountname,0,$sellingvalue,$desc,$accountid,1,$data['id'],$_SESSION['centerid']);
             }
             
             if(intval($data['paymethod']) === 1){
-                savetoledger($this->db->dbh,$data['sdate'],'cash at hand',$data['paid'],0,$desc,3,1,$data['id'],$_SESSION['centerid']);
+                savetoledger($this->db->dbh,$data['pdate'],'cash at hand',$data['paid'],0,$desc,3,1,$data['id'],$_SESSION['centerid']);
             }else{
-                savetoledger($this->db->dbh,$data['sdate'],'cash at bank',$data['paid'],0,$desc,3,1,$data['id'],$_SESSION['centerid']);
+                savetoledger($this->db->dbh,$data['pdate'],'cash at bank',$data['paid'],0,$desc,3,1,$data['id'],$_SESSION['centerid']);
             }
 
             if(!$this->db->dbh->commit()){

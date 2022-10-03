@@ -33,7 +33,8 @@ class Sales extends Controller
             'touched' => false,
             'isedit' => false,
             'id' => '',
-            'sdate' => date('Y-m-d'),
+            'sdate' => '',
+            'pdate' => '',
             'type' => '',
             'studentorgroup' => '',
             'paymethod' => '',
@@ -45,6 +46,7 @@ class Sales extends Controller
             'balance' => '',
             'table' => [],
             'sdate_err' => '',
+            'pdate_err' => '',
             'type_err' => '',
             'studentgroup_err' => '',
             'paid_err' => '',
@@ -111,6 +113,7 @@ class Sales extends Controller
                 'isedit' => converttobool(trim($_POST['isedit'])),
                 'id' => trim($_POST['id']),
                 'sdate' => !empty(trim($_POST['sdate'])) ? date('Y-m-d',strtotime(trim($_POST['sdate']))) : '',
+                'pdate' => !empty(trim($_POST['pdate'])) ? date('Y-m-d',strtotime(trim($_POST['pdate']))) : '',
                 'type' => !empty($_POST['saletype']) ? trim($_POST['saletype']) : '',
                 'studentsorgroups' => '',
                 'studentorgroup' => !empty($_POST['studentorgroup']) ? trim($_POST['studentorgroup']) : '',
@@ -128,6 +131,7 @@ class Sales extends Controller
                 'qtys' => $_POST['qtys'],
                 'values' => $_POST['values'],
                 'sdate_err' => '',
+                'pdate_err' => '',
                 'type_err' => '',
                 'studentgroup_err' => '',
                 'paid_err' => '',
@@ -153,6 +157,14 @@ class Sales extends Controller
             //validate
             if(empty($data['sdate'])){
                 $data['sdate_err'] = 'Select sale date';
+            }
+
+            if(empty($data['pdate'])){
+                $data['pdate_err'] = 'Select payment date';
+            }
+
+            if(!empty($data['sdate']) && !empty($data['pdate']) && $data['sdate'] < $data['pdate']){
+                $data['sdate_err'] = 'Sale date cannot be earlier than pay date';
             }
 
             if(empty($data['type'])){
