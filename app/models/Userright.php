@@ -65,4 +65,12 @@ class Userright
         }
         return true;
     }
+
+    public function CheckRights($userid)
+    {
+        $sql = 'SELECT COUNT(*) FROM userrights WHERE UserId = ?';
+        $hasrights = (int)getdbvalue($this->db->dbh,$sql,[$userid]);
+        if($hasrights === 0) return false;
+        return true;
+    }
 }
