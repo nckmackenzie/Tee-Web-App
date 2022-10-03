@@ -54,4 +54,15 @@ class Userright
             return false;
         }
     }
+
+    public function Clone($data)
+    {
+        $this->db->query('CALL sp_clonerights(:from,:to)');
+        $this->db->bind(':from',$data['from']);
+        $this->db->bind(':to',$data['to']);
+        if(!$this->db->execute()){
+            return false;
+        }
+        return true;
+    }
 }
