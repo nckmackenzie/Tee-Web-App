@@ -53,3 +53,15 @@ selectAllBtn.addEventListener('click', function (e) {
   this.textContent = btnText === 'Select all' ? 'Deselect all' : 'Select all';
   // console.log(this);
 });
+
+export function validateSelectedStudents() {
+  let checkedBoxes = 0;
+  const checkBxs = document.querySelectorAll('.stdcheck');
+  if (!checkedBoxes || checkedBoxes.length === 0) {
+    return 0;
+  }
+  checkBxs.forEach(chkbox => {
+    if (chkbox.checked) checkedBoxes++;
+  });
+  return checkedBoxes;
+}

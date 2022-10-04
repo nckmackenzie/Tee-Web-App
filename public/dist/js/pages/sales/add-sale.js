@@ -1,4 +1,5 @@
-import { HOST_URL, displayAlert, getSelectedText } from '../utils.js';
+import { validateSelectedStudents } from './studentGroupHandler.js';
+import { HOST_URL, displayAlert, getSelectedText, snackBar } from '../utils.js';
 import {
   qtyInput,
   rateInput,
@@ -17,6 +18,25 @@ const stockInput = document.getElementById('stock');
 const selectedDate = document.getElementById('sdate');
 const alertBox = document.getElementById('message');
 const form = document.querySelector('form');
+const toastContainer = document.querySelector('#snackbar');
+function generateToast({
+  message,
+  background = '#00214d',
+  color = '#fffffe',
+  length = '3000ms',
+}) {
+  toastContainer.insertAdjacentHTML(
+    'beforeend',
+    `<p class="toast" 
+    style="background-color: ${background};
+    color: ${color};
+    animation-duration: ${length}">
+    ${message}
+  </p>`
+  );
+  const toast = toastContainer.lastElementChild;
+  toast.addEventListener('animationend', () => toast.remove());
+}
 
 function resetAndGetTotal() {
   bookSelect.value = '';
@@ -110,14 +130,21 @@ paidInput.addEventListener('change', summaryCalculations);
 
 form.addEventListener('submit', function (e) {
   e.preventDefault();
-  const body = document
-    .getElementById('addsale')
-    .getElementsByTagName('tbody')[0];
+  snackBar(toastContainer, 'Add students');
+  // const saleTypeSelect = document.getElementById('saletype');
+  // const body = document
+  //   .getElementById('addsale')
+  //   .getElementsByTagName('tbody')[0];
 
-  if (Number(body.rows.length) === 0) {
-    displayAlert(alertBox, 'Add Items');
-    return false;
-  } else {
-    document.salesform.submit();
-  }
+  // if (Number(body.rows.length) === 0) {
+  //   displayAlert(alertBox, 'Add Items');
+  //   return false;
+  // }
+
+  // if (saleTypeSelect.value === 'group' && validateSelectedStudents() === 0) {
+  //   alert('No students selected');
+  //   return;
+  // }
+
+  // document.salesform.submit();
 });
