@@ -27,6 +27,20 @@ export function displayAlert(elm, message, status = 'danger') {
   }, 5000);
 }
 
+export function snackBar(elm, message, status = 'danger') {
+  elm.className = 'show';
+  const html = `
+    <div class="alert alert-${status}" role="alert">
+      ${message}
+    </div>
+  `;
+  elm.insertAdjacentHTML('afterbegin', html);
+  setTimeout(function () {
+    elm.innerHTML = '';
+    elm.className = x.className.replace('show', '');
+  }, 5000);
+}
+
 export function formatcurrencyvalue(val) {
   return val.replace(/,/g, '');
 }
