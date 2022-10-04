@@ -239,7 +239,7 @@
         </div>
     </form>
 </div> <!-- container -->
-<div id="snackbar"></div>
+
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>  
 <script type="module" src="<?php echo URLROOT;?>/dist/js/pages/sales/calculations.js"></script>                  
 <script type="module" src="<?php echo URLROOT;?>/dist/js/pages/sales/add-sale.js"></script>                  
