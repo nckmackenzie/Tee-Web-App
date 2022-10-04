@@ -16,8 +16,10 @@
     <!-- end page title --> 
     <div class="row">
         <div class="col-12" id="message"></div>
-        <div class="col-lg-8">
-            <form action="<?php echo URLROOT;?>/sales/createupdate" method="post" autocomplete="off" name="salesform">
+    </div>
+    <form action="<?php echo URLROOT;?>/sales/createupdate" method="post" autocomplete="off" name="salesform">
+        <div class="row">
+            <div class="col-lg-8">
                 <div class="card">
                     <div class="card-body">        
                         <div class="row">
@@ -25,17 +27,17 @@
                                 <div class="mb-3">
                                     <label for="saleid" class="">Sale ID</label>
                                     <input type="text" name="saleid" id="saleid" 
-                                           class="form-control form-control-sm" 
-                                           value="<?php echo $data['saleid'];?>" readonly>
+                                            class="form-control form-control-sm" 
+                                            value="<?php echo $data['saleid'];?>" readonly>
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <div class="mb-3">
                                     <label for="sdate" class="">Sale Date</label>
                                     <input type="date" name="sdate" id="sdate" 
-                                           class="form-control form-control-sm mandatory
-                                           <?php echo inputvalidation($data['sdate'],$data['sdate_err'],$data['touched']);?>" 
-                                           value="<?php echo $data['sdate'];?>" >
+                                            class="form-control form-control-sm mandatory
+                                            <?php echo inputvalidation($data['sdate'],$data['sdate_err'],$data['touched']);?>" 
+                                            value="<?php echo $data['sdate'];?>" >
                                     <span class="invalid-feedback"><?php echo $data['sdate_err'];?></span>
                                 </div>
                             </div>
@@ -43,9 +45,9 @@
                                 <div class="mb-3">
                                     <label for="pdate" class="">Payment Date</label>
                                     <input type="date" name="pdate" id="pdate" 
-                                           class="form-control form-control-sm mandatory
-                                           <?php echo inputvalidation($data['pdate'],$data['pdate_err'],$data['touched']);?>" 
-                                           value="<?php echo $data['pdate'];?>" >
+                                            class="form-control form-control-sm mandatory
+                                            <?php echo inputvalidation($data['pdate'],$data['pdate_err'],$data['touched']);?>" 
+                                            value="<?php echo $data['pdate'];?>" >
                                     <span class="invalid-feedback"><?php echo $data['pdate_err'];?></span>
                                 </div>
                             </div>
@@ -92,10 +94,10 @@
                             <div class="col-lg-4">
                                 <label for="reference">Reference</label>
                                 <input type="text" name="reference" id="reference" 
-                                       class="form-control form-control-sm mandatory 
-                                       <?php echo inputvalidation($data['reference'],$data['reference_err'],$data['touched']);?>"
-                                       value="<?php echo $data['reference'];?>"
-                                       placeholder="eg MPESA Ref or Cheque No...">
+                                        class="form-control form-control-sm mandatory 
+                                        <?php echo inputvalidation($data['reference'],$data['reference_err'],$data['touched']);?>"
+                                        value="<?php echo $data['reference'];?>"
+                                        placeholder="eg MPESA Ref or Cheque No...">
                                 <span class="invalid-feedback"><?php echo $data['reference_err'];?></span>
                             </div>
                         </div><!-- /.row -->
@@ -175,7 +177,7 @@
                                         <div class="mb-3">
                                             <label for="subtotal" class="form-label">Sub Total</label>
                                             <input type="text" name="subtotal"id="subtotal" class="form-control form-control-sm" 
-                                                   value="<?php echo $data['subtotal'];?>" readonly>    
+                                                    value="<?php echo $data['subtotal'];?>" readonly>    
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -183,10 +185,10 @@
                                             <label for="discount" class="form-label">Discount</label>
                                             <div class="input-group">
                                                 <input type="number" class="form-control form-control-sm" 
-                                                       id="discount" name="discount"
-                                                       placeholder="eg 10 for 10%"
-                                                       value="<?php echo $data['discount'];?>" 
-                                                       aria-label="Discount" aria-describedby="basic-addon2">
+                                                        id="discount" name="discount"
+                                                        placeholder="eg 10 for 10%"
+                                                        value="<?php echo $data['discount'];?>" 
+                                                        aria-label="Discount" aria-describedby="basic-addon2">
                                                 <span class="input-group-text input-padding" id="basic-addon2">%</span>
                                             </div> 
                                         </div>
@@ -195,15 +197,15 @@
                                         <div class="mb-3">
                                             <label for="net" class="form-label">Net Amount</label>
                                             <input type="text" name="net" id="net" class="form-control form-control-sm" 
-                                                       value="<?php echo $data['net'];?>" readonly> 
+                                                        value="<?php echo $data['net'];?>" readonly> 
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="paid" class="form-label">Amount Paid</label>
                                             <input type="number" name="paid" id="paid" class="form-control form-control-sm 
-                                                       <?php echo inputvalidation($data['paid'],$data['paid_err'],$data['touched']);?>" 
-                                                       value="<?php echo $data['paid'];?>" > 
+                                                        <?php echo inputvalidation($data['paid'],$data['paid_err'],$data['touched']);?>" 
+                                                        value="<?php echo $data['paid'];?>" > 
                                             <span class="invalid-feedback"><?php echo $data['paid_err'];?></span>
                                         </div>
                                     </div>
@@ -211,22 +213,16 @@
                                         <div class="mb-3">
                                             <label for="balance" class="form-label">Balance</label>
                                             <input type="text" name="balance" id="balance" class="form-control form-control-sm" 
-                                                       value="<?php echo $data['balance'];?>" readonly> 
+                                                        value="<?php echo $data['balance'];?>" readonly> 
                                         </div>
                                     </div>                
                                 </div><!-- /.row -->
                             </div><!-- /.col-md-6 -->
                         </div><!-- /.row -->
-                        <div class="d-grid d-md-block">
-                            <input type="hidden" name="id" value="<?php echo $data['id'];?>">
-                            <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
-                            <button type="submit" class="btn btn-sm btn-primary">Save</button>
-                        </div>
                     </div>
                 </div>  
-            </form>
-        </div>
-        <div class="col-lg-4">
+            </div><!--/.col-lg-8 -->
+            <div class="col-lg-4">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Group Members</span>
@@ -234,8 +230,14 @@
                 </div>
                 <div class="card-body p-0" id="studentList"></div>
             </div>
+            </div><!--/.col-lg-8 -->
+        </div><!--/.row-->
+        <div style="margin-top: -1rem;" class="d-grid d-md-block">
+            <input type="hidden" name="id" value="<?php echo $data['id'];?>">
+            <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
+            <button type="submit" class="btn btn-sm btn-primary">Save</button>
         </div>
-    </div>                    
+    </form>
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>  
 <script type="module" src="<?php echo URLROOT;?>/dist/js/pages/sales/calculations.js"></script>                  
