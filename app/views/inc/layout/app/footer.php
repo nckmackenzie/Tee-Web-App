@@ -1,4 +1,5 @@
             </div> <!-- content -->
+            <div id="snackbar"></div>
                 <!-- Footer Start -->
                 <footer class="footer">
                     <div class="container-fluid">
