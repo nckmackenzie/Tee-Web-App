@@ -102,3 +102,20 @@ export function clearOnChange(mandatoryField) {
     });
   });
 }
+
+export function setLoadingState(btn, text = 'loading') {
+  btn.innerHTML = '';
+  let html = `
+    <div class="spinner-container">
+    <div class="spinner"></div> 
+    <span>${text}...</span> 
+  </div>
+    `;
+  btn.innerHTML = html;
+  btn.disabled = true;
+}
+
+export function resetLoadingState(btn, text) {
+  btn.disabled = false;
+  btn.textContent = text;
+}
