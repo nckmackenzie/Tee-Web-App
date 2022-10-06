@@ -62,7 +62,7 @@ export async function sendHttpRequest(
   method = 'GET',
   body = null,
   headers = {},
-  alertBox
+  alertBox = undefined
 ) {
   try {
     const res = await fetch(url, {
@@ -75,7 +75,11 @@ export async function sendHttpRequest(
     if (!res.ok) throw new Error(data.message);
     return data;
   } catch (error) {
-    displayAlert(alertBox, error.message);
+    if (alertBox) {
+      displayAlert(alertBox, error.message);
+    } else {
+      console.error(error.message);
+    }
   }
 }
 
