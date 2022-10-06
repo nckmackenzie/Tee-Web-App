@@ -7,20 +7,24 @@
         <div class="col-12">
             <div class="page-title-box">
                 <div class="page-title-right"></div>
-                <h4 class="page-title">
-                    <a href="<?php echo URLROOT;?>/sales" class="btn btn-sm btn-warning ms-1">&larr; Back</a>
-                </h4>
+                <h4 class="page-title"></h4>
             </div>
         </div>
     </div>     
     <!-- end page title --> 
-    <div class="row">
+    <div class="row mt-1">
         <div class="col-12" id="message"></div>
     </div>
     <form action="<?php echo URLROOT;?>/sales/createupdate" method="post" autocomplete="off" name="salesform">
         <div class="row">
             <div class="col-lg-8">
                 <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <p class="m-0 align-self-center"><?php echo $data['title'];?></p>
+                        <input type="hidden" name="id" value="<?php echo $data['id'];?>">
+                        <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
+                        <button type="submit" class="btn btn-sm btn-primary ml-auto w-25">Save</button>
+                    </div>
                     <div class="card-body">        
                         <div class="row">
                             <div class="col-lg-2">
@@ -156,11 +160,11 @@
                                         <tbody>
                                             <?php foreach($data['table'] as $table) : ?>
                                                 <tr>
-                                                    <td class="d-none"><input type="text" name="booksid[]" value="<?php echo $table['bid'];?>" readonly></td>
-                                                    <td><input type="text" class="table-input w-100" name="booksname[]" value="<?php echo $table['bookname'];?>" readonly></td>
-                                                    <td><input type="text" class="table-input" name="rates[]" value="<?php echo $table['rate'];?>" readonly></td>
-                                                    <td><input type="text" class="table-input" name="qtys[]" value="<?php echo $table['qty'];?>" readonly></td>
-                                                    <td><input type="text" class="table-input" name="values[]" value="<?php echo $table['values'];?>" readonly></td>
+                                                    <td class="d-none"><input type="text" class="bid" name="booksid[]" value="<?php echo $table['bid'];?>" readonly></td>
+                                                    <td><input type="text" class="table-input w-100 bname" name="booksname[]" value="<?php echo $table['bookname'];?>" readonly></td>
+                                                    <td><input type="text" class="table-input rate" name="rates[]" value="<?php echo $table['rate'];?>" readonly></td>
+                                                    <td><input type="text" class="table-input qty" name="qtys[]" value="<?php echo $table['qty'];?>" readonly></td>
+                                                    <td><input type="text" class="table-input value" name="values[]" value="<?php echo $table['values'];?>" readonly></td>
                                                     <td><button type="button" class="action-icon btn btn-sm text-danger fs-5 btndel">Remove</button></td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -203,7 +207,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="paid" class="form-label">Amount Paid</label>
-                                            <input type="number" name="paid" id="paid" class="form-control form-control-sm 
+                                            <input type="number" name="paid" id="paid" class="form-control form-control-sm mandatory
                                                         <?php echo inputvalidation($data['paid'],$data['paid_err'],$data['touched']);?>" 
                                                         value="<?php echo $data['paid'];?>" > 
                                             <span class="invalid-feedback"><?php echo $data['paid_err'];?></span>
@@ -232,11 +236,6 @@
             </div>
             </div><!--/.col-lg-8 -->
         </div><!--/.row-->
-        <div style="margin-top: -1rem;" class="d-grid d-md-block">
-            <input type="hidden" name="id" value="<?php echo $data['id'];?>">
-            <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
-            <button type="submit" class="btn btn-sm btn-primary">Save</button>
-        </div>
     </form>
 </div> <!-- container -->
 
