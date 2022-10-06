@@ -125,23 +125,24 @@ class Sale
     }
 
     function Save($data){
-        $desc = 'Sale of '.count($data['booksid']) . ' book(s) to '.$this->GetBuyerName($data['type'],$data['studentorgroup']);
+        $desc = 'Sale of '.count($data['books']) . ' book(s) to '.$this->GetBuyerName($data['saletype'],$data['buyer']);
+        $saleid = $this->GetSaleId();
         try {
             $this->db->dbh->beginTransaction();
 
             $this->db->query('INSERT INTO sales_header (SalesID,SalesDate,PayDate,SaleType,GroupId,StudentId,SubTotal,
                                           Discount,NetAmount,AmountPaid,Balance,PaymentMethodId,Reference,CenterId) 
                               VALUES(:saleid,:sdate,:pdate,:stype,:gid,:student,:stotal,:discount,:net,:paid,:bal,:pid,:ref,:cid)');
-            $this->db->bind(':saleid',intval($data['saleid']));
+            $this->db->bind(':saleid',$saleid);
             $this->db->bind(':sdate',$data['sdate']);
             $this->db->bind(':pdate',$data['pdate']);
-            $this->db->bind(':stype',$data['type']);
-            $this->db->bind(':gid',$data['type'] === 'group' ? $data['studentorgroup'] : null);
-            $this->db->bind(':student',$data['type'] === 'student' ? $data['studentorgroup'] : null);
+            $this->db->bind(':stype',$data['saletype']);
+            $this->db->bind(':gid',$data['saletype'] === 'group' ? $data['buyer'] : null);
+            $this->db->bind(':student',$data['saletype'] === 'student' ? $data['buyer'] : null);
             $this->db->bind(':stotal',$data['subtotal']);
-            $this->db->bind(':discount',!empty($data['discount']) ? $data['discount'] : 0);
+            $this->db->bind(':discount',$data['discount']);
             $this->db->bind(':net',!empty($data['net']) ? $data['net'] : 0);
-            $this->db->bind(':paid',!empty($data['paid']) ? $data['paid'] : 0);
+            $this->db->bind(':paid',$data['paid']);
             $this->db->bind(':bal',!empty($data['balance']) ? $data['balance'] : 0);
             $this->db->bind(':pid',$data['paymethod']);
             $this->db->bind(':ref',strtolower($data['reference']));
@@ -150,15 +151,15 @@ class Sale
 
             $tid = $this->db->dbh->lastInsertId();
 
-            for ($i=0; $i < count($data['booksid']); $i++) { 
-                $bp = $this->GetItemBuyingPrice($data['sdate'],$data['booksid'][$i]);
-                $buyingvalue = $data['qtys'][$i] * $bp;
-                $sellingvalue =$data['qtys'][$i] * $data['rates'][$i];
+            for ($i=0; $i < count($data['books']); $i++) { 
+                $bp = $this->GetItemBuyingPrice($data['sdate'],$data['books'][$i]->bid);
+                $buyingvalue = $data['books'][$i]->qty * $bp;
+                $sellingvalue =$data['books'][$i]->qty * $data['books'][$i]->rate;
                 $this->db->query('INSERT INTO sales_details (HeaderId,BookId,Qty,BoughtValue,SellingValue) 
                               VALUES(:hid,:bid,:qty,:bought,:selling)');
                 $this->db->bind(':hid',$tid);
-                $this->db->bind(':bid',$data['booksid'][$i]);
-                $this->db->bind(':qty',$data['qtys'][$i]);
+                $this->db->bind(':bid',$data['books'][$i]->bid);
+                $this->db->bind(':qty',$data['books'][$i]->qty);
                 $this->db->bind(':bought',$buyingvalue);
                 $this->db->bind(':selling',$sellingvalue);
                 $this->db->execute();
@@ -167,16 +168,16 @@ class Sale
                                           TransactionType,TransactionId,CenterId) 
                               VALUES(:tdate,:bid,:qty,:ref,:ttype,:tid,:cid)');
                 $this->db->bind(':tdate',$data['sdate']);
-                $this->db->bind(':bid',$data['booksid'][$i]);
-                $this->db->bind(':qty',$data['qtys'][$i]);
+                $this->db->bind(':bid',$data['books'][$i]->bid);
+                $this->db->bind(':qty',$data['books'][$i]->qty);
                 $this->db->bind(':ref',$data['reference']); 
                 $this->db->bind(':ttype',4);
                 $this->db->bind(':tid',$tid);
                 $this->db->bind(':cid',$_SESSION['centerid']);
                 $this->db->execute();
 
-                $accountname = $this->GetGlDetails($data['booksid'][$i])[0];
-                $accountid = $this->GetGlDetails($data['booksid'][$i])[1];
+                $accountname = $this->GetGlDetails($data['books'][$i]->bid)[0];
+                $accountid = $this->GetGlDetails($data['books'][$i]->bid)[1];
                 savetoledger($this->db->dbh,$data['pdate'],$accountname,0,$sellingvalue,$desc,$accountid,1,$tid,$_SESSION['centerid']);
             }
 

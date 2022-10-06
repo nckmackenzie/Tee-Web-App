@@ -104,114 +104,68 @@ class Sales extends Controller
     public function createupdate()
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $_POST =  filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
-            $books = $this->salemodel->GetBooks();
+            $fields = json_decode(file_get_contents('php://input'));
+            $header = $fields->header;
             $data = [
-                'title' => converttobool(trim($_POST['isedit'])) ? 'Edit sale' : 'Add sale',
-                'saleid' => trim($_POST['saleid']),
-                'books' =>  $books,
-                'touched' => true,
-                'isedit' => converttobool(trim($_POST['isedit'])),
-                'id' => trim($_POST['id']),
-                'sdate' => !empty(trim($_POST['sdate'])) ? date('Y-m-d',strtotime(trim($_POST['sdate']))) : '',
-                'pdate' => !empty(trim($_POST['pdate'])) ? date('Y-m-d',strtotime(trim($_POST['pdate']))) : '',
-                'type' => !empty($_POST['saletype']) ? trim($_POST['saletype']) : '',
-                'studentsorgroups' => '',
-                'studentorgroup' => !empty($_POST['studentorgroup']) ? trim($_POST['studentorgroup']) : '',
-                'paymethod' => !empty($_POST['paymethod']) ? trim($_POST['paymethod']) : '',
-                'reference' => !empty($_POST['reference']) ? trim($_POST['reference']) : '',
-                'subtotal' => !empty(trim($_POST['subtotal'])) ? trim($_POST['subtotal']) : '',
-                'discount' => !empty(trim($_POST['discount'])) ? trim($_POST['discount']) : 0,
-                'net' => !empty(trim($_POST['net'])) ? trim($_POST['net']) : 0,
-                'paid' => !empty(trim($_POST['paid'])) ? trim($_POST['paid']) : '',
-                'balance' => !empty(trim($_POST['balance'])) ? trim($_POST['balance']) : 0,
-                'table' => [],
-                'booksid' => $_POST['booksid'],
-                'booksname' => $_POST['booksname'],
-                'rates' => $_POST['rates'],
-                'qtys' => $_POST['qtys'],
-                'values' => $_POST['values'],
-                'sdate_err' => '',
-                'pdate_err' => '',
-                'type_err' => '',
-                'studentgroup_err' => '',
-                'paid_err' => '',
-                'paymethod_err' => '',
-                'reference_err' => '',
+                'id' => !empty($header->id) ? $header->id : '',
+                'isedit' => converttobool($header->isEdit),
+                'sdate' => !empty($header->sdate) ? date('Y-m-d',strtotime($header->sdate)) : '',
+                'pdate' => !empty($header->pdate) ? date('Y-m-d',strtotime($header->pdate)) : '',
+                'saletype' => !empty($header->saleType) ? $header->saleType : '',
+                'buyer' => !empty($header->buyer) ? $header->buyer : '',
+                'paymethod' => !empty($header->paymethod) ? $header->paymethod : '',
+                'reference' => !empty($header->reference) ? $header->reference : '',
+                'subtotal' => !empty($header->subtotal) ? floatval($header->subtotal) : '',
+                'discount' => !empty($header->discount) ? $header->discount : 0,
+                'net' => !empty($header->net) ? floatval($header->net) : '',
+                'paid' => !empty($header->paid) ? floatval($header->paid) : '',
+                'balance' => !empty($header->balance) ? floatval($header->balance) : '',
+                'books' => $fields->table,
+                'students' => $header->saleType === 'group' ? $fields->students : null
             ];
 
-            if(count($data['booksid']) > 0){
-                for ($i=0; $i < count($data['booksid']); $i++){ 
-                    array_push($data['table'],[
-                        'bid' => $data['booksid'][$i],
-                        'bookname' => $data['booksname'][$i],
-                        'rate' => $data['rates'][$i],
-                        'qty' => $data['qtys'][$i],
-                        'values' => $data['values'][$i],
-                    ]);
-                }
+            if(empty($data['sdate']) || empty($data['pdate']) || empty($data['saletype']) 
+              || empty($data['buyer']) || empty($data['paymethod']) || empty($data['reference'])
+              || empty($data['paid'])){
+                http_response_code(400);
+                echo json_encode(['message' => 'Fill all required fields']);
+                exit;
             }
 
-            if(!empty($data['type'])){
-                $data['studentsorgroups'] = $this->fetchstudentorgroup($data['type']);
-            }
-            //validate
-            if(empty($data['sdate'])){
-                $data['sdate_err'] = 'Select sale date';
+            if($data['sdate'] < $data['pdate']){
+                http_response_code(400);
+                echo json_encode(['message' => 'Sale date cannot be earlier than payment date']);
+                exit;
             }
 
-            if(empty($data['pdate'])){
-                $data['pdate_err'] = 'Select payment date';
+            if($data['saletype'] === 'group' && !is_countable($data['students'])){
+                http_response_code(400);
+                echo json_encode(['message' => 'No students selected']);
+                exit;
             }
 
-            if(!empty($data['sdate']) && !empty($data['pdate']) && $data['sdate'] < $data['pdate']){
-                $data['sdate_err'] = 'Sale date cannot be earlier than pay date';
+            if($data['paid'] > $data['subtotal']){
+                http_response_code(400);
+                echo json_encode(['message' => 'Payment more than sale value']);
+                exit;
             }
 
-            if(empty($data['type'])){
-                $data['type_err'] = 'Select sale type';
-            }
-            
-            if(empty($data['studentorgroup'])){
-                $data['studentgroup_err'] = 'Select student or group';
-            }
-
-            if(empty($data['paymethod'])){
-                $data['paymethod_err'] = 'Select payment method';
-            }
-
-            if(empty($data['reference'])){
-                $data['reference_err'] = 'Enter payment reference';
-            }
-
-            if(!empty($data['reference']) && !$this->salemodel->CheckRefExists($data['reference'])){
-                $data['reference_err'] = 'Payment reference already exists';
-            }
-
-            if(empty($data['paid'])){
-                $data['paid_err'] = 'Enter amount paid';
-            }
-
-            if(!empty($data['paid']) && !empty($data['net']) && floatval($data['paid']) > floatval($data['net'])){
-                $data['paid_err'] = 'Paid more than required';
-            }
-
-            if(!empty($data['sdate_err']) || !empty($data['type_err']) || !empty($data['paid_err']) 
-               || !empty($data['studentgroup_err']) || !empty($data['paymethod_err']) || !empty($data['reference_err'])){
-                $this->view('sales/add',$data);
-                exit();
+            if(!$this->salemodel->CheckRefExists($data['reference'])){
+                http_response_code(400);
+                echo json_encode(['message' => 'Payment reference already exists']);
+                exit;
             }
 
             if(!$this->salemodel->CreateUpdate($data)){
-                flash('sale_msg',null,'Unable to save! Retry or contact admin',flashclass('alert','danger'));
-                redirect('sales');
-                exit();
+                http_response_code(400);
+                echo json_encode(['message' => 'Unable to save! Retry or contact admin']);
+                exit;
             }
 
-            flash('sale_flash_msg',null,'Saved successfully!',flashclass('toast','success'));
-            redirect('sales');
-            exit();
-
+            http_response_code(200);
+            echo json_encode(['message' => 'Saved successfully!']);
+            exit;
+       
         }else{
             redirect('auth/forbidden');
             exit();
