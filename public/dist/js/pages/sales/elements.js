@@ -19,6 +19,7 @@ export const selectedDate = document.getElementById('sdate');
 export const payDate = document.getElementById('sdate');
 export const alertBox = document.getElementById('message');
 export const form = document.querySelector('form');
+export const btn = document.querySelector('#submitBtn');
 export const mandatoryFields = document.querySelectorAll('.mandatory');
 
 export function headerDetails() {
