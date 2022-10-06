@@ -1,0 +1,14 @@
+export const saleTypeSelect = document.getElementById('saletype');
+export const studentSelect = document.getElementById('studentorgroup');
+export const studentTable = document.getElementById('studentList');
+export const selectAllBtn = document.getElementById('selectAll');
+export const table = document.getElementById('addsale');
+export const addBtn = document.querySelector('.btnadd');
+export const bookSelect = document.getElementById('book');
+export const stockInput = document.getElementById('stock');
+export const selectedDate = document.getElementById('sdate');
+export const alertBox = document.getElementById('message');
+export const form = document.querySelector('form');
+export const mandatoryFields = document.querySelectorAll('.mandatory');
+export const subtotalInput = document.querySelectorAll('.subtotal');
+export const paidInput = document.querySelectorAll('.paid');
