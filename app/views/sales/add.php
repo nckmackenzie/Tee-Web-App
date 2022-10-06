@@ -21,9 +21,9 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <p class="m-0 align-self-center"><?php echo $data['title'];?></p>
-                        <input type="hidden" name="id" value="<?php echo $data['id'];?>">
-                        <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
-                        <button type="submit" class="btn btn-sm btn-primary ml-auto w-25">Save</button>
+                        <input type="hidden" name="id" id="id" value="<?php echo $data['id'];?>">
+                        <input type="hidden" name="isedit" id="isedit" value="<?php echo $data['isedit'];?>">
+                        <button type="submit" class="btn btn-sm btn-primary ml-auto w-25" id="submitBtn">Save</button>
                     </div>
                     <div class="card-body">        
                         <div class="row">
