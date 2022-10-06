@@ -21,6 +21,8 @@ export const alertBox = document.getElementById('message');
 export const form = document.querySelector('form');
 export const btn = document.querySelector('#submitBtn');
 export const mandatoryFields = document.querySelectorAll('.mandatory');
+const idInput = document.getElementById('id');
+const isEditInput = document.getElementById('isedit');
 
 export function headerDetails() {
   return {
@@ -35,5 +37,7 @@ export function headerDetails() {
     net: netInput.value,
     paid: paidInput.value,
     balance: balanceInput.value,
+    id: idInput.value,
+    isEdit: isEditInput.value,
   };
 }
