@@ -1,42 +1,40 @@
 import { validateSelectedStudents } from './studentGroupHandler.js';
-import { HOST_URL, displayAlert, getSelectedText, snackBar } from '../utils.js';
+import { submitHandler } from './formSubmit.js';
+//prettier ignore
+import {
+  HOST_URL,
+  displayAlert,
+  getSelectedText,
+  validation,
+  clearOnChange,
+  setLoadingState,
+  resetLoadingState,
+} from '../utils.js';
+//prettier ignore
 import {
   qtyInput,
   rateInput,
   valueInput,
   calculateTotalValue,
   updateSubTotal,
+  subtotalInput,
   summaryCalculations,
   discountInput,
   paidInput,
 } from './calculations.js';
-
-const table = document.getElementById('addsale');
-const addBtn = document.querySelector('.btnadd');
-const bookSelect = document.getElementById('book');
-const stockInput = document.getElementById('stock');
-const selectedDate = document.getElementById('sdate');
-const alertBox = document.getElementById('message');
-const form = document.querySelector('form');
-const toastContainer = document.querySelector('#snackbar');
-function generateToast({
-  message,
-  background = '#00214d',
-  color = '#fffffe',
-  length = '3000ms',
-}) {
-  toastContainer.insertAdjacentHTML(
-    'beforeend',
-    `<p class="toast" 
-    style="background-color: ${background};
-    color: ${color};
-    animation-duration: ${length}">
-    ${message}
-  </p>`
-  );
-  const toast = toastContainer.lastElementChild;
-  toast.addEventListener('animationend', () => toast.remove());
-}
+//prettier ignore
+import {
+  table,
+  addBtn,
+  bookSelect,
+  stockInput,
+  selectedDate,
+  alertBox,
+  form,
+  mandatoryFields,
+  saleTypeSelect,
+  btn,
+} from './elements.js';
 
 function resetAndGetTotal() {
   bookSelect.value = '';
@@ -92,19 +90,19 @@ addBtn.addEventListener('click', () => {
     .getElementsByTagName('tbody')[0];
   let html = `
       <tr>
-        <td class="d-none"><input type="text" name="booksid[]" value="${
+        <td class="d-none"><input type="text" class="bid" name="booksid[]" value="${
           bookSelect.value
         }" readonly></td>
-        <td><input type="text" class="table-input w-100" name="booksname[]" value="${getSelectedText(
+        <td><input type="text" class="table-input w-100 bname" name="booksname[]" value="${getSelectedText(
           bookSelect
         )}" readonly></td>
-        <td><input type="text" class="table-input" name="rates[]" value="${
+        <td><input type="text" class="table-input rate" name="rates[]" value="${
           rateInput.value
         }" readonly></td>
-        <td><input type="text" class="table-input" name="qtys[]" value="${
+        <td><input type="text" class="table-input qty" name="qtys[]" value="${
           qtyInput.value
         }" readonly></td>
-        <td><input type="text" class="table-input" name="values[]" value="${
+        <td><input type="text" class="table-input value" name="values[]" value="${
           valueInput.value
         }" readonly></td>
         <td><button type="button" class="action-icon btn btn-sm text-danger fs-5 btndel">Remove</button></td>
@@ -128,23 +126,37 @@ table.addEventListener('click', function (e) {
 discountInput.addEventListener('change', summaryCalculations);
 paidInput.addEventListener('change', summaryCalculations);
 
-form.addEventListener('submit', function (e) {
+form.addEventListener('submit', async function (e) {
   e.preventDefault();
-  snackBar(toastContainer, 'Add students');
-  // const saleTypeSelect = document.getElementById('saletype');
-  // const body = document
-  //   .getElementById('addsale')
-  //   .getElementsByTagName('tbody')[0];
+  if (validation() > 0) return;
 
-  // if (Number(body.rows.length) === 0) {
-  //   displayAlert(alertBox, 'Add Items');
-  //   return false;
-  // }
+  //validate group
+  if (saleTypeSelect.value === 'group' && validateSelectedStudents() === 0) {
+    displayAlert(alertBox, 'Select at least one student');
+    return;
+  }
 
-  // if (saleTypeSelect.value === 'group' && validateSelectedStudents() === 0) {
-  //   alert('No students selected');
-  //   return;
-  // }
+  const body = document
+    .getElementById('addsale')
+    .getElementsByTagName('tbody')[0];
 
+  if (Number(body.rows.length) === 0) {
+    displayAlert(alertBox, 'Add Items');
+    return false;
+  }
+
+  if (+paidInput.value > +subtotalInput.value) {
+    displayAlert(alertBox, 'Payment more than sale value');
+    return;
+  }
+
+  setLoadingState(btn, 'Saving...');
+  const res = await submitHandler();
+  resetLoadingState(btn, 'Save');
+  if (res) {
+    displayAlert(alertBox, 'Saved Successfully', 'success');
+  }
   // document.salesform.submit();
 });
+
+clearOnChange(mandatoryFields);
