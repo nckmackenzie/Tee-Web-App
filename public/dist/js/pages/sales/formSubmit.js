@@ -1,4 +1,5 @@
-import { table, headerDetails } from './elements.js';
+import { table, headerDetails, alertBox } from './elements.js';
+import { sendHttpRequest, HOST_URL } from '../utils.js';
 function checkedFields() {
   const students = [];
   const tablikes = document.querySelectorAll('.table-like');
@@ -27,8 +28,20 @@ function tableFields() {
   return tableData;
 }
 
-export function submitHandler() {
-  console.log(tableFields());
-  console.log(headerDetails());
-  console.log(checkedFields());
+export async function submitHandler() {
+  const fields = {
+    header: headerDetails(),
+    table: tableFields(),
+    students: checkedFields(),
+  };
+
+  const data = await sendHttpRequest(
+    `${HOST_URL}/sales/createupdate`,
+    'POST',
+    JSON.stringify(fields),
+    { 'Content-Type': 'application/json' },
+    alertBox
+  );
+
+  return data;
 }
