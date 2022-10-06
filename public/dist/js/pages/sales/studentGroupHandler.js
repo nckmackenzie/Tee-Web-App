@@ -1,8 +1,10 @@
 import { HOST_URL, sendHttpRequest } from '../utils.js';
-const saleTypeSelect = document.getElementById('saletype');
-const studentSelect = document.getElementById('studentorgroup');
-const studentTable = document.getElementById('studentList');
-const selectAllBtn = document.getElementById('selectAll');
+import {
+  saleTypeSelect,
+  studentSelect,
+  studentTable,
+  selectAllBtn,
+} from './elements.js';
 
 studentTable.innerHTML = '';
 
@@ -35,7 +37,7 @@ studentSelect.addEventListener('change', async function (e) {
       <div class="form-check">
           <input type="checkbox" name="active[]" class="form-check-input stdcheck">
       </div>
-      <div class="d-none"><input type="text" name="studentsid[]" value="${dt.id}" /></div>
+      <div class="d-none"><input type="number" name="studentsid[]" value="${dt.id}" /></div>
       <div class="studentname">${dt.studentName}</div>                        
       <div class="contact">${dt.contact}</div>
     </div>
@@ -57,7 +59,7 @@ selectAllBtn.addEventListener('click', function (e) {
 export function validateSelectedStudents() {
   let checkedBoxes = 0;
   const checkBxs = document.querySelectorAll('.stdcheck');
-  if (!checkedBoxes || checkedBoxes.length === 0) {
+  if (!checkBxs || checkBxs.length === 0) {
     return 0;
   }
   checkBxs.forEach(chkbox => {
