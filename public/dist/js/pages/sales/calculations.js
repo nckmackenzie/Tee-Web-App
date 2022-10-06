@@ -1,7 +1,7 @@
 export const qtyInput = document.getElementById('qty');
 export const valueInput = document.getElementById('value');
 export const rateInput = document.getElementById('rate');
-const subtotalInput = document.getElementById('subtotal');
+export const subtotalInput = document.getElementById('subtotal');
 export const discountInput = document.getElementById('discount');
 const netInput = document.getElementById('net');
 export const paidInput = document.getElementById('paid');
