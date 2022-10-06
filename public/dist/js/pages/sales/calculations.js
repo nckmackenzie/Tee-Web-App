@@ -3,9 +3,9 @@ export const valueInput = document.getElementById('value');
 export const rateInput = document.getElementById('rate');
 export const subtotalInput = document.getElementById('subtotal');
 export const discountInput = document.getElementById('discount');
-const netInput = document.getElementById('net');
+export const netInput = document.getElementById('net');
 export const paidInput = document.getElementById('paid');
-const balanceInput = document.getElementById('balance');
+export const balanceInput = document.getElementById('balance');
 
 //calculate total value
 export function calculateTotalValue() {
