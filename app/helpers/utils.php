@@ -40,6 +40,13 @@ function getdbvalue($con,$sql,$arr){
     return $stmt->fetchColumn();
 }
 
+//load result set
+function loadresultset($con,$sql,$arr){
+    $stmt = $con->prepare($sql);
+    $stmt->execute($arr);
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+
 //get first letter of word
 function getfirstword($word){
     return explode(' ',$word)[0];
