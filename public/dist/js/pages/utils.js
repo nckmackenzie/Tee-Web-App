@@ -1,3 +1,4 @@
+export const mandatoryFields = document.querySelectorAll('.mandatory');
 export function btnClick(btnclass, inputid) {
   const input = document.querySelector('#' + inputid + '');
   const btns = document.querySelectorAll(btnclass);
