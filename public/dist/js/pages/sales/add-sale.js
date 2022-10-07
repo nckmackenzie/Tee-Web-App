@@ -9,6 +9,7 @@ import {
   clearOnChange,
   setLoadingState,
   resetLoadingState,
+  sendHttpRequest,
 } from '../utils.js';
 //prettier ignore
 import {
@@ -33,7 +34,9 @@ import {
   form,
   mandatoryFields,
   saleTypeSelect,
+  studentTable,
   btn,
+  saleIdInput,
 } from './elements.js';
 
 function resetAndGetTotal() {
@@ -162,7 +165,7 @@ form.addEventListener('submit', async function (e) {
 
 clearOnChange(mandatoryFields);
 
-function clearValues() {
+async function clearValues() {
   const fields = form.querySelectorAll('input');
   const selects = document.querySelectorAll('select');
   fields.forEach(field => {
@@ -173,4 +176,7 @@ function clearValues() {
   });
   const tbody = table.getElementsByTagName('tbody')[0];
   tbody.innerHTML = '';
+  studentTable.innerHTML = '';
+  const data = await sendHttpRequest(`${HOST_URL}/sales/getnewid`);
+  saleIdInput.value = data;
 }
