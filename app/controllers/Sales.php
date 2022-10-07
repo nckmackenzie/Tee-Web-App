@@ -315,4 +315,12 @@ class Sales extends Controller
             exit();
         }
     }
+
+    public function getnewid()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET')
+        {
+            echo json_encode($this->salemodel->GetSaleId());
+        }
+    }
 }

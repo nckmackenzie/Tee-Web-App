@@ -131,8 +131,9 @@ class Sale
             $this->db->dbh->beginTransaction();
 
             $this->db->query('INSERT INTO sales_header (SalesID,SalesDate,PayDate,SaleType,GroupId,StudentId,SubTotal,
-                                          Discount,NetAmount,AmountPaid,Balance,PaymentMethodId,Reference,CenterId) 
-                              VALUES(:saleid,:sdate,:pdate,:stype,:gid,:student,:stotal,:discount,:net,:paid,:bal,:pid,:ref,:cid)');
+                                          Discount,NetAmount,AmountPaid,Balance,PaymentMethodId,Reference,CenterId,
+                                          UpdatedBy,UpdatedOn) 
+                              VALUES(:saleid,:sdate,:pdate,:stype,:gid,:student,:stotal,:discount,:net,:paid,:bal,:pid,:ref,:cid,:upby,:upon)');
             $this->db->bind(':saleid',$saleid);
             $this->db->bind(':sdate',$data['sdate']);
             $this->db->bind(':pdate',$data['pdate']);
@@ -147,6 +148,8 @@ class Sale
             $this->db->bind(':pid',$data['paymethod']);
             $this->db->bind(':ref',strtolower($data['reference']));
             $this->db->bind(':cid',$_SESSION['centerid']);
+            $this->db->bind(':upby',(int)$_SESSION['userid']);
+            $this->db->bind(':upon',date('Y-m-d H:i:s'));
             $this->db->execute();
 
             $tid = $this->db->dbh->lastInsertId();
@@ -179,6 +182,16 @@ class Sale
                 $accountname = $this->GetGlDetails($data['books'][$i]->bid)[0];
                 $accountid = $this->GetGlDetails($data['books'][$i]->bid)[1];
                 savetoledger($this->db->dbh,$data['pdate'],$accountname,0,$sellingvalue,$desc,$accountid,1,$tid,$_SESSION['centerid']);
+            }
+
+            //if sale to group
+            if($data['saletype'] === 'group'){
+                for($i = 0; $i < count($data['students']); $i++){
+                    $this->db->query('INSERT INTO sales_students (StudentId,Paid) VALUES(:student,:paid)');
+                    $this->db->bind(':student',$data['students'][$i]->studentId);
+                    $this->db->bind(':paid',converttobool($data['students'][$i]->checkState));
+                    $this->db->execute();
+                }
             }
 
             if(intval($data['paymethod']) === 1){
