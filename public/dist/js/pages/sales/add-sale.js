@@ -155,8 +155,22 @@ form.addEventListener('submit', async function (e) {
   resetLoadingState(btn, 'Save');
   if (res) {
     displayAlert(alertBox, 'Saved Successfully', 'success');
+    clearValues();
   }
   // document.salesform.submit();
 });
 
 clearOnChange(mandatoryFields);
+
+function clearValues() {
+  const fields = form.querySelectorAll('input');
+  const selects = document.querySelectorAll('select');
+  fields.forEach(field => {
+    field.value = '';
+  });
+  selects.forEach(select => {
+    select.value = '';
+  });
+  const tbody = table.getElementsByTagName('tbody')[0];
+  tbody.innerHTML = '';
+}
