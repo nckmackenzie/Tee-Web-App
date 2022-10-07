@@ -6,8 +6,6 @@ import {
   selectAllBtn,
 } from './elements.js';
 
-studentTable.innerHTML = '';
-
 saleTypeSelect.addEventListener('change', async function (e) {
   studentSelect.innerHTML = '';
   studentTable.innerHTML = '';
