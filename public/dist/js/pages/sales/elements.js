@@ -6,6 +6,7 @@ import {
   balanceInput,
 } from './calculations.js';
 export const saleTypeSelect = document.getElementById('saletype');
+export const saleIdInput = document.getElementById('saleid');
 export const studentSelect = document.getElementById('studentorgroup');
 export const studentTable = document.getElementById('studentList');
 export const selectAllBtn = document.getElementById('selectAll');
