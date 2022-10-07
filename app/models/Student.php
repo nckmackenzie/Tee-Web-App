@@ -46,9 +46,9 @@ class Student
                               WHERE  (ID = :id)');
         }
         $this->db->bind(':sname',strtolower($data['sname']));
-        $this->db->bind(':idno',!empty($data['idno']) ? encrypt($data['idno'],ENCRYPTION_KEY) : null);
+        $this->db->bind(':idno',!empty($data['idno']) ? $data['idno'] : null);
         $this->db->bind(':admno',!empty($data['admno']) ? strtolower($data['admno']) : null);
-        $this->db->bind(':contact',encrypt($data['contact'],ENCRYPTION_KEY));
+        $this->db->bind(':contact',$data['contact']);
         $this->db->bind(':gender',intval($data['gender']));
         $this->db->bind(':regdate',!empty($data['admdate']) ? $data['admdate'] : null);
         $this->db->bind(':course',$data['course']);
