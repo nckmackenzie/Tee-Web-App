@@ -68,9 +68,10 @@ class Sale
         return $this->db->resultset();
     }
 
-    public function CheckRefExists($ref)
+    public function CheckRefExists($ref,$id)
     {
-        $this->db->query("SELECT COUNT(*) FROM sales_header WHERE (Reference = :ref) AND (Deleted = 0)");
+        $this->db->query("SELECT COUNT(*) FROM sales_header WHERE (ID <> :id) AND (Reference = :ref) AND (Deleted = 0)");
+        $this->db->bind(':id',$id);
         $this->db->bind(':ref',strtolower($ref));
         if(intval($this->db->getvalue()) > 0){
             return false;
@@ -187,7 +188,8 @@ class Sale
             //if sale to group
             if($data['saletype'] === 'group'){
                 for($i = 0; $i < count($data['students']); $i++){
-                    $this->db->query('INSERT INTO sales_students (StudentId,Paid) VALUES(:student,:paid)');
+                    $this->db->query('INSERT INTO sales_students (SaleId,StudentId,Paid) VALUES(:sale,:student,:paid)');
+                    $this->db->bind(':sale',$data['id']);
                     $this->db->bind(':student',$data['students'][$i]->studentId);
                     $this->db->bind(':paid',converttobool($data['students'][$i]->checkState));
                     $this->db->execute();
@@ -216,26 +218,28 @@ class Sale
     }
 
     function Update($data){
-        $desc = 'Sale of '.count($data['booksid']) . ' book(s) to '.$this->GetBuyerName($data['type'],$data['studentorgroup']);
+        $desc = 'Sale of '.count($data['books']) . ' book(s) to '.$this->GetBuyerName($data['saletype'],$data['buyer']);
         try {
             $this->db->dbh->beginTransaction();
 
             $this->db->query('UPDATE sales_header SET SalesDate=:sdate,PayDate=:pdate,SaleType=:stype,GroupId=:gid,StudentId=:student
-                                                      ,SubTotal=:stotal,Discount=:discount,NetAmount=:net,
-                                                      AmountPaid=:paid,Balance=:bal,PaymentMethodId=:pid,Reference=:ref
-                              WHERE (ID=:id)');
+                                                      ,SubTotal=:stotal,Discount=:discount,NetAmount=:net,AmountPaid=:paid,Balance=:bal
+                                                      ,PaymentMethodId=:pid,Reference=:ref,UpdatedBy=:upby,UpdatedOn=:upon 
+                              WHERE (ID = :id)');
             $this->db->bind(':sdate',$data['sdate']);
             $this->db->bind(':pdate',$data['pdate']);
-            $this->db->bind(':stype',$data['type']);
-            $this->db->bind(':gid',$data['type'] === 'group' ? $data['studentorgroup'] : null);
-            $this->db->bind(':student',$data['type'] === 'student' ? $data['studentorgroup'] : null);
+            $this->db->bind(':stype',$data['saletype']);
+            $this->db->bind(':gid',$data['saletype'] === 'group' ? $data['buyer'] : null);
+            $this->db->bind(':student',$data['saletype'] === 'student' ? $data['buyer'] : null);
             $this->db->bind(':stotal',$data['subtotal']);
-            $this->db->bind(':discount',!empty($data['discount']) ? $data['discount'] : 0);
+            $this->db->bind(':discount',$data['discount']);
             $this->db->bind(':net',!empty($data['net']) ? $data['net'] : 0);
-            $this->db->bind(':paid',!empty($data['paid']) ? $data['paid'] : 0);
+            $this->db->bind(':paid',$data['paid']);
             $this->db->bind(':bal',!empty($data['balance']) ? $data['balance'] : 0);
             $this->db->bind(':pid',$data['paymethod']);
             $this->db->bind(':ref',strtolower($data['reference']));
+            $this->db->bind(':upby',(int)$_SESSION['userid']);
+            $this->db->bind(':upon',date('Y-m-d H:i:s'));
             $this->db->bind(':id',$data['id']);
             $this->db->execute();
 
@@ -251,15 +255,19 @@ class Sale
             $this->db->bind(':id',$data['id']);
             $this->db->execute();
 
-            for ($i=0; $i < count($data['booksid']); $i++) { 
-                $bp = $this->GetItemBuyingPrice($data['sdate'],$data['booksid'][$i]);
-                $buyingvalue = $data['qtys'][$i] * $bp;
-                $sellingvalue =$data['qtys'][$i] * $data['rates'][$i];
+            $this->db->query('DELETE FROM sales_students WHERE SaleId = :id');
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
+            for ($i=0; $i < count($data['books']); $i++) { 
+                $bp = $this->GetItemBuyingPrice($data['sdate'],$data['books'][$i]->bid);
+                $buyingvalue = $data['books'][$i]->qty * $bp;
+                $sellingvalue =$data['books'][$i]->qty * $data['books'][$i]->rate;
                 $this->db->query('INSERT INTO sales_details (HeaderId,BookId,Qty,BoughtValue,SellingValue) 
-                              VALUES(:hid,:bid,:qty,:bought,:selling)');
+                                  VALUES(:hid,:bid,:qty,:bought,:selling)');
                 $this->db->bind(':hid',$data['id']);
-                $this->db->bind(':bid',$data['booksid'][$i]);
-                $this->db->bind(':qty',$data['qtys'][$i]);
+                $this->db->bind(':bid',$data['books'][$i]->bid);
+                $this->db->bind(':qty',$data['books'][$i]->qty);
                 $this->db->bind(':bought',$buyingvalue);
                 $this->db->bind(':selling',$sellingvalue);
                 $this->db->execute();
@@ -268,19 +276,30 @@ class Sale
                                           TransactionType,TransactionId,CenterId) 
                               VALUES(:tdate,:bid,:qty,:ref,:ttype,:tid,:cid)');
                 $this->db->bind(':tdate',$data['sdate']);
-                $this->db->bind(':bid',$data['booksid'][$i]);
-                $this->db->bind(':qty',$data['qtys'][$i]);
+                $this->db->bind(':bid',$data['books'][$i]->bid);
+                $this->db->bind(':qty',$data['books'][$i]->qty);
                 $this->db->bind(':ref',$data['reference']); 
                 $this->db->bind(':ttype',4);
                 $this->db->bind(':tid',$data['id']);
                 $this->db->bind(':cid',$_SESSION['centerid']);
                 $this->db->execute();
 
-                $accountname = $this->GetGlDetails($data['booksid'][$i])[0];
-                $accountid = $this->GetGlDetails($data['booksid'][$i])[1];
+                $accountname = $this->GetGlDetails($data['books'][$i]->bid)[0];
+                $accountid = $this->GetGlDetails($data['books'][$i]->bid)[1];
                 savetoledger($this->db->dbh,$data['pdate'],$accountname,0,$sellingvalue,$desc,$accountid,1,$data['id'],$_SESSION['centerid']);
             }
-            
+
+            //if sale to group
+            if($data['saletype'] === 'group'){
+                for($i = 0; $i < count($data['students']); $i++){
+                    $this->db->query('INSERT INTO sales_students (SaleId,StudentId,Paid) VALUES(:sale,:student,:paid)');
+                    $this->db->bind(':sale',$data['id']);
+                    $this->db->bind(':student',$data['students'][$i]->studentId);
+                    $this->db->bind(':paid',converttobool($data['students'][$i]->checkState));
+                    $this->db->execute();
+                }
+            }
+
             if(intval($data['paymethod']) === 1){
                 savetoledger($this->db->dbh,$data['pdate'],'cash at hand',$data['paid'],0,$desc,3,1,$data['id'],$_SESSION['centerid']);
             }else{
@@ -294,6 +313,7 @@ class Sale
             }
 
         } catch (\Exception $e) {
+            http_response_code(500);
             if ($this->db->dbh->inTransaction()) {
                 $this->db->dbh->rollBack();
             }
@@ -323,6 +343,12 @@ class Sale
         $this->db->query('SELECT * FROM vw_salesdetails WHERE HeaderId = :id');
         $this->db->bind(':id',intval($id));
         return $this->db->resultset();
+    }
+
+    public function GetStudentSales($id)
+    {
+        $sql = 'SELECT * FROM vw_sales_students WHERE (SaleId = ?)';
+        return loadresultset($this->db->dbh,$sql,[$id]);
     }
 
     public function Delete($id)
