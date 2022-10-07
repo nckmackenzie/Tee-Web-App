@@ -46,6 +46,7 @@ class Sales extends Controller
             'paid' => '',
             'balance' => '',
             'table' => [],
+            'students' => [],
             'sdate_err' => '',
             'pdate_err' => '',
             'type_err' => '',
@@ -150,7 +151,7 @@ class Sales extends Controller
                 exit;
             }
 
-            if(!$this->salemodel->CheckRefExists($data['reference'])){
+            if(!$this->salemodel->CheckRefExists($data['reference'],$data['id'])){
                 http_response_code(400);
                 echo json_encode(['message' => 'Payment reference already exists']);
                 exit;
@@ -188,6 +189,7 @@ class Sales extends Controller
             'isedit' => true,
             'id' => $saleheader->ID,
             'sdate' => $saleheader->SalesDate,
+            'pdate' => $saleheader->PayDate,
             'type' => $saleheader->SaleType,
             'studentorgroup' => $saleheader->SaleType === 'student' ? $saleheader->StudentId : $saleheader->GroupId,
             'paymethod' => $saleheader->PaymentMethodId,
@@ -198,7 +200,9 @@ class Sales extends Controller
             'paid' => $saleheader->AmountPaid,
             'balance' => $saleheader->Balance,
             'table' => [],
+            'students' => [],
             'sdate_err' => '',
+            'pdate_err' => '',
             'type_err' => '',
             'studentgroup_err' => '',
             'paid_err' => '',
@@ -215,6 +219,20 @@ class Sales extends Controller
                 'values' => $detail->SellingValue,
             ]);
         }
+
+        if($saleheader->SaleType === 'group')
+        {
+            $students = $this->salemodel->GetStudentSales($saleheader->ID);
+            foreach($students as $student){
+                array_push($data['students'],[
+                    'sid' => $student->StudentId,
+                    'studentname' => $student->StudentName,
+                    'paid' => $student->Paid,
+                    'contact' => $student->Contact,
+                ]);
+            }
+        }
+
         $this->view('sales/add',$data);
         exit();
     }
@@ -304,7 +322,7 @@ class Sales extends Controller
                 array_push($results,[
                     'id' => $student->ID,
                     'studentName' => $student->StudentName,
-                    'contact' => decrypt($student->Contact)
+                    'contact' => $student->Contact
                 ]);
             endforeach;
 
