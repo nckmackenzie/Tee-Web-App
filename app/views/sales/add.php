@@ -232,7 +232,19 @@
                     <span>Group Members</span>
                     <button type="button" id="selectAll" class="btn btn-info btn-sm" disabled>Select all</button>
                 </div>
-                <div class="card-body p-0" id="studentList"></div>
+                <div class="card-body p-0" id="studentList">
+                    <?php foreach($data['students'] as $student) : ?>
+                        <div class="table-like">
+                            <div class="form-check">
+                                <input type="checkbox" name="active[]" 
+                                       class="form-check-input stdcheck" <?php echo converttobool($student['paid']) ? 'checked' : '' ;?>>
+                            </div>
+                            <div class="d-none"><input type="number" name="studentsid[]" value="<?php echo $student['sid'];?>" /></div>
+                            <div class="studentname"><?php echo $student['studentname'];?></div>                        
+                            <div class="contact"><?php echo $student['contact'];?></div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
             </div><!--/.col-lg-8 -->
         </div><!--/.row-->
