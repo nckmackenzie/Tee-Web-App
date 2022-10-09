@@ -22,10 +22,29 @@ class Userrights extends Controller
             'has_datatable' => false,
             'users' => $this->rightsmodel->GetUsers(),
             'user' => '',
-            'forms' => $this->rightsmodel->GetForms()
+            // 'forms' => $this->rightsmodel->GetForms()
         ];
         $this->view('userrights/index',$data);
         exit;
+    }
+
+    public function getrightsassigned()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $userid = isset($_GET['userid']) && !empty(trim($_GET['userid'])) ? htmlentities(trim($_GET['userid'])) : NULL;
+
+            if(is_null($userid)) :
+                http_response_code(400);
+                echo json_encode(['message' => 'Select user']);
+                exit;
+            endif;
+
+            echo json_encode($this->rightsmodel->GetForms($userid));
+
+        }else{
+            redirect('auth/forbidden');
+            exit;
+        }
     }
 
     public function createupdate()

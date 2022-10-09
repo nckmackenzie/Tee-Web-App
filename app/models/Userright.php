@@ -20,17 +20,39 @@ class Userright
         $this->db->bind(':cid',(int)$_SESSION['centerid']);
         return $this->db->resultset();
     }
+    
+    function RightsQuery(){
+        $sql = "SELECT 	
+                    u.FormId as ID,
+                    f.FormName,
+                    f.Module,
+                    f.ModuleId,
+                    f.MenuOrder,
+                    u.access as access
+                FROM   `userrights` u join forms f on u.FormId = f.ID
+                WHERE   u.UserId = :usid AND f.Module <> 'Admin'";
+        $sql .= 'UNION ALL ';
+        $sql .= "SELECT  
+                    ID,
+                    FormName,
+                    Module,
+                    ModuleId,
+                    MenuOrder,
+                    0 as access
+                FROM  forms
+                WHERE (Module <> 'Admin') AND ID NOT IN (SELECT FormId FROM userrights WHERE (UserId = :usid))";
+        if((!converttobool($_SESSION['ishead']))) :
+            $sql .= " AND (ForCenter = 1) ";
+        endif;
+        $sql .=" ORDER BY ModuleId,MenuOrder";
+        return $sql;
+    }
 
     //get forms
-    public function GetForms()
+    public function GetForms($user)
     {
-        $sql = 'SELECT ID,
-                       UCASE(FormName) As FormName 
-                FROM forms';
-        if(!converttobool($_SESSION['ishead'])){
-            $sql .= ' WHERE (ForCenter = 1)';
-        }
-        $this->db->query($sql);
+        $this->db->query($this->RightsQuery());
+        $this->db->bind(':usid',(int)$user);
         return $this->db->resultset();
     }
 
