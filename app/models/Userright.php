@@ -58,21 +58,35 @@ class Userright
 
     public function CreateUpdate($data)
     {
-        $count = 0;
-        for ($i=0; $i < count($data['forms']); $i++) {
-            if((int)$data['access'][$i] === 1) {
-                $this->db->query('INSERT INTO userrights (UserId,FormId,Access) VALUES(:usid,:fid,:access)');
-                $this->db->bind(':usid',!empty($data['user']) ? $data['user'] : null);
-                $this->db->bind(':fid',$data['forms'][$i]);
-                $this->db->bind(':access',$data['access'][$i]);
-                if($this->db->execute()){
-                    $count++;
-                }
+        try {
+            $this->db->dbh->beginTransaction(); //begin transaction
+
+            //delete existing rights
+            $this->db->query('DELETE FROM userrights WHERE (UserId = :userid)');
+            $this->db->bind(':userid',$data['user']);
+            $this->db->execute();
+
+            //loop through data['rights'] and insert new rights
+            for ($i=0; $i < count($data['rights']); $i++) {
+                if((int)$data['rights'][$i]->access === 1) {
+                    $this->db->query('INSERT INTO userrights (UserId,FormId,Access) VALUES(:usid,:fid,:access)');
+                    $this->db->bind(':usid',$data['user']);
+                    $this->db->bind(':fid',$data['rights'][$i]->formId);
+                    $this->db->bind(':access',$data['rights'][$i]->access);
+                    $this->db->execute();
+                 }
             }
-        }
-        if($count > 0){
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }
             return true;
-        }else{
+            
+        } catch (\Exception $e) {
+            if($this->db->dbh->inTransaction()){
+                $this->db->dbh->rollBack();
+            }
+            error_log($e->getMessage(),0);
             return false;
         }
     }
