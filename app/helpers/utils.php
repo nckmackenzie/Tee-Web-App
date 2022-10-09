@@ -270,3 +270,76 @@ function calculatevat($type,$amount,$rate){
     }
     return $results;
 }
+
+function getusermenuitems($con,$userid)
+{
+    $sql = 'SELECT 
+                DISTINCT f.Module 
+            FROM 
+                userrights r INNER JOIN forms f on r.FormId = f.ID 
+            WHERE (r.UserId = ?)';
+    $stmt = $con->prepare($sql);
+    $stmt->execute([$userid]);
+    $results = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $modules = array();
+    foreach($results as $result) {
+        array_push($modules,$result->Module);
+    }
+    return $modules;
+}
+
+function getmodulemenuitems($con,$userid,$module)
+{
+    $sql = 'SELECT f.FormName,
+                   f.Path
+            FROM   userrights r inner join forms f on r.FormId = f.ID
+            WHERE  r.UserId = :usid AND (f.Module = :menu)
+            ORDER BY f.MenuOrder';
+    $stmt = $con->prepare($sql);
+    $stmt->bindValue(':usid',$userid);
+    $stmt->bindValue(':menu',$module);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+
+function hassubmenus($con,$module)
+{
+    $count = getdbvalue($con,'SELECT count(*) FROM `forms` WHERE SubModule IS NOT NULL AND Module = ?',[$module]);
+    if($count == 0){
+        return false;
+    }
+    return true;
+}
+
+function getsubmenuitems($con,$module,$userid)
+{
+    $sql = 'SELECT 
+                DISTINCT f.SubModule 
+            FROM 
+                userrights r INNER JOIN forms f on r.FormId = f.ID 
+            WHERE (r.UserId = ?) AND (f.Module = ?)';
+    $stmt = $con->prepare($sql);
+    $stmt->execute([$userid,$module]);
+    $results = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $submodules = array();
+    foreach($results as $result) {
+        array_push($submodules,$result->SubModule);
+    }
+    return $submodules;
+}
+
+//load sub menu items
+function getsubmenunavitems($con,$userid,$module,$sub)
+{
+    $sql = 'SELECT f.FormName,
+                   f.Path
+            FROM   userrights r inner join forms f on r.FormId = f.ID
+            WHERE  r.UserId = :usid AND (f.Module = :menu) AND (f.SubModule = :sub)
+            ORDER BY f.MenuOrder';
+    $stmt = $con->prepare($sql);
+    $stmt->bindValue(':usid',$userid);
+    $stmt->bindValue(':menu',$module);
+    $stmt->bindValue(':sub',$sub);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
