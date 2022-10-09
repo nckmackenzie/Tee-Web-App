@@ -50,18 +50,28 @@ class Userrights extends Controller
     public function createupdate()
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
-            $data = [
-                'user' => !empty(trim($_POST['user'])) ? trim($_POST['user']) : '',
-                'forms' => $_POST['formsid'],
-                'names' => $_POST['formsname'],
-                'access' => $_POST['access'],
+            $fields = json_decode(file_get_contents('php://input')); //extract json from submitted form
+            $data =[
+                'user' => isset($fields->user) && !empty(trim($fields->user)) ? (int)trim($fields->user) : NULL,
+                'rights' => is_countable($fields->tableData) ? $fields->tableData : NULL,
             ];
 
-            if($this->rightsmodel->CreateUpdate($data)){
-                redirect('userrights');
+            //validate
+            if(is_null($data['user']) || is_null($data['rights'])) : 
+                http_response_code(400);
+                echo json_encode(['message' => 'Fill all required fields']);
+                exit;
+            endif;
+
+            //if was not saved
+            if(!$this->rightsmodel->CreateUpdate($data)){
+                http_response_code(500);
+                echo json_encode(['message' => 'Rights unable to save. Retry or contact admin']);
                 exit;
             }
+
+            echo json_encode(['message' => 'Successfully saved','success' => true]);
+            exit;
 
         }else {
             redirect('auth/forbidden');
