@@ -16,6 +16,9 @@
                 <a href="<?php echo URLROOT;?>/userrights/clone">Clone rights</a>
             </li>
             <li>
+                <a href="<?php echo URLROOT;?>/users/logs">Sale edit logs</a>
+            </li>
+            <li>
                 <a href="<?php echo URLROOT;?>/centers">Centers</a>
             </li>
             <li>
@@ -28,10 +31,10 @@
                 <a href="<?php echo URLROOT;?>/courses">Courses</a>
             </li>
             <ul class="side-nav-second-level">
-            <li>
-                <a href="<?php echo URLROOT;?>/suppliers">Suppliers</a>
-            </li>
-        </ul>
+                <li>
+                    <a href="<?php echo URLROOT;?>/suppliers">Suppliers</a>
+                </li>
+            </ul>
         </ul>
     </div>
 </li>

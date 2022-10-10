@@ -15,6 +15,9 @@
             <li>
                 <a href="<?php echo URLROOT;?>/userrights/clone">Clone rights</a>
             </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/users/logs">Sale edit logs</a>
+            </li>
         </ul>
     </div>
 </li>
