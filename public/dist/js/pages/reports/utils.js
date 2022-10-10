@@ -18,7 +18,7 @@ export function validatedate(startEl, endEl, startSpan, endSpan) {
   return true;
 }
 
-export function setdatatable(tbl) {
+export function setdatatable(tbl, columnDefs = {}) {
   $(document).ready(function () {
     'use strict';
     var table = $(`#${tbl}`).DataTable();
@@ -26,7 +26,8 @@ export function setdatatable(tbl) {
     table = $(`#${tbl}`)
       .DataTable({
         lengthChange: !1,
-        buttons: ['copy', 'print'],
+        buttons: ['print', 'excel', 'pdf'],
+        columnDefs: [],
         ordering: false,
         language: {
           paginate: {
