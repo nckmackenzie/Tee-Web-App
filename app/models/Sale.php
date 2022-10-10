@@ -299,6 +299,17 @@ class Sale
                     $this->db->execute();
                 }
             }
+            
+            //edit logging
+            $this->db->query('INSERT INTO edit_logs(SaleID,EditDate,SaleDate,ReasonForEdit,EditedBy,CenterId) 
+                              VALUES(:saleid,:edate,:sdate,:reason,:editby,:cid)');
+            $this->db->bind(':saleid',$data['id']);
+            $this->db->bind(':edate',date('Y-m-d'));
+            $this->db->bind(':sdate',$data['sdate']);
+            $this->db->bind(':reason',$data['reason']);
+            $this->db->bind(':editby',$_SESSION['userid']);
+            $this->db->bind(':cid',$_SESSION['centerid']);
+            $this->db->execute();
 
             if(intval($data['paymethod']) === 1){
                 savetoledger($this->db->dbh,$data['pdate'],'cash at hand',$data['paid'],0,$desc,3,1,$data['id'],$_SESSION['centerid']);
@@ -317,7 +328,7 @@ class Sale
             if ($this->db->dbh->inTransaction()) {
                 $this->db->dbh->rollBack();
             }
-            throw $e;
+            error_log($e->getMessage(),0);
             return false;
         }
     }

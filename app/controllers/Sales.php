@@ -122,7 +122,8 @@ class Sales extends Controller
                 'paid' => !empty($header->paid) ? floatval($header->paid) : '',
                 'balance' => !empty($header->balance) ? floatval($header->balance) : '',
                 'books' => $fields->table,
-                'students' => $header->saleType === 'group' ? $fields->students : null
+                'students' => $header->saleType === 'group' ? $fields->students : null,
+                'reason' => converttobool(trim($header->isEdit)) ? (!empty(trim($header->reason)) ? $header->reason : '') : '',
             ];
 
             if(empty($data['sdate']) || empty($data['pdate']) || empty($data['saletype']) 
@@ -148,6 +149,12 @@ class Sales extends Controller
             if($data['paid'] > $data['subtotal']){
                 http_response_code(400);
                 echo json_encode(['message' => 'Payment more than sale value']);
+                exit;
+            }
+
+            if($data['isedit'] && empty($data['reason'])){
+                http_response_code(400);
+                echo json_encode(['message' => 'Enter reason for editing sale']);
                 exit;
             }
 
@@ -199,6 +206,7 @@ class Sales extends Controller
             'net' => $saleheader->NetAmount,
             'paid' => $saleheader->AmountPaid,
             'balance' => $saleheader->Balance,
+            'reason' => '',
             'table' => [],
             'students' => [],
             'sdate_err' => '',
