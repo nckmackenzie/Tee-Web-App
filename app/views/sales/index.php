@@ -45,13 +45,15 @@
                                     <td><?php echo $sale->SoldTo;?></td>
                                     <td><?php echo $sale->NetAmount;?></td>
                                     <td>
-                                        <a href="<?php echo URLROOT;?>/sales/edit/<?php echo $sale->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
                                         <a href="<?php echo URLROOT;?>/sales/print/<?php echo $sale->ID;?>" class="action-icon btn text-primary"> <i class="mdi mdi-printer"></i></a>
-                                        <button class="action-icon btn text-danger btndel"
-                                                data-id="<?php echo $sale->ID;?>" 
-                                                data-bs-toggle="modal" 
-                                                data-bs-target="#centermodal"
-                                                    ><i class="mdi mdi-delete"></i></button>
+                                        <?php if((int)$_SESSION['usertypeid'] < 3 && (strtotime($sale->CurDateTime) - strtotime($sale->UpdatedOn)) < 86400) : ?>
+                                            <a href="<?php echo URLROOT;?>/sales/edit/<?php echo $sale->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                            <button class="action-icon btn text-danger btndel"
+                                                    data-id="<?php echo $sale->ID;?>" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#centermodal"
+                                                        ><i class="mdi mdi-delete"></i></button>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
