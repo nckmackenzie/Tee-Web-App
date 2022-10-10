@@ -1,4 +1,6 @@
 export const mandatoryFields = document.querySelectorAll('.mandatory');
+export const alerBox = document.getElementById('alerBox');
+
 export function btnClick(btnclass, inputid) {
   const input = document.querySelector('#' + inputid + '');
   const btns = document.querySelectorAll(btnclass);
