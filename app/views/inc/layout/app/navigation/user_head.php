@@ -1,11 +1,19 @@
 <?php
     $con = new Database();
     $menuitems = getusermenuitems($con->dbh,(int)$_SESSION['userid']);
+    $data = [
+        'Stock Management' => 'uil-exchange',
+        'Students' => 'uil-graduation-hat',
+        'Sales' => 'uil-dollar-sign',
+        'Exams' => 'uil-clipboard-notes',
+        'Finance' => 'uil-moneybag-alt',
+        'Reports' => 'uil-receipt-alt'
+    ];
 ?>
 <?php foreach ($menuitems as $menuitem) : ?>
 <li class="side-nav-item">
     <a data-bs-toggle="collapse" href="#sidebar<?php echo str_replace(' ','',$menuitem);?>" aria-expanded="false" aria-controls="sidebar<?php echo str_replace(' ','',$menuitem);?>" class="side-nav-link">
-        <i class="uil-exchange"></i>
+        <i class="<?php echo $data[$menuitem];?>"></i>
         <span> <?php echo $menuitem;?> </span>
         <span class="menu-arrow"></span>
     </a>
