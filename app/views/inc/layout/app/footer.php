@@ -24,6 +24,9 @@
             <script src="<?php echo URLROOT; ?>/dist/js/vendor/responsive.bootstrap5.min.js"></script>
             <script src="<?php echo URLROOT; ?>/dist/js/vendor/dataTables.buttons.min.js"></script>
             <script src="<?php echo URLROOT; ?>/dist/js/vendor/buttons.bootstrap5.min.js"></script>
+            <script src="<?php echo URLROOT; ?>/dist/js/vendor/jszip.min.js"></script>
+            <script src="<?php echo URLROOT; ?>/dist/js/vendor/pdfmake.min.js"></script>
+            <script src="<?php echo URLROOT; ?>/dist/js/vendor/vfs_fonts.js"></script>
             <script src="<?php echo URLROOT; ?>/dist/js/vendor/buttons.html5.min.js"></script>
             <script src="<?php echo URLROOT; ?>/dist/js/vendor/buttons.flash.min.js"></script>
             <script src="<?php echo URLROOT; ?>/dist/js/vendor/buttons.print.min.js"></script>
