@@ -18,6 +18,15 @@ const tbody = table.getElementsByTagName('tbody')[0];
 //onclick
 previewBtn.addEventListener('click', async function () {
   if (validation() > 0) return;
+
+  if (
+    new Date(sdateInput.value).getTime() > new Date(edateInput.value).getTime()
+  ) {
+    sdateInput.classList.add('is-invalid');
+    sdateInput.nextSibling.nextSibling.textContent =
+      'Invalid date! Has to be less than end date';
+    return;
+  }
   const sdate = sdateInput.value;
   const edate = edateInput.value;
   setLoadingState();
