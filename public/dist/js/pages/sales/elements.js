@@ -12,6 +12,7 @@ export const studentTable = document.getElementById('studentList');
 export const selectAllBtn = document.getElementById('selectAll');
 export const paymethodSelect = document.getElementById('paymethod');
 export const referenceInput = document.getElementById('reference');
+export const reasonInput = document.getElementById('reason');
 export const table = document.getElementById('addsale');
 export const addBtn = document.querySelector('.btnadd');
 export const bookSelect = document.getElementById('book');
@@ -40,5 +41,6 @@ export function headerDetails() {
     balance: balanceInput.value,
     id: idInput.value,
     isEdit: isEditInput.value,
+    reason: reasonInput.value,
   };
 }
