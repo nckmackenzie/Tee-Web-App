@@ -1,106 +1,44 @@
+<?php
+    $con = new Database();
+    $menuitems = getusermenuitems($con->dbh,(int)$_SESSION['userid']);
+?>
+<?php foreach ($menuitems as $menuitem) : ?>
 <li class="side-nav-item">
-    <a data-bs-toggle="collapse" href="#sidebarStocks" aria-expanded="false" aria-controls="sidebarStocks" class="side-nav-link">
+    <a data-bs-toggle="collapse" href="#sidebar<?php echo str_replace(' ','',$menuitem);?>" aria-expanded="false" aria-controls="sidebar<?php echo str_replace(' ','',$menuitem);?>" class="side-nav-link">
         <i class="uil-exchange"></i>
-        <span> Stocks Management </span>
+        <span> <?php echo $menuitem;?> </span>
         <span class="menu-arrow"></span>
     </a>
-    <div class="collapse" id="sidebarStocks">
+    <div class="collapse" id="sidebar<?php echo str_replace(' ','',$menuitem);?>">
         <ul class="side-nav-second-level">
-            <li>
-                <a href="<?php echo URLROOT;?>/stocks/receipts">Receipts</a>
-            </li>
-            <li>
-                <a href="<?php echo URLROOT;?>/stocks/transfers">Transfers</a>
-            </li>
-            <li>
-                <a href="<?php echo URLROOT;?>/stocks/returns">Returns</a>
-            </li>
-        </ul>
-    </div>
-</li>
-<li class="side-nav-item">
-    <a data-bs-toggle="collapse" href="#sidebarStudents" aria-expanded="false" aria-controls="sidebarStudents" class="side-nav-link">
-        <i class="uil-graduation-hat"></i>
-        <span> Students </span>
-        <span class="menu-arrow"></span>
-    </a>
-    <div class="collapse" id="sidebarStudents">
-        <ul class="side-nav-second-level">
-            <li>
-                <a href="<?php echo URLROOT;?>/students/">Students</a>
-            </li>
-            <li>
-                <a href="<?php echo URLROOT;?>/groups/">Groups</a>
-            </li>
-            <li>
-                <a href="<?php echo URLROOT;?>/groups/members">Group Members</a>
-            </li>
-        </ul>
-    </div>
-</li>
-<li class="side-nav-item">
-    <a href="<?php echo URLROOT;?>/sales" class="side-nav-link">
-        <i class="uil-dollar-sign"></i>
-        <span> Sales </span>
-    </a>
-</li>
-<li class="side-nav-item">
-    <a data-bs-toggle="collapse" href="#sidebarExams" aria-expanded="false" aria-controls="sidebarExams" class="side-nav-link">
-        <i class="uil-clipboard-notes"></i>
-        <span> Exams </span>
-        <span class="menu-arrow"></span>
-    </a>
-    <div class="collapse" id="sidebarExams">
-        <ul class="side-nav-second-level">
-            <li>
-                <a href="<?php echo URLROOT;?>/exams/receiptfromgroup">Receipt From Group</a>
-            </li>
-            <li>
-                <a href="<?php echo URLROOT;?>/exams/receiptpostmarking">Receipt Post Marking</a>
-            </li>
-            <li>
-                <a href="<?php echo URLROOT;?>/exams/points">Attendance/Exercise/Cat Points</a>
-            </li>
-            <li>
-                <a href="<?php echo URLROOT;?>/exams/finalpoints">Final Points</a>
-            </li>
-        </ul>
-    </div>
-</li>
-<li class="side-nav-item">
-    <a data-bs-toggle="collapse" href="#sidebarReports" aria-expanded="false" aria-controls="sidebarReports" class="side-nav-link">
-        <i class="uil-receipt-alt"></i>
-        <span> Reports </span>
-        <span class="menu-arrow"></span>
-    </a>
-    <div class="collapse" id="sidebarReports">
-        <ul class="side-nav-second-level">
-            <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarSecondLevel" aria-expanded="false" aria-controls="sidebarSecondLevel">
-                    <span> Stock Reports </span>
-                    <span class="menu-arrow"></span>
-                </a>
-                <div class="collapse" id="sidebarSecondLevel">
-                    <ul class="side-nav-third-level">
-                        <li>
-                            <a href="<?php echo URLROOT;?>/stockreports/receipts">Receipts Report</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo URLROOT;?>/stockreports/transfers">Transfers Report</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo URLROOT;?>/stockreports/stockmovement">Stock Movement</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <li>
-                <a href="<?php echo URLROOT;?>/reports/salesreport">Sales Report</a>
-            </li>
-            <li>
-                <a href="<?php echo URLROOT;?>/reports/feepayments">Fees Payments</a>
-            </li>
+            <?php if(!hassubmenus($con->dbh,$menuitem)) : ?>
+                <?php foreach(getmodulemenuitems($con->dbh,(int)$_SESSION['userid'],$menuitem) as $item) : ?>
+                    <li>
+                        <a href="<?php echo URLROOT;?>/<?php echo $item->Path;?>"><?php echo $item->FormName;?></a>
+                    </li>
+                <?php endforeach ;?>
+            <?php else : ?>
+                <?php $submenus = getsubmenuitems($con->dbh,$menuitem,(int)$_SESSION['userid']) ;?>
+                <?php foreach($submenus as $submenu) : ?>
+                    <li class="side-nav-item">
+                        <a data-bs-toggle="collapse" href="#sidebar<?php echo str_replace(' ','',$submenu);?>" aria-expanded="false" aria-controls="sidebar<?php echo str_replace(' ','',$submenu);?>">
+                            <span> <?php echo $submenu;?> </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="sidebar<?php echo str_replace(' ','',$submenu);?>">
+                            <ul class="side-nav-third-level">
+                                <?php foreach(getsubmenunavitems($con->dbh,(int)$_SESSION['userid'],$menuitem,$submenu) as $item) : ?>
+                                    <li>
+                                        <a href="<?php echo URLROOT;?>/<?php echo $item->Path;?>"><?php echo $item->FormName;?></a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </ul>
     </div>
 </li>
 
+<?php endforeach; ?>
