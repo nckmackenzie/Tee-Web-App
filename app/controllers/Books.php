@@ -66,7 +66,7 @@ class Books extends Controller
                 'code' => strtolower(trim($_POST['code'])),
                 'author' => strtolower(trim($_POST['author'])),
                 'publisher' => strtolower(trim($_POST['publisher'])),
-                'openingbal' => (converttobool($_POST['isedit']) && converttobool($_POST['allowedit'])) ? trim($_POST['openingbal']) : '',
+                'openingbal' => (converttobool($_POST['isedit']) && converttobool($_POST['allowedit'])) ? trim($_POST['openingbal']) : trim($_POST['openingbal']),
                 'asat' => !empty($_POST['asat']) ? date("Y-m-d", strtotime($_POST['asat'])) : date('Y-m-d'),
                 'active' => converttobool($_POST['isedit']) ? (isset($_POST['active']) ? true : false) : true,
                 'allowedit' => converttobool($_POST['allowedit']),
