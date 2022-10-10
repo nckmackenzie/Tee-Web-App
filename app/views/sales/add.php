@@ -85,25 +85,39 @@
                                 </div>
                             </div>
                             <div class="col-lg-4">
-                                <label for="paymethod">Pay method</label>
-                                <select name="paymethod" id="paymethod" class="form-select form-select-sm mandatory 
-                                        <?php echo inputvalidation($data['paymethod'],$data['paymethod_err'],$data['touched']);?>">
-                                    <option value="" selected disabled>Select payment method</option>
-                                    <option value="1" <?php selectdCheck($data['paymethod'],1);?>>Cash</option>            
-                                    <option value="2" <?php selectdCheck($data['paymethod'],2);?>>M-Pesa</option>            
-                                    <option value="3" <?php selectdCheck($data['paymethod'],3);?>>Bank</option>            
-                                </select>
-                                <span class="invalid-feedback"><?php echo $data['paymethod_err'];?></span>
+                                <div class="mb-3">
+                                    <label for="paymethod">Pay method</label>
+                                    <select name="paymethod" id="paymethod" class="form-select form-select-sm mandatory 
+                                            <?php echo inputvalidation($data['paymethod'],$data['paymethod_err'],$data['touched']);?>">
+                                        <option value="" selected disabled>Select payment method</option>
+                                        <option value="1" <?php selectdCheck($data['paymethod'],1);?>>Cash</option>            
+                                        <option value="2" <?php selectdCheck($data['paymethod'],2);?>>M-Pesa</option>            
+                                        <option value="3" <?php selectdCheck($data['paymethod'],3);?>>Bank</option>            
+                                    </select>
+                                    <span class="invalid-feedback"><?php echo $data['paymethod_err'];?></span>
+                                </div>
                             </div>
                             <div class="col-lg-4">
-                                <label for="reference">Reference</label>
-                                <input type="text" name="reference" id="reference" 
-                                        class="form-control form-control-sm mandatory 
-                                        <?php echo inputvalidation($data['reference'],$data['reference_err'],$data['touched']);?>"
-                                        value="<?php echo $data['reference'];?>"
-                                        placeholder="eg MPESA Ref or Cheque No...">
-                                <span class="invalid-feedback"><?php echo $data['reference_err'];?></span>
+                                <div class="mb-3">
+                                    <label for="reference">Reference</label>
+                                    <input type="text" name="reference" id="reference" 
+                                            class="form-control form-control-sm mandatory 
+                                            <?php echo inputvalidation($data['reference'],$data['reference_err'],$data['touched']);?>"
+                                            value="<?php echo $data['reference'];?>"
+                                            placeholder="eg MPESA Ref or Cheque No...">
+                                    <span class="invalid-feedback"><?php echo $data['reference_err'];?></span>
+                                </div>
                             </div>
+                            <?php if($data['isedit']) : ?>
+                                <div class="col-lg-12">
+                                    <label for="reason">Reason for edit</label>
+                                    <input type="text" name="reason" id="reason" 
+                                           class="form-control form-control-sm mandatory"
+                                            value="<?php echo $data['reason'];?>"
+                                            placeholder="Enter reason for edit">
+                                    <span class="invalid-feedback"></span>
+                                </div>
+                            <?php endif; ?>
                         </div><!-- /.row -->
                     </div><!-- /.card-body -->
                 </div><!-- /.card -->
