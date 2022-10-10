@@ -71,4 +71,10 @@ class User
             return false;
         }
     }
+
+    public function GetLogs($data)
+    {
+        $sql = "SELECT * FROM vw_sales_logs WHERE (EditDate BETWEEN ? AND ?) AND (CenterId = ?) ORDER BY EditDate";
+        return loadresultset($this->db->dbh,$sql,[$data['startdate'],$data['enddate'],(int)$_SESSION['centerid']]);
+    }
 }

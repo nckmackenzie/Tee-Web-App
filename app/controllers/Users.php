@@ -241,4 +241,47 @@ class Users extends Controller {
             exit();
         }
     }
+
+    public function logs()
+    {
+        $data = [
+            'title' => 'Sales edit logs',
+            'has_datatable' => true,
+        ];
+        $this->view('users/logs',$data);
+    }
+
+    public function fetchlogs()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET')
+        {
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $data = [
+                'startdate' => isset($_GET['sdate']) && !empty(trim($_GET['sdate'])) ? date('Y-m-d',strtotime(trim($_GET['sdate']))) : null,
+                'enddate' => isset($_GET['edate']) && !empty(trim($_GET['edate'])) ? date('Y-m-d',strtotime(trim($_GET['edate']))) : null,
+                'results' => []
+            ];
+
+            if(is_null($data['startdate']) || is_null($data['enddate'])){
+                http_response_code(400);
+                echo json_encode(['message' => 'Provide all required fields']);
+                exit;
+            }
+
+            foreach($this->usermodel->GetLogs($data) as $result) :
+                array_push($data['results'],[
+                    'saleDate' => date('d-m-Y',strtotime($result->SaleDate)),
+                    'editDate' => date('d-m-Y',strtotime($result->EditDate)),
+                    'editedBy' => $result->EditedBy,
+                    'reason' => $result->Reason
+                ]);
+            endforeach;
+
+            echo json_encode($data['results']);
+
+        }else{
+            redirect('users/forbidden');
+            exit;
+        }
+    }
 }
