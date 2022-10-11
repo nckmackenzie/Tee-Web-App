@@ -64,7 +64,7 @@ class Students extends Controller
                 'id' => trim($_POST['id']),
                 'sname' => trim($_POST['sname']),
                 'idno' => trim($_POST['idno']),
-                'contact' => trim($_POST['contact']),
+                'contact' => !empty(trim($_POST['contact'])) ? trim($_POST['contact']) : NULL,
                 'admno' => !empty(trim($_POST['admno'])) ? trim($_POST['admno']) : '',
                 'gender' => !empty(trim($_POST['gender'])) ? trim($_POST['gender']) : '',
                 'admdate' => !empty(trim($_POST['admdate'])) ? date('Y-m-d',strtotime(trim($_POST['admdate']))) : '',
@@ -85,14 +85,10 @@ class Students extends Controller
                 $data['sname_err'] = 'Enter student name';
             }
 
-            if(empty($data['contact'])){
-                $data['contact_err'] = 'Enter student contact';
-            }else{
-                if(!$this->studentmodel->CheckFieldsAvailability('Contact',$data['contact'],$data['id'])){
+            if(!empty($data['contact']) && !$this->studentmodel->CheckFieldsAvailability('Contact',$data['contact'],$data['id'])){
                     $data['contact_err'] = 'Entered contact already exists';
-                }
             }
-
+     
             if(!empty($data['idno']) && !$this->studentmodel->CheckFieldsAvailability('IdNumber',$data['idno'],$data['id'])){
                 $data['idno_err'] = 'ID Number already exists';
             }
