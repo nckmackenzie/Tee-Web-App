@@ -19,6 +19,15 @@ class Auths
 
     public function CheckUserAvailability($contact,$center,$id)
     {
+        $count = getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM users WHERE (contact = ?)',[$contact]);
+        if($count === 0 ){
+            return false;
+        }
+        $usertype = getdbvalue($this->db->dbh,'SELECT UserTypeId FROM users WHERE (Contact = ?)',[$contact]);
+        if((int)$usertype === 1){
+            return true;
+        }
+
         $arr = array();
         array_push($arr,$contact);
         array_push($arr,(int)$center);
@@ -32,9 +41,21 @@ class Auths
 
     public function Login($contact,$password,$center)
     {
-        $this->db->query('CALL `sp_userdetails`(:cont, :center)');
-        $this->db->bind(':cont',trim($contact));
-        $this->db->bind(':center',trim($center));
+        //check if super admin
+        $count = getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM users WHERE (contact = ?)',[$contact]);
+        if($count === 0 ){
+            return false;
+        }
+        $usertype = getdbvalue($this->db->dbh,'SELECT UserTypeId FROM users WHERE (Contact = ?)',[$contact]);
+
+        if((int)$usertype === 1){
+            $this->db->query('CALL `sp_userdetails_sa`(:cont)');
+            $this->db->bind(':cont',trim($contact));
+        }else{
+            $this->db->query('CALL `sp_userdetails`(:cont, :center)');
+            $this->db->bind(':cont',trim($contact));
+            $this->db->bind(':center',trim($center));
+        }
         $row = $this->db->single();
         //verify password is correct
         if (password_verify($password,$row->Password)){
@@ -55,6 +76,14 @@ class Auths
         }else{
             return false;
         }
+    }
+
+    public function GetCenterDetails($center)
+    {
+        $this->db->query('SELECT * FROM centers WHERE ID = :id');
+        $this->db->bind(':id',$center);
+        $center = $this->db->single();
+        return [$center->IsHead,$center->CenterName,$center->ExamCenter];
     }
 
     //change password 

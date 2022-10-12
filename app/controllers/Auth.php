@@ -91,22 +91,30 @@ class Auth extends Controller {
                     $data['password_err'] = 'Invalid Password';
                     $this->view('auth/index',$data);
                 }else{
-                    $this->createsession($loggeduser); //log user in and create session
+                    $this->createsession($loggeduser,$data['center']); //log user in and create session
                 }
             }
         }
     }
     
-    public function createsession($user)
+    public function createsession($user,$center)
     {
         $_SESSION['userid'] = $user->ID;
         $_SESSION['username'] = $user->UserName;
         $_SESSION['usertypeid'] = $user->UserTypeId;
         $_SESSION['usertype'] = $user->UserType;
-        $_SESSION['ishead'] = converttobool($user->IsHead);
-        $_SESSION['centerid'] = (int)$user->CenterId;
-        $_SESSION['centername'] = $user->CenterName;
-        $_SESSION['examcenter'] = converttobool($user->ExamCenter);
+        if((int)$user->UserTypeId === 1){
+            $centerdetails = $this->authmodel->GetCenterDetails($center);
+            $_SESSION['ishead'] = converttobool($centerdetails[0]);
+            $_SESSION['centerid'] = (int)$center;
+            $_SESSION['centername'] = strtoupper($centerdetails[1]);
+            $_SESSION['examcenter'] = converttobool($centerdetails[2]);
+        }else{
+            $_SESSION['ishead'] = converttobool($user->IsHead);
+            $_SESSION['centerid'] = (int)$user->CenterId;
+            $_SESSION['centername'] = $user->CenterName;
+            $_SESSION['examcenter'] = converttobool($user->ExamCenter);
+        }
         flash('home_msg',null,'Login Success!',flashclass('toast','success'));
         redirect('home');
     }
