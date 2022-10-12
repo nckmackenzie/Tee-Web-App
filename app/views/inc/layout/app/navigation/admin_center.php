@@ -81,9 +81,19 @@
     </a>
     <div class="collapse" id="sidebarExams">
         <ul class="side-nav-second-level">
+            <?php if($_SESSION['examcenter']) : ?>
+                <li>
+                    <a href="<?php echo URLROOT;?>/exams">Exams</a>
+                </li>
+            <?php endif ;?>
             <li>
                 <a href="<?php echo URLROOT;?>/exams/receiptfromgroup">Receipt From Group</a>
             </li>
+            <?php if($_SESSION['examcenter']) : ?>
+                <li>
+                    <a href="<?php echo URLROOT;?>/exams/receiptmarking">Receipt For Marking</a>
+                </li>
+            <?php endif ;?>
             <li>
                 <a href="<?php echo URLROOT;?>/exams/receiptpostmarking">Receipt Post Marking</a>
             </li>
