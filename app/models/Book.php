@@ -9,9 +9,14 @@ class Book
 
     //get books list from database
     public function GetBooks(){
-        $this->db->query('CALL sp_bookslist(:tdate,:cid)');
-        $this->db->bind(':tdate',date('Y-m-d'));
-        $this->db->bind(':cid',$_SESSION['centerid']);
+        if($_SESSION['ishead']){
+            $this->db->query('CALL sp_bookslist_all(:tdate)');
+            $this->db->bind(':tdate',date('Y-m-d'));
+        }else{
+            $this->db->query('CALL sp_bookslist(:tdate,:cid)');
+            $this->db->bind(':tdate',date('Y-m-d'));
+            $this->db->bind(':cid',$_SESSION['centerid']);
+        }
         return $this->db->resultset();
     }
 
