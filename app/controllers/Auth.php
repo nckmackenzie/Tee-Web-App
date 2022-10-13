@@ -128,6 +128,7 @@ class Auth extends Controller {
         unset($_SESSION['ishead']);
         unset($_SESSION['centerid']);
         unset($_SESSION['centername']);
+        unset($_SESSION['examcenter']);
         session_destroy();
         redirect('auth');
     }
