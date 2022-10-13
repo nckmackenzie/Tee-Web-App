@@ -94,9 +94,9 @@ class Exam
 
     public function GetGroups()
     {
-        $this->db->query('SELECT ID, UCASE(GroupName ) AS GroupName
-                          FROM groups 
-                          WHERE (Active = 1) AND (Deleted = 0) ORDER BY GroupName');
+        $this->db->query("SELECT ID, UCASE(CONCAT(GroupName,'-',IFNULL(g.ParishName,''))) AS GroupName
+                          FROM groups g 
+                          WHERE (Active = 1) AND (Deleted = 0) ORDER BY GroupName");
         return $this->db->resultset();
     }
 

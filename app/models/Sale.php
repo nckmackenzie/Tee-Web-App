@@ -22,9 +22,9 @@ class Sale
                               FROM   students 
                               WHERE  (Deleted =0) AND (StatusId = 1)');
         }elseif ($type === 'group') {
-            $this->db->query('SELECT ID,UCASE(GroupName) AS CriteriaName 
-                              FROM   groups 
-                              WHERE  (Deleted =0) AND (Active = 1)');
+            $this->db->query("SELECT ID,UCASE(CONCAT(GroupName,'-',IFNULL(g.ParishName,''))) AS CriteriaName 
+                              FROM   groups g
+                              WHERE  (Deleted =0) AND (Active = 1)");
         }
         
         return $this->db->resultset();
