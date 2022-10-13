@@ -36,7 +36,6 @@ class Home extends Controller {
             $_SESSION['ishead'] = $ishead;
             $_SESSION['examcenter'] = $isexam;
 
-            flash('home_msg',null,'Successfully changed center to '.ucwords($centername) ,flashclass('alert','success'));
             redirect('home');
 
         }else{

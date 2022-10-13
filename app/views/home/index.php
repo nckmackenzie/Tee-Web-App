@@ -11,7 +11,7 @@
             </div>
         </div>
     </div> 
-    <?php flash('home_msg','alert');?>    
+        
     <!-- end page title --> 
    <?php if(ENV === 'development') : ?>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
