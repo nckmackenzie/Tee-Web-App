@@ -343,3 +343,24 @@ function getsubmenunavitems($con,$userid,$module,$sub)
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_OBJ);
 }
+
+//CHECK USER RIGHTS
+function checkuserrights($con,$user,$form){
+    $stmt = $con->prepare('SELECT COUNT(*) 
+                           FROM vw_user_rights
+                           WHERE (UserId = ?) AND (FormName = ?)');
+    $stmt->execute([$user,$form]);
+    $count = (int)$stmt->fetchColumn();
+    if($count === 0){
+        return false;
+    }else{
+        return true;
+    }
+}
+
+function checkrights($model,$form){
+    if((int)$_SESSION['usertypeid'] > 1 && !$model->CheckRights($form)){
+        redirect('users/deniedaccess');
+        exit;
+    }
+}
