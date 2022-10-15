@@ -9,6 +9,11 @@ class Auths
         $this->db = new Database;
     }
 
+    public function CheckRights($form)
+    {
+        return checkuserrights($this->db->dbh,$_SESSION['userid'],$form);
+    }
+
     public function LoadCenters()
     {
         $this->db->query("SELECT ID,
