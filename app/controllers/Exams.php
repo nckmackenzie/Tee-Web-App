@@ -7,11 +7,13 @@ class Exams extends Controller
             redirect('auth');
             exit();
         }
+        $this->authmodel = $this->model('Auths');
         $this->exammodel = $this->model('Exam');
     }
 
     public function index()
     {
+        checkrights($this->authmodel,'exams');
         $exams = $this->exammodel->GetExams();
         $data = [
             'title' => 'Exams',
@@ -24,6 +26,7 @@ class Exams extends Controller
 
     public function add()
     {
+        checkrights($this->authmodel,'exams');
         $courses = $this->exammodel->GetCourses();
         $data = [
             'title' => 'Create Exam',
@@ -120,6 +123,7 @@ class Exams extends Controller
 
     public function edit($id)
     {
+        checkrights($this->authmodel,'exams');
         $courses = $this->exammodel->GetCourses();
         $exam = $this->exammodel->GetExam($id);
         $books = $this->exammodel->GetBooks($exam->CourseId);
@@ -148,6 +152,7 @@ class Exams extends Controller
 
     public function receiptfromgroup()
     {
+        checkrights($this->authmodel,'receipt from group');
         $data = [
             'title' => 'Receive from Group',
             'receiptdate' => date('Y-m-d'),
@@ -316,8 +321,9 @@ class Exams extends Controller
 
     public function receiptmarking()
     {
+        checkrights($this->authmodel,'exam receipt for marking');
         $data = [
-            'title' => 'Exam points entry',
+            'title' => 'Exam receipt for marking',
             'fromcenters' => $this->exammodel->GetCentersByStatus(1),
             'exams' => '',
             'groups' => '',
@@ -486,6 +492,7 @@ class Exams extends Controller
 
     public function receiptpostmarking()
     {
+        checkrights($this->authmodel,'receipt post marking');
         $centers = $this->exammodel->GetCentersByStatus(2);
         $data = [
             'title' => 'Receipt Post Marking',
@@ -639,6 +646,7 @@ class Exams extends Controller
     }
     public function points()
     {
+        checkrights($this->authmodel,'exam points');
         $data = [
             'title' => 'Points',
             'has_datatable' => true,
@@ -650,6 +658,7 @@ class Exams extends Controller
 
     public function addpoints()
     {
+        checkrights($this->authmodel,'exam points');
         $data = [
             'title' => 'Add Points',
             'groups' => $this->exammodel->GetGroups(),
@@ -784,6 +793,7 @@ class Exams extends Controller
 
     public function editpoints($id)
     {
+        checkrights($this->authmodel,'exam points');
         $header= $this->exammodel->GetPointsHeader($id);
         $details= $this->exammodel->GetPointsDetails($id);
         $data = [
@@ -846,6 +856,7 @@ class Exams extends Controller
 
     public function finalpoints()
     {
+        checkrights($this->authmodel,'final points');
         $data = [
             'title' => 'Final Points',
             'has_datatable' => true,

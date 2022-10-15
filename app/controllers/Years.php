@@ -5,12 +5,13 @@ class Years extends Controller
         if(!isset($_SESSION['userid'])){
             redirect('auth');
             exit();
-        }elseif(isset($_SESSION['userid']) && $_SESSION['usertypeid'] > 2 || (int)$_SESSION['ishead'] !== 1){
+        }elseif((int)$_SESSION['ishead'] !== 1){
             redirect('auth/unauthorized');
             exit();
-        }else{
-            $this->yearmodel = $this->model('Year');
         }
+        $this->authmodel = $this->model('Auths');
+        checkrights($this->authmodel,'financial years');
+        $this->yearmodel = $this->model('Year');
     }
 
     public function index()

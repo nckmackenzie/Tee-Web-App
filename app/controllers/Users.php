@@ -5,27 +5,14 @@ class Users extends Controller {
     {
        if(!isset($_SESSION['userid'])){
             redirect('auth');
-       }else{
-          $this->usermodel = $this->model('User');
-          $this->authmodel = $this->model('Auths');
        }
-    }
-
-    public function checkrights()
-    {
-        if (isset($_SESSION['userid']) && (int)$_SESSION['usertypeid'] > 2) {
-            return false;
-        }else{
-            return true;
-        }
+       $this->authmodel = $this->model('Auths');
+       $this->usermodel = $this->model('User');
     }
 
     public function index()
     {
-       if(!$this->checkrights()){
-            redirect('auth/unauthorized');
-            exit();
-       }
+       checkrights($this->authmodel,'users');
        $data = [
         'title' => 'Users',
         'has_datatable' => true,
@@ -36,10 +23,7 @@ class Users extends Controller {
 
     public function add()
     {
-        if(!$this->checkrights()){
-            redirect('auth/unauthorized');
-            exit();
-        }
+        checkrights($this->authmodel,'users');
         $data = [
             'title' => 'Add Users',
             'touched' => false,
@@ -195,10 +179,7 @@ class Users extends Controller {
 
     public function edit($id)
     {
-        if(!$this->checkrights()){
-            redirect('auth/unauthorized');
-            exit();
-        }
+        checkrights($this->authmodel,'users');
         $user = $this->usermodel->GetUser($id);
         $data = [
             'title' => 'Edit User',
@@ -244,6 +225,7 @@ class Users extends Controller {
 
     public function logs()
     {
+        checkrights($this->authmodel,'sale edit logs');
         $data = [
             'title' => 'Sales edit logs',
             'has_datatable' => true,

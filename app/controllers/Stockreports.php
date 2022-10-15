@@ -8,12 +8,13 @@ class Stockreports extends Controller
             redirect('auth');
             exit();
         endif;
-
+        $this->authmodel = $this->model('Auths');
         $this->reportmodel = $this->model('Stockreport');
     }
 
     public function receipts()
     {
+        checkrights($this->authmodel,'receipts report');
         $data = [
             'title' => 'Receipts Report',
             'has_datatable' => true
@@ -54,6 +55,7 @@ class Stockreports extends Controller
     //load view for transfers report
     public function transfers()
     {
+        checkrights($this->authmodel,'transfers report');
         $data = [
             'title' => 'Transfers Report',
             'has_datatable' => true,
@@ -95,6 +97,7 @@ class Stockreports extends Controller
     //stock movements view set up
     public function stockmovement()
     {
+        checkrights($this->authmodel,'stock movement');
         $data = [
             'title' => 'Stock Movements Report',
             'has_datatable' => true,

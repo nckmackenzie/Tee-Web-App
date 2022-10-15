@@ -7,10 +7,8 @@ class Journals extends Controller
             redirect('auth');
             exit();
         }
-        if((int)$_SESSION['usertypeid'] > 3){
-            redirect('auth/unauthorized');
-            exit();
-        }
+        $this->authmodel = $this->model('Auths');
+        checkrights($this->authmodel,'journal entries');
         $this->journalmodel = $this->model('Journal');
     }
 

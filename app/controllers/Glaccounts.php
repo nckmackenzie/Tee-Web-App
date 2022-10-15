@@ -7,10 +7,12 @@ class Glaccounts extends Controller
             redirect('auth');
             exit();
         }
-        if(!$_SESSION['ishead'] || intval($_SESSION['usertype']) > 2){
+        if(!$_SESSION['ishead']){
             redirect('auth/unauthorized');
             exit();
         }
+        $this->authmodel = $this->model('Auths');
+        checkrights($this->authmodel,'g/l accounts');
         $this->glaccountmodel = $this->model('Glaccount');
     }
 

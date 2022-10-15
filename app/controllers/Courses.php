@@ -7,11 +7,8 @@ class Courses extends Controller
             redirect('auth');
             exit();
         }
-
-        if(!adminonly($_SESSION['userid'],$_SESSION['usertypeid']) && !converttobool($_SESSION['ishead'])){
-            redirect('auth/unauthorized');
-            exit();
-        }
+        $this->authmodel = $this->model('Auths');
+        checkrights($this->authmodel,'courses');
         $this->coursemodel = $this->model('Course');
     }
 

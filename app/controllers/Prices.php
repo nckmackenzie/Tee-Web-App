@@ -2,7 +2,12 @@
 class Prices extends Controller
 {
     public function __construct(){
-        adminonly($_SESSION['userid'],$_SESSION['usertypeid']);
+        if(!isset($_SESSION['userid'])){
+            redirect('auth');
+            exit;
+        }
+        $this->authmodel = $this->model('Auths');
+        checkrights($this->authmodel,'set prices');
         $this->pricemodel = $this->model('Price');
     }
 

@@ -7,11 +7,13 @@ class Stocks extends Controller
             redirect('auth');
             exit();
         }
+        $this->authmodel = $this->model('Auths');
         $this->stockmodel = $this->model('Stock');
     }
 
     public function receipts()
     {
+        checkrights($this->authmodel,'receipts');
         $receipts = $this->stockmodel->GetReceiptsOrTransfers('receipts');
         $data = [
             'title' => 'Receipts',
@@ -24,6 +26,7 @@ class Stocks extends Controller
 
     public function addgrn()
     {
+        checkrights($this->authmodel,'receipts');
         $books = $this->stockmodel->GetBooks();
         $data = [
             'title' => 'Add Receipt',
@@ -43,6 +46,7 @@ class Stocks extends Controller
 
     public function addinter()
     {
+        checkrights($this->authmodel,'receipts');
         $books = $this->stockmodel->GetBooks();
         $mtns = $this->stockmodel->GetMtns();
         $data = [
@@ -180,6 +184,7 @@ class Stocks extends Controller
 
     public function receiptedit($id)
     {
+        checkrights($this->authmodel,'receipts');
         $header = $this->stockmodel->GetReceiptHeader($id);
         $details = $this->stockmodel->GetReceiptDetails($id);
         $books = $this->stockmodel->GetBooks();
@@ -212,6 +217,7 @@ class Stocks extends Controller
 
     public function transfers()
     {
+        checkrights($this->authmodel,'transfers');
         $transfers = $this->stockmodel->GetReceiptsOrTransfers('transfers');
         $data = [
             'title' => 'Transfers',
@@ -224,6 +230,7 @@ class Stocks extends Controller
 
     public function addtransfer()
     {
+        checkrights($this->authmodel,'transfers');
         $books = $this->stockmodel->GetBooks();
         $centers = $this->stockmodel->GetCenters();
         $data = [
@@ -332,6 +339,7 @@ class Stocks extends Controller
     }
     public function transferedit($id)
     {
+        checkrights($this->authmodel,'transfers');
         $books = $this->stockmodel->GetBooks();
         $centers = $this->stockmodel->GetCenters();
         $transfereheader = $this->stockmodel->GetTransfereHeader($id);
@@ -421,6 +429,7 @@ class Stocks extends Controller
     //stock returns
     public function returns()
     {
+        checkrights($this->authmodel,'returns');
         $data = [
             'title' => 'Returns',
             'has_datatable' => true,
@@ -433,6 +442,7 @@ class Stocks extends Controller
     //add stock returns view
     public function addreturn()
     {
+        checkrights($this->authmodel,'returns');
         $data = [
             'title' => 'Add Return',
             'books' => $this->stockmodel->GetBooks(),
@@ -524,6 +534,7 @@ class Stocks extends Controller
     //edit return
     public function returnedit($id)
     {
+        checkrights($this->authmodel,'returns');
         $returnheader = $this->stockmodel->GetReturnHeader($id);
         $returndetails = $this->stockmodel->GetReturnDetails($id);
         checkcenter($returnheader->CenterId);

@@ -8,11 +8,12 @@ class Suppliers extends Controller
             exit();
         }
 
-        if(!$_SESSION['ishead'] || intval($_SESSION['usertypeid']) > 2 ){
+        if(!$_SESSION['ishead']){
             redirect('auth/unauthorized');
             exit();
         }
-
+        $this->authmodel = $this->model('Auths');
+        checkrights($this->authmodel,'suppliers');
         $this->suppliermodel = $this->model('Supplier');
     }
 

@@ -3,7 +3,12 @@ class Books extends Controller
 {
     public function __construct()
     {
-        adminonly($_SESSION['userid'],$_SESSION['usertypeid']);
+        if(!isset($_SESSION['userid'])){
+            redirect('auth');
+            exit;
+        }
+        $this->authmodel = $this->model('Auths');
+        checkrights($this->authmodel,'books');
         $this->bookmodel = $this->model('Book');
     }
 

@@ -8,10 +8,13 @@ class Groups extends Controller
             exit();
         }
         $this->groupmodel = $this->model('Group');
+        $this->authmodel = $this->model('Auths');
+        // checkrights($this->authmodel,'books');
     }
 
     public function index()
     {
+        checkrights($this->authmodel,'groups');
         $groups = $this->groupmodel->GetGroups();
         $data = [
             'title' => 'Groups',
@@ -23,6 +26,7 @@ class Groups extends Controller
 
     public function add()
     {
+        checkrights($this->authmodel,'groups');
         $data = [
             'title' => 'Add Group',
             'id' => '',
@@ -91,6 +95,7 @@ class Groups extends Controller
 
     public function edit($id)
     {
+        checkrights($this->authmodel,'groups');
         $group = $this->groupmodel->GetGroup($id);
         $data = [
             'title' => 'Edit Group',
@@ -132,6 +137,7 @@ class Groups extends Controller
 
     public function members()
     {
+        checkrights($this->authmodel,'group members');
         $groups = $this->groupmodel->GetGroupMembers();
         $data = [
             'title' => 'Groups Members',
@@ -144,6 +150,7 @@ class Groups extends Controller
 
     public function manage($id)
     {
+        checkrights($this->authmodel,'group members');
         $groupmembers = $this->groupmodel->GetMembersByGroup($id);
         $students = $this->groupmodel->GetStudents();
         $groups = $this->groupmodel->GetGroups();

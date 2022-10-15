@@ -7,10 +7,8 @@ class Expenses extends Controller
             redirect('auth');
             exit();
         }
-        if((int)$_SESSION['usertypeid'] > 3){
-            redirect('auth/unauthorized');
-            exit();
-        }
+        $this->authmodel = $this->model('Auths');
+        checkrights($this->authmodel,'expenses');
         $this->expensemodel = $this->model('Expense');
     }
 

@@ -7,12 +7,13 @@ class Reports extends Controller
             redirect('auth');
             exit();
         endif;
-
+        $this->authmodel = $this->model('Auths');
         $this->reportmodel = $this->model('Report');
     }
 
     public function feepayments()
     {
+        checkrights($this->authmodel,'fee payments');
         $data = [
             'title' => 'Fee Payment Report',
             'has_datatable' => true,
@@ -48,6 +49,7 @@ class Reports extends Controller
 
     public function salesreport()
     {
+        checkrights($this->authmodel,'sales reports');
         $data = [
             'title' => 'Sales Report',
             'has_datatable' => true

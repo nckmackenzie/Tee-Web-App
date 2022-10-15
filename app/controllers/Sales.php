@@ -7,6 +7,8 @@ class Sales extends Controller
             redirect('auth/login');
             exit();
         }
+        $this->authmodel = $this->model('Auths');
+        checkrights($this->authmodel,'sales');
         $this->salemodel = $this->model('Sale');
         $this->exammodel = $this->model('Exam');
     }

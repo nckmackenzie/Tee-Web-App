@@ -7,6 +7,8 @@ class Students extends Controller
             redirect('auth');
             exit();
         }
+        $this->authmodel = $this->model('Auths');
+        checkrights($this->authmodel,'students');
         $this->studentmodel =  $this->model('Student');
     }
 

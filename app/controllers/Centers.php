@@ -6,9 +6,10 @@ class Centers extends Controller
         if(!isset($_SESSION['userid'])){
             redirect('auth');
             exit();
-        }else{
-            $this->centermodel = $this->model('Center');
         }
+        $this->authmodel = $this->model('Auths');
+        checkrights($this->authmodel,'centers');
+        $this->centermodel = $this->model('Center');
     }
 
     public function checkrights()

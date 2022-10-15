@@ -7,6 +7,8 @@ class Fees extends Controller
             redirect('auth');
             exit();
         }
+        $this->authmodel = $this->model('Auths');
+        checkrights($this->authmodel,'fee payments');
         $this->feemodel = $this->model('Fee');
     }
     

@@ -8,15 +8,13 @@ class Invoicereports extends Controller
             redirect('auth');
             exit();
         }
-        if((int)$_SESSION['usertypeid'] > 3){
-            redirect('auth/unauthorized');
-            exit();
-        }
+        $this->authmodel = $this->model('Auths');
         $this->reportmodel = $this->model('Invoicereport');
     }
 
     public function index()
     {
+        checkrights($this->authmodel,'invoice reports');
         $data = [
             'title' => 'Invoices Reports',
             'has_datatable' => true,
@@ -84,6 +82,7 @@ class Invoicereports extends Controller
     //invoice payments
     public function payments()
     {
+        checkrights($this->authmodel,'invoice payments');
         $data = [
             'title' => 'Invoices Payments',
             'has_datatable' => true,
@@ -148,6 +147,7 @@ class Invoicereports extends Controller
     //load view for supplier statement
     public function statement()
     {
+        checkrights($this->authmodel,'supplier statement');
         $data = [
             'title' => 'Supplier Statement',
             'has_datatable' => true,

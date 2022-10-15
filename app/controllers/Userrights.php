@@ -7,16 +7,13 @@ class Userrights extends Controller
             redirect('auth');
             exit;
         }
-        if((int)$_SESSION['usertypeid'] > 2){
-            redirect('auth/unauthorized');
-            exit;
-        }
-
+        $this->authmodel = $this->model('Auths');
         $this->rightsmodel = $this->model('Userright');
     }
 
     public function index()
     {
+        checkrights($this->authmodel,'user rights');
         $data = [
             'title' => 'User rights',
             'has_datatable' => false,
@@ -82,6 +79,7 @@ class Userrights extends Controller
     //clone user rights
     public function clone()
     {
+        checkrights($this->authmodel,'clone rights');
         $data = [
             'title' => 'Clone user rights',
             'has_datatable' => true,
