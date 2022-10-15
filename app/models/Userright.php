@@ -30,7 +30,7 @@ class Userright
                     f.MenuOrder,
                     u.access as access
                 FROM   `userrights` u join forms f on u.FormId = f.ID
-                WHERE   u.UserId = :usid AND f.Module <> 'Admin'";
+                WHERE   u.UserId = :usid ";
         $sql .= 'UNION ALL ';
         $sql .= "SELECT  
                     ID,
@@ -40,7 +40,7 @@ class Userright
                     MenuOrder,
                     0 as access
                 FROM  forms
-                WHERE (Module <> 'Admin') AND ID NOT IN (SELECT FormId FROM userrights WHERE (UserId = :usid))";
+                WHERE ID NOT IN (SELECT FormId FROM userrights WHERE (UserId = :usid))";
         if((!converttobool($_SESSION['ishead']))) :
             $sql .= " AND (ForCenter = 1) ";
         endif;
