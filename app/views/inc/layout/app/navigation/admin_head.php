@@ -34,6 +34,9 @@
                 <li>
                     <a href="<?php echo URLROOT;?>/suppliers">Suppliers</a>
                 </li>
+                <li>
+                    <a href="<?php echo URLROOT;?>/semisters">Semisters</a>
+                </li>
             </ul>
         </ul>
     </div>
