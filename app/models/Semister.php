@@ -61,4 +61,32 @@ class Semister
             return false;
         }
     }
+
+    public function GetSemister($id)
+    {
+        $this->db->query("SELECT * FROM semisters WHERE ID = :id");
+        $this->db->bind(':id',$id);
+        return $this->db->single();
+    }
+
+    public function Delete($id)
+    {
+        try {
+            $this->db->query('UPDATE semisters SET Deleted = 1 WHERE (ID = :id)'); 
+            $this->db->bind(':id',$id);
+            
+            if(!$this->db->execute()){
+                return false;
+            }else{
+                return true;
+            }
+            
+        } catch (PDOException $e) {
+            error_log($e->getMessage(),0);
+            return false;
+        } catch (Exception $e) {
+            error_log($e->getMessage(),0);
+            return false;
+        }
+    }
 }

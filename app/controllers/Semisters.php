@@ -90,4 +90,26 @@ class Semisters extends Controller
             exit;
         }
     }
+    
+    public function edit($id)
+    {
+        $semister = $this->semistermodel->GetSemister($id);
+        $data = [
+            'title' => 'Edit Semister',
+            'id' => $semister->ID,
+            'isedit' => true,
+            'semistername' => strtoupper($semister->SemisterName),
+            'startdate' => $semister->StartDate,
+            'enddate' => $semister->EndDate,
+            'has_error' => false,
+            'error' => '',
+        ];
+        $this->view('semisters/add',$data);
+        exit;
+    }
+
+    public function delete()
+    {
+        delete('semister',$this->semistermodel);
+    }
 }
