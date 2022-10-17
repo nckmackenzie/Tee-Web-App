@@ -8,6 +8,7 @@ class Users extends Controller {
        }
        $this->authmodel = $this->model('Auths');
        $this->usermodel = $this->model('User');
+       $this->reusemodel = $this->model('Reusable');
     }
 
     public function index()
@@ -16,7 +17,7 @@ class Users extends Controller {
        $data = [
         'title' => 'Users',
         'has_datatable' => true,
-        'users' => $this->usermodel->GetUsers()
+        'users' => $this->usermodel->GetUsers(),
        ];
        $this->view('users/index',$data);
     }
@@ -26,10 +27,12 @@ class Users extends Controller {
         checkrights($this->authmodel,'users');
         $data = [
             'title' => 'Add Users',
+            'centers' => $this->reusemodel->GetCenters(),
             'touched' => false,
             'isedit' => false,
             'id' => '',
             'userid' => '',
+            'center' => '',
             'username' => '',
             'contact' => '',
             'password' => '',
@@ -42,6 +45,8 @@ class Users extends Controller {
             'password_err' => '',
             'usertype_err' => '',
             'confirmpassword_err' => '',
+            'centers_err' => '',
+            'selected_centers' => [],
         ];
         $this->view('users/add',$data);
     }
@@ -111,10 +116,12 @@ class Users extends Controller {
             $data = [
                 'title' => $_POST['isedit'] == true ? 'Edit Users' : 'Add Users',
                 'id' => trim($_POST['id']),
+                'centers' => $this->reusemodel->GetCenters(),
                 'touched' => true,
                 'isedit' => converttobool($_POST['isedit']),
                 'username' => trim($_POST['username']),
                 'contact' => trim($_POST['contact']),
+                'center' => isset($_POST['centers']) ? $_POST['centers'] : '',
                 'password' => $_POST['isedit'] == true ? '' : $_POST['password'],
                 'usertype' => (int)$_POST['usertype'],
                 'confirmpassword' => $_POST['isedit'] == true ? '' : $_POST['confirmpassword'],
@@ -123,7 +130,9 @@ class Users extends Controller {
                 'contact_err' => '',
                 'password_err' => '',
                 'usertype_err' => '',
-                'confirmpassword_err' => '', 
+                'confirmpassword_err' => '',
+                'centers_err' => '', 
+                'selected_centers' => [],
             ];
 
            
@@ -154,8 +163,16 @@ class Users extends Controller {
                 $data['confirmpassword_err'] = 'Passwords do not match';  
             }
 
+            if(empty($data['center'])){
+                $data['centers_err'] = 'Select at least one center for this user';
+            }else{
+                for($i = 0; $i < count($data['center']); $i++){
+                    array_push($data['selected_centers'],$data['center'][$i]);
+                }
+            }
+
             if(!empty($data['username_err']) || !empty($data['password_err']) || !empty($data['confirmpassword_err']) || 
-               !empty($data['contact_err'])){
+               !empty($data['contact_err']) || !empty($data['centers_err'])){
                $this->view('users/add',$data);
                exit();
             }else{
@@ -181,11 +198,14 @@ class Users extends Controller {
     {
         checkrights($this->authmodel,'users');
         $user = $this->usermodel->GetUser($id);
+        $user_centers = $this->usermodel->GetUserCenters($id);
         $data = [
             'title' => 'Edit User',
+            'centers' => $this->reusemodel->GetCenters(),
             'touched' => false,
             'isedit' => true,
             'id' => $user->ID,
+            'center' => '',
             'username' => strtoupper($user->UserName),
             'contact' => $user->Contact,
             'usertype' => $user->UserTypeId,
@@ -193,8 +213,14 @@ class Users extends Controller {
             'username_err' => '',
             'contact_err' => '',
             'usertype_err' => '',
+            'centers_err' => '', 
+            'selected_centers' => [],
         ];
+        foreach($user_centers as $center){
+            array_push($data['selected_centers'], $center->CenterId);
+        }
         $this->view('users/add', $data);
+        exit;
     }
 
     //delete
