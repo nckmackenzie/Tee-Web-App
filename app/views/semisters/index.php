@@ -40,8 +40,8 @@
                                 <tr>
                                     <td class="d-none"><?php echo $semister->ID;?></td>
                                     <td><?php echo $semister->SemisterName;?></td>
-                                    <td><?php echo date('d-m-y',strtotime($sale->StartDate));?></td>
-                                    <td><?php echo date('d-m-y',strtotime($sale->EndDate));?></td>
+                                    <td><?php echo date('d-m-y',strtotime($semister->StartDate));?></td>
+                                    <td><?php echo date('d-m-y',strtotime($semister->EndDate));?></td>
                                     <td>
                                         <?php if((int)$_SESSION['usertypeid'] < 3 ): ?>
                                             <a href="<?php echo URLROOT;?>/semisters/edit/<?php echo $semister->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
