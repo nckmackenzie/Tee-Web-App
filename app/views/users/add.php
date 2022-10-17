@@ -78,6 +78,19 @@
                                 </div>
                             </div>
                             <?php endif; ?>
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="centers" class="form-label">Centers</label>
+                                    <select name="centers[]" id="centers" class="form-control form-control-sm select2 select2-multiple
+                                            <?php echo inputvalidation($data['center'],$data['centers_err'],$data['touched']);?>" 
+                                            data-toggle="select2" multiple="multiple" data-placeholder="Choose centers">
+                                        <?php foreach($data['centers'] as $center) : ?>
+                                            <option value="<?php echo $center->ID;?>" <?php echo in_array($center->ID,$data['selected_centers']) ? 'selected' : '';?>><?php echo $center->CenterName;?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <span class="invalid-feedback"><?php echo $data['centers_err'];?></span>
+                                </div>
+                            </div>
                             <?php if($data['isedit']) :?>
                                 <div class="col-12">
                                     <div class="form-check mb-2">
