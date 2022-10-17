@@ -78,8 +78,8 @@ class Auth extends Controller {
             }
 
             if(!empty($data['contact']) && !empty($data['center']) && 
-               !$this->authmodel->CheckUserAvailability($data['contact'], $data['center'],$data['id'])){
-                $data['contact_err'] = 'contact not available or user is deactivated';
+               !$this->authmodel->CheckUserAvailability($data['contact'], $data['center'])){
+                $data['contact_err'] = 'contact not available or user is restricted from accessing selected center';
             }
 
             if(!empty($data['contact_err']) || !empty($data['password_err']) || !empty($data['center_err'])){
@@ -103,18 +103,24 @@ class Auth extends Controller {
         $_SESSION['username'] = $user->UserName;
         $_SESSION['usertypeid'] = $user->UserTypeId;
         $_SESSION['usertype'] = $user->UserType;
-        if((int)$user->UserTypeId === 1){
-            $centerdetails = $this->authmodel->GetCenterDetails($center);
-            $_SESSION['ishead'] = converttobool($centerdetails[0]);
-            $_SESSION['centerid'] = (int)$center;
-            $_SESSION['centername'] = strtoupper($centerdetails[1]);
-            $_SESSION['examcenter'] = converttobool($centerdetails[2]);
-        }else{
-            $_SESSION['ishead'] = converttobool($user->IsHead);
-            $_SESSION['centerid'] = (int)$user->CenterId;
-            $_SESSION['centername'] = $user->CenterName;
-            $_SESSION['examcenter'] = converttobool($user->ExamCenter);
-        }
+
+        $centerdetails = $this->authmodel->GetCenterDetails($center);
+        $_SESSION['ishead'] = converttobool($centerdetails[0]);
+        $_SESSION['centerid'] = (int)$center;
+        $_SESSION['centername'] = strtoupper($centerdetails[1]);
+        $_SESSION['examcenter'] = converttobool($centerdetails[2]);
+        // if((int)$user->UserTypeId === 1){
+        //     $centerdetails = $this->authmodel->GetCenterDetails($center);
+        //     $_SESSION['ishead'] = converttobool($centerdetails[0]);
+        //     $_SESSION['centerid'] = (int)$center;
+        //     $_SESSION['centername'] = strtoupper($centerdetails[1]);
+        //     $_SESSION['examcenter'] = converttobool($centerdetails[2]);
+        // }else{
+        //     $_SESSION['ishead'] = converttobool($user->IsHead);
+        //     $_SESSION['centerid'] = (int)$user->CenterId;
+        //     $_SESSION['centername'] = $user->CenterName;
+        //     $_SESSION['examcenter'] = converttobool($user->ExamCenter);
+        // }
         flash('home_msg',null,'Login Success!',flashclass('toast','success'));
         redirect('home');
     }
