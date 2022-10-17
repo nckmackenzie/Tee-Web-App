@@ -168,4 +168,18 @@ class Fee
             return false;
         }
     }
+
+    public function GetFeeStructures()
+    {
+        $sql = 'SELECT 
+                    f.ID,
+                    ucase(s.SemisterName) As SemisterName,
+                    FORMAT(f.TotalAmount,2) As TotalAmount
+                FROM fee_structure f
+                     join semisters s on f.SemisterId = s.ID
+                WHERE 
+                  (f.Deleted = 0)
+                ORDER BY f.ID DESC';
+        return loadresultset($this->db->dbh,$sql,[]);
+    }
 }
