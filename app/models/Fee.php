@@ -182,4 +182,9 @@ class Fee
                 ORDER BY f.ID DESC';
         return loadresultset($this->db->dbh,$sql,[]);
     }
+
+    public function GetSemisters()
+    {
+        return loadresultset($this->db->dbh,'SELECT ID,UCASE(SemisterName) AS SemisterName FROM semisters WHERE Deleted = 0 ORDER BY SemisterName',[]);
+    }
 }
