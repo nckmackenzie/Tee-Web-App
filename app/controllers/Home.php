@@ -12,7 +12,7 @@ class Home extends Controller {
     {
         $data = [
            'title' => 'Dashboard',
-           'centers' => $this->reusemodel->GetCenters()
+           'centers' => $this->reusemodel->GetAuthorizedCenters()
         ];
         $this->view('home/index', $data);
     }
