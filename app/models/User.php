@@ -14,6 +14,17 @@ class User
         return $this->db->resultset();
     }
 
+    public function CheckUserAvailability($contact,$id)
+    {
+        $sql = 'SELECT COUNT(*) FROM users WHERE Contact = ? AND Deleted = 0 AND ID <> ?';
+        $usercount = getdbvalue($this->db->dbh,$sql,[$contact,$id]);
+        if((int)$usercount > 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     public function ChangeProfile($name)
     {
         $this->db->query("UPDATE users SET UserName= :uname WHERE ID= :id");

@@ -86,7 +86,7 @@ class Users extends Controller {
             if(empty($data['contact'])){
                 $data['contact_err'] = 'Please enter your contact';
             }else{
-                if($this->authmodel->CheckUserAvailability($data['contact'],$_SESSION['centerid'],$_SESSION['userid'])){
+                if(!$this->usermodel->CheckUserAvailability($data['contact'],$_SESSION['userid'])){
                     $data['contact_err'] = 'This contact is already available';
                 }
             }
@@ -144,7 +144,7 @@ class Users extends Controller {
             if(empty($data['contact'])){
                 $data['contact_err'] = 'Enter user contact';
             }else{
-                if(!$data['isedit'] && $this->authmodel->CheckUserAvailability($data['contact'],$_SESSION['centerid'],$data['id'])){
+                if(!$data['isedit'] && !$this->usermodel->CheckUserAvailability($data['contact'],$data['id'])){
                     $data['contact_err'] = 'Contact already exists';
                 }
             }
