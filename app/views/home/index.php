@@ -19,7 +19,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
    <?php endif; ?>
-   <?php if((int)$_SESSION['usertypeid'] === 1)  : ?>
+   
         <form action="<?php echo URLROOT;?>/home/changecenter" method="POST">
             <div class="row">
                 <div class="col-md-4 mb-2">
@@ -36,7 +36,7 @@
                 <button type="submit" class="btn btn-sm btn-primary">Change Center</button>
             </div>
         </form>
-    <?php endif; ?>
+    
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>                    
 <?php flash('home_msg','toast');?>
