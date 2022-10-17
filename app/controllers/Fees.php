@@ -157,4 +157,28 @@ class Fees extends Controller
         delete('fee',$this->feemodel);
         exit();
     }
+
+    public function structure()
+    {
+        $data = [
+            'title' => 'Fee structures',
+            'structures' => $this->feemodel->GetFeeStructures(),
+            'has_datatable' => true,
+        ];
+        $this->view('fees/structure',$data);
+        exit;
+    }
+
+    public function addstructure()
+    {
+        $data = [
+            'title' => 'Add Fee Structure',
+            'semisters' => $this->feemodel->GetSemisters(),
+            'id' => '',
+            'amount' => 0,
+            'semister' => ''
+        ];
+        $this->view('fees/addstructure',$data);
+        exit;
+    }
 }
