@@ -136,3 +136,7 @@ export function validateDate(start, end) {
   }
   return true;
 }
+
+export async function getRequest(url) {
+  return await sendHttpRequest(url, 'GET', undefined, {}, alerBox);
+}
