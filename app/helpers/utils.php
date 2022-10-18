@@ -360,7 +360,7 @@ function checkuserrights($con,$user,$form){
 
 function checkrights($model,$form){
     if((int)$_SESSION['usertypeid'] > 1 && !$model->CheckRights($form)){
-        redirect('users/deniedaccess');
+        redirect('auth/unauthorized');
         exit;
     }
 }
