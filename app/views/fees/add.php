@@ -7,9 +7,7 @@
         <div class="col-12">
             <div class="page-title-box">
                 <div class="page-title-right"></div>
-                <h4 class="page-title">
-                    <a href="<?php echo URLROOT;?>/fees" class="btn btn-sm btn-warning ms-2">&larr; Back</a>
-                </h4>
+                <h4 class="page-title"></h4>
             </div>
         </div>
     </div>     
@@ -47,7 +45,7 @@
                                 </select>
                                 <span class="invalid-feedback"><?php echo $data['semister_err'];?></span>
                             </div>
-                            <div class="col-md-6 mb-3 d-none gnc">
+                            <div class="col-md-6 mb-3">
                                 <label for="semister">Semister</label>
                                 <select name="semister" id="semister" class="form-select form-select-sm 
                                 <?php echo inputvalidation($data['semister'],$data['semister_err'],$data['touched']);?>">
@@ -57,35 +55,35 @@
                                     <?php endforeach; ?>   
                                 </select>
                             </div>
-                            <div class="col-md-3 mb-3 d-none gnc">
+                            <div class="col-md-3 mb-3">
                                 <label for="balancebf">Balance B/f</label>            
                                 <input type="text" name="balancebf" id="balancebf" 
                                        class="form-control form-control-sm" 
                                        value="<?php echo $data['balancebf'];?>"
                                        readonly>
                             </div>
-                            <div class="col-md-3 mb-3 d-none gnc">
+                            <div class="col-md-3 mb-3">
                                 <label for="totalfee">Semister Fees</label>            
                                 <input type="text" name="semisterfees" id="semisterfees" 
                                        class="form-control form-control-sm" 
                                        value="<?php echo $data['semisterfees'];?>"
                                        readonly>
                             </div>
-                            <div class="col-md-6 mb-3 d-none gnc">
+                            <div class="col-md-4 mb-3">
                                 <label for="totalpaid">Total Paid</label>            
                                 <input type="text" name="totalpaid" id="totalpaid" 
                                        class="form-control form-control-sm" 
                                        value="<?php echo $data['totalpaid'];?>"
                                        readonly>        
                             </div>
-                            <div class="col-md-6 mb-3 d-none gnc">
+                            <div class="col-md-4 mb-3">
                                 <label for="balance">Balance</label>            
                                 <input type="text" name="balance" id="balance" 
                                        class="form-control form-control-sm" 
                                        value="<?php echo $data['balance'];?>"
                                        readonly>        
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label for="amount">Amount Paid</label>
                                 <input type="number" name="amount" id="amount" 
                                        class="form-control form-control-sm mandatory 
@@ -127,7 +125,7 @@
                                        placeholder="eg XM45221255X">
                                 <span class="invalid-feedback"><?php echo $data['reference_err'];?></span>
                             </div>
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <label for="narration">Narration</label>
                                 <input type="text" name="narration" id="narration" 
                                        class="form-control form-control-sm"
