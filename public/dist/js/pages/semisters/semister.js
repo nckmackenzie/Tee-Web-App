@@ -3,3 +3,4 @@ import { btnClick } from '../utils.js';
 
 datatable('semisters');
 btnClick('.btndel', 'id');
+btnClick('.btnclose', 'cid');
