@@ -23,18 +23,13 @@
                 </a>
             </li>
 
-            <?php if((int)$_SESSION['usertypeid'] < 3 && (int)$_SESSION['ishead'] === 1){
+            <?php if((int)$_SESSION['usertypeid'] === 1 && (int)$_SESSION['ishead'] === 1){
                 include_once 'navigation/admin_head.php';
-            }elseif ((int)$_SESSION['usertypeid'] < 3 && (int)$_SESSION['ishead'] != 1){
+            }elseif ((int)$_SESSION['usertypeid'] === 1 && (int)$_SESSION['ishead'] != 1){
                 include_once 'navigation/admin_center.php';
-            }elseif ((int)$_SESSION['usertypeid'] === 3 || (int)$_SESSION['usertypeid'] === 4 && converttobool($_SESSION['ishead'])) {
+            }else{
                 include_once 'navigation/user_head.php';
-            }elseif((int)$_SESSION['usertypeid'] === 3 || intval($_SESSION['usertypeid'] === 4) && (int)$_SESSION['ishead'] != 1) {
-                // include_once 'navigation/user_center.php';
-                include_once 'navigation/user_head.php';
-            }elseif((int)$_SESSION['usertypeid'] === 5){
-                include_once 'navigation/examiner.php';
-            }            
+            }         
             ?>
         </ul><!-- End Sidebar -->
         <div class="clearfix"></div>
