@@ -9,8 +9,8 @@ class Fee
 
     public function GetFees()
     {
-        $this->db->query('SELECT * FROM vw_feepayments WHERE CenterId = :cid');
-        $this->db->bind(':cid',(int)$_SESSION['centerid']);
+        $this->db->query('SELECT * FROM vw_feepayments');
+        // $this->db->bind(':cid',(int)$_SESSION['centerid']);
         return $this->db->resultset();
     }
 
