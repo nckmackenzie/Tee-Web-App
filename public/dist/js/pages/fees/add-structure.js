@@ -14,12 +14,14 @@ const form = document.querySelector('#structureForm');
 const saveBtn = document.querySelector('.save');
 const semisterSelect = document.querySelector('#semister');
 const amountInput = document.querySelector('#amount');
+const idInput = document.querySelector('#id');
 
 //validate semister
 semisterSelect.addEventListener('change', async function (e) {
   if (!e.target.value || e.target.value === '') return;
+  const idVal = +idInput.value;
   const semisterFeeDefined = await getRequest(
-    `${HOST_URL}/fees/checksemister?semister=${e.target.value}`
+    `${HOST_URL}/fees/checksemister?semister=${e.target.value}&id=${idVal}`
   );
   if (+semisterFeeDefined > 0) {
     this.classList.add('is-invalid');
