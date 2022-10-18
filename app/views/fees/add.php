@@ -45,7 +45,45 @@
                                         <option value="<?php echo $student->ID;?>" <?php selectdCheck($data['student'],$student->ID);?>><?php echo $student->StudentName;?></option>
                                     <?php endforeach; ?>
                                 </select>
-                                <span class="invalid-feedback"><?php echo $data['student_err'];?></span>
+                                <span class="invalid-feedback"><?php echo $data['semister_err'];?></span>
+                            </div>
+                            <div class="col-md-6 mb-3 d-none gnc">
+                                <label for="semister">Semister</label>
+                                <select name="semister" id="semister" class="form-select form-select-sm 
+                                <?php echo inputvalidation($data['semister'],$data['semister_err'],$data['touched']);?>">
+                                    <option value="">Select semister</option>
+                                    <?php foreach($data['semisters'] as $semister) : ?>
+                                        <option value="<?php echo $semister->ID;?>" <?php selectdCheck($data['semister'],$semister->ID);?>><?php echo $semister->SemisterName;?></option>
+                                    <?php endforeach; ?>   
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3 d-none gnc">
+                                <label for="balancebf">Balance B/f</label>            
+                                <input type="text" name="balancebf" id="balancebf" 
+                                       class="form-control form-control-sm" 
+                                       value="<?php echo $data['balancebf'];?>"
+                                       readonly>
+                            </div>
+                            <div class="col-md-3 mb-3 d-none gnc">
+                                <label for="totalfee">Semister Fees</label>            
+                                <input type="text" name="semisterfees" id="semisterfees" 
+                                       class="form-control form-control-sm" 
+                                       value="<?php echo $data['semisterfees'];?>"
+                                       readonly>
+                            </div>
+                            <div class="col-md-6 mb-3 d-none gnc">
+                                <label for="totalpaid">Total Paid</label>            
+                                <input type="text" name="totalpaid" id="totalpaid" 
+                                       class="form-control form-control-sm" 
+                                       value="<?php echo $data['totalpaid'];?>"
+                                       readonly>        
+                            </div>
+                            <div class="col-md-6 mb-3 d-none gnc">
+                                <label for="balance">Balance</label>            
+                                <input type="text" name="balance" id="balance" 
+                                       class="form-control form-control-sm" 
+                                       value="<?php echo $data['balance'];?>"
+                                       readonly>        
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="amount">Amount Paid</label>
