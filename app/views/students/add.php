@@ -100,6 +100,12 @@
                                        placeholder="eg test@example.com">
                                 <span class="invalid-feedback"><?php echo $data['email_err'];?></span>
                             </div>
+                            <div class="col-12">
+                                <div class="form-check mb-2">
+                                    <input type="checkbox" name="guidance" class="form-check-input" id="guidance" <?php checkstate($data['guidance']);?>>
+                                    <label class="form-check-label" for="guidance">Guidance & Counselling</label>
+                                </div>
+                            </div>
                         </div><!-- /.row -->
                         <div class="d-grid d-md-block">
                             <input type="hidden" name="id" value="<?php echo $data['id'];?>">

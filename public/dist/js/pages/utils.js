@@ -126,3 +126,13 @@ export function resetLoadingState(btn, text) {
   btn.disabled = false;
   btn.textContent = text;
 }
+
+export function validateDate(start, end) {
+  if (new Date(start.value).getTime() > new Date(end.value).getTime()) {
+    start.classList.add('is-invalid');
+    start.nextSibling.nextSibling.textContent =
+      'Date cannot be greather than end date';
+    return false;
+  }
+  return true;
+}

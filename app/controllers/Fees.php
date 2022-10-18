@@ -8,12 +8,12 @@ class Fees extends Controller
             exit();
         }
         $this->authmodel = $this->model('Auths');
-        checkrights($this->authmodel,'fee payments');
         $this->feemodel = $this->model('Fee');
     }
     
     public function index()
     {
+        checkrights($this->authmodel,'fee payments');
         $data = [
             'title' => 'Fees',
             'has_datatable' => true,
@@ -24,6 +24,7 @@ class Fees extends Controller
 
     public function add()
     {
+        checkrights($this->authmodel,'fee payments');
         $data = [
             'title' => 'Add fee payment',
             'students' => $this->feemodel->GetStudents(),
@@ -125,6 +126,7 @@ class Fees extends Controller
     }
     public function edit($id)
     {
+        checkrights($this->authmodel,'fee payments');
         $payment = $this->feemodel->GetPayment($id);
         $data = [
             'title' => 'Edit fee payment',
@@ -156,5 +158,31 @@ class Fees extends Controller
     {
         delete('fee',$this->feemodel);
         exit();
+    }
+
+    public function structure()
+    {
+        checkrights($this->authmodel,'fee structure');
+        $data = [
+            'title' => 'Fee structures',
+            'structures' => $this->feemodel->GetFeeStructures(),
+            'has_datatable' => true,
+        ];
+        $this->view('fees/structure',$data);
+        exit;
+    }
+
+    public function addstructure()
+    {
+        checkrights($this->authmodel,'fee structure');
+        $data = [
+            'title' => 'Add Fee Structure',
+            'semisters' => $this->feemodel->GetSemisters(),
+            'id' => '',
+            'amount' => 0,
+            'semister' => ''
+        ];
+        $this->view('fees/addstructure',$data);
+        exit;
     }
 }

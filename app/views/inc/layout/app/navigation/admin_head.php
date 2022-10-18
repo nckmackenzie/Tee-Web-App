@@ -34,6 +34,9 @@
                 <li>
                     <a href="<?php echo URLROOT;?>/suppliers">Suppliers</a>
                 </li>
+                <li>
+                    <a href="<?php echo URLROOT;?>/semisters">Semisters</a>
+                </li>
             </ul>
         </ul>
     </div>
@@ -121,6 +124,9 @@
     </a>
     <div class="collapse" id="sidebarFinance">
         <ul class="side-nav-second-level">
+            <li>
+                <a href="<?php echo URLROOT;?>/fees/structure">Fee Structure</a>
+            </li>
             <li>
                 <a href="<?php echo URLROOT;?>/fees">Fee Payments</a>
             </li>
