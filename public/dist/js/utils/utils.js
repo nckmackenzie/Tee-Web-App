@@ -18,3 +18,13 @@ export function getSelectedText(sel) {
 export function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
+
+export function dateNotGreaterToday(dateElm) {
+  if (new Date(dateElm.value).getTime() > new Date().getTime()) {
+    dateElm.classList.add('is-invalid');
+    dateElm.nextSibling.nextSibling.textContent =
+      'Invalid payment date selected';
+    return false;
+  }
+  return true;
+}
