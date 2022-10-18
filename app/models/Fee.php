@@ -185,7 +185,7 @@ class Fee
 
     public function GetSemisters()
     {
-        return loadresultset($this->db->dbh,'SELECT ID,UCASE(SemisterName) AS SemisterName FROM semisters WHERE Deleted = 0 ORDER BY SemisterName',[]);
+        return loadresultset($this->db->dbh,'SELECT ID,UCASE(SemisterName) AS SemisterName FROM semisters WHERE Deleted = 0 AND Closed = 0 ORDER BY SemisterName',[]);
     }
 
     public function CheckSemisterDefined($semister,$id)
