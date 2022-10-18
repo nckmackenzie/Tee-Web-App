@@ -191,6 +191,7 @@ class Fees extends Controller
     {
         if($_SERVER['REQUEST_METHOD'] === 'GET'){
             $semister = isset($_GET['semister']) && !empty(trim($_GET['semister'])) ? trim($_GET['semister']) : '';
+            $id = isset($_GET['id']) && !empty(trim($_GET['id'])) ? (int)trim($_GET['id']) : '';
 
             if(empty($semister)){
                 http_response_code(400);
@@ -198,7 +199,7 @@ class Fees extends Controller
                 exit;
             }
             //get
-            echo json_encode($this->feemodel->CheckSemisterDefined($semister));
+            echo json_encode($this->feemodel->CheckSemisterDefined($semister,$id));
    
         }else{
             redirect('auth/forbidden');
@@ -224,7 +225,7 @@ class Fees extends Controller
                 echo json_encode(['message' => 'Fill all required fields']);
                 exit;
             }
-            if((int)$this->feemodel->CheckSemisterDefined($data['semister']) > 0) {
+            if((int)$this->feemodel->CheckSemisterDefined($data['semister'],$data['id']) > 0) {
                 http_response_code(400);
                 echo json_encode(['message' => 'Semister fee structure already defined']);
                 exit;
@@ -242,6 +243,49 @@ class Fees extends Controller
         }else{
             redirect('auth/forbidden');
             exit;
+        }
+    }
+
+    public function editstructure($id)
+    {
+        checkrights($this->authmodel,'fee structure');
+        $feestructure = $this->feemodel->GetFeeStructure($id);
+        $data = [
+            'title' => 'Edit Fee Structure',
+            'semisters' => $this->feemodel->GetSemisters(),
+            'id' => $feestructure->ID,
+            'isedit' => true,
+            'amount' => $feestructure->TotalAmount,
+            'semister' => $feestructure->SemisterId
+        ];
+        $this->view('fees/addstructure',$data);
+        exit;
+    }
+
+    public function deletestructure()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = trim($_POST['id']);
+    
+            if(empty($id)){
+                flash('structure_msg',null,'Unable to get selected fee structure',flashclass('alert','danger'));
+                redirect('fees/structure');
+                exit();
+            }
+                  
+            if(!$this->feemodel->DeleteStructure($id)){
+                flash('structure_msg',null,'Unable to delete selected fee structure',flashclass('alert','danger'));
+                redirect('fees/structure');
+                exit();
+            }
+    
+            flash('structure_flash_msg',null,'Deleted successfully',flashclass('toast','success'));
+            redirect('fees/structure');
+            exit();
+    
+        }else{
+            redirect('auth/forbidden');
+            exit();
         }
     }
 }

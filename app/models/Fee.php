@@ -188,9 +188,9 @@ class Fee
         return loadresultset($this->db->dbh,'SELECT ID,UCASE(SemisterName) AS SemisterName FROM semisters WHERE Deleted = 0 ORDER BY SemisterName',[]);
     }
 
-    public function CheckSemisterDefined($id)
+    public function CheckSemisterDefined($semister,$id)
     {
-        return getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM fee_structure WHERE (SemisterId = ?) AND (Deleted = 0)',[$id]);
+        return getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM fee_structure WHERE (SemisterId = ?) AND (Deleted = 0) AND (ID <> ?)',[$semister, $id]);
     }
 
     public function CreateUpdateStructure($data)
@@ -220,6 +220,24 @@ class Fee
         } catch (Exception $e) {
             error_log($e->getMessage(),0);
             return false;
+        }
+    }
+
+    public function GetFeeStructure($id)
+    {
+        $this->db->query('SELECT * FROM fee_structure WHERE (ID = :id)');
+        $this->db->bind(':id',$id);
+        return  $this->db->single();
+    }
+
+    public function DeleteStructure($id)
+    {
+        $this->db->query('UPDATE fee_structure SET Deleted  = 1 WHERE ID = :id');
+        $this->db->bind(':id',$id);
+        if(!$this->db->execute()){
+            return false;
+        }else{
+            return true;
         }
     }
 }
