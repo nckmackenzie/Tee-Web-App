@@ -16,7 +16,7 @@ class Userright
                                  UCASE(UserName) As UserName 
                           FROM users 
                           WHERE (Active = 1) AND (Deleted = 0) 
-                                AND (UserTypeId > 3) AND (CenterId = :cid)');
+                                AND (UserTypeId > 1)');
         $this->db->bind(':cid',(int)$_SESSION['centerid']);
         return $this->db->resultset();
     }
