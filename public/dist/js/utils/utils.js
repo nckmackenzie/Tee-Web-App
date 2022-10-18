@@ -28,3 +28,14 @@ export function dateNotGreaterToday(dateElm) {
   }
   return true;
 }
+
+export function clearValues() {
+  const inputs = document.querySelectorAll('.form-control');
+  const selects = document.querySelectorAll('.form-select');
+  if (inputs.length > 0) {
+    inputs.forEach(input => (input.value = ''));
+  }
+  if (selects.length > 0) {
+    selects.forEach(select => (select.value = ''));
+  }
+}
