@@ -109,6 +109,7 @@
                                     <option value="1" <?php selectdCheck($data['paymethod'],1);?>>Cash</option>
                                     <option value="2" <?php selectdCheck($data['paymethod'],2);?>>Cheque</option>
                                     <option value="3" <?php selectdCheck($data['paymethod'],3);?>>Bank</option>
+                                    <option value="4" <?php selectdCheck($data['paymethod'],4);?>>Mpesa</option>
                                 </select>
                                 <span class="invalid-feedback"></span>
                             </div>
