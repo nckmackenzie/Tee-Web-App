@@ -374,3 +374,10 @@ function alert($errormsg)
         </div>
     ';
 }
+//number formatter
+function numberFormat($number){
+    if(strpos($number,',') !== false){
+       return str_replace(',','',$number);
+    }
+    return $number;
+}
