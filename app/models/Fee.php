@@ -187,4 +187,14 @@ class Fee
     {
         return loadresultset($this->db->dbh,'SELECT ID,UCASE(SemisterName) AS SemisterName FROM semisters WHERE Deleted = 0 ORDER BY SemisterName',[]);
     }
+
+    public function CheckSemisterDefined($id)
+    {
+        $count =  getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM fee_structure WHERE (SemisterId = ?) AND (Deleted = 0)',[$id]);
+        if((int)$count > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
