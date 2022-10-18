@@ -42,7 +42,7 @@ class Fee
 
     public function GetReceiptNo()
     {
-        return getuniqueid($this->db->dbh,'ReceiptNo','fees_payment',(int)$_SESSION['centerid']);
+        return getuniqueid($this->db->dbh,'ReceiptNo','fees_payment',$_SESSION['centerid'],false);
     }
 
     public function CheckRefExists($ref,$id)
@@ -69,44 +69,43 @@ class Fee
         return [$account->AccountName,$account->AccountTypeId];
     }
 
-    public function CreateUpdate($data)
-    {
+    function CheckStudentSemister($student,$semister){
+        return getdbvalue($this->db->dbh,
+                         'SELECT COUNT(*) FROM payment_summary WHERE (StudentId=?) AND (SemisterId=?)',[$student,$semister]);
+    }
+
+    function Save($data){
         try {
             $this->db->dbh->beginTransaction();
 
-            if(!$data['isedit']){
-                $sql = 'INSERT INTO fees_payment (PaymentDate,ReceiptNo,StudentId,AmountPaid,GlAccountId,
-                                                  PaymentMethodId,Reference,Narration,CenterId) 
-                        VALUES(:pdate,:receipt,:student,:amount,:account,:paymethod,:reference,:narr,:cid)';
-            }else{
-                $sql = 'UPDATE fees_payment SET PaymentDate=:pdate,ReceiptNo=:receipt,StudentId=:student,AmountPaid
-                                                =:amount,GlAccountId=:account,PaymentMethodId=:paymethod,Reference=:reference
-                                                ,Narration=:narr 
-                        WHERE (ID = :id)';
-            }
+            $sql = 'INSERT INTO fees_payment (PaymentDate,ReceiptNo,StudentId,SemisterId,AmountPaid,GlAccountId,
+                                              PaymentMethodId,Reference,Narration) 
+                    VALUES(:pdate,:receipt,:student,:semister,:amount,:account,:paymethod,:reference,:narr)';
+  
             $this->db->query($sql);
-            $this->db->bind(':pdate',!empty($data['pdate']) ? $data['pdate'] : null);
-            $this->db->bind(':receipt',!empty($data['receiptno']) ? $data['receiptno'] : null);
-            $this->db->bind(':student',!empty($data['student']) ? $data['student'] : null);
-            $this->db->bind(':amount',!empty($data['amount']) ? $data['amount'] : null);
-            $this->db->bind(':account',!empty($data['account']) ? $data['account'] : null);
-            $this->db->bind(':paymethod',!empty($data['paymethod']) ? $data['paymethod'] : null);
-            $this->db->bind(':reference',!empty($data['reference']) ? strtolower($data['reference']) : null);
-            $this->db->bind(':narr',!empty($data['narration']) ? strtolower($data['narration']) : null);
-            if(!$data['isedit']){
-                $this->db->bind(':cid',$_SESSION['centerid']);
-            }else{
-                $this->db->bind(':id',$data['id']);
-            }
+            $this->db->bind(':pdate',$data['pdate']);
+            $this->db->bind(':receipt',$data['receiptno']);
+            $this->db->bind(':student',$data['student']);
+            $this->db->bind(':semister',$data['semister']);
+            $this->db->bind(':amount', $data['amount']);
+            $this->db->bind(':account',$data['account']);
+            $this->db->bind(':paymethod',$data['paymethod']);
+            $this->db->bind(':reference',$data['reference']);
+            $this->db->bind(':narr',$data['narration']);
             $this->db->execute();
-            $tid = !$data['isedit'] ? $this->db->dbh->lastInsertId() : $data['id'];
+            $tid = $this->db->dbh->lastInsertId();
 
-            if($data['isedit']){
-                $this->db->query('DELETE FROM ledger WHERE TransactionType = 5 AND TransactionId = :id');
-                $this->db->bind(':id',$data['id']);
-                $this->db->execute(); 
+            //if first record for semister
+            if((int)$this->CheckStudentSemister($data['student'],$data['semister']) === 0){
+                $this->db->query('INSERT INTO payment_summary (StudentId,SemisterId,TotalDue) 
+                                  VALUES(:student,:semister,:total)');
+                $this->db->bind(':student',$data['student']);
+                $this->db->bind(':semister',$data['semister']);
+                $this->db->bind(':total',$data['balancebf'] + $data['semisterfees']);
+                $this->db->execute();
             }
 
+            
             savetoledger($this->db->dbh,$data['pdate'],$this->GetAccountDetails($data['account'])[0],0,$data['amount'],
                          strtolower($data['narration']),$this->GetAccountDetails($data['account'])[1],5,$tid,$_SESSION['centerid']);
             if((int)$data['paymethod'] === 1){
@@ -123,12 +122,22 @@ class Fee
                 return true;
             }
             
-        } catch (\Exception $e) {
+        }catch (PDOException $e) {
             if(!$this->db->dbh->inTransaction()){
                 $this->db->dbh->rollback();
             }
-            throw $e;
+            error_log($e->getMessage(),0);
             return false;
+        }catch (Exception $e) {
+            error_log($e->getMessage(),0);
+            return false;
+        }
+    }
+
+    public function CreateUpdate($data)
+    {
+        if(!$data['isedit']){
+            return $this->Save($data);
         }
     }
 
@@ -239,5 +248,14 @@ class Fee
         }else{
             return true;
         }
+    }
+
+    public function GetFeePaymentDetails($student,$semister)
+    {
+        $balancebf = getdbvalue($this->db->dbh,'SELECT fn_getbalancebf(?,?) AS bf',[$student,$semister]);
+        $semfees = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(TotalAmount),0) FROM fee_structure WHERE (ID = ?) AND (Deleted = 0)',[$semister]);
+        $sempaid = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(AmountPaid),0) AS Paid FROM fees_payment 
+                                              WHERE (StudentId = ?) AND (SemisterId = ?) AND (Deleted = 0)',[$student,$semister]); 
+        return [$balancebf,$semfees,$sempaid];
     }
 }

@@ -46,92 +46,109 @@ class Fees extends Controller
             'paymethod' => '',
             'reference' => '',
             'narration' => '',
-            'pdate_err' => '',
-            'student_err' => '',
-            'amount_err' => '',
-            'account_err' => '',
-            'paymethod_err' => '',
-            'reference_err' => '',
-            'semister_err' => ''
         ];
         $this->view('fees/add',$data);
         exit();
     }
 
+    public function getfeepaymentdetails()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET')
+        {
+            $data = [
+                'semister' => isset($_GET['semister']) && !empty(trim($_GET['semister'])) ? (int)trim($_GET['semister']) : null,
+                'student' => isset($_GET['student']) && !empty(trim($_GET['student'])) ? (int)trim($_GET['student']) : null,
+            ];
+
+            if(is_null($data['semister']) || is_null($data['student'])) exit;
+            $feepaymentdetails = $this->feemodel->GetFeePaymentDetails($data['student'],$data['semister']);
+            $results = [
+                'balanceBf' => $feepaymentdetails[0],
+                'semisterFee' => $feepaymentdetails[1],
+                'semisterPaid' => $feepaymentdetails[2],
+            ];
+
+            echo json_encode($results);
+
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
+
     public function createupdate()
     {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
+            //extract json data from POST request
+            $fields = json_decode(file_get_contents('php://input'));
+            
             $data = [
-                'title' => !converttobool(trim($_POST['isedit'])) ? 'Add fee payment' : 'Edit fee payment',
+                'title' => !converttobool(trim($fields->isedit)) ? 'Add fee payment' : 'Edit fee payment',
                 'students' => $this->feemodel->GetStudents(),
                 'accounts' => $this->feemodel->GetAccounts(),
-                'touched' => true,
-                'isedit' => converttobool(trim($_POST['isedit'])),
-                'id' => trim($_POST['id']),
-                'pdate' => !empty(trim($_POST['pdate'])) ? date('Y-m-d', strtotime(trim($_POST['pdate']))) : '',
-                'receiptno' => !empty(trim($_POST['receiptno'])) ? trim($_POST['receiptno']) : '',
-                'student' => !empty($_POST['student']) ? trim($_POST['student']) : '',
-                'amount' => !empty(trim($_POST['amount'])) ? floatval(trim($_POST['amount'])) : '',
-                'account' => !empty($_POST['account']) ? trim($_POST['account']) : '',
-                'paymethod' => !empty($_POST['paymethod']) ? trim($_POST['paymethod']) : '',
-                'reference' => !empty(trim($_POST['reference'])) ? trim($_POST['reference']) : '',
-                'narration' => !empty(trim($_POST['narration'])) ? trim($_POST['narration']) : '',
-                'pdate_err' => '',
-                'student_err' => '',
-                'amount_err' => '',
-                'account_err' => '',
-                'paymethod_err' => '',
-                'reference_err' => '',
-                'semister_err' => ''
+                'isedit' => converttobool(trim($fields->isedit)),
+                'id' => !empty(trim($fields->id)) ? trim($fields->id) : null,
+                'pdate' => !empty(trim($fields->pdate)) ? date('Y-m-d', strtotime(trim($fields->pdate))) : null,
+                'receiptno' => $this->feemodel->GetReceiptNo(),
+                'student' => !empty($fields->student) ? (int)trim($fields->student) : null,
+                'semister' => !empty($fields->semister) ? (int)trim($fields->semister) : null,
+                'balancebf' => '',
+                'semisterfees' => '',
+                'totalpaid' => '',
+                'balance' => '',
+                'amount' => !empty(trim($fields->amount)) ? floatval(numberFormat(trim($fields->amount))) : null,
+                'account' => !empty($fields->account) ? (int)trim($fields->account) : null,
+                'paymethod' => !empty($fields->paymethod) ? (int)trim($fields->paymethod) : null,
+                'reference' => !empty(trim($fields->reference)) ? strtolower(trim($fields->reference)) : null,
+                'narration' => !empty(trim($fields->narration)) ? strtolower(trim($fields->narration)) : null,
             ];
+            //validation
+            if(is_null($data['pdate']) || is_null($data['student']) || is_null($data['semister']) 
+               || is_null($data['amount']) || is_null($data['account']) || is_null($data['paymethod']) || is_null($data['reference'])){
+                http_response_code(400);
+                echo json_encode(['message' => 'Provide all required fields.']);
+                exit;
+            }
+            if(!$data['isedit']){
+                $feepaymentdetails = $this->feemodel->GetFeePaymentDetails($fields->student,$fields->semister);
+                $data['balancebf'] = $feepaymentdetails[0];
+                $data['semisterfees'] = $feepaymentdetails[1];
+                $data['totalpaid'] = $feepaymentdetails[2];
+                $data['balance'] = (floatval($data['balancebf']) + floatval($data['semisterfees'])) - (floatval($data['totalpaid']) + floatval($data['amount']));
+            }
+            
 
-            if(empty($data['pdate'])){
-                $data['pdate_err'] = 'Select date';
-            }
-            if(!empty($data['pdate']) && !validatedate($data['pdate'])){
-                $data['pdate_err'] = 'Invalid date selected';
-            }
-            if(empty($data['student'])){
-                $data['student_err'] = 'Select student';
-            }
-            if(empty($data['amount'])){
-                $data['amount_err'] = 'Enter amount';
-            }
-            if(empty($data['account'])){
-                $data['account_err'] = 'Select G/L account';
-            }
-            if(empty($data['paymethod'])){
-                $data['paymethod_err'] = 'Select payment method';
-            }
-            if(empty($data['reference'])){
-                $data['reference_err'] = 'Enter payment reference';
-            }
-            if(!empty($data['reference']) && !$this->feemodel->CheckRefExists($data['reference'],$data['id'])){
-                $data['reference_err'] = 'Enter payment reference';
-            }
-
-            if(!empty($data['pdate_err']) || !empty($data['amount_err']) || !empty($data['account_err']) 
-               || !empty($data['student_err']) || !empty($data['reference_err']) || !empty($data['paymethod_err'])){
-                $this->view('fees/add',$data);
-                exit();
+            if(!is_null($data['reference']) && !$this->feemodel->CheckRefExists($data['reference'],$data['id'])){
+                http_response_code(400);
+                echo json_encode(['message' => 'Reference no already exists.']);
+                exit;
             }
 
             if(!$this->feemodel->CreateUpdate($data)){
-                flash('fee_msg',null,'Unable to save transaction. Retry or contact admin',flashclass('alert','danger'));
-                redirect('fees');
-                exit();
+                http_response_code(500);
+                echo json_encode(['message' => 'Unable to save transaction. Retry or contact admin']);
+                exit;
             }
 
-            flash('fee_flash_msg',null,'Saved successfully',flashclass('toast','success'));
-            redirect('fees');
-            exit();
+            echo json_encode(['success' => true]);
+            exit;
         
         }else{
             redirect('auth/forbidden');
             exit();
         }
     }
+
+    public function newid()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            echo json_encode($this->feemodel->GetReceiptNo());
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
+
     public function edit($id)
     {
         checkrights($this->authmodel,'fee payments');
@@ -152,13 +169,6 @@ class Fees extends Controller
             'paymethod' => $payment->PaymentMethodId,
             'reference' => strtoupper($payment->Reference),
             'narration' => isset($payment->Narration) ? strtoupper($payment->Narration) : '',
-            'pdate_err' => '',
-            'student_err' => '',
-            'amount_err' => '',
-            'account_err' => '',
-            'paymethod_err' => '',
-            'reference_err' => '',
-            'semister_err' => '',
         ];
         $this->view('fees/add',$data);
         exit();
