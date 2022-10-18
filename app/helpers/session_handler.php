@@ -27,7 +27,7 @@
               echo '<div class="toast-container position-fixed bottom-0 end-0 z-index-toast p-3">
                       <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                         <div class="'.$class.'">
-                          <img src="'.URLROOT.'./img/other/info_24px.png" class="rounded me-2" alt="Action Icon">
+                          <img src="'.URLROOT.'/img/other/info_24px.png" class="rounded me-2" alt="Action Icon">
                           <strong class="me-auto text-white">'.SITENAME.'</strong>
                           <small class="text-white">Now</small>
                           <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
