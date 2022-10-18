@@ -37,14 +37,14 @@
                         <tbody>
                             <?php foreach($data['structures'] as $structure) : ?>
                                 <tr>
-                                    <td class="d-none"><?php echo $structures->ID;?></td>
-                                    <td><?php echo $structures->SemisterName;?></td>
-                                    <td><?php echo number_format($semister->TotalAmount,2);?></td>
+                                    <td class="d-none"><?php echo $structure->ID;?></td>
+                                    <td><?php echo $structure->SemisterName;?></td>
+                                    <td><?php echo $structure->TotalAmount;?></td>
                                     <td>
                                         <?php if((int)$_SESSION['usertypeid'] < 3 ): ?>
                                             <a href="<?php echo URLROOT;?>/fees/editstructure/<?php echo $structure->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
                                             <button class="action-icon btn text-danger btndel"
-                                                    data-id="<?php echo $structures->ID;?>" 
+                                                    data-id="<?php echo $structure->ID;?>" 
                                                     data-bs-toggle="modal" 
                                                     data-bs-target="#centermodal"
                                                         ><i class="mdi mdi-delete"></i></button>
