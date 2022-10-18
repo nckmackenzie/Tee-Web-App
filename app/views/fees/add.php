@@ -13,6 +13,7 @@
     </div>     
     <!-- end page title --> 
     <div class="row">
+        <div class="col-12" id="alerBox"></div>
         <div class="col-md-8 mx-auto">
             <div class="card">
                 <div class="card-header"><?php echo $data['title'];?></div>
