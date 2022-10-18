@@ -179,10 +179,69 @@ class Fees extends Controller
             'title' => 'Add Fee Structure',
             'semisters' => $this->feemodel->GetSemisters(),
             'id' => '',
-            'amount' => 0,
+            'isedit' => false,
+            'amount' => '',
             'semister' => ''
         ];
         $this->view('fees/addstructure',$data);
         exit;
+    }
+
+    public function checksemister()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $semister = isset($_GET['semister']) && !empty(trim($_GET['semister'])) ? trim($_GET['semister']) : '';
+
+            if(empty($semister)){
+                http_response_code(400);
+                echo json_encode(['message' => 'Select semister']);
+                exit;
+            }
+            //get
+            echo json_encode($this->feemodel->CheckSemisterDefined($semister));
+   
+        }else{
+            redirect('auth/forbidden');
+            exit;
+        }
+    }
+
+    public function createupdatestructure()
+    {
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $fields = json_decode(file_get_contents('php://input')); //get json data
+            $data = [
+                'title' => converttobool($fields->isedit) ? 'Edit Fee Structure' : 'Add Fee Structure',
+                'semisters' => $this->feemodel->GetSemisters(),
+                'id' => $fields->id,
+                'isedit' => converttobool($fields->isedit),
+                'amount' => !empty(trim($fields->amount)) ? floatval(trim($fields->amount)) : NULL,
+                'semister' => !empty(trim($fields->semister)) ? trim($fields->semister) : NULL,
+            ];
+
+            if(is_null($data['amount']) || is_null($data['semister'])) {
+                http_response_code(400);
+                echo json_encode(['message' => 'Fill all required fields']);
+                exit;
+            }
+            if((int)$this->feemodel->CheckSemisterDefined($data['semister']) > 0) {
+                http_response_code(400);
+                echo json_encode(['message' => 'Semister fee structure already defined']);
+                exit;
+            }
+
+            if(!$this->feemodel->CreateUpdateStructure($data)) {
+                http_response_code(500);
+                echo json_encode(['message' => 'Unable to save fee structure. Retry or contact admin']);
+                exit;
+            }
+
+            echo json_encode(['success' => true]);
+            exit;
+          
+        }else{
+            redirect('auth/forbidden');
+            exit;
+        }
     }
 }

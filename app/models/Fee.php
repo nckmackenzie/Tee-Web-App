@@ -190,10 +190,35 @@ class Fee
 
     public function CheckSemisterDefined($id)
     {
-        $count =  getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM fee_structure WHERE (SemisterId = ?) AND (Deleted = 0)',[$id]);
-        if((int)$count > 0){
-            return true;
-        }else{
+        return getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM fee_structure WHERE (SemisterId = ?) AND (Deleted = 0)',[$id]);
+    }
+
+    public function CreateUpdateStructure($data)
+    {
+        try {
+            if($data['isedit']){
+                $this->db->query('UPDATE fee_structure SET SemisterId=:semid,TotalAmount=:amount 
+                                  WHERE (ID = :id)');
+            }else{
+                $this->db->query('INSERT INTO fee_structure (SemisterId,TotalAmount) VALUES(:semid,:amount)');
+            }
+            $this->db->bind(':semid',(int)$data['semister']);
+            $this->db->bind(':amount',$data['amount']);
+            if($data['isedit']){
+                $this->db->bind(':id',$data['id']);
+            }
+
+            if(!$this->db->execute()){
+                return false;
+            }else{
+                return true;
+            }
+
+        } catch (PDOException $e) {
+            error_log($e->getMessage(),0);
+            return false;
+        } catch (Exception $e) {
+            error_log($e->getMessage(),0);
             return false;
         }
     }
