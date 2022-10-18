@@ -17,7 +17,7 @@
             <div class="card">
                 <div class="card-header"><?php echo $data['title'];?></div>
                 <div class="card-body">
-                    <form action="<?php echo URLROOT;?>/fees/createupdate" method="post" autocomplete="off">
+                    <form action="<?php echo URLROOT;?>/fees/createupdate" method="post" autocomplete="off" id="feePayForm">
                         <div class="row">
                             <div class="col-md-3 mb-3">
                                 <label for="receiptno">Receipt No</label>
