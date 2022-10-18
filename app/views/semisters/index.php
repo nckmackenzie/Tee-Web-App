@@ -14,6 +14,7 @@
     <!-- end page title --> 
 <?php flash('semister_msg','alert'); ?>
 <?php DeleteModal(URLROOT .'/semisters/delete','centermodal','Are you sure you want to delete this semister','id') ;?>
+<?php DeleteModal(URLROOT.'/semisters/close','closemodal','Are your you want to close this semister?','cid'); ?>
 
 <div class="row">
     <div class="col-12">
@@ -43,13 +44,19 @@
                                     <td><?php echo date('d-m-y',strtotime($semister->StartDate));?></td>
                                     <td><?php echo date('d-m-y',strtotime($semister->EndDate));?></td>
                                     <td>
-                                        <?php if((int)$_SESSION['usertypeid'] < 3 ): ?>
-                                            <a href="<?php echo URLROOT;?>/semisters/edit/<?php echo $semister->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                            <button class="action-icon btn text-danger btndel"
-                                                    data-id="<?php echo $semister->ID;?>" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#centermodal"
-                                                        ><i class="mdi mdi-delete"></i></button>
+                                        <?php if(!converttobool($semister->Closed)) : ?>
+                                            <?php if((int)$_SESSION['usertypeid'] < 3 ): ?>
+                                                <a href="<?php echo URLROOT;?>/semisters/edit/<?php echo $semister->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                <button class="action-icon btn text-warning btnclose" 
+                                                        data-id="<?php echo $semister->ID;?>"
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#closemodal"><i class="mdi mdi-cancel"></i></button>
+                                                <button class="action-icon btn text-danger btndel"
+                                                        data-id="<?php echo $semister->ID;?>" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#centermodal"
+                                                            ><i class="mdi mdi-delete"></i></button>
+                                            <?php endif; ?>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
