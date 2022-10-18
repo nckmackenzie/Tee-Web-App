@@ -89,4 +89,25 @@ class Semister
             return false;
         }
     }
+
+    public function Close($id)
+    {
+        try {
+                $this->db->query('UPDATE semisters SET Closed = 1 WHERE (ID = :id)'); 
+                $this->db->bind(':id',$id);
+                
+                if(!$this->db->execute()){
+                    return false;
+                }else{
+                    return true;
+                }
+                
+            } catch (PDOException $e) {
+                error_log($e->getMessage(),0);
+                return false;
+            } catch (Exception $e) {
+                error_log($e->getMessage(),0);
+                return false;
+            }
+        }
 }

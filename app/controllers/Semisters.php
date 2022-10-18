@@ -112,4 +112,32 @@ class Semisters extends Controller
     {
         delete('semister',$this->semistermodel);
     }
+
+    public function close()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = trim($_POST['id']);
+    
+            if(empty($id)){
+                flash('semister_msg',null,'Unable to get selected semister',flashclass('alert','danger'));
+                redirect('semisters');
+                exit();
+            }
+    
+    
+            if(!$this->semistermodel->Close($id)){
+                flash('semister_msg',null,'Unable to delete selected semister',flashclass('alert','danger'));
+                redirect('semisters');
+                exit();
+            }
+    
+            flash('semister_flash_msg',null,'Deleted successfully',flashclass('toast','success'));
+            redirect('semisters');
+            exit();
+    
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
