@@ -29,12 +29,18 @@ class Fees extends Controller
             'title' => 'Add fee payment',
             'students' => $this->feemodel->GetStudents(),
             'accounts' => $this->feemodel->GetAccounts(),
+            'semisters' => $this->feemodel->GetSemisters(),
             'touched' => false,
             'isedit' => false,
             'id' => '',
             'pdate' => '',
             'receiptno' => $this->feemodel->GetReceiptNo(),
             'student' => '',
+            'semister' => '',
+            'balancebf' => '',
+            'semisterfees' => '',
+            'totalpaid' => '',
+            'balance' => '',
             'amount' => '',
             'account' => '',
             'paymethod' => '',
@@ -46,6 +52,7 @@ class Fees extends Controller
             'account_err' => '',
             'paymethod_err' => '',
             'reference_err' => '',
+            'semister_err' => ''
         ];
         $this->view('fees/add',$data);
         exit();
@@ -76,6 +83,7 @@ class Fees extends Controller
                 'account_err' => '',
                 'paymethod_err' => '',
                 'reference_err' => '',
+                'semister_err' => ''
             ];
 
             if(empty($data['pdate'])){
@@ -132,6 +140,7 @@ class Fees extends Controller
             'title' => 'Edit fee payment',
             'students' => $this->feemodel->GetStudents(),
             'accounts' => $this->feemodel->GetAccounts(),
+            'semisters' => $this->feemodel->GetSemisters(),
             'touched' => false,
             'isedit' => true,
             'id' => $payment->ID,
@@ -149,6 +158,7 @@ class Fees extends Controller
             'account_err' => '',
             'paymethod_err' => '',
             'reference_err' => '',
+            'semister_err' => '',
         ];
         $this->view('fees/add',$data);
         exit();
