@@ -27,7 +27,7 @@
                                 <select name="semister" id="semister" class="form-select form-select-sm mandatory">
                                     <option value="" selected disabled>Select semister</option>
                                     <?php foreach($data['semisters'] as $semister) : ?>
-                                        <option value="<?php echo $semister->ID;?>"><?php echo $semister->SemisterName;?></option>
+                                        <option value="<?php echo $semister->ID;?>" <?php selectdCheck($data['semister'],$semister->ID) ;?>><?php echo $semister->SemisterName;?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <span class="invalid-feedback"></span>
