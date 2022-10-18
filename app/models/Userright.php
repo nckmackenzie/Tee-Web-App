@@ -24,7 +24,7 @@ class Userright
     function RightsQuery(){
         $sql = "SELECT 	
                     u.FormId as ID,
-                    f.FormName,
+                    UCASE(f.FormName) AS FormName,
                     f.Module,
                     f.ModuleId,
                     f.MenuOrder,
@@ -34,7 +34,7 @@ class Userright
         $sql .= 'UNION ALL ';
         $sql .= "SELECT  
                     ID,
-                    FormName,
+                    UCASE(FormName) AS FormName,
                     Module,
                     ModuleId,
                     MenuOrder,
