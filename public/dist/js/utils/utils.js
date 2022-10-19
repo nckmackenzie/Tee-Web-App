@@ -1,3 +1,4 @@
+import { HOST_URL } from '../pages/utils.js';
 export const loadingButton = (btn, text) => {
   const html = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ${text}...`;
   btn.disabled = true;
@@ -38,4 +39,8 @@ export function clearValues() {
   if (selects.length > 0) {
     selects.forEach(select => (select.value = ''));
   }
+}
+
+export function redirect(page) {
+  window.location.href = `${HOST_URL}/${page}`;
 }
