@@ -31,8 +31,8 @@ export function dateNotGreaterToday(dateElm) {
 }
 
 export function clearValues() {
-  const inputs = document.querySelectorAll('.form-control');
-  const selects = document.querySelectorAll('.form-select');
+  const inputs = document.querySelectorAll('input');
+  const selects = document.querySelectorAll('select');
   if (inputs.length > 0) {
     inputs.forEach(input => (input.value = ''));
   }
