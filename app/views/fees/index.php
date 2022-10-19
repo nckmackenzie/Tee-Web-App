@@ -44,7 +44,7 @@
                                         <td><?php echo $fee->StudentName;?></td>
                                         <td><?php echo $fee->AmountPaid;?></td>
                                         <td>
-                                            <?php if((int)$_SESSION['usertypeid'] <3 ) : ?>
+                                            <?php if((int)$_SESSION['usertypeid'] <3 && (strtotime($fee->CurDateTime) - strtotime($fee->UpdatedOn)) < 86400) : ?>
                                                 <a href="<?php echo URLROOT;?>/fees/edit/<?php echo $fee->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
                                                 <button class="action-icon btn text-danger btndel"
                                                         data-id="<?php echo $fee->ID;?>" 
