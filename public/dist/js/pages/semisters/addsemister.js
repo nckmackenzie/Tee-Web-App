@@ -10,6 +10,7 @@ import {
   displayAlert,
   HOST_URL,
 } from '../utils.js';
+import { clearValues, redirect } from '../../utils/utils.js';
 
 const sdateInput = document.getElementById('startdate');
 const edateInput = document.getElementById('enddate');
@@ -26,7 +27,12 @@ form.addEventListener('submit', async function (e) {
   resetLoadingState(saveBtn, 'Save');
   if (res && res.success) {
     displayAlert(alerBox, 'Saved successfully', 'success');
-    mandatoryFields.forEach(field => (field.value = '')); //reset form controls
+    clearValues();
+    // if (document.getElementById('isedit').value) {
+    //   redirect('semisters');
+    // } else {
+    //   clearValues(); //reset form controls
+    // }
   }
 });
 
