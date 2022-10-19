@@ -158,18 +158,28 @@ class Fees extends Controller
             'students' => $this->feemodel->GetStudents(),
             'accounts' => $this->feemodel->GetAccounts(),
             'semisters' => $this->feemodel->GetSemisters(),
-            'touched' => false,
             'isedit' => true,
             'id' => $payment->ID,
             'pdate' => $payment->PaymentDate,
             'receiptno' => $payment->ReceiptNo,
             'student' => $payment->StudentId,
+            'semister' => $payment->SemisterId,
+            'balancebf' => '',
+            'semisterfees' => '',
+            'totalpaid' => '',
+            'balance' => '',
             'amount' => $payment->AmountPaid,
             'account' => $payment->GlAccountId,
             'paymethod' => $payment->PaymentMethodId,
             'reference' => strtoupper($payment->Reference),
             'narration' => isset($payment->Narration) ? strtoupper($payment->Narration) : '',
         ];
+        //get balances
+        $feepaymentdetails = $this->feemodel->GetFeePaymentDetails($payment->StudentId,$payment->SemisterId);
+        $data['balancebf'] = $feepaymentdetails[0];
+        $data['semisterfees'] = $feepaymentdetails[1];
+        $data['totalpaid'] = $feepaymentdetails[2] - $payment->AmountPaid;
+        $data['balance'] = (floatval($data['balancebf']) + floatval($data['semisterfees'])) - floatval($data['totalpaid']);
         $this->view('fees/add',$data);
         exit();
     }

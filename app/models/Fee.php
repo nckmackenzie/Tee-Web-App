@@ -252,8 +252,8 @@ class Fee
 
     public function GetFeePaymentDetails($student,$semister)
     {
-        $balancebf = getdbvalue($this->db->dbh,'SELECT fn_getbalancebf(?,?) AS bf',[$student,$semister]);
-        $semfees = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(TotalAmount),0) FROM fee_structure WHERE (ID = ?) AND (Deleted = 0)',[$semister]);
+        $balancebf = getdbvalue($this->db->dbh,'SELECT IFNULL(fn_getbalancebf(?,?),0) AS bf',[$student,$semister]);
+        $semfees = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(TotalAmount),0) FROM fee_structure WHERE (SemisterId = ?) AND (Deleted = 0)',[$semister]);
         $sempaid = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(AmountPaid),0) AS Paid FROM fees_payment 
                                               WHERE (StudentId = ?) AND (SemisterId = ?) AND (Deleted = 0)',[$student,$semister]); 
         return [$balancebf,$semfees,$sempaid];
