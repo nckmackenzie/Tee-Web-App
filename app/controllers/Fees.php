@@ -90,8 +90,8 @@ class Fees extends Controller
                 'id' => !empty(trim($fields->id)) ? trim($fields->id) : null,
                 'pdate' => !empty(trim($fields->pdate)) ? date('Y-m-d', strtotime(trim($fields->pdate))) : null,
                 'receiptno' => $this->feemodel->GetReceiptNo(),
-                'student' => !empty($fields->student) ? (int)trim($fields->student) : null,
-                'semister' => !empty($fields->semister) ? (int)trim($fields->semister) : null,
+                'student' => converttobool(trim($fields->isedit)) ? (int)trim($fields->studentid) : (!empty($fields->student) ? (int)trim($fields->student) : null),
+                'semister' => converttobool(trim($fields->isedit)) ? (int)trim($fields->semisterid) : (!empty($fields->semister) ? (int)trim($fields->semister) : null),
                 'balancebf' => '',
                 'semisterfees' => '',
                 'totalpaid' => '',
@@ -109,10 +109,10 @@ class Fees extends Controller
                 echo json_encode(['message' => 'Provide all required fields.']);
                 exit;
             }
+            $feepaymentdetails = $this->feemodel->GetFeePaymentDetails($data['student'],$data['semister']);
+            $data['balancebf'] = $feepaymentdetails[0];
+            $data['semisterfees'] = $feepaymentdetails[1];
             if(!$data['isedit']){
-                $feepaymentdetails = $this->feemodel->GetFeePaymentDetails($fields->student,$fields->semister);
-                $data['balancebf'] = $feepaymentdetails[0];
-                $data['semisterfees'] = $feepaymentdetails[1];
                 $data['totalpaid'] = $feepaymentdetails[2];
                 $data['balance'] = (floatval($data['balancebf']) + floatval($data['semisterfees'])) - (floatval($data['totalpaid']) + floatval($data['amount']));
             }

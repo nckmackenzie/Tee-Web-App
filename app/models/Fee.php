@@ -74,6 +74,18 @@ class Fee
                          'SELECT COUNT(*) FROM payment_summary WHERE (StudentId=?) AND (SemisterId=?)',[$student,$semister]);
     }
 
+    //check if other payments for same semister exists
+    function CheckExistingSemisterPayment($student,$semister,$id)
+    {
+        $sql = 'SELECT COUNT(*) AS PaymentCount FROM fees_payment WHERE (StudentId = ?) AND (SemisterId = ?) AND (ID < ?)';
+        $count = getdbvalue($this->db->dbh,$sql,[$student,$semister,$id]);
+        if((int)$count > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     function Save($data){
         try {
             $this->db->dbh->beginTransaction();
@@ -134,10 +146,74 @@ class Fee
         }
     }
 
+    function Update($data)
+    {
+        try {
+            $this->db->dbh->beginTransaction();
+
+            $sql = 'UPDATE fees_payment SET PaymentDate=:pdate,AmountPaid=:amount,GlAccountId=:account,
+                                            PaymentMethodId=:paymethod,Reference=:reference,Narration=:narr 
+                    WHERE (ID = :id)';
+  
+            $this->db->query($sql);
+            $this->db->bind(':pdate',$data['pdate']);
+            $this->db->bind(':amount', $data['amount']);
+            $this->db->bind(':account',$data['account']);
+            $this->db->bind(':paymethod',$data['paymethod']);
+            $this->db->bind(':reference',$data['reference']);
+            $this->db->bind(':narr',$data['narration']);
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+           
+
+            //if first record for semister
+            if(!$this->CheckExistingSemisterPayment($data['student'],$data['semister'],$data['id'])){
+                $this->db->query('UPDATE payment_summary SET TotalDue = :total 
+                                  WHERE (StudentId = :student) AND (SemisterId = :semister)');
+                $this->db->bind(':total',$data['balancebf'] + $data['semisterfees']);
+                $this->db->bind(':student',$data['student']);
+                $this->db->bind(':semister',$data['semister']);
+                $this->db->execute();
+            }
+
+            $this->db->query('DELETE FROM ledger WHERE (TransactionType = 5) AND (TransactionId = :id)');
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+            
+            savetoledger($this->db->dbh,$data['pdate'],$this->GetAccountDetails($data['account'])[0],0,$data['amount'],
+                         strtolower($data['narration']),$this->GetAccountDetails($data['account'])[1],5,$data['id'],$_SESSION['centerid']);
+            if((int)$data['paymethod'] === 1){
+                savetoledger($this->db->dbh,$data['pdate'],'cash at hand',$data['amount'],0,
+                         strtolower($data['narration']),3,5,$data['id'],$_SESSION['centerid']);
+            }else{
+                savetoledger($this->db->dbh,$data['pdate'],'cash at bank',$data['amount'],0,
+                         strtolower($data['narration']),3,5,$data['id'],$_SESSION['centerid']);
+            }
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+            
+        }catch (PDOException $e) {
+            if(!$this->db->dbh->inTransaction()){
+                $this->db->dbh->rollback();
+            }
+            error_log($e->getMessage(),0);
+            return false;
+        }catch (Exception $e) {
+            error_log($e->getMessage(),0);
+            return false;
+        }
+    }
+
     public function CreateUpdate($data)
     {
         if(!$data['isedit']){
             return $this->Save($data);
+        }else {
+            return $this->Update($data);
         }
     }
 
