@@ -42,6 +42,8 @@ form.addEventListener('submit', async function (e) {
     displayAlert(alerBox, 'Saved successfully', 'success');
     clearValues();
     receiptNoInput.value = await getNewId();
+    studentSelect.disabled = false;
+    semisterSelect.disabled = false;
   }
 });
 
