@@ -36,7 +36,7 @@
                             <div class="col-md-5 mb-3">
                                 <label for="student">Student</label>
                                 <select name="student" id="student" 
-                                        class="form-select form-select-sm mandatory">
+                                        class="form-select form-select-sm mandatory" <?php echo $data['isedit'] ? 'disabled' : '';?>>
                                     <option value="" selected disabled>Select student</option>
                                     <?php foreach($data['students'] as $student) : ?>
                                         <option value="<?php echo $student->ID;?>" <?php selectdCheck($data['student'],$student->ID);?>><?php echo $student->StudentName;?></option>
@@ -46,7 +46,9 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="semister">Semister</label>
-                                <select name="semister" id="semister" class="form-select form-select-sm mandatory">
+                                <select name="semister" id="semister" 
+                                        class="form-select form-select-sm mandatory"
+                                        <?php echo $data['isedit'] ? 'disabled' : '';?>>
                                     <option value="">Select semister</option>
                                     <?php foreach($data['semisters'] as $semister) : ?>
                                         <option value="<?php echo $semister->ID;?>" <?php selectdCheck($data['semister'],$semister->ID);?>><?php echo $semister->SemisterName;?></option>
@@ -132,6 +134,8 @@
                         <div class="d-grid d-md-block">
                             <input type="hidden" name="id" value="<?php echo $data['id'];?>">
                             <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>">
+                            <input type="hidden" name="studentid" value="<?php echo $data['student'];?>">
+                            <input type="hidden" name="semisterid" value="<?php echo $data['semister'];?>">
                             <button type="submit" class="btn btn-sm btn-primary save">Save</button>
                         </div>
                     </form>
