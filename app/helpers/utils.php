@@ -167,6 +167,15 @@ function savetoledger($con,$date,$account,$debit,$credit,$narration,$accountId,$
     $stmt->execute([$date,$account,$debit,$credit,$narration,$accountId,$type,$tid,$center]);
 }
 
+//save to bank
+function savebankposting($con,$date,$bank,$debit,$credit,$reference,$narration,$type,$tid,$center){
+    $sql = "INSERT INTO bankpostings (TransactionDate,BankId,Debit,Credit,Reference,Narration,
+                                      TransactionType,TransactionId,CenterId) 
+            VALUES(?,?,?,?,?,?,?,?,?)";
+    $stmt = $con->prepare($sql);
+    $stmt->execute([$date,$bank,$debit,$credit,$reference,$narration,$type,$tid,$center]);
+}
+
 //disable other center edit
 function checkcenter($center){
     if(intval($_SESSION['centerid']) !== intval($center)){
