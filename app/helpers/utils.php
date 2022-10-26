@@ -168,12 +168,12 @@ function savetoledger($con,$date,$account,$debit,$credit,$narration,$accountId,$
 }
 
 //save to bank
-function savebankposting($con,$date,$bank,$debit,$credit,$reference,$narration,$type,$tid,$center){
-    $sql = "INSERT INTO bankpostings (TransactionDate,BankId,Debit,Credit,Reference,Narration,
+function savebankposting($con,$date,$ismpesa,$bank,$debit,$credit,$reference,$narration,$type,$tid,$center){
+    $sql = "INSERT INTO bankpostings (TransactionDate,IsMpesa,BankId,Debit,Credit,Reference,Narration,
                                       TransactionType,TransactionId,CenterId) 
             VALUES(?,?,?,?,?,?,?,?,?)";
     $stmt = $con->prepare($sql);
-    $stmt->execute([$date,$bank,$debit,$credit,$reference,$narration,$type,$tid,$center]);
+    $stmt->execute([$date,$ismpesa,$bank,$debit,$credit,$reference,$narration,$type,$tid,$center]);
 }
 
 //disable other center edit
