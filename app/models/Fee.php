@@ -239,6 +239,16 @@ class Fee
             $this->db->bind(':id',$id);
             $this->db->execute(); 
 
+            $this->db->query('SELECT StudentId,SemisterId FROM fees_payment WHERE ID = :id');
+            $this->db->bind(':id',$id);
+            $paydetails = $this->db->single();
+            if(!$this->CheckExistingSemisterPayment($paydetails->StudentId,$paydetails->SemisterId,$id)){
+                $this->db->query('DELETE FROM payment_summary WHERE StudentId = :student AND SemisterId = :semister');
+                $this->db->bind(':student',$paydetails->StudentId);
+                $this->db->bind(':semister',$paydetails->SemisterId);
+                $this->db->execute();
+            }
+
             if(!$this->db->dbh->commit()){
                 return false;
             }else{
