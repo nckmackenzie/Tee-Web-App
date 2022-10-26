@@ -82,4 +82,29 @@ class Banks extends Controller
             exit;
         }
     }
+
+    public function edit($id)
+    {
+        $bank = $this->bankmodel->GetBank($id);
+        if(empty($bank)){
+            flash('bank_msg',null,'Transaction seems to be deleted',flashclass('alert','danger'));
+            redirect('banks');
+            exit;
+        }
+        $data = [
+            'title' => 'Edit bank',
+            'id' => $bank->ID,
+            'isedit' => true,
+            'bankname' => strtoupper($bank->BankName),
+            'accountno' => $bank->AccountNo,
+        ];
+        $this->view('banks/add',$data);
+        exit;
+    }
+
+    public function delete()
+    {
+        delete('bank',$this->bankmodel,true);
+        exit;
+    }
 }

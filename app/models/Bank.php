@@ -53,10 +53,88 @@ class Bank
         }
     }
 
+    function update($data){
+        try {
+
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('UPDATE banks SET BankName =:bname,AccountNo=:accno
+                              WHERE (ID = :id)');
+            $this->db->bind(':bname',$data['bankname']);
+            $this->db->bind(':accno',$data['accountno']);
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+            
+        } catch (PDOException $e) {
+            if($this->db->dbh->inTransaction()){
+                $this->db->dbh->rollback();
+            }
+            error_log($e->getMessage(),0);
+            return false;
+        }
+    }
+
     public function CreateUpdate($data)
     {
         if(!$data['isedit']){
             return $this->save($data);
+        }else{
+            return $this->update($data);
+        }
+    }
+
+    public function GetBank($id)
+    {
+        $this->db->query('SELECT * FROM banks WHERE (ID = :id) AND (Deleted = 0)');
+        $this->db->bind(':id',$id);
+        return $this->db->single();
+    }
+
+    public function ValidateDelete($id)
+    {
+        $bankcount = getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM bankpostings 
+                                                WHERE (BankId = ?) AND (TransactionType <> ?) AND (Deleted = 0)',[$id,8]);
+        if((int)$bankcount > 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public function Delete($id)
+    {
+        try {
+
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('UPDATE banks SET Deleted = 1
+                              WHERE (ID = :id)');
+            $this->db->bind(':id',$id);
+            $this->db->execute();
+
+            $this->db->query('UPDATE bankpostings SET Deleted = 1
+                              WHERE (BankId = :id)');
+            $this->db->bind(':id',$id);
+            $this->db->execute();
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+            
+        } catch (PDOException $e) {
+            if($this->db->dbh->inTransaction()){
+                $this->db->dbh->rollback();
+            }
+            error_log($e->getMessage(),0);
+            return false;
         }
     }
 }
