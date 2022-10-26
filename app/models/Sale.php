@@ -200,6 +200,8 @@ class Sale
                 savetoledger($this->db->dbh,$data['pdate'],'cash at hand',$data['paid'],0,$desc,3,1,$tid,$_SESSION['centerid']);
             }else{
                 savetoledger($this->db->dbh,$data['pdate'],'cash at bank',$data['paid'],0,$desc,3,1,$tid,$_SESSION['centerid']);
+                savebankposting($this->db->dbh,$data['pdate'],$data['paymethod'] === 2 ? 1 : 0,null,$data['paid'],
+                                0,$data['reference'],$desc,1,$tid,$_SESSION['centerid']);
             }
 
             if(!$this->db->dbh->commit()){
@@ -248,6 +250,10 @@ class Sale
             $this->db->execute();
 
             $this->db->query('DELETE FROM ledger WHERE TransactionType = 1 AND TransactionId = :id');
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
+            $this->db->query('DELETE FROM bankpostings WHERE TransactionType = 1 AND TransactionId = :id');
             $this->db->bind(':id',$data['id']);
             $this->db->execute();
 
@@ -315,6 +321,8 @@ class Sale
                 savetoledger($this->db->dbh,$data['pdate'],'cash at hand',$data['paid'],0,$desc,3,1,$data['id'],$_SESSION['centerid']);
             }else{
                 savetoledger($this->db->dbh,$data['pdate'],'cash at bank',$data['paid'],0,$desc,3,1,$data['id'],$_SESSION['centerid']);
+                savebankposting($this->db->dbh,$data['pdate'],$data['paymethod'] === 2 ? 1 : 0,null,$data['paid'],
+                                0,$data['reference'],$desc,1,$data['id'],$_SESSION['centerid']);
             }
 
             if(!$this->db->dbh->commit()){
