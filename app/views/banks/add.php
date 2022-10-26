@@ -20,7 +20,7 @@
             <div class="card">
                 <div class="card-header"><?php echo $data['title'];?></div>
                 <div class="card-body">
-                    <form action="" id="add-bank" autocomplete="off">
+                    <form action="" id="addbank" autocomplete="off">
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="bankname">Bank Name</label>
@@ -38,19 +38,21 @@
                                        value="<?php echo $data['accountno'];?>">
                                 <span class="invalid-feedback"></span>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="openingbal">Opening Balance</label>
-                                <input type="number" class="form-control form-control-sm" 
-                                       name="openingbal" id="openingbal"
-                                       placeholder="200000">
-                                <span class="invalid-feedback"></span>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="asof">As Of</label>
-                                <input type="date" class="form-control form-control-sm" 
-                                       name="asof" id="asof"
-                                <span class="invalid-feedback"></span>
-                            </div>
+                            <?php if(!$data['isedit']) : ?>
+                                <div class="col-md-6 mb-3">
+                                    <label for="openingbal">Opening Balance</label>
+                                    <input type="number" class="form-control form-control-sm" 
+                                        name="openingbal" id="openingbal"
+                                        placeholder="200000">
+                                    <span class="invalid-feedback"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="asof">As Of</label>
+                                    <input type="date" class="form-control form-control-sm" 
+                                        name="asof" id="asof">
+                                    <span class="invalid-feedback"></span>
+                                </div>
+                            <?php endif; ?>
                         </div>
                         <div class="d-grid d-md-block">
                             <button type="submit" class="btn btn-sm btn-primary save">Save</button>
@@ -63,5 +65,6 @@
         </div>
     </div>                    
 </div> <!-- container -->
-<?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>                    
+<?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>  
+<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/banks/add.js"></script>                  
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
