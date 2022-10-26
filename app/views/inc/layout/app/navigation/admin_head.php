@@ -37,6 +37,9 @@
                 <li>
                     <a href="<?php echo URLROOT;?>/semisters">Semisters</a>
                 </li>
+                <li>
+                    <a href="<?php echo URLROOT;?>/banks">Banks</a>
+                </li>
             </ul>
         </ul>
     </div>
