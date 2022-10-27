@@ -46,6 +46,7 @@ class Sales extends Controller
             'discount' => '',
             'net' => '',
             'paid' => '',
+            'deliveryfee' => 0,
             'balance' => '',
             'table' => [],
             'students' => [],
@@ -116,10 +117,11 @@ class Sales extends Controller
                 'pdate' => !empty($header->pdate) ? date('Y-m-d',strtotime($header->pdate)) : '',
                 'saletype' => !empty($header->saleType) ? $header->saleType : '',
                 'buyer' => !empty($header->buyer) ? $header->buyer : '',
-                'paymethod' => !empty($header->paymethod) ? $header->paymethod : '',
+                'paymethod' => !empty($header->paymethod) ? (int)$header->paymethod : '',
                 'reference' => !empty($header->reference) ? $header->reference : '',
                 'subtotal' => !empty($header->subtotal) ? floatval($header->subtotal) : '',
                 'discount' => !empty($header->discount) ? $header->discount : 0,
+                'deliveryfee' => !empty($header->deliveryfee) ? floatval($header->deliveryfee) : 0,
                 'net' => !empty($header->net) ? floatval($header->net) : '',
                 'paid' => !empty($header->paid) ? floatval($header->paid) : '',
                 'balance' => !empty($header->balance) ? floatval($header->balance) : '',
@@ -148,7 +150,7 @@ class Sales extends Controller
                 exit;
             }
 
-            if($data['paid'] > $data['subtotal']){
+            if($data['paid'] > $data['net']){
                 http_response_code(400);
                 echo json_encode(['message' => 'Payment more than sale value']);
                 exit;
@@ -205,6 +207,7 @@ class Sales extends Controller
             'reference' => strtoupper($saleheader->Reference),
             'subtotal' => $saleheader->SubTotal,
             'discount' => $saleheader->Discount,
+            'deliveryfee' => $saleheader->DeliveryFee,
             'net' => $saleheader->NetAmount,
             'paid' => $saleheader->AmountPaid,
             'balance' => $saleheader->Balance,

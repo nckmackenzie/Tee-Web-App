@@ -131,16 +131,17 @@ class Sale
         try {
             $this->db->dbh->beginTransaction();
 
-            $this->db->query('INSERT INTO sales_header (SalesID,SalesDate,PayDate,SaleType,GroupId,StudentId,SubTotal,
+            $this->db->query('INSERT INTO sales_header (SalesID,SalesDate,PayDate,SaleType,GroupId,StudentId,DeliveryFee,SubTotal,
                                           Discount,NetAmount,AmountPaid,Balance,PaymentMethodId,Reference,CenterId,
                                           UpdatedBy,UpdatedOn) 
-                              VALUES(:saleid,:sdate,:pdate,:stype,:gid,:student,:stotal,:discount,:net,:paid,:bal,:pid,:ref,:cid,:upby,:upon)');
+                              VALUES(:saleid,:sdate,:pdate,:stype,:gid,:student,:delivery,:stotal,:discount,:net,:paid,:bal,:pid,:ref,:cid,:upby,:upon)');
             $this->db->bind(':saleid',$saleid);
             $this->db->bind(':sdate',$data['sdate']);
             $this->db->bind(':pdate',$data['pdate']);
             $this->db->bind(':stype',$data['saletype']);
             $this->db->bind(':gid',$data['saletype'] === 'group' ? $data['buyer'] : null);
             $this->db->bind(':student',$data['saletype'] === 'student' ? $data['buyer'] : null);
+            $this->db->bind(':delivery',$data['deliveryfee']);
             $this->db->bind(':stotal',$data['subtotal']);
             $this->db->bind(':discount',$data['discount']);
             $this->db->bind(':net',!empty($data['net']) ? $data['net'] : 0);
@@ -180,9 +181,9 @@ class Sale
                 $this->db->bind(':cid',$_SESSION['centerid']);
                 $this->db->execute();
 
-                $accountname = $this->GetGlDetails($data['books'][$i]->bid)[0];
-                $accountid = $this->GetGlDetails($data['books'][$i]->bid)[1];
-                savetoledger($this->db->dbh,$data['pdate'],$accountname,0,$sellingvalue,$desc,$accountid,1,$tid,$_SESSION['centerid']);
+                // $accountname = $this->GetGlDetails($data['books'][$i]->bid)[0];
+                // $accountid = $this->GetGlDetails($data['books'][$i]->bid)[1];
+                
             }
 
             //if sale to group
@@ -196,11 +197,12 @@ class Sale
                 }
             }
 
+            savetoledger($this->db->dbh,$data['pdate'],'sales',0,$data['paid'],$desc,1,1,$tid,$_SESSION['centerid']);
             if(intval($data['paymethod']) === 1){
                 savetoledger($this->db->dbh,$data['pdate'],'cash at hand',$data['paid'],0,$desc,3,1,$tid,$_SESSION['centerid']);
             }else{
                 savetoledger($this->db->dbh,$data['pdate'],'cash at bank',$data['paid'],0,$desc,3,1,$tid,$_SESSION['centerid']);
-                savebankposting($this->db->dbh,$data['pdate'],$data['paymethod'] === 2 ? 1 : 0,null,$data['paid'],
+                savebankposting($this->db->dbh,$data['pdate'],(int)$data['paymethod'] === 2 ? 1 : 0,null,$data['paid'],
                                 0,$data['reference'],$desc,1,$tid,$_SESSION['centerid']);
             }
 
@@ -225,7 +227,7 @@ class Sale
             $this->db->dbh->beginTransaction();
 
             $this->db->query('UPDATE sales_header SET SalesDate=:sdate,PayDate=:pdate,SaleType=:stype,GroupId=:gid,StudentId=:student
-                                                      ,SubTotal=:stotal,Discount=:discount,NetAmount=:net,AmountPaid=:paid,Balance=:bal
+                                                      ,DeliveryFee=:delivery,SubTotal=:stotal,Discount=:discount,NetAmount=:net,AmountPaid=:paid,Balance=:bal
                                                       ,PaymentMethodId=:pid,Reference=:ref,UpdatedBy=:upby,UpdatedOn=:upon 
                               WHERE (ID = :id)');
             $this->db->bind(':sdate',$data['sdate']);
@@ -234,6 +236,7 @@ class Sale
             $this->db->bind(':gid',$data['saletype'] === 'group' ? $data['buyer'] : null);
             $this->db->bind(':student',$data['saletype'] === 'student' ? $data['buyer'] : null);
             $this->db->bind(':stotal',$data['subtotal']);
+            $this->db->bind(':delivery',$data['deliveryfee']);
             $this->db->bind(':discount',$data['discount']);
             $this->db->bind(':net',!empty($data['net']) ? $data['net'] : 0);
             $this->db->bind(':paid',$data['paid']);
@@ -290,9 +293,9 @@ class Sale
                 $this->db->bind(':cid',$_SESSION['centerid']);
                 $this->db->execute();
 
-                $accountname = $this->GetGlDetails($data['books'][$i]->bid)[0];
-                $accountid = $this->GetGlDetails($data['books'][$i]->bid)[1];
-                savetoledger($this->db->dbh,$data['pdate'],$accountname,0,$sellingvalue,$desc,$accountid,1,$data['id'],$_SESSION['centerid']);
+                // $accountname = $this->GetGlDetails($data['books'][$i]->bid)[0];
+                // $accountid = $this->GetGlDetails($data['books'][$i]->bid)[1];
+                // savetoledger($this->db->dbh,$data['pdate'],$accountname,0,$sellingvalue,$desc,$accountid,1,$data['id'],$_SESSION['centerid']);
             }
 
             //if sale to group
@@ -317,6 +320,7 @@ class Sale
             $this->db->bind(':cid',$_SESSION['centerid']);
             $this->db->execute();
 
+            savetoledger($this->db->dbh,$data['pdate'],'sales',0,$data['paid'],$desc,1,1,$data['id'],$_SESSION['centerid']);
             if(intval($data['paymethod']) === 1){
                 savetoledger($this->db->dbh,$data['pdate'],'cash at hand',$data['paid'],0,$desc,3,1,$data['id'],$_SESSION['centerid']);
             }else{
