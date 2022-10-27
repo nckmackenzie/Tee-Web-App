@@ -390,3 +390,11 @@ function numberFormat($number){
     }
     return $number;
 }
+//get account details
+function getaccountdetails($con,$account)
+{
+    $stmt = $con->prepare('SELECT AccountName,AccountTypeId FROM accounttypes WHERE (ID = ?)');
+    $stmt->execute([$account]);
+    $result = $stmt->fetch(PDO::FETCH_OBJ);
+    return [$result->AccountName,$result->AccountTypeId];
+}
