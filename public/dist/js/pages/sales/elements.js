@@ -43,6 +43,6 @@ export function headerDetails() {
     balance: balanceInput.value,
     id: idInput.value,
     isEdit: isEditInput.value,
-    reason: reasonInput.value,
+    reason: isEditInput.value !== '' ? reasonInput.value : '',
   };
 }
