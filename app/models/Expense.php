@@ -69,7 +69,7 @@ class Expense
             $this->db->bind(':amount',!empty($data['amount']) ? $data['amount'] : null);
             $this->db->bind(':paymethod',!empty($data['paymethod']) ? $data['paymethod'] : null);
             $this->db->bind(':reference',!empty($data['reference']) ? strtolower($data['reference']) : null);
-            $this->db->bind(':narr',!empty($data['narration']) ? strtolower($data['narration']) : null);
+            $this->db->bind(':narr',strtolower($data['narration']));
             if(!$data['isedit']){
                 $this->db->bind(':cid',$_SESSION['centerid']);
             }else{
@@ -82,6 +82,10 @@ class Expense
                 $this->db->query('DELETE FROM ledger WHERE TransactionType = 6 AND TransactionId = :id');
                 $this->db->bind(':id',$data['id']);
                 $this->db->execute(); 
+
+                $this->db->query('DELETE FROM bankpostings WHERE TransactionType = 6 AND TransactionId = :id');
+                $this->db->bind(':id',$data['id']);
+                $this->db->execute();
             }
 
             savetoledger($this->db->dbh,$data['edate'],$this->GetAccountDetails($data['account'])[0],$data['amount'],0,
@@ -92,6 +96,8 @@ class Expense
             }else{
                 savetoledger($this->db->dbh,$data['edate'],'cash at bank',0,$data['amount'],
                          strtolower($data['narration']),3,6,$tid,$_SESSION['centerid']);
+                savebankposting($this->db->dbh,$data['edate'],(int)$data['paymethod'] === 4 ? 1 : 0,null,0,$data['amount']
+                                ,strtolower($data['reference']),$data['narration'],6,$tid,$_SESSION['centerid']);
             }
 
             if(!$this->db->dbh->commit()){
@@ -100,11 +106,11 @@ class Expense
                 return true;
             }
             
-        } catch (\Exception $e) {
+        } catch (PDOException $e) {
             if(!$this->db->dbh->inTransaction()){
                 $this->db->dbh->rollback();
             }
-            throw $e;
+            error_log($e->getMessage(),0);
             return false;
         }
     }
