@@ -171,7 +171,7 @@ function savetoledger($con,$date,$account,$debit,$credit,$narration,$accountId,$
 function savebankposting($con,$date,$ismpesa,$bank,$debit,$credit,$reference,$narration,$type,$tid,$center){
     $sql = "INSERT INTO bankpostings (TransactionDate,IsMpesa,BankId,Debit,Credit,Reference,Narration,
                                       TransactionType,TransactionId,CenterId) 
-            VALUES(?,?,?,?,?,?,?,?,?)";
+            VALUES(?,?,?,?,?,?,?,?,?,?)";
     $stmt = $con->prepare($sql);
     $stmt->execute([$date,$ismpesa,$bank,$debit,$credit,$reference,$narration,$type,$tid,$center]);
 }
