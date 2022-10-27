@@ -135,6 +135,9 @@
             <li>
                 <a href="<?php echo URLROOT;?>/journals">Journal Entries</a>
             </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/fees/graduationfees">Graduation Fees</a>
+            </li>
         </ul>
     </div>
 </li>
