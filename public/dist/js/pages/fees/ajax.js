@@ -10,7 +10,7 @@ export async function getFirstAndLastIds() {
 //garduation fee submission
 export async function saveGraduationPayment(formdata) {
   const response = await sendHttpRequest(
-    `${HOST_URL}/fees/createupdate`,
+    `${HOST_URL}/fees/graudationcreateedit`,
     'POST',
     JSON.stringify(formdata),
     { 'Content-Type': 'application/json' },
