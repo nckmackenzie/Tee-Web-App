@@ -3,6 +3,7 @@ export const valueInput = document.getElementById('value');
 export const rateInput = document.getElementById('rate');
 export const subtotalInput = document.getElementById('subtotal');
 export const discountInput = document.getElementById('discount');
+export const deliveryInput = document.getElementById('deliveryfee');
 export const netInput = document.getElementById('net');
 export const paidInput = document.getElementById('paid');
 export const balanceInput = document.getElementById('balance');
@@ -28,7 +29,8 @@ export function updateSubTotal(table) {
 export function summaryCalculations() {
   const subTotal = +subtotalInput.value || 0;
   const discount = +discountInput.value || 0;
-  const netAmount = subTotal - subTotal * (discount / 100);
+  const deliveryFee = +deliveryInput.value || 0;
+  const netAmount = subTotal - subTotal * (discount / 100) + deliveryFee;
   const amountPaid = +paidInput.value || 0;
   const balance = netAmount - amountPaid;
   netInput.value = netAmount || 0;
