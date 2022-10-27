@@ -1,5 +1,6 @@
 import {
   subtotalInput,
+  deliveryInput,
   discountInput,
   netInput,
   paidInput,
@@ -36,6 +37,7 @@ export function headerDetails() {
     reference: referenceInput.value,
     subtotal: subtotalInput.value,
     discount: discountInput.value,
+    deliveryfee: deliveryInput.value || 0,
     net: netInput.value,
     paid: paidInput.value,
     balance: balanceInput.value,
