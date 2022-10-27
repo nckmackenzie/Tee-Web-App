@@ -22,6 +22,7 @@ import {
   deliveryInput,
   summaryCalculations,
   discountInput,
+  netInput,
   paidInput,
 } from './calculations.js';
 //prettier ignore
@@ -150,7 +151,7 @@ form.addEventListener('submit', async function (e) {
     return false;
   }
 
-  if (+paidInput.value > +subtotalInput.value) {
+  if (+paidInput.value > +netInput.value) {
     displayAlert(alertBox, 'Payment more than sale value');
     return;
   }
