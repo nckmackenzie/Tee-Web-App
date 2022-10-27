@@ -388,6 +388,10 @@ class Sale
             $this->db->bind(':id',$id);
             $this->db->execute();
 
+            $this->db->query('UPDATE bankpostings SET Deleted =1 WHERE TransactionType = 1 AND TransactionId = :id');
+            $this->db->bind(':id',$id);
+            $this->db->execute();
+
             $this->db->query('UPDATE ledger SET Deleted =1 WHERE TransactionType = 1 AND TransactionId = :id');
             $this->db->bind(':id',$id);
             $this->db->execute();
