@@ -331,4 +331,33 @@ class Fees extends Controller
         $this->view('fees/graduationfees',$data);
         exit;
     }
+
+    public function getgraduationpaymentid()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET')
+        {
+            echo json_encode($this->feemodel->GetGraduationReceiptNo());
+            exit;
+        }
+        else{
+            redirect('auth/forbidden');
+            exit;
+        }
+    }
+
+    public function getfirstandlastids()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET')
+        {
+            $firstandlast = $this->feemodel->GetFirstAndLastIds();
+            $firstid = $firstandlast[0];
+            $lastid = $firstandlast[1];
+            echo json_encode(['first' => $firstid, 'last' => $lastid]);
+            exit;
+        }
+        else{
+            redirect('auth/forbidden');
+            exit;
+        }
+    }
 }

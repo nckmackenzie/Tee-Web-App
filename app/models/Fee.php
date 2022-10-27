@@ -369,4 +369,33 @@ class Fee
                                               WHERE (StudentId = ?) AND (SemisterId = ?) AND (Deleted = 0)',[$student,$semister]); 
         return [$balancebf,$semfees,$sempaid];
     }
+
+    public function GetGraduationReceiptNo()
+    {
+        return getuniqueid($this->db->dbh,'ReceiptNo','graduation_fee_payment',$_SESSION['centerid'],false);
+    }
+
+    public function GetFirstAndLastIds()
+    {
+        $count = getdbvalue($this->db->dbh,'SELECT COUNT(*) 
+                                            FROM graduation_fee_payment 
+                                            WHERE (Deleted = 0) AND (CenterId = ?)',[$_SESSION['centerid']]);
+        if((int)$count === 0){
+            return [1,1];
+        }elseif((int)$count === 1){
+            $id = getdbvalue($this->db->dbh,'SELECT ReceiptNo FROM graduation_fee_payment 
+                                             WHERE (Deleted = 0) AND  (CenterId = ?)',[$_SESSION['centerid']]);
+            return [$id,$id];
+        }elseif((int)$count > 1){
+            $firstid = getdbvalue($this->db->dbh,'SELECT ReceiptNo FROM graduation_fee_payment 
+                                                  WHERE (Deleted = 0) AND  (CenterId = ?) 
+                                                  ORDER BY ReceiptNo ASC LIMIT 1',[$_SESSION['centerid']]);
+            $lastid = getdbvalue($this->db->dbh,'SELECT ReceiptNo FROM graduation_fee_payment 
+                                                 WHERE (Deleted = 0) AND  (CenterId = ?) 
+                                                 ORDER BY ReceiptNo ASC LIMIT 1',[$_SESSION['centerid']]);
+            return [$firstid,$lastid];
+        }else{
+            return [0,0];
+        }
+    }
 }
