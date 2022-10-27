@@ -33,4 +33,10 @@ class Reusable
        $this->db->bind(':id',$id);
        return $this->db->single();
     }
+
+    public function GetGlAccounts()
+    {
+        return loadresultset($this->db->dbh,'SELECT ID,UCASE(AccountName) AS AccountName FROM accounttypes 
+                                             ORDER BY AccountName',[]);
+    }
 }
