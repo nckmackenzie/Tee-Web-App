@@ -86,6 +86,7 @@
                         </div>
                         <div class="d-grid d-md-block">
                             <input type="hidden" name="isedit" id="isedit">
+                            <input type="hidden" name="currentreceiptno" id="currentreceiptno">
                             <button type="submit" class="btn btn-sm btn-primary btnsave">Save</button>
                         </div>
                     </form>
