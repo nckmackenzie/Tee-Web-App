@@ -8,6 +8,7 @@ class Fees extends Controller
             exit();
         }
         $this->authmodel = $this->model('Auths');
+        $this->reusemodel = $this->model('Reusable');
         $this->feemodel = $this->model('Fee');
     }
     
@@ -317,5 +318,17 @@ class Fees extends Controller
             redirect('auth/forbidden');
             exit();
         }
+    }
+    
+    public function graduationfees()
+    {
+        $data = [
+            'title' => 'Graduation fees',
+            'students' => $this->feemodel->GetStudents(),
+            'groups' => $this->feemodel->GetGroups(),
+            'accounts' => $this->reusemodel->GetGlAccounts()
+        ];
+        $this->view('fees/graduationfees',$data);
+        exit;
     }
 }
