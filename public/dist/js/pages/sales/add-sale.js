@@ -19,6 +19,7 @@ import {
   calculateTotalValue,
   updateSubTotal,
   subtotalInput,
+  deliveryInput,
   summaryCalculations,
   discountInput,
   paidInput,
@@ -128,6 +129,7 @@ table.addEventListener('click', function (e) {
 
 discountInput.addEventListener('change', summaryCalculations);
 paidInput.addEventListener('change', summaryCalculations);
+deliveryInput.addEventListener('change', summaryCalculations);
 
 form.addEventListener('submit', async function (e) {
   e.preventDefault();
