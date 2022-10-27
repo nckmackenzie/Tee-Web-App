@@ -100,11 +100,10 @@ class Invoice
                $this->db->bind(':rate',$data['rates'][$i]);
                $this->db->execute();
 
-               $accountname = $this->GetGlDetails($data['booksid'][$i])[0];
-               $accountid = $this->GetGlDetails($data['booksid'][$i])[1];
-               $amountwithvat = calculatevat($data['vattype'],$data['gross'][$i],$data['vatrate'])[2];
-               savetoledger($this->db->dbh,$data['invoicedate'],$accountname,$amountwithvat,0,
-                            strtolower($data['description']),$accountid,3,$tid,$_SESSION['centerid']);
+            //    $accountname = $this->GetGlDetails($data['booksid'][$i])[0];
+            //    $accountid = $this->GetGlDetails($data['booksid'][$i])[1];
+            //    $amountwithvat = calculatevat($data['vattype'],$data['gross'][$i],$data['vatrate'])[2];
+               
             }
 
             $this->db->query('INSERT INTO invoice_payments (TransactionDate,HeaderId,SupplierId,Credit,
@@ -120,6 +119,8 @@ class Invoice
             $this->db->bind(':cid',$_SESSION['centerid']);
             $this->db->execute();
 
+            savetoledger($this->db->dbh,$data['invoicedate'],'purchases',$amountinc,0,
+                            strtolower($data['description']),2,3,$tid,$_SESSION['centerid']);
             savetoledger($this->db->dbh,$data['invoicedate'],'accounts payable',0,$amountinc,
                             strtolower($data['description']),4,3,$tid,$_SESSION['centerid']);
 
@@ -196,6 +197,8 @@ class Invoice
             $this->db->bind(':id',$data['id']);
             $this->db->execute();
 
+            savetoledger($this->db->dbh,$data['invoicedate'],'purchases',$amountinc,0,
+                            strtolower($data['description']),2,3,$data['id'],$_SESSION['centerid']);
             savetoledger($this->db->dbh,$data['invoicedate'],'accounts payable',0,$amountinc,
                             strtolower($data['description']),4,3,$data['id'],$_SESSION['centerid']);
 
