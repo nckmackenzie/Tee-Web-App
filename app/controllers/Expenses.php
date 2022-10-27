@@ -64,7 +64,7 @@ class Expenses extends Controller
                 'amount' => !empty(trim($_POST['amount'])) ? floatval(trim($_POST['amount'])) : '',
                 'paymethod' => !empty($_POST['paymethod']) ? trim($_POST['paymethod']) : '',
                 'reference' => !empty($_POST['reference']) ? trim($_POST['reference']) : '',
-                'narration' => !empty($_POST['narration']) ? trim($_POST['narration']) : '',
+                'narration' => !empty($_POST['narration']) ? trim($_POST['narration']) : null,
                 'edate_err' => '',
                 'voucherno_err' => '',
                 'account_err' => '',
