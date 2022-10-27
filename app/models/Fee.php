@@ -27,6 +27,19 @@ class Fee
         return $this->db->resultset();
     }
 
+    public function GetGroups()
+    {
+        $this->db->query('SELECT 
+                            ID,
+                            UCASE(GroupName) As GroupName 
+                          FROM 
+                            groups 
+                          WHERE 
+                            Deleted = 0
+                          ORDER BY GroupName');
+        return $this->db->resultset();
+    }
+
     public function GetAccounts()
     {
         $this->db->query('SELECT 
