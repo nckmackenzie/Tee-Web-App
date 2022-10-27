@@ -126,6 +126,8 @@ class Fee
             }else{
                 savetoledger($this->db->dbh,$data['pdate'],'cash at bank',$data['amount'],0,
                          strtolower($data['narration']),3,5,$tid,$_SESSION['centerid']);
+                savebankposting($this->db->dbh,$data['pdate'],(int)$data['paymethod'] === 4 ? 1 : 0,null,$data['amount'],
+                                0,$data['reference'],strtolower($data['narration']),5,$tid,$_SESSION['centerid']);
             }
 
             if(!$this->db->dbh->commit()){
@@ -176,6 +178,10 @@ class Fee
                 $this->db->execute();
             }
 
+            $this->db->query('DELETE FROM bankpostings WHERE (TransactionType = 5) AND (TransactionId = :id)');
+            $this->db->bind(':id',$data['id']);
+            $this->db->execute();
+
             $this->db->query('DELETE FROM ledger WHERE (TransactionType = 5) AND (TransactionId = :id)');
             $this->db->bind(':id',$data['id']);
             $this->db->execute();
@@ -188,6 +194,8 @@ class Fee
             }else{
                 savetoledger($this->db->dbh,$data['pdate'],'cash at bank',$data['amount'],0,
                          strtolower($data['narration']),3,5,$data['id'],$_SESSION['centerid']);
+                savebankposting($this->db->dbh,$data['pdate'],(int)$data['paymethod'] === 4 ? 1 : 0,null,$data['amount'],
+                         0,$data['reference'],strtolower($data['narration']),5,$data['id'],$_SESSION['centerid']);
             }
 
             if(!$this->db->dbh->commit()){
@@ -238,6 +246,10 @@ class Fee
             $this->db->query('UPDATE ledger SET Deleted = 1 WHERE TransactionType = 5 AND TransactionId = :id');
             $this->db->bind(':id',$id);
             $this->db->execute(); 
+
+            $this->db->query('UPDATE bankpostings SET Deleted = 1 WHERE (TransactionType = 5) AND (TransactionId = :id)');
+            $this->db->bind(':id',$id);
+            $this->db->execute();
 
             $this->db->query('SELECT StudentId,SemisterId FROM fees_payment WHERE ID = :id');
             $this->db->bind(':id',$id);
