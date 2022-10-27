@@ -360,4 +360,48 @@ class Fees extends Controller
             exit;
         }
     }
+
+    public function graudationcreateedit()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST')
+        {
+           $fields = json_decode(file_get_contents('php://input')); //extract json data from input
+           $data = [
+                'isedit' => converttobool($fields->isedit),
+                'id' => isset($fields->id) && !empty(trim($fields->id)) ? trim($fields->id) : null,
+                'paydate' => isset($fields->paydate) && !empty(trim($fields->paydate)) ? date('Y-m-d',strtotime(trim($fields->paydate))) : null,
+                'student' => isset($fields->student) && !empty(trim($fields->student)) ? (int)trim($fields->student) : null,
+                'group' => isset($fields->group) && !empty(trim($fields->group)) ? (int)trim($fields->group) : null,
+                'amount' => isset($fields->paid) && !empty(trim($fields->paid)) ? floatval(trim($fields->paid)) : null,
+                'account' => isset($fields->account) && !empty(trim($fields->account)) ? (int)trim($fields->account) : null,
+                'paymethod' => isset($fields->paymethod) && !empty(trim($fields->paymethod)) ? (int)trim($fields->paymethod) : null,
+                'reference' => isset($fields->reference) && !empty(trim($fields->reference)) ? strtolower(trim($fields->reference)) : null,
+           ];
+           //validation
+           if(is_null($data['paydate']) || is_null($data['student']) || is_null($data['amount']) 
+              || is_null($data['account']) || is_null($data['paymethod']) || is_null($data['reference'])){
+                http_response_code(400);
+                echo json_encode(['message' => 'Fill all required fields']);
+                exit;
+           }
+           if($data['paydate'] > date('Y-m-d')){
+                http_response_code(400);
+                echo json_encode(['message' => 'Invalid date selected']);
+                exit;
+           }
+           if(!$this->feemodel->GraduationCreateEdit($data)){
+                http_response_code(500);
+                echo json_encode(['message' => 'Unable to save! Retry or contact admin']);
+                exit;
+           }
+
+           echo json_encode(['success' => true]);
+           exit;
+           
+        }
+        else{
+            redirect('auth/forbidden');
+            exit;
+        }
+    }
 }

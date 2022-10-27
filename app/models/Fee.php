@@ -392,10 +392,75 @@ class Fee
                                                   ORDER BY ReceiptNo ASC LIMIT 1',[$_SESSION['centerid']]);
             $lastid = getdbvalue($this->db->dbh,'SELECT ReceiptNo FROM graduation_fee_payment 
                                                  WHERE (Deleted = 0) AND  (CenterId = ?) 
-                                                 ORDER BY ReceiptNo ASC LIMIT 1',[$_SESSION['centerid']]);
+                                                 ORDER BY ReceiptNo DESC LIMIT 1',[$_SESSION['centerid']]);
             return [$firstid,$lastid];
         }else{
             return [0,0];
+        }
+    }
+
+    public function GraduationCreateEdit($data)
+    {
+        try {
+            $this->db->dbh->beginTransaction();
+            $accountdetails = getaccountdetails($this->db->dbh,$data['account']);
+            $narr = $data['student'] . ' graduation fee payment';
+
+            if(!$data['isedit']){
+                $receiptno = $this->GetGraduationReceiptNo();
+                $this->db->query('INSERT INTO graduation_fee_payment(ReceiptNo,PaymentDate,StudentId,GroupId,AmountPaid,AccountId,PayMethod,PayReference,CenterId)
+                                  VALUES(:receiptno,:pdate,:studentid,:groupid,:amount,:accountid,:paymethod,:ref,:centerid)');
+                $this->db->bind(':receiptno',$receiptno);
+            }
+            $this->db->bind(':pdate',$data['paydate']);
+            $this->db->bind(':studentid',$data['student']);
+            $this->db->bind(':groupid',$data['group']);
+            $this->db->bind(':amount',$data['amount']);
+            $this->db->bind(':accountid',$data['account']);
+            $this->db->bind(':paymethod',$data['paymethod']);
+            $this->db->bind(':ref',$data['reference']);
+            if($data['isedit']){
+                $this->db->bind(':id',$data['id']);
+            }else{
+                $this->db->bind(':centerid',$_SESSION['centerid']);
+            }
+            $this->db->execute();
+            $tid = $data['isedit'] ? $data['id'] : $this->db->dbh->lastInsertId();
+
+            if($data['isedit']){
+                $this->db->query('DELETE FROM ledger WHERE TransactionType = 9 AND TransactionId = :id');
+                $this->db->bind(':id',$data['id']);
+                $this->db->execute();
+
+                $this->db->query('DELETE FROM bankpostings WHERE TransactionType = 9 AND TransactionId = :id');
+                $this->db->bind(':id',$data['id']);
+                $this->db->execute();
+            }
+
+            savetoledger($this->db->dbh,$data['paydate'],trim($accountdetails[0]),0,$data['amount'],$narr,
+                         $accountdetails[1],9,$tid,$_SESSION['centerid']);
+            if((int)$data['paymethod'] === 1){
+                savetoledger($this->db->dbh,$data['paydate'],'cash at hand',$data['amount'],0,$narr,
+                             3,9,$tid,$_SESSION['centerid']);
+            }else{
+                savetoledger($this->db->dbh,$data['paydate'],'cash at bank',$data['amount'],0,$narr,
+                             3,9,$tid,$_SESSION['centerid']);
+                savebankposting($this->db->dbh,$data['paydate'],(int)$data['paymethod'] === 2 ? 1 : 0,null,$data['amount'],
+                                0,$data['reference'],$narr,9,$tid,$_SESSION['centerid']);
+            }
+
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+
+        } catch (PDOException $e) {
+            if($this->db->dbh->inTransaction()){
+                $this->db->dbh->rollback();
+            }
+            error_log($e->getMessage(),0);
+            return false;
         }
     }
 }
