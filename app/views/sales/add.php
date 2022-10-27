@@ -211,7 +211,14 @@
                                             </div> 
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="deliveryfee" class="form-label">Delivery Fees</label>
+                                            <input type="text" name="deliveryfee" id="deliveryfee" class="form-control form-control-sm" 
+                                                   value="<?php echo $data['deliveryfee'];?>"> 
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="net" class="form-label">Net Amount</label>
                                             <input type="text" name="net" id="net" class="form-control form-control-sm" 
