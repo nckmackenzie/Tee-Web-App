@@ -12,4 +12,23 @@ class Payments extends Controller
         checkrights($this->authmodel,'supplier payments');
         $this->paymentmodel = $this->model('Payment');
     }
+
+    public function index()
+    {
+        $data= [
+            'title' => 'Supplier payments',
+            'has_datatable' => true
+        ];
+        $this->view('payments/index',$data);
+        exit;
+    }
+
+    public function add()
+    {
+        $data = [
+            'title' => 'New payments',
+        ];
+        $this->view('payments/add',$data);
+        exit;
+    }
 }
