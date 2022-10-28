@@ -23,7 +23,7 @@
             <?php if(!hassubmenus($con->dbh,$menuitem)) : ?>
                 <?php foreach(getmodulemenuitems($con->dbh,(int)$_SESSION['userid'],$menuitem) as $item) : ?>
                     <li>
-                        <a href="<?php echo URLROOT;?>/<?php echo $item->Path;?>"><?php echo $item->FormName;?></a>
+                        <a href="<?php echo URLROOT;?>/<?php echo $item->Path;?>"><?php echo ucwords($item->FormName);?></a>
                     </li>
                 <?php endforeach ;?>
             <?php else : ?>
@@ -38,7 +38,7 @@
                             <ul class="side-nav-third-level">
                                 <?php foreach(getsubmenunavitems($con->dbh,(int)$_SESSION['userid'],$menuitem,$submenu) as $item) : ?>
                                     <li>
-                                        <a href="<?php echo URLROOT;?>/<?php echo $item->Path;?>"><?php echo $item->FormName;?></a>
+                                        <a href="<?php echo URLROOT;?>/<?php echo $item->Path;?>"><?php echo ucwords($item->FormName);?></a>
                                     </li>
                                 <?php endforeach; ?>
                             </ul>
