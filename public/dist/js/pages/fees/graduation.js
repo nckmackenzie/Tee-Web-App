@@ -45,7 +45,10 @@ searchForm.addEventListener('submit', async function (e) {
   if (res && res.success) {
     bindValues(res.results);
     searchfield.value = '';
+    return;
   }
+  clearValues();
+  setReceiptNo();
 });
 
 function loadingState() {
