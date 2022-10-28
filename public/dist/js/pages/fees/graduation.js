@@ -1,10 +1,8 @@
 //prettier-ignore
-import { receiptnoInput, currentInput, btnleft, btnright,form,paydateInput,savebtn } from './elements.js';
-import {
-  getReceiptNo,
-  getFirstAndLastIds,
-  saveGraduationPayment,
-} from './ajax.js';
+import { receiptnoInput, currentInput, form,paydateInput,savebtn,
+         spinnerContainer,idInput,iseditInput,studentSelect,groupSelect,amountInput
+        ,paymethodSelect,referenceInput,searchForm,accountSelect } from './elements.js';
+import { getReceiptNo, saveGraduationPayment, getTransaction } from './ajax.js';
 import {
   validation,
   clearOnChange,
@@ -21,31 +19,6 @@ async function setReceiptNo() {
   receiptnoInput.value = currentInput.value = currentReceiptNo;
 }
 
-//set button state of navigation buttons
-async function setNavButtonState() {
-  //   if (receiptnoInput.value === '') return;
-  const { first, last } = await getFirstAndLastIds(); //gt first and last ids
-  const currentId = currentInput.value || 0;
-  //if current matches both first and last
-  if (+currentId === +last && +currentId === +first) {
-    btnleft.disabled = btnright.disabled = true;
-  }
-  //if current matches both first but less last
-  if (+currentId === +first && +currentId < +last) {
-    btnleft.disabled = true;
-    btnright.disabled = false;
-  }
-  //if not first and less than last
-  if (+currentId > +first && +currentId < +last) {
-    btnleft.disabled = btnright.disabled = false;
-  }
-  //if current equal to last and greater than first
-  if (+currentId > +last) {
-    btnleft.disabled = false;
-    btnright.disabled = true;
-  }
-}
-
 //form submit
 form.addEventListener('submit', async function (e) {
   e.preventDefault();
@@ -59,11 +32,46 @@ form.addEventListener('submit', async function (e) {
     displayAlert(alerBox, 'Saved successfully', 'success');
     clearValues();
     setReceiptNo();
-    setNavButtonState();
   }
 });
+
+searchForm.addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const searchfield = this.querySelector('input[type=search]');
+  if (searchfield.value === '') return;
+  loadingState();
+  const res = await getTransaction(+searchfield.value);
+  resetState();
+  if (res && res.success) {
+    bindValues(res.results);
+    searchfield.value = '';
+  }
+});
+
+function loadingState() {
+  form.classList.add('d-none');
+  spinnerContainer.innerHTML = '<div class="spinner md"></div>';
+}
+
+function resetState() {
+  spinnerContainer.innerHTML = '';
+  form.classList.remove('d-none');
+}
+
+function bindValues(result) {
+  receiptnoInput.value = result.receiptNo;
+  paydateInput.value = result.paymentDate;
+  studentSelect.value = result.student;
+  groupSelect.value = result.group || '';
+  amountInput.value = result.amount;
+  accountSelect.value = result.account;
+  paymethodSelect.value = result.paymethod;
+  referenceInput.value = result.payreference;
+  idInput.value = result.id;
+  iseditInput.value = 1;
+  savebtn.disabled = result.allowEdit;
+}
 
 clearOnChange(mandatoryFields);
 
 setReceiptNo();
-setNavButtonState();
