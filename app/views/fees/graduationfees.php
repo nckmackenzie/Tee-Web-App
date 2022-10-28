@@ -3,21 +3,22 @@
 <!-- Start Content-->
 <div class="container-fluid">
     <!-- start page title -->
-    <div class="row">
-        <div class="col-12">
-            <div class="page-title-box my-1">
-                <button type="button" class="btn btn-sm btn-info fs-4 btnleft"><i class="mdi mdi-chevron-left"></i></button>
-                <button type="button" class="btn btn-sm btn-info fs-4 btnright"><i class="mdi mdi-chevron-right"></i></button>
-            </div>
+    <div class="row d-flex justify-content-end">
+        <div class="col-md-2">
+            <div class="page-title-box my-1"></div>
         </div>
     </div>     
     <!-- end page title --> 
     <div class="row">
         <div class="col-12" id="alerBox"></div>
-        
         <div class="col-md-8 mx-auto">
             <div class="card">
-                <div class="card-header"><?php echo $data['title'];?></div>
+                <div class="card-header d-flex align-items-center">
+                    <div class="flex-grow-1"><?php echo $data['title'];?></div>
+                    <form action="" id="search-form" class="d-flex">
+                        <input type="search" class="form-control form-control-sm" placeholder="Search by receipt no">
+                    </form>
+                </div>
                 <div class="card-body">
                 <div class="spinner-container d-flex justify-content-center"></div>
                     <form action="" id="graduation-fees" method="post" autocomplete="off">
