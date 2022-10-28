@@ -138,6 +138,9 @@
             <li>
                 <a href="<?php echo URLROOT;?>/fees/graduationfees">Graduation Fees</a>
             </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/payments">Supplier payments</a>
+            </li>
         </ul>
     </div>
 </li>
