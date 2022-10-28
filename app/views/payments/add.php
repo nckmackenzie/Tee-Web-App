@@ -53,6 +53,7 @@
                         <tr>
                             <th>Check</th>
                             <th class="d-none">Invoice ID</th>
+                            <th class="d-none">SupplierId</th>
                             <th>Pay Reference</th>
                             <th>Supplier Name</th>
                             <th>Invoice No</th>
@@ -69,10 +70,11 @@
                                     </div>
                                 </td>
                                 <td class="d-none"><input type="hidden" class="invoiceid" value="<?php echo $invoice->ID;?>"></td>
+                                <td class="d-none"><input type="hidden" class="sid" value="<?php echo $invoice->SupplierId;?>"></td>
                                 <td><input type="text" class="form-control form-control-sm payreferece" readonly></td>
                                 <td><?php echo $invoice->Supplier;?></td>
                                 <td><?php echo $invoice->InvoiceNo;?></td>
-                                <td><?php echo $invoice->OpeningBal;?></td>
+                                <td class="balance"><?php echo $invoice->OpeningBal;?></td>
                                 <td><input type="number" class="form-control form-control-sm payment" readonly></td>
                             </tr>
                         <?php endforeach;?>
