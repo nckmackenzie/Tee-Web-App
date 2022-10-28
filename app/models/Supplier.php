@@ -44,10 +44,22 @@ class Supplier
             $tid = $this->db->dbh->lastInsertId();
 
             if($data['openingbal'] > 0){
-                $this->db->query('INSERT INTO invoice_payments (TransactionDate,SupplierId,Debit,Credit,
+                $this->db->query('INSERT INTO invoice_header (InvoiceDate,SupplierId,`Description`,InclusiveVat,PayStatus,CenterId) 
+                              VALUES(:idate,:supplier,:narr,:incl,:pstatus,:cid)');
+                $this->db->bind(':idate',$data['asof']);
+                $this->db->bind(':supplier',$tid);
+                $this->db->bind(':narr','opening bal');
+                $this->db->bind(':incl',$data['openingbal']);
+                $this->db->bind(':pstatus',3);
+                $this->db->bind(':cid',$_SESSION['centerid']);
+                $this->db->execute();
+                $iid = $this->db->dbh->lastInsertId();
+
+                $this->db->query('INSERT INTO invoice_payments (TransactionDate,HeaderId,SupplierId,Debit,Credit,
                                                                 TransactionType,TransactionId,CenterId) 
-                                  VALUES(:tdate,:supplier,:debit,:credit,:ttype,:tid,:cid)');
+                                  VALUES(:tdate,:hid,:supplier,:debit,:credit,:ttype,:tid,:cid)');
                 $this->db->bind(':tdate',$data['asof']);
+                $this->db->bind(':hid',$iid);
                 $this->db->bind(':supplier',$tid);
                 $this->db->bind(':debit',0);
                 $this->db->bind(':credit',$data['openingbal']);
@@ -56,8 +68,8 @@ class Supplier
                 $this->db->bind(':cid',$_SESSION['centerid']);
                 $this->db->execute();
 
-                savetoledger($this->db->dbh,$data['asof'],'stocks',$data['openingbal'],0,
-                             'supplier opening balance',3,2,$tid,$_SESSION['centerid']);
+                savetoledger($this->db->dbh,$data['asof'],'uncategorized expenses',$data['openingbal'],0,
+                             'supplier opening balance',2,2,$tid,$_SESSION['centerid']);
                 savetoledger($this->db->dbh,$data['asof'],'accounts payable',0,$data['openingbal'],
                              'supplier opening balance',4,2,$tid,$_SESSION['centerid']);
             }
