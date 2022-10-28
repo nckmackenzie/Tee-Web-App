@@ -73,7 +73,7 @@
                                 <td><?php echo $invoice->Supplier;?></td>
                                 <td><?php echo $invoice->InvoiceNo;?></td>
                                 <td><?php echo $invoice->OpeningBal;?></td>
-                                <td><input type="number" class="form-control form-control-sm payreferece" readonly></td>
+                                <td><input type="number" class="form-control form-control-sm payment" readonly></td>
                             </tr>
                         <?php endforeach;?>
                     </tbody>
