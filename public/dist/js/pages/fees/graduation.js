@@ -1,7 +1,7 @@
 //prettier-ignore
 import { receiptnoInput, currentInput, form,paydateInput,savebtn,
          spinnerContainer,idInput,iseditInput,studentSelect,groupSelect,amountInput
-        ,paymethodSelect,referenceInput,searchForm,accountSelect } from './elements.js';
+        ,paymethodSelect,referenceInput,searchForm,accountSelect,resetbtn } from './elements.js';
 import { getReceiptNo, saveGraduationPayment, getTransaction } from './ajax.js';
 import {
   validation,
@@ -51,6 +51,11 @@ searchForm.addEventListener('submit', async function (e) {
   setReceiptNo();
 });
 
+resetbtn.addEventListener('click', function () {
+  clearValues();
+  setReceiptNo();
+});
+
 function loadingState() {
   form.classList.add('d-none');
   spinnerContainer.innerHTML = '<div class="spinner md"></div>';
@@ -72,7 +77,7 @@ function bindValues(result) {
   referenceInput.value = result.payreference;
   idInput.value = result.id;
   iseditInput.value = 1;
-  savebtn.disabled = result.allowEdit;
+  savebtn.disabled = !result.allowEdit;
 }
 
 clearOnChange(mandatoryFields);
