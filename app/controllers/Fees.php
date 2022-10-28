@@ -404,4 +404,45 @@ class Fees extends Controller
             exit;
         }
     }
+
+    public function getgraduationtxn()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $_GET = filter_input_array(INPUT_GET, FILTER_UNSAFE_RAW);
+            $data = [
+                'receiptno' => isset($_GET['receiptno']) && !empty(trim($_GET['receiptno'])) ? (int)trim($_GET['receiptno']) : null,
+            ];
+            if(is_null(is_null($data['receiptno']))){
+                http_response_code(400);
+                echo json_encode(['message' => 'Invalid selection']);
+                exit;
+            }
+
+            $results = $this->feemodel->GetGraduationFeePayment($data['receiptno']);
+
+            if(empty($results)){
+                http_response_code(404);
+                echo json_encode(['message' => 'No transaction found']);
+                exit;
+            }
+         
+            $output = [
+                'id' => $results->ID,
+                'receiptNo' => $results->ReceiptNo,
+                'paymentDate' => date('Y-m-d',strtotime($results->PaymentDate)),
+                'student' => $results->StudentId,
+                'group' => $results->GroupId,
+                'amount' => $results->AmountPaid,
+                'account' => $results->AccountId,
+                'paymethod' => $results->PayMethod,
+                'payreference' => strtoupper($results->PayReference),
+                'allowEdit' => true
+            ];
+
+            echo json_encode(['success' => true, 'results' => $output]);
+        }else{
+            redirect('auth/forbidden');
+            exit;
+        }
+    }
 }

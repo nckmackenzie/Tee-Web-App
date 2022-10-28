@@ -411,6 +411,10 @@ class Fee
                 $this->db->query('INSERT INTO graduation_fee_payment(ReceiptNo,PaymentDate,StudentId,GroupId,AmountPaid,AccountId,PayMethod,PayReference,CenterId)
                                   VALUES(:receiptno,:pdate,:studentid,:groupid,:amount,:accountid,:paymethod,:ref,:centerid)');
                 $this->db->bind(':receiptno',$receiptno);
+            }else{
+                $this->db->query('UPDATE graduation_fee_payment SET PaymentDate=:pdate,StudentId=:studentid,GroupId=:groupid,AmountPaid=:amount,
+                                                                    AccountId=:accountid,PayMethod=:paymethod,PayReference=:ref
+                                  WHERE (ID = :id)');
             }
             $this->db->bind(':pdate',$data['paydate']);
             $this->db->bind(':studentid',$data['student']);
@@ -462,5 +466,12 @@ class Fee
             error_log($e->getMessage(),0);
             return false;
         }
+    }
+
+    public function GetGraduationFeePayment($id)
+    {
+        $this->db->query('SELECT * FROM graduation_fee_payment WHERE (ID =:id) AND (Deleted = 0)');
+        $this->db->bind(':id',(int)$id);
+        return $this->db->single();
     }
 }
