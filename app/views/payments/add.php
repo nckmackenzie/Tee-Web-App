@@ -11,7 +11,7 @@
     <!-- end page title --> 
     <form action="" autocomplete="off" id="invoices-form">
         <div class="row">
-            <div class="col-md-3 mb-2">
+            <div class="col-md-2 mb-2">
                 <label for="payid">Pay ID</label>
                 <input type="text" class="form-control form-control-sm" id="payid" 
                     value="<?php echo $data['payid'];?>" readonly>
@@ -30,9 +30,14 @@
                 <input type="date" name="paydate" id="paydate" class="form-control form-control-sm mandatory">
                 <span class="invalid-feedback"></span>
             </div>
-            <div class="col-md-3 mb-2">
+            <div class="col-md-2 mb-2">
+                <label for="due">Total Due</label>
+                <input type="text" class="form-control form-control-sm text-danger fw-bolder" id="due" 
+                    value="<?php echo number_format($data['totaldue'],2);?>" readonly>
+            </div>
+            <div class="col-md-2 mb-2">
                 <label for="total">Total Payment</label>
-                <input type="text" class="form-control form-control-sm text-danger fw-bolder" id="total" 
+                <input type="text" class="form-control form-control-sm text-success fw-bolder" id="total" 
                     value="0.00" readonly>
             </div>
         </div>
