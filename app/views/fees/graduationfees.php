@@ -90,6 +90,7 @@
                             <input type="hidden" name="id" id="id">
                             <input type="hidden" name="currentreceiptno" id="currentreceiptno">
                             <button type="submit" class="btn btn-sm btn-primary btnsave">Save</button>
+                            <button type="button" class="btn btn-sm btn-info btnreset">Reset</button>
                         </div>
                     </form>
                 </div>
