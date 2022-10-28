@@ -10,6 +10,7 @@ export const form = document.getElementById('graduation-fees');
 export const searchForm = document.getElementById('search-form');
 export const paydateInput = document.getElementById('paydate');
 export const savebtn = document.querySelector('.btnsave');
+export const resetbtn = document.querySelector('.btnreset');
 export const spinnerContainer = document.querySelector('.spinner-container');
 export const idInput = document.querySelector('#id');
 export const iseditInput = document.querySelector('#isedit');
