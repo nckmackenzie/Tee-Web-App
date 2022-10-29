@@ -1,4 +1,8 @@
-import { dateNotGreaterToday, numberWithCommas } from '../../utils/utils.js';
+import {
+  clearValues,
+  dateNotGreaterToday,
+  numberWithCommas,
+} from '../../utils/utils.js';
 import {
   validation,
   mandatoryFields,
@@ -57,6 +61,8 @@ form.addEventListener('submit', async function (e) {
   resetLoadingState(savebtn, 'Save');
   if (response && response.success) {
     displayAlert(alerBox, 'Payments saved successfully', 'success');
+    clearValues();
+    table.getElementsByTagName('tbody')[0].innerHTML = '';
     setTimeout(() => {
       window.location.replace(`${HOST_URL}/payments`);
     }, 2000);
