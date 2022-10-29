@@ -470,7 +470,7 @@ class Fee
 
     public function GetGraduationFeePayment($id)
     {
-        $this->db->query('SELECT * FROM graduation_fee_payment WHERE (ID =:id) AND (Deleted = 0)');
+        $this->db->query('SELECT * , CURRENT_TIMESTAMP() AS CurDateTime FROM graduation_fee_payment WHERE (ID =:id) AND (Deleted = 0)');
         $this->db->bind(':id',(int)$id);
         return $this->db->single();
     }
