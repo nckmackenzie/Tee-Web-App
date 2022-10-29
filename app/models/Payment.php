@@ -8,7 +8,12 @@ class Payment
     {
         $this->db = new Database;
     }
-
+    
+    public function GetPayments()
+    {
+        return loadresultset($this->db->dbh,'SELECT * FROM vw_invoice_payments',[]);
+    }
+    
     public function GetPayId()
     {
         return getuniqueid($this->db->dbh,'PayId','invoice_payments',$_SESSION['centerid'],false);
