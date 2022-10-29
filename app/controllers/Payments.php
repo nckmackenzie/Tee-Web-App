@@ -118,4 +118,43 @@ class Payments extends Controller
             exit;
         }
     }
+
+    public function print($id)
+    {
+        //check if passed url query is valid
+        if (!strpos($id,'-') !== false) {
+            flash('payment_msg',null,'Invalid invoice payment details provided',flashclass('alert','danger'));
+            redirect('payments');
+            exit;
+        }
+        //split value
+        $paymentdetails = explode('-',$id);
+        $paymentid = (int)$paymentdetails[0];
+        $supplierid = (int)$paymentdetails[1];
+        $header = $this->paymentmodel->GetPaymentDetails($paymentid,$supplierid);
+        $paydate = $header->TransactionDate;
+        //if payid and supplier id wrong
+        if(!$header){
+            flash('payment_msg',null,'Invalid invoice payment details provided',flashclass('alert','danger'));
+            redirect('payments');
+            exit;
+        }
+        $data = [
+            'title' => 'Print payment',
+            'pdate' => date('d-m-Y',strtotime($paydate)),
+            'payid' => $paymentid,
+            'supplier' => strtoupper($this->paymentmodel->GetSupplierName($supplierid)),
+            'payments' => $this->paymentmodel->GetPaymentsDetail($paymentid,$supplierid,date('Y-m-d',strtotime($paydate))),
+            'invoicevaluetotal' => 0,
+            'paymentstotal' => 0,
+            'balancetotal' => 0
+        ];
+        foreach($data['payments'] as $payments){
+            $data['invoicevaluetotal'] += floatval($payments->InvoiceValue);
+            $data['paymentstotal'] += floatval($payments->Payment);
+            $data['balancetotal'] += floatval($payments->Balance);
+        }
+        $this->view('payments/print',$data);
+        exit;
+    }
 }
