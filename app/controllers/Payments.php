@@ -17,7 +17,8 @@ class Payments extends Controller
     {
         $data= [
             'title' => 'Supplier payments',
-            'has_datatable' => true
+            'has_datatable' => true,
+            'payments' => $this->paymentmodel->GetPayments(),
         ];
         $this->view('payments/index',$data);
         exit;
