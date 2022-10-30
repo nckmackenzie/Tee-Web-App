@@ -151,6 +151,9 @@
             <li>
                 <a href="<?php echo URLROOT;?>/payments">Supplier payments</a>
             </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/bankings/clear">Clear Bankings</a>
+            </li>
         </ul>
     </div>
 </li>
