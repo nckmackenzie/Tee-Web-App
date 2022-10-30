@@ -8,7 +8,12 @@ class Payment
     {
         $this->db = new Database;
     }
-
+    
+    public function GetPayments()
+    {
+        return loadresultset($this->db->dbh,'SELECT * FROM vw_invoice_payments',[]);
+    }
+    
     public function GetPayId()
     {
         return getuniqueid($this->db->dbh,'PayId','invoice_payments',$_SESSION['centerid'],false);
@@ -79,5 +84,36 @@ class Payment
             error_log($e->getMessage(),0);
             return false;
         }
+    }
+
+    public function GetPaymentDetails($pid,$sid)
+    {
+        $count = getdbvalue($this->db->dbh,'SELECT COUNT(*) from invoice_payments 
+                                            WHERE (SupplierId=?) AND (PayId = ?) AND (Deleted = 0)',[$sid,$pid]);
+        if((int)$count === 0){
+            return false;
+            exit;
+        }
+        $this->db->query('SELECT * FROM invoice_payments WHERE PayId = :id AND (Deleted = 0) AND (TransactionType = 4)');
+        $this->db->bind(':id',(int)$pid);
+        return $this->db->single();
+    }
+
+    public function GetSupplierName($id)
+    {
+        return getdbvalue($this->db->dbh,"SELECT IFNULL(SupplierName,'N/A') As supplier FROM suppliers WHERE (ID = ?)",[$id]);
+    }
+
+    public function GetPaymentsDetail($pid,$sid,$date)
+    {
+        $sql = 'SELECT 
+                    h.InvoiceNo,
+                    h.InvoiceDate,
+                    h.InclusiveVat As InvoiceValue,
+                    fn_get_invoice_balance_by_date(h.ID,?) As Balance,
+                    p.Debit As Payment
+                FROM `invoice_payments` p join invoice_header h on p.HeaderId = h.ID
+                WHERE (p.PayId = ?) AND (p.SupplierId = ?)';
+        return loadresultset($this->db->dbh,$sql,[$date,$pid,$sid]);
     }
 }

@@ -425,6 +425,8 @@ class Fees extends Controller
                 echo json_encode(['message' => 'No transaction found']);
                 exit;
             }
+           
+            $allowedit = strtotime($results->CurDateTime) - strtotime($results->UpdatedOn) < 86400;
          
             $output = [
                 'id' => $results->ID,
@@ -436,7 +438,7 @@ class Fees extends Controller
                 'account' => $results->AccountId,
                 'paymethod' => $results->PayMethod,
                 'payreference' => strtoupper($results->PayReference),
-                'allowEdit' => true
+                'allowEdit' => converttobool($allowedit)
             ];
 
             echo json_encode(['success' => true, 'results' => $output]);

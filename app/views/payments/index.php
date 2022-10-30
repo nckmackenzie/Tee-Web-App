@@ -27,14 +27,28 @@
                     <table class="table table-centered dt-responsive w-100 nowrap" id="payments-datatable">
                         <thead class="table-light">
                             <tr>
-                                <th class="d-none">ID</th>
+                                <th>Payment Date</th>
+                                <th>Payment ID</th>
                                 <th>Supplier</th>
-                                <th>Payment Reference</th>
-                                <th>Value</th>
+                                <th>Payment Value</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>
+                            <?php foreach($data['payments'] as $payment) : ?>
+                                <tr>
+                                    <td><?php echo date('d-m-Y',strtotime($payment->TransactionDate));?></td>
+                                    <td><?php echo $payment->PayId;?></td>
+                                    <td><?php echo $payment->Supplier;?></td>
+                                    <td><?php echo $payment->PayValue;?></td>
+                                    <td>
+                                        <?php $concatnated = $payment->PayId. '-'.$payment->SupplierId;?>
+                                        <a href="<?php echo URLROOT;?>/payments/print/<?php echo $concatnated;?>"
+                                           class="action-icon btn text-primary"> <i class="mdi mdi-printer"></i></a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
                     </table>
                 </div>
             </div><!-- /.card-body -->
