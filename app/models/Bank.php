@@ -35,7 +35,7 @@ class Bank
                 savetoledger($this->db->dbh,$data['asof'],'opening balance equity',0,$data['openingbal'],
                              $narr,6,8,$tid,$_SESSION['centerid']);
 
-                savebankposting($this->db->dbh,$data['asof'],0,$tid,$data['openingbal'],0,null,$narr,8,$tid,$_SESSION['centerid']);
+                savebankposting($this->db->dbh,$data['asof'],0,$tid,$data['openingbal'],0,'opening bal',$narr,8,$tid,$_SESSION['centerid']);
             }
 
             if(!$this->db->dbh->commit()){
