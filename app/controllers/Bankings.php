@@ -202,4 +202,55 @@ class Bankings extends Controller
         $this->view('bankings/uncleared',$data);
         exit;
     }
+
+    public function getuncleared()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET')
+        {
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $data = [
+                'type' => isset($_GET['type']) && !empty(trim($_GET['type'])) ? strtolower(trim($_GET['type'])) : null,
+                'sdate' => isset($_GET['sdate']) && !empty(trim($_GET['sdate'])) ? date('Y-m-d',strtotime(trim($_GET['sdate']))) : null,
+                'edate' => isset($_GET['edate']) && !empty(trim($_GET['edate'])) ? date('Y-m-d',strtotime(trim($_GET['edate']))) : null,
+                'results' => []
+            ];
+            if(is_null($data['sdate']) || is_null($data['edate']) || is_null($data['type'])){
+                http_response_code(400);
+                echo json_encode(['message' => 'Fill all required fields']);
+                exit;
+            }
+            if($data['type'] !== 'deposits' && $data['type'] !== 'withdrawals'){
+                http_response_code(400);
+                echo json_encode(['message' => 'Invalid report type']);
+                exit;
+            }
+            if($data['sdate'] > $data['edate']){
+                http_response_code(400);
+                echo json_encode(['message' => 'Start date cannot be greater than end date']);
+                exit;
+            }
+
+            $results = $this->bankingmodel->GetUnclearedReports($data);
+            if(empty($results) || count($results) == 0) {
+                http_response_code(404);
+                echo json_encode(['message' => 'No data found']);
+                exit;
+            }
+
+            foreach ($results as $result){
+                array_push($data['results'],[
+                    'transactionDate' => date('d-m-Y',strtotime($result->TransactionDate)),
+                    'amount' => floatval($result->Amount),
+                    'reference' => ucwords($result->Reference),
+                    'narration' => ucwords($result->Narration)
+                ]);
+            }
+            
+            echo json_encode(['success' => true, 'results' => $data['results']]);
+        }
+        else{
+            redirect('auth/forbidden');
+            exit;
+        }
+    }
 }
