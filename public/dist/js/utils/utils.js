@@ -44,3 +44,10 @@ export function clearValues() {
 export function redirect(page) {
   window.location.href = `${HOST_URL}/${page}`;
 }
+
+export function clearErrorState(fields) {
+  fields.forEach(field => {
+    field.classList.remove('is-invalid');
+    field.nextSibling.nextSibling.textContent = '';
+  });
+}
