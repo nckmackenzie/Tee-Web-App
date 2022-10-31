@@ -151,8 +151,55 @@ class Bankings extends Controller
     public function recon()
     {
         checkrights($this->authmodel,'bank recon');
-        $data = ['title' =>  'Bank reconcilliation'];
+        $data = [
+            'title' =>  'Bank reconcilliation',
+            'has_datatable' => true,
+        ];
         $this->view('bankings/recon', $data);
+        exit;
+    }
+
+    public function getbankingvalues()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET')
+        {
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $data = [
+                'sdate' => isset($_GET['sdate']) && !empty(trim($_GET['sdate'])) ? date('Y-m-d',strtotime(trim($_GET['sdate']))) : null,
+                'edate' => isset($_GET['edate']) && !empty(trim($_GET['edate'])) ? date('Y-m-d',strtotime(trim($_GET['edate']))) : null,
+                'values' => []
+            ];
+            if(is_null($data['sdate']) || is_null($data['edate'])){
+                http_response_code(400);
+                echo json_encode(['message' => 'Fill all required fields']);
+                exit;
+            }
+            if($data['sdate'] > $data['edate']){
+                http_response_code(400);
+                echo json_encode(['message' => 'Start date cannot be greater than end date']);
+                exit;
+            }
+            $values = $this->bankingmodel->GetValues($data);
+            $data['values']['cleareddeposits'] = floatval($values[0]);
+            $data['values']['clearedwithdrawals'] = floatval($values[1]);
+            $data['values']['uncleareddeposits'] = floatval($values[2]);
+            $data['values']['unclearedwithdrawals'] = floatval($values[3]);
+
+            echo json_encode(['success' => true, 'values' => $data['values']]);
+        }
+        else{
+            redirect('auth/forbidden');
+            exit;
+        }
+    }
+
+    public function uncleared()
+    {
+        $data = [
+            'title' => 'Uncleared transactions',
+            'has_datatable' => true
+        ];
+        $this->view('bankings/uncleared',$data);
         exit;
     }
 }
