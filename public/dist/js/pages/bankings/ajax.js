@@ -23,3 +23,9 @@ export async function getBankingValues(sdate, edate) {
   const res = await getRequest(url);
   return res;
 }
+
+export async function getUnclearedReport(type, sdate, edate) {
+  const url = `${HOST_URL}/bankings/getuncleared?type=${type}&sdate=${sdate}&edate=${edate}`;
+  const res = await getRequest(url);
+  return res;
+}
