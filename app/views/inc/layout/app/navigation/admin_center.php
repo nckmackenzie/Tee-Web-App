@@ -144,6 +144,9 @@
             <li>
                 <a href="<?php echo URLROOT;?>/bankings/clear">Clear Bankings</a>
             </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/bankings/recon">Bank Recon</a>
+            </li>
         </ul>
     </div>
 </li>
