@@ -73,4 +73,23 @@ class Banking
         
         return [$cleareddeposits,$clearedwithdrawals,$uncleareddeposits,$unclearedwithdrawals];
     }
+
+    public function GetUnclearedReports($data)
+    {
+        $sql = '';
+        if($data['type'] === 'deposits'){
+            $sql = 'SELECT TransactionDate,IFNULL(Debit,0) As Amount,Reference,Narration 
+                    FROM bankpostings
+                    WHERE (Deleted = 0) AND (Cleared = 0) AND (TransactionDate BETWEEN ? AND ?) 
+                          AND (Debit > 0) AND (IsMpesa = 0)
+                    ORDER BY TransactionDate';
+        }elseif ($data['type'] === 'withdrawals') {
+            $sql = 'SELECT TransactionDate,IFNULL(Credit,0) As Amount,Reference,Narration 
+                    FROM bankpostings
+                    WHERE (Deleted = 0) AND (Cleared = 0) AND (TransactionDate BETWEEN ? AND ?) 
+                          AND (Credit > 0)  AND (IsMpesa = 0)
+                    ORDER BY TransactionDate';
+        }
+        return loadresultset($this->db->dbh,$sql,[$data['sdate'],$data['edate']]);
+    }
 }
