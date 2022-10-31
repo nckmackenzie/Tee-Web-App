@@ -24,6 +24,7 @@ preview.addEventListener('click', async () => {
         <th>Receipts</th>
         <th>Transfers</th>
         <th>Sales</th>
+        <th>Returns</th>
         <th>Balance</th>
       </tr>
     </thead>
@@ -37,6 +38,7 @@ preview.addEventListener('click', async () => {
             <td>${dt.receipts}</td>
             <td>${dt.transfers}</td>
             <td>${dt.sales}</td>
+            <td>${dt.returns}</td>
             <td>${dt.balance}</td>
           </tr>
         `;
@@ -51,6 +53,7 @@ preview.addEventListener('click', async () => {
         <th id="receipts"></th>
         <th id="transfers"></th>
         <th id="sales"></th>
+        <th id="returns"></th>
         <th id="balance"></th>
       </tr>
     </tfoot>
@@ -62,5 +65,6 @@ preview.addEventListener('click', async () => {
   updateColumnTotal('table', 2, 'receipts');
   updateColumnTotal('table', 3, 'transfers');
   updateColumnTotal('table', 4, 'sales');
-  updateColumnTotal('table', 5, 'balance');
+  updateColumnTotal('table', 5, 'returns');
+  updateColumnTotal('table', 6, 'balance');
 });

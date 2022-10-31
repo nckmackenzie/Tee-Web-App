@@ -125,6 +125,7 @@ class Stockreports extends Controller
                     'receipts' => $result->Receipt,
                     'transfers' => $result->Transfers,
                     'sales' => $result->Sales,
+                    'returns' => $result->Returns,
                     'balance' => $result->Balance
                 ]);
             endforeach;
