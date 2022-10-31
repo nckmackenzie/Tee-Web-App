@@ -51,4 +51,26 @@ class Banking
             return false;
         }
     }
+
+    public function GetValues($data)
+    {
+        $cleareddeposits = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(Debit),0) As SumOfValue
+                                                      FROM bankpostings
+                                                      WHERE (Deleted = 0) AND (IsMpesa = 0) AND (Cleared = 1)
+                                                             AND (TransactionDate BETWEEN ? AND ?)',[$data['sdate'],$data['edate']]);
+        $clearedwithdrawals = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(Credit),0) As SumOfValue
+                                                         FROM bankpostings
+                                                         WHERE (Deleted = 0) AND (IsMpesa = 0) AND (Cleared = 1)
+                                                         AND (TransactionDate BETWEEN ? AND ?)',[$data['sdate'],$data['edate']]);
+        $uncleareddeposits = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(Debit),0) As SumOfValue
+                                                        FROM bankpostings
+                                                        WHERE (Deleted = 0) AND (IsMpesa = 0) AND (Cleared = 0)
+                                                        AND (TransactionDate BETWEEN ? AND ?)',[$data['sdate'],$data['edate']]);
+        $unclearedwithdrawals = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(Credit),0) As SumOfValue
+                                                           FROM bankpostings
+                                                           WHERE (Deleted = 0) AND (IsMpesa = 0) AND (Cleared = 0)
+                                                           AND (TransactionDate BETWEEN ? AND ?)',[$data['sdate'],$data['edate']]); 
+        
+        return [$cleareddeposits,$clearedwithdrawals,$uncleareddeposits,$unclearedwithdrawals];
+    }
 }
