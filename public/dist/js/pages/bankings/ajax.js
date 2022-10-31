@@ -17,3 +17,9 @@ export async function clearBankings(formdata) {
 
   return response;
 }
+
+export async function getBankingValues(sdate, edate) {
+  const url = `${HOST_URL}/bankings/getbankingvalues?sdate=${sdate}&edate=${edate}`;
+  const res = await getRequest(url);
+  return res;
+}
