@@ -146,4 +146,13 @@ class Bankings extends Controller
             exit;
         }
     }
+
+    //banking recon
+    public function recon()
+    {
+        checkrights($this->authmodel,'bank recon');
+        $data = ['title' =>  'Bank reconcilliation'];
+        $this->view('bankings/recon', $data);
+        exit;
+    }
 }
