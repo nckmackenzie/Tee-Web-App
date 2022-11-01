@@ -43,10 +43,10 @@ function createTable(data) {
         <thead class="table-light">
             <tr>
                 <th>Student Name</th>
-                <th class=""text-center>Opening Bal</th>
-                <th class=""text-center>Semister Fees</th>
-                <th class=""text-center>Amount Paid</th>
-                <th class=""text-center>Balance</th>
+                <th class="text-center">Opening Bal</th>
+                <th class="text-center">Semister Fees</th>
+                <th class="text-center">Amount Paid</th>
+                <th class="text-center">Balance</th>
             </tr>
         </thead>
         <tbody>`;
@@ -54,10 +54,10 @@ function createTable(data) {
     html += `
          <tr>
             <td>${dt.studentName}</td>
-            <td>${numberWithCommas(dt.openingBal)}</td>
-            <td>${numberWithCommas(dt.semisterFees)}</td>
-            <td>${numberWithCommas(dt.amountPaid)}</td>
-            <td>${numberWithCommas(dt.balance)}</td>
+            <td class="text-center">${numberWithCommas(dt.openingBal)}</td>
+            <td class="text-center">${numberWithCommas(dt.semisterFees)}</td>
+            <td class="text-center">${numberWithCommas(dt.amountPaid)}</td>
+            <td class="text-center">${numberWithCommas(dt.balance)}</td>
          </tr>
     `;
   });
@@ -66,10 +66,10 @@ function createTable(data) {
         <tfoot>
             <tr>
                 <th>Total</th>
-                <th id="openingbal"></th>
-                <th id="semfees"></th>
-                <th id="paid"></th>
-                <th id="balance"></th>
+                <th class="text-center" id="openingbal"></th>
+                <th class="text-center" id="semfees"></th>
+                <th class="text-center" id="paid"></th>
+                <th class="text-center" id="balance"></th>
             </tr>
         </tfoot>
     </table>
