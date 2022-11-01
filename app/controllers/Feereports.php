@@ -65,4 +65,52 @@ class Feereports extends Controller
             exit();
         }
     }
+
+    public function balances()
+    {
+        $data = [
+            'title' => 'Fee Balances',
+            'has_datatable' => true,
+            'semisters' => $this->reportmodel->GetSemisters(),
+        ];
+        $this->view('feereports/balances', $data);
+        exit;
+    }
+
+    public function getbalancerpt()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $data = [
+                'semister' => isset($_GET['semister']) && !empty(trim($_GET['semister'])) ? (int)trim($_GET['semister']) : null,
+                'results' => []
+            ];
+
+            if(is_null($data['semister'])){
+                http_response_code(400);
+                echo json_encode(['message' => 'Select semister']);
+                exit;
+            }
+            $results = $this->reportmodel->GetSemisterBalances($data['semister']);
+            if(empty($results )){
+                http_response_code(404);
+                echo json_encode(['message' => 'No data found']);
+                exit;
+            }
+            foreach ($results as $result):
+                array_push($data['results'],[
+                    'studentName' => $result->Student,
+                    'openingBal' => $result->BalanceBf,
+                    'semisterFees' => $result->SemFees,
+                    'amountPaid' => $result->AmountPaid,
+                    'balance' => $result->Balance
+                ]);
+            endforeach;
+
+            echo json_encode(['success' => true, 'results' => $data['results']]);
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
