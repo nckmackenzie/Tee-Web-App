@@ -1,5 +1,6 @@
 export const spinnerContainer = document.querySelector('.spinner-container');
 export const tableContainer = document.querySelector('.table-responsive');
+export const previewBtn = document.querySelector('.preview');
 
 export function validatedate(startEl, endEl, startSpan, endSpan) {
   startEl.classList.remove('is-invalid');
