@@ -68,6 +68,7 @@ class Feereports extends Controller
 
     public function balances()
     {
+        checkrights($this->authmodel,'fee balances');
         $data = [
             'title' => 'Fee Balances',
             'has_datatable' => true,
@@ -108,6 +109,59 @@ class Feereports extends Controller
             endforeach;
 
             echo json_encode(['success' => true, 'results' => $data['results']]);
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
+
+    public function graduationfees()
+    {
+        checkrights($this->authmodel,'graduation fee payments');
+        $data = [
+            'title' => 'Graduation Fee Payments',
+            'has_datatable' => true,
+        ];
+        $this->view('feereports/graduationfees', $data);
+        exit;
+    }
+
+    public function graduationfeesrpt()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET'){
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+
+            $data = [
+                'sdate' => isset($_GET['sdate']) && !empty(trim($_GET['sdate'])) ? date('Y-m-d',strtotime(trim($_GET['sdate']))) : null,
+                'edate' => isset($_GET['edate']) && !empty(trim($_GET['edate'])) ? date('Y-m-d',strtotime(trim($_GET['edate']))) : null,
+                'results' => []
+            ];
+
+            if(is_null($data['sdate']) || is_null($data['edate'])){
+                http_response_code(400);
+                echo json_encode(['message' => 'Provide all required fields']);
+                exit;
+            }
+
+            $results = $this->reportmodel->GetGraduationFeePayments($data);
+            if(empty($results )){
+                http_response_code(404);
+                echo json_encode(['message' => 'No data found']);
+                exit;
+            }
+
+            foreach ($results as $result):
+                array_push($data['results'],[
+                    'paymentDate' => date('d-m-Y',strtotime($result->PaymentDate)),
+                    'receiptNo' => $result->ReceiptNo,
+                    'studentName' => $result->Student,
+                    'amount' => $result->AmountPaid,
+                    'paymentReference' => ucwords($result->PayReference)
+                ]);
+            endforeach;
+
+            echo json_encode(['success' => true,'results' => $data['results']]);
+
         }else{
             redirect('auth/forbidden');
             exit();

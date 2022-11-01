@@ -28,4 +28,9 @@ class Feereport
         $this->db->bind(':semister',$semister);
         return $this->db->resultset();
     }
+
+    public function GetGraduationFeePayments($data)
+    {
+        return loadresultset($this->db->dbh,'SELECT * FROM vw_graduation_fee_payments',[]);
+    }
 }
