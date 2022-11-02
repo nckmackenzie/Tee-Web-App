@@ -39,4 +39,13 @@ class Reusable
         return loadresultset($this->db->dbh,'SELECT ID,UCASE(AccountName) AS AccountName FROM accounttypes 
                                              ORDER BY AccountName',[]);
     }
+
+    public function GetYears($showall)
+    {
+        $sql = 'SELECT ID,UCASE(YearName) AS YearName FROM years WHERE (Deleted = 0)';
+        if($showall === false){
+            $sql .= ' WHERE (Closed = 0)';
+        }
+        return loadresultset($this->db->dbh,$sql,[]);
+    }
 }
