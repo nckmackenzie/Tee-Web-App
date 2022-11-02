@@ -8,9 +8,13 @@ class Budgetreport
         $this->db = new Database;
     }
 
-    public function GetBudgetVsExpenseSummary($yearid)
+    public function GetBudgetVsExpense($yearid,$type)
     {
-        return loadresultset($this->db->dbh,'CALL sp_budgetvsexpensesummary(?)',[$yearid]);
+        if($type === 'summary'){
+            return loadresultset($this->db->dbh,'CALL sp_budgetvsexpensesummary(?)',[$yearid]);
+        }elseif ($type === 'detailed') {
+            return loadresultset($this->db->dbh,'CALL sp_budgetvsexpensedetailed(?)',[$yearid]);
+        }
     }
     
 }
