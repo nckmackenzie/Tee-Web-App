@@ -59,7 +59,7 @@ class Expenses extends Controller
                 'touched' => true,
                 'id' => trim($_POST['id']),
                 'edate' => !empty(trim($_POST['edate'])) ? date('Y-m-d',strtotime(trim($_POST['edate']))) : '',
-                'voucherno' => !empty(trim($_POST['voucherno'])) ? trim($_POST['voucherno']) : '',
+                'voucherno' => !empty(trim($_POST['voucherno'])) ? trim($_POST['voucherno']) : null,
                 'account' => !empty($_POST['account']) ? trim($_POST['account']) : '',
                 'amount' => !empty(trim($_POST['amount'])) ? floatval(trim($_POST['amount'])) : '',
                 'paymethod' => !empty($_POST['paymethod']) ? trim($_POST['paymethod']) : '',
@@ -79,9 +79,9 @@ class Expenses extends Controller
             if(!empty($data['edate']) && !validatedate($data['edate'])){
                 $data['edate_err'] = 'Invalid date selected';
             }
-            if(empty($data['voucherno'])){
-                $data['voucherno_err'] = 'Enter voucher no';
-            }
+            // if(empty($data['voucherno'])){
+            //     $data['voucherno_err'] = 'Enter voucher no';
+            // }
             if(!empty($data['voucherno']) && !$this->expensemodel->CheckFieldAvailability('VoucherNo',$data['voucherno'],$data['id'])){
                 $data['voucherno_err'] = 'Voucher no already exists';
             }
