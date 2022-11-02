@@ -32,7 +32,7 @@
                             <div class="col-md-6 mb-3">
                                 <label for="voucherno">Voucher No</label>
                                 <input type="text" name="voucherno" id="voucherno" 
-                                       class="form-control form-control-sm mandatory 
+                                       class="form-control form-control-sm  
                                        <?php echo inputvalidation($data['voucherno'],$data['voucherno_err'],$data['touched']);?>"
                                        value="<?php echo $data['voucherno'];?>"
                                        placeholder="eg 1234">
