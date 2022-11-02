@@ -132,9 +132,9 @@ class Sale
             $this->db->dbh->beginTransaction();
 
             $this->db->query('INSERT INTO sales_header (SalesID,SalesDate,PayDate,SaleType,GroupId,StudentId,DeliveryFee,SubTotal,
-                                          Discount,AmountPaid,Balance,PaymentMethodId,Reference,CenterId,
+                                          Discount,AmountPaid,PaymentMethodId,Reference,CenterId,
                                           UpdatedBy,UpdatedOn) 
-                              VALUES(:saleid,:sdate,:pdate,:stype,:gid,:student,:delivery,:stotal,:discount,:paid,:bal,:pid,:ref,:cid,:upby,:upon)');
+                              VALUES(:saleid,:sdate,:pdate,:stype,:gid,:student,:delivery,:stotal,:discount,:paid,:pid,:ref,:cid,:upby,:upon)');
             $this->db->bind(':saleid',$saleid);
             $this->db->bind(':sdate',$data['sdate']);
             $this->db->bind(':pdate',$data['pdate']);
@@ -146,7 +146,7 @@ class Sale
             $this->db->bind(':discount',$data['discount']);
             // $this->db->bind(':net',!empty($data['net']) ? $data['net'] : 0);
             $this->db->bind(':paid',$data['paid']);
-            $this->db->bind(':bal',!empty($data['balance']) ? $data['balance'] : 0);
+            // $this->db->bind(':bal',!empty($data['balance']) ? $data['balance'] : 0);
             $this->db->bind(':pid',$data['paymethod']);
             $this->db->bind(':ref',strtolower($data['reference']));
             $this->db->bind(':cid',$_SESSION['centerid']);
@@ -227,8 +227,7 @@ class Sale
             $this->db->dbh->beginTransaction();
 
             $this->db->query('UPDATE sales_header SET SalesDate=:sdate,PayDate=:pdate,SaleType=:stype,GroupId=:gid,StudentId=:student
-                                                      ,DeliveryFee=:delivery,SubTotal=:stotal,Discount=:discount,AmountPaid=:paid,Balance=:bal
-                                                      ,PaymentMethodId=:pid,Reference=:ref,UpdatedBy=:upby,UpdatedOn=:upon 
+                                                      ,DeliveryFee=:delivery,SubTotal=:stotal,Discount=:discount,AmountPaid=:paid,PaymentMethodId=:pid,Reference=:ref,UpdatedBy=:upby,UpdatedOn=:upon 
                               WHERE (ID = :id)');
             $this->db->bind(':sdate',$data['sdate']);
             $this->db->bind(':pdate',$data['pdate']);
@@ -240,7 +239,7 @@ class Sale
             $this->db->bind(':discount',$data['discount']);
             // $this->db->bind(':net',!empty($data['net']) ? $data['net'] : 0);
             $this->db->bind(':paid',$data['paid']);
-            $this->db->bind(':bal',!empty($data['balance']) ? $data['balance'] : 0);
+            // $this->db->bind(':bal',!empty($data['balance']) ? $data['balance'] : 0);
             $this->db->bind(':pid',$data['paymethod']);
             $this->db->bind(':ref',strtolower($data['reference']));
             $this->db->bind(':upby',(int)$_SESSION['userid']);
