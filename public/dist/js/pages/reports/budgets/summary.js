@@ -20,17 +20,19 @@ const yearSelect = document.querySelector('#year');
 //preview button handler
 previewBtn.addEventListener('click', async function () {
   if (validation() > 0) return;
-  //   setLoadingSpinner(spinnerContainer, tableContainer);
-  //   const yearVal = yearSelect.value || 0;
-  //   const data = await getRequest(`${HOST_URL}/budgetreports?year=${yearVal}`);
-  //   clearLoadingSpinner(spinnerContainer);
-  //   if (data && data.success) {
-  //     tableContainer.innerHTML = createTable(data.results);
-  //     setdatatable('table');
-  //     updateColumnTotal('table', 1, 'budgeted');
-  //     updateColumnTotal('table', 2, 'expensed');
-  //     updateColumnTotal('table', 3, 'variance');
-  //   }
+  setLoadingSpinner(spinnerContainer, tableContainer);
+  const yearVal = yearSelect.value || 0;
+  const data = await getRequest(
+    `${HOST_URL}/budgetreports/summaryrpt?year=${yearVal}`
+  );
+  clearLoadingSpinner(spinnerContainer);
+  if (data && data.success) {
+    tableContainer.innerHTML = createTable(data.results);
+    setdatatable('table');
+    updateColumnTotal('table', 1, 'budgeted');
+    updateColumnTotal('table', 2, 'expensed');
+    updateColumnTotal('table', 3, 'variance');
+  }
 });
 
 function createTable(data) {
@@ -49,9 +51,11 @@ function createTable(data) {
     html += `
         <tr>
             <td>${dt.expenseAccount}</td>
-            <td>${numberWithCommas(dt.budgetedAmount)}</td>
-            <td>${numberWithCommas(dt.expensedAmount)}</td>
-            <td>${numberWithCommas(dt.variance)}</td>
+            <td class="text-center">${numberWithCommas(dt.budgetedAmount)}</td>
+            <td class="text-center">${numberWithCommas(dt.expensedAmount)}</td>
+            <td class="text-center fw-bolder ${
+              parseFloat(dt.variance) > 0 ? 'text-success' : 'text-danger'
+            }">${numberWithCommas(dt.variance)}</td>
         </tr>
     `;
   });
@@ -60,9 +64,9 @@ function createTable(data) {
         <tfoot>
             <tr>
                 <th>Totals</th>
-                <th id="budgeted"></th>
-                <th id="expensed"></th>
-                <th id="variance"></th>
+                <th class="text-center fw-bolder" id="budgeted"></th>
+                <th class="text-center fw-bolder" id="expensed"></th>
+                <th class="text-center fw-bolder" id="variance"></th>
             </tr>
         </tfoot>
     </table>
