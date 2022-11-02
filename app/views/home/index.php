@@ -25,7 +25,7 @@
                 <div class="col-md-4 mb-2">
                     <label for="center">Change Center</label>
                     <select name="center" id="center" class="form-select form-select-sm">
-                        <option value="">Select center...</option>
+                        <option value="" selected disabled>Select center...</option>
                         <?php foreach($data['centers'] as $center) : ?>
                             <option value="<?php echo $center->ID;?>"><?php echo $center->CenterName;?></option>
                         <?php endforeach; ?>
