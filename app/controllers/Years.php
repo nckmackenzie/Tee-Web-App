@@ -5,9 +5,6 @@ class Years extends Controller
         if(!isset($_SESSION['userid'])){
             redirect('auth');
             exit();
-        }elseif((int)$_SESSION['ishead'] !== 1){
-            redirect('auth/unauthorized');
-            exit();
         }
         $this->authmodel = $this->model('Auths');
         checkrights($this->authmodel,'financial years');
