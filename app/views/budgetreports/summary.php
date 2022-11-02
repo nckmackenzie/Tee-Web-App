@@ -26,7 +26,7 @@
         </div>
     </div>  
     <div class="row">
-        <div class="col-md-8 mx-auto mt-2">
+        <div class="col-md-10 mx-auto mt-2">
             <div class="spinner-container d-flex justify-content-center"></div>
             <div class="table-responsive"></div>
         </div>
