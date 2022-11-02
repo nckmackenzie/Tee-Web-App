@@ -218,6 +218,22 @@
                     </ul>
                 </div>
             </li>
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#budgetReports" aria-expanded="false" aria-controls="budgetReports">
+                    <span> Budget Reports </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="budgetReports">
+                    <ul class="side-nav-third-level">
+                        <li>
+                            <a href="<?php echo URLROOT;?>/budgetreports/summary">Summary</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo URLROOT;?>/budgetreports/detailed">Detailed</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
         </ul>
     </div>
 </li>
