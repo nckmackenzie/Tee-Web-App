@@ -7,5 +7,10 @@ class Budgetreport
     {
         $this->db = new Database;
     }
+
+    public function GetBudgetVsExpenseSummary($yearid)
+    {
+        return loadresultset($this->db->dbh,'CALL sp_budgetvsexpensesummary(?)',[$yearid]);
+    }
     
 }
