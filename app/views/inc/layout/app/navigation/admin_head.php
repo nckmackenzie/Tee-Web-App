@@ -190,8 +190,24 @@
             <li>
                 <a href="<?php echo URLROOT;?>/reports/salesreport">Sales Report</a>
             </li>
-            <li>
-                <a href="<?php echo URLROOT;?>/reports/feepayments">Fees Payments</a>
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#feesReports" aria-expanded="false" aria-controls="feesReports">
+                    <span> Fees Reports </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="feesReports">
+                    <ul class="side-nav-third-level">
+                        <li>
+                            <a href="<?php echo URLROOT;?>/feereports/feepayments">Fees Payments</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo URLROOT;?>/feereports/balances">Fee Balances</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo URLROOT;?>/feereports/graduationfees">Graduation fee payments</a>
+                        </li>
+                    </ul>
+                </div>
             </li>
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#invoiceReports" aria-expanded="false" aria-controls="invoiceReports">

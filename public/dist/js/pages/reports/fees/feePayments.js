@@ -17,11 +17,11 @@ preview.addEventListener('click', async () => {
   const sdate = start.value;
   const edate = end.value;
   const res = await fetch(
-    `${HOST_URL}/reports/feepaymentsrpt?sdate=${sdate}&edate=${edate}`
+    `${HOST_URL}/feereports/feepaymentsrpt?sdate=${sdate}&edate=${edate}`
   );
   const data = await res.json();
   let table = `
-  <table class="table table-sm w-100 dt-responsive nowrap" id="table">
+  <table class="table table-sm table-bordered w-100 dt-responsive nowrap" id="table">
     <thead class="table-light">
       <tr>
         <th>Payment Date</th>

@@ -1,3 +1,7 @@
+export const spinnerContainer = document.querySelector('.spinner-container');
+export const tableContainer = document.querySelector('.table-responsive');
+export const previewBtn = document.querySelector('.preview');
+
 export function validatedate(startEl, endEl, startSpan, endSpan) {
   startEl.classList.remove('is-invalid');
   endEl.classList.remove('is-invalid');
@@ -78,4 +82,15 @@ export function clearErrors() {
   document.querySelectorAll('.invalid-feedback').forEach(span => {
     span.textContent = '';
   });
+}
+
+export function setLoadingSpinner(container, elmToClear = undefined) {
+  if (elmToClear) {
+    elmToClear.innerHTML = '';
+  }
+  container.innerHTML = '<div class="spinner md"></div>';
+}
+
+export function clearLoadingSpinner(container) {
+  container.innerHTML = '';
 }
