@@ -29,6 +29,11 @@ class Pettycashreceipts extends Controller
             'title' => 'Add Petty Cash Receipt',
             'receiptno' => $this->receiptmodel->GetReceiptNo(),
             'id' => 0,
+            'receiptno' => '',
+            'receiptdate' => '',
+            'amount' => '',
+            'reference' => '',
+            'narration' => '',
             'isedit' => false
         ];
         $this->view('pettycashreceipts/add', $data);
