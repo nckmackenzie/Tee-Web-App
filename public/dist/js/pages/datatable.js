@@ -1,4 +1,4 @@
-export function datatable(table) {
+export function datatable(table, ordering = false) {
   $(document).ready(function () {
     'use strict';
     $('#' + table + '-datatable').DataTable({
@@ -14,6 +14,7 @@ export function datatable(table) {
           '',
       },
       pageLength: 10,
+      ordering: ordering,
       drawCallback: function () {
         $('.dataTables_paginate > .pagination').addClass('pagination-rounded'),
           $('#' + table + '-datatable_length label').addClass('form-label');
