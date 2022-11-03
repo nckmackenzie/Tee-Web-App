@@ -210,7 +210,7 @@
                 <div class="collapse" id="pettycashReports">
                     <ul class="side-nav-third-level">
                         <li>
-                            <a href="<?php echo URLROOT;?>/pettycashreport/utilization">Cash utilization</a>
+                            <a href="<?php echo URLROOT;?>/pettycashreports/utilization">Cash utilization</a>
                         </li>
                     </ul>
                 </div>
