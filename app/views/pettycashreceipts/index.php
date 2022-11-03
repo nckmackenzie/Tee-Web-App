@@ -12,7 +12,7 @@
         </div>
     </div>     
     <!-- end page title --> 
-    <?php flash('pettycash_msg','alert');?>
+    <?php flash('pettycashreceipt_msg','alert');?>
     <?php DeleteModal(URLROOT .'/pettycashreceipts/delete','centermodal','Are you sure you want to delete this cash receipt','id') ;?>
     <div class="row">
         <div class="col-12">
@@ -64,6 +64,6 @@
     </div><!-- /.row -->                    
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>
-<?php flash('pettycash_toast_msg','toast');?>
+<?php flash('pettycashreceipt_toast_msg','toast');?>
 <script type="module" src="<?php echo URLROOT;?>/dist/js/pages/cashreceipts/index.js"></script>                     
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
