@@ -86,13 +86,30 @@ class Expense
                 $this->db->query('DELETE FROM bankpostings WHERE TransactionType = 6 AND TransactionId = :id');
                 $this->db->bind(':id',$data['id']);
                 $this->db->execute();
+
+                $this->db->query('DELETE FROM pettycash WHERE TransactionType = 10 AND TransactionId = :id');
+                $this->db->bind(':id',$data['id']);
+                $this->db->execute();
             }
 
             savetoledger($this->db->dbh,$data['edate'],$this->GetAccountDetails($data['account'])[0],$data['amount'],0,
                          strtolower($data['narration']),$this->GetAccountDetails($data['account'])[1],6,$tid,$_SESSION['centerid']);
+            
             if((int)$data['paymethod'] === 1){
                 savetoledger($this->db->dbh,$data['edate'],'cash at hand',0,$data['amount'],
                          strtolower($data['narration']),3,6,$tid,$_SESSION['centerid']);
+
+                $this->db->query('INSERT INTO pettycash (TransactionDate,Credit,Reference,Narration,TransactionType,TransactionId,CenterId)
+                                  VALUES(:tdate,:credit,:ref,:narr,:ttype,:tid,:cid)');         
+                $this->db->bind(':tdate',$data['edate']);
+                $this->db->bind(':credit',$data['amount']);
+                $this->db->bind(':ref',$data['reference']);
+                $this->db->bind(':narr',$data['narration']);
+                $this->db->bind(':ttype',6);
+                $this->db->bind(':tid',$tid);
+                $this->db->bind(':cid',$_SESSION['centerid']);
+                $this->db->execute();
+
             }else{
                 savetoledger($this->db->dbh,$data['edate'],'cash at bank',0,$data['amount'],
                          strtolower($data['narration']),3,6,$tid,$_SESSION['centerid']);
