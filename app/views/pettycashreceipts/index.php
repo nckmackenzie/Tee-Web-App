@@ -13,7 +13,7 @@
     </div>     
     <!-- end page title --> 
     <?php flash('pettycash_msg','alert');?>
-    <?php DeleteModal(URLROOT .'/semisters/delete','centermodal','Are you sure you want to delete this semister','id') ;?>
+    <?php DeleteModal(URLROOT .'/pettycashreceipts/delete','centermodal','Are you sure you want to delete this cash receipt','id') ;?>
     <div class="row">
         <div class="col-12">
             <div class="card">
