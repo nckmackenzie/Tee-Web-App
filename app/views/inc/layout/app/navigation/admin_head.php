@@ -213,6 +213,19 @@
                 </div>
             </li>
             <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#pettycashReports" aria-expanded="false" aria-controls="pettycashReports">
+                    <span> Petty cash Reports </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="pettycashReports">
+                    <ul class="side-nav-third-level">
+                        <li>
+                            <a href="<?php echo URLROOT;?>/pettycashreport/utilization">Cash utilization</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#invoiceReports" aria-expanded="false" aria-controls="invoiceReports">
                     <span> Invoice Reports </span>
                     <span class="menu-arrow"></span>
