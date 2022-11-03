@@ -25,25 +25,25 @@
                             <div class="col-md-6 mb-3">
                                 <label for="receiptdate">Receipt Date</label>
                                 <input type="date" class="form-control form-control-sm mandatory" id="receiptdate"
-                                       value="" name="receiptdate">
+                                       value="<?php echo $data['receiptdate'];?>" name="receiptdate">
                                 <span class="invalid-feedback"></span>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="amount">Receipt Amount</label>
                                 <input type="number" class="form-control form-control-sm mandatory" id="amount"
-                                       value="" name="amount" placeholder="amount received">
+                                       value="<?php echo $data['amount'];?>" name="amount" placeholder="amount received">
                                 <span class="invalid-feedback"></span>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="reference">Reference / Cheque No</label>
                                 <input type="text" class="form-control form-control-sm mandatory" id="reference"
-                                       value="" name="reference" placeholder="cheque no used to make withdrawal">
+                                       value="<?php echo $data['reference'];?>" name="reference" placeholder="cheque no used to make withdrawal">
                                 <span class="invalid-feedback"></span>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label for="narration">Description</label>
                                 <input type="text" class="form-control form-control-sm" id="narration"
-                                       value="" name="narration" placeholder="Provide breif description...Optional but highly recommended">
+                                       value="<?php echo $data['narration'];?>" name="narration" placeholder="Provide breif description...Optional but highly recommended">
                                 <span class="invalid-feedback"></span>
                             </div>
                         </div>
