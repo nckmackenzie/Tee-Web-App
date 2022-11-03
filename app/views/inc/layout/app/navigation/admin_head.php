@@ -134,6 +134,9 @@
                 <a href="<?php echo URLROOT;?>/fees">Fee Payments</a>
             </li>
             <li>
+                <a href="<?php echo URLROOT;?>/pettycashreceipts">Petty cash receipts</a>
+            </li>
+            <li>
                 <a href="<?php echo URLROOT;?>/expenses">Expenses</a>
             </li>
             <li>
