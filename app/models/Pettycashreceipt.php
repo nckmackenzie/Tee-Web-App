@@ -30,7 +30,7 @@ class Pettycashreceipt
         }
     }
 
-    public function Save($data)
+    public function CreateUpdate($data)
     {
         try {
             $this->db->dbh->beginTransaction();
@@ -54,6 +54,7 @@ class Pettycashreceipt
             }else{
                 $this->db->bind(':id',$data['id']);
             }
+
             $this->db->execute();
             $tid = $data['isedit'] ? $data['id'] : $this->db->dbh->lastInsertId();
 
@@ -88,12 +89,42 @@ class Pettycashreceipt
         }
     }
 
-    public function CreateUpdate($data)
+    public function GetReceipt($id)
     {
-       if(!$data['isedit']){
-            return $this->Save($data);
-       }else{
+        $this->db->query('SELECT * FROM pettycash WHERE (ID = :id)');
+        $this->db->bind(':id',$id);
+        return $this->db->single();
+    }
 
-       }
+    public function Delete($id)
+    {
+        try {
+            $this->db->dbh->beginTransaction();
+
+            $this->db->query('UPDATE pettycash SET Deleted = 1
+                              WHERE (ID = :id)');
+            $this->db->bind(':id',$id);
+            $this->db->execute();
+           
+            $this->db->query('UPDATE ledger SET Deleted = 1 WHERE (TransactionType = 10) AND (TransactionId = :id)');
+            $this->db->bind(':id',$id);
+            $this->db->execute();
+
+            $this->db->query('UPDATE bankpostings SET Deleted = 1 WHERE (TransactionType = 10) AND (TransactionId = :id)');
+            $this->db->bind(':id',$id);
+            $this->db->execute();
+                        
+            if(!$this->db->dbh->commit()){
+                return false;
+            }else{
+                return true;
+            }
+            
+        } catch (PDOException $e) {
+            if($this->db->dbh->inTransaction()){
+                $this->db->dbh->rollback();
+            }
+            error_log($e->getMessage(),0);
+        }
     }
 }

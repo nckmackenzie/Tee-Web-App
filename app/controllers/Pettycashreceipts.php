@@ -89,4 +89,31 @@ class Pettycashreceipts extends Controller
         $newid = $this->receiptmodel->GetReceiptNo();
         echo json_encode(['success' => true, 'newid' => $newid]);
     }
+
+    public function edit($id)
+    {
+        $receipt = $this->receiptmodel->GetReceipt($id);
+        if((int)$receipt->TransactionType !== 10){
+            flash('pettycashreceipt_msg',null,'Cannot edit this transaction',flashclass('alert','danger'));
+            redirect('pettycashreceipts');
+            exit;
+        }
+        $data = [
+            'title' => 'Edit Petty Cash Receipt',
+            'id' => $receipt->ID,
+            'receiptno' => $receipt->ReceiptNo,
+            'receiptdate' => $receipt->TransactionDate,
+            'amount' => $receipt->Debit,
+            'reference' => strtoupper($receipt->Reference),
+            'narration' => strtoupper($receipt->Narration),
+            'isedit' => true
+        ];
+        $this->view('pettycashreceipts/add', $data);
+        exit;
+    }
+
+    public function delete()
+    {
+        delete('pettycashreceipt',$this->receiptmodel,false);
+    }
 }
