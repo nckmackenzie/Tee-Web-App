@@ -61,3 +61,9 @@ async function getNewReceiptNo() {
   }
 }
 clearOnChange(mandatoryFields); //clear error state on element change
+
+async function setReceiptNo() {
+  receiptNoInput.value = await getNewReceiptNo();
+}
+
+setReceiptNo();
