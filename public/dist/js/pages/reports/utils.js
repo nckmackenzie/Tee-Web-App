@@ -22,7 +22,13 @@ export function validatedate(startEl, endEl, startSpan, endSpan) {
   return true;
 }
 
-export function setdatatable(tbl, columnDefs = []) {
+export function setdatatable(
+  tbl,
+  columnDefs = [],
+  searching = true,
+  paging = true,
+  info = true
+) {
   $(document).ready(function () {
     'use strict';
     var table = $(`#${tbl}`).DataTable();
@@ -33,6 +39,9 @@ export function setdatatable(tbl, columnDefs = []) {
         buttons: ['print', 'excel', 'pdf'],
         columnDefs: columnDefs,
         ordering: false,
+        searching: searching,
+        paging: paging,
+        info: info,
         language: {
           paginate: {
             previous: "<i class='mdi mdi-chevron-left'>",
