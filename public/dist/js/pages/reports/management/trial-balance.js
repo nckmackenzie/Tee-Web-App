@@ -64,10 +64,10 @@ function createTable(data, sdate, edate) {
     html += `
           <tr>
             <td>${dt.account}</td>
-            <td class="text-center"><a target="_blank" href="${HOST_URL}/managementreports/tbdetailed?acc=${account}?sdate=${sdate}?edate=${edate}">${numberWithCommas(
+            <td class="text-center"><a target="_blank" href="${HOST_URL}/managementreports/tbdetailed?acc=${account}&sdate=${sdate}&edate=${edate}">${numberWithCommas(
       dt.debit
     )}</a></td>
-            <td class="text-center"><a target="_blank" href="${HOST_URL}/managementreports/tbdetailed?acc=${account}?sdate=${sdate}?edate=${edate}">${numberWithCommas(
+            <td class="text-center"><a target="_blank" href="${HOST_URL}/managementreports/tbdetailed?acc=${account}&sdate=${sdate}&edate=${edate}">${numberWithCommas(
       dt.credit
     )}</a></td>
           </tr>
