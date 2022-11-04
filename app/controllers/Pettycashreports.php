@@ -20,7 +20,7 @@ class Pettycashreports extends Controller
 
     public function utilization()
     {
-        $data = ['title' => 'Petty cash utilization'];
+        $data = ['title' => 'Petty cash utilization','has_datatable' => true];
         $this->view('pettycashreports/utilization', $data);
         exit;
     }
@@ -47,7 +47,17 @@ class Pettycashreports extends Controller
             }
 
             $results = $this->reportmodel->GetPettyCashReport($data);
-            echo json_encode(['success' => true,'results' => $results]);
+            $utilizations = [];
+            foreach($results as $result) {
+                array_push($utilizations,[
+                    'date' => date('d-m-Y',strtotime($result->TransactionDate)),
+                    'reference' => strtoupper($result->Reference),
+                    'debit' => floatval($result->Debit),
+                    'credit' => floatval($result->Credit),
+                    'narration'=> strtoupper($result->Narration),
+                ]);
+            }
+            echo json_encode(['success' => true,'results' => $utilizations]);
             exit;
         }
         else
