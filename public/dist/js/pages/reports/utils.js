@@ -68,7 +68,10 @@ export function updateColumnTotal(tbl, i, col) {
   let subTotal = Array.from(mytable.rows)
     .slice(0)
     .reduce((total, row) => {
-      return total + formatToNumber(row.cells[i].innerHTML);
+      const convertedRow = isNaN(formatToNumber(row.cells[i].innerHTML))
+        ? 0
+        : formatToNumber(row.cells[i].innerHTML);
+      return total + convertedRow;
     }, 0);
   document.getElementById(col).innerHTML = numberWithCommas(
     subTotal.toFixed(2)
