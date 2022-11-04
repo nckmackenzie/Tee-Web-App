@@ -4,6 +4,8 @@ import {
   setLoadingSpinner,
   clearLoadingSpinner,
   previewBtn,
+  setdatatable,
+  updateColumnTotal,
 } from '../utils.js';
 import {
   mandatoryFields,
@@ -13,7 +15,7 @@ import {
   validateDate,
   validation,
 } from '../../utils.js';
-import { clearErrorState } from '../../../utils/utils.js';
+import { clearErrorState, numberWithCommas } from '../../../utils/utils.js';
 const sdateInput = document.querySelector('#from');
 const edateInput = document.querySelector('#to');
 
@@ -32,8 +34,54 @@ previewBtn.addEventListener('click', async function () {
   clearLoadingSpinner(spinnerContainer);
   //loading done
   if (data && data.success) {
-    console.log(data.results);
+    tableContainer.innerHTML = createTable(data.results);
+    setdatatable('table');
+    updateColumnTotal('table', 2, 'debits');
+    updateColumnTotal('table', 3, 'credits');
   }
 });
+
+function createTable(data) {
+  let html = `
+    <table class="table table-sm table-bordered dt-responsive w-100 nowrap" id="table">
+      <thead class="table-light">
+          <tr>
+              <th>Date</th>
+              <th>Reference</th>
+              <th class="text-center">Debit</th>
+              <th class="text-center">Credit</th>
+              <th>Narration</th>
+          </tr>
+      </thead>
+      <tbody>`;
+  data.forEach(dt => {
+    html += `
+          <tr>
+             <td>${dt.date}</td>
+             <td>${dt.reference}</td>
+             <td class="text-center">${
+               parseFloat(dt.debit) === 0 ? '-' : numberWithCommas(dt.debit)
+             }</td>
+             <td class="text-center">${
+               parseFloat(dt.credit) === 0 ? '-' : numberWithCommas(dt.credit)
+             }</td>
+             <td>${dt.narration}</td>
+          </tr>
+    `;
+  });
+  html += `
+      </tbody>
+      <tfoot>
+        <tr>
+          <th colspan="2">Total</th>
+          <th class="text-center" id="debits"></th>
+          <th class="text-center" id="credits"></th>
+          <th></th>
+        </tr>
+      </tfoot>
+    </table>
+  `;
+  return html;
+}
 
 clearOnChange(mandatoryFields);
