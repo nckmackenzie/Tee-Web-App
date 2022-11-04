@@ -103,7 +103,7 @@ class Managementreports extends Controller
                 array_push($results,[
                     'account' => '',
                     'debit' => '',
-                    'credits' => '',
+                    'credit' => '',
                 ]);
             }else{
                 foreach($accounts as $account)
@@ -117,6 +117,77 @@ class Managementreports extends Controller
                             'credit' => floatval($account->credit) == 0 ? '' : floatval($account->credit)
                         ]);
                     endif;
+                }
+            }
+
+            echo json_encode(['success' => true,
+                              'results' => $results,
+                              'debitstotal' => $debitstotal,
+                              'creditstotal' => $creditstotal]);
+            exit;
+        }
+        else
+        {
+            redirect('auth/forbidden');
+            exit;
+        }
+    }
+
+    public function tbdetailed()
+    {
+        $data = ['title' => 'Account detailed','has_datatable' => true];
+        $this->view('managementreports/tbdetailed',$data);
+        exit;
+    }
+
+    public function getledgerdetailedrpt()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET')
+        {
+            $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
+            $data = [
+                'sdate' => isset($_GET['sdate']) && !empty(trim($_GET['sdate'])) ? date('Y-m-d',strtotime(trim($_GET['sdate']))) : null,
+                'edate' => isset($_GET['edate']) && !empty(trim($_GET['edate'])) ? date('Y-m-d',strtotime(trim($_GET['edate']))) : null,
+                'account' => isset($_GET['account']) && !empty(trim($_GET['account'])) ? strtolower(trim($_GET['account'])) : null,
+            ];
+            if(is_null($data['sdate']) || is_null($data['edate']) || is_null($data['account'])) {
+                http_response_code(400);
+                echo json_encode(['message' => 'Provide all required fields']);
+                exit;
+            }
+            if($data['sdate'] > $data['edate']){
+                http_response_code(400);
+                echo json_encode(['message' => 'Start date cannot be greater than end date']);
+                exit;
+            }
+            //get tb result
+            $accounts = $this->reportmodel->GetLedgerDetails($data);
+            $results = [];
+            $debitstotal = 0;
+            $creditstotal = 0;
+
+            if(empty($accounts)){
+                array_push($results,[
+                    'transactionDate' => '',
+                    'account' => '',
+                    'debit' => '',
+                    'credit' => '',
+                    'narration' => '',
+                    'transactionType' => '',
+                ]);
+            }else{
+                foreach($accounts as $account)
+                {
+                    $debitstotal += floatval($account->Debit);
+                    $creditstotal += floatval($account->Credit);
+                    array_push($results,[
+                        'transactionDate' => date('d-m-Y',strtotime($account->TransactionDate)),
+                        'account' => ucwords($account->Account), 
+                        'debit' => floatval($account->Debit) == 0 ? '' : floatval($account->Debit),
+                        'credit' => floatval($account->Credit) == 0 ? '' : floatval($account->Credit),
+                        'narration' => ucwords($account->Narration), 
+                        'transactionType' => ucwords($account->TransactionType), 
+                    ]);
                 }
             }
 
