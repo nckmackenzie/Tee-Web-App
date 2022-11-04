@@ -226,6 +226,19 @@
                 </div>
             </li>
             <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#expenseReports" aria-expanded="false" aria-controls="expenseReports">
+                    <span> Expense Reports </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="expenseReports">
+                    <ul class="side-nav-third-level">
+                        <li>
+                            <a href="<?php echo URLROOT;?>/expensereports/">Expenses report</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#invoiceReports" aria-expanded="false" aria-controls="invoiceReports">
                     <span> Invoice Reports </span>
                     <span class="menu-arrow"></span>
@@ -256,6 +269,25 @@
                         </li>
                         <li>
                             <a href="<?php echo URLROOT;?>/budgetreports/detailed">Detailed</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="side-nav-item">
+                <a data-bs-toggle="collapse" href="#managementReports" aria-expanded="false" aria-controls="managementReports">
+                    <span> Management Reports </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <div class="collapse" id="managementReports">
+                    <ul class="side-nav-third-level">
+                        <li>
+                            <a href="<?php echo URLROOT;?>/managementreports/incomestatement">Income Statement</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo URLROOT;?>/managementreports/trialbalance">Trial Balance</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo URLROOT;?>/managementreports/balancesheet">Balance Sheet</a>
                         </li>
                     </ul>
                 </div>
