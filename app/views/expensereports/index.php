@@ -46,7 +46,7 @@
     <div class="row">
         <div class="col-12">
             <div class="spinner-container d-flex justify-content-center"></div>
-            <table class="responsive"></table>
+            <div class="table-responsive"></div>
         </div>
     </div>                    
 </div> <!-- container -->
