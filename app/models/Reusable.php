@@ -40,6 +40,13 @@ class Reusable
                                              ORDER BY AccountName',[]);
     }
 
+    public function GetGlAccountsByType($type)
+    {
+        return loadresultset($this->db->dbh,'SELECT ID,UCASE(AccountName) AS AccountName FROM accounttypes 
+                                             WHERE (AccountTypeId = ?)
+                                             ORDER BY AccountName',[$type]);
+    }
+
     public function GetYears($showall)
     {
         $sql = 'SELECT ID,UCASE(YearName) AS YearName FROM years WHERE (Deleted = 0)';
