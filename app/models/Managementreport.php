@@ -26,4 +26,17 @@ class Managementreport
         
         return [$feepayments,$graduationfees,$generalexpenses,$purchases];
     }
+
+    public function GetTrialBalanceReport($data)
+    {
+        $values = array_values($data); //extract values from associative array
+        return loadresultset($this->db->dbh,'CALL sp_trialbalance(?,?)',[...$values]);
+    }
+
+    public function GetLedgerDetails($data)
+    {
+        $values = array_values($data);
+        return loadresultset($this->db->dbh,'SELECT * FROM vw_ledger 
+                                             WHERE (TransactionDate BETWEEN ? AND ?) AND (Account = ?)',[...$values]);
+    }
 }
