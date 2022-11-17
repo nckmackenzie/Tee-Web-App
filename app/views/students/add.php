@@ -100,10 +100,16 @@
                                        placeholder="eg test@example.com">
                                 <span class="invalid-feedback"><?php echo $data['email_err'];?></span>
                             </div>
-                            <div class="col-12">
+                            <div class="col-6">
                                 <div class="form-check mb-2">
                                     <input type="checkbox" name="guidance" class="form-check-input" id="guidance" <?php checkstate($data['guidance']);?>>
                                     <label class="form-check-label" for="guidance">Guidance & Counselling</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-check mb-2">
+                                    <input type="checkbox" name="trainer" class="form-check-input" id="trainer" <?php checkstate($data['trainer']);?>>
+                                    <label class="form-check-label" for="trainer">Trainers of Trainers</label>
                                 </div>
                             </div>
                         </div><!-- /.row -->
