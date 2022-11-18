@@ -24,7 +24,7 @@ class Stock
     public function GetMtnNo($isedit = false,$id = '')
     {
         if($isedit) return getdbvalue($this->db->dbh,'SELECT fn_getmtnno(?)',[$id]);
-        return getuniqueid($this->db->dbh,'MtnNo','transfersheader',$_SESSION['centerid']);
+        return getuniqueid($this->db->dbh,'MtnNo','transfersheader',$_SESSION['centerid'],false);
     }
 
     //get books
