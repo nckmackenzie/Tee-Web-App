@@ -18,7 +18,7 @@ class Stock
 
     public function GetGrnNo()
     {
-        return getuniqueid($this->db->dbh,'GrnNo','receiptsheader',$_SESSION['centerid']);
+        return getuniqueid($this->db->dbh,'GrnNo','receiptsheader',$_SESSION['centerid'],false);
     }
 
     public function GetMtnNo($isedit = false,$id = '')
