@@ -48,13 +48,14 @@ class Group
     public function CreateUpdate($data)
     {
         if(!$data['isedit']){
-            $this->db->query('INSERT INTO groups (GroupName,ParishName) VALUES(:gname,:parish)');
+            $this->db->query('INSERT INTO groups (GroupName,ParishName,GroupLeaderId) VALUES(:gname,:parish,:gl)');
         }else{
-            $this->db->query('UPDATE groups SET GroupName = :gname,ParishName = :parish,Active = :active 
+            $this->db->query('UPDATE groups SET GroupName = :gname,ParishName = :parish,GroupLeaderId=:gl, Active = :active 
                               WHERE (ID = :id)');
         }
         $this->db->bind(':gname',strtolower($data['groupname']));
         $this->db->bind(':parish',strtolower($data['parishname']));
+        $this->db->bind(':gl',$data['groupleader']);
         if($data['isedit']){
             $this->db->bind(':active',$data['active']);
             $this->db->bind(':id',$data['id']);

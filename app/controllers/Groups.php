@@ -29,9 +29,11 @@ class Groups extends Controller
         checkrights($this->authmodel,'groups');
         $data = [
             'title' => 'Add Group',
+            'students' => $this->groupmodel->GetStudents(),
             'id' => '',
             'touched' => false,
             'isedit' => false,
+            'groupleader' => '',
             'groupname' => '',
             'parishname' => '',
             'active' => true,
@@ -47,12 +49,14 @@ class Groups extends Controller
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $_POST = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
             $data = [
+                'students' => $this->groupmodel->GetStudents(),
                 'title' => converttobool(trim($_POST['isedit'])) ? 'Edit Group' : 'Add Group',
                 'id' => trim($_POST['id']),
                 'touched' => true,
                 'isedit' => converttobool(trim($_POST['isedit'])),
                 'groupname' => !empty(trim($_POST['groupname'])) ? trim($_POST['groupname']) : '',
                 'parishname' => !empty(trim($_POST['parishname'])) ? trim($_POST['parishname']) : '',
+                'groupleader' => !empty($_POST['groupleader']) ? trim($_POST['groupleader']) : null,
                 'active' => converttobool(trim($_POST['isedit'])) ? (isset($_POST['active']) ? true : false) : true,
                 'groupname_err' => '',
                 'parishname_err' => '',
@@ -99,11 +103,13 @@ class Groups extends Controller
         $group = $this->groupmodel->GetGroup($id);
         $data = [
             'title' => 'Edit Group',
+            'students' => $this->groupmodel->GetStudents(),
             'id' => $group->ID,
             'touched' => false,
             'isedit' => true,
             'groupname' => strtoupper($group->GroupName),
             'parishname' => strtoupper($group->ParishName),
+            'groupleader' => $group->GroupLeaderId,
             'active' => converttobool($group->Active),
             'groupname_err' => '',
             'parishname_err' => '',
