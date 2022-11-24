@@ -114,8 +114,7 @@
                             <div class="col-md-2">
                                 <label for="rate">Rate</label>
                                 <input type="number" name="rate" id="rate" 
-                                       class="form-control form-control-sm"
-                                       readonly>
+                                       class="form-control form-control-sm">
                                 <span class="invalid-feedback ratespan"></span>
                             </div>
                             <div class="col-md-2">
