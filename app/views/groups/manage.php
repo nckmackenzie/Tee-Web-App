@@ -16,24 +16,24 @@
     <!-- end page title --> 
     <div class="row">
         <div class="alert-box"></div>
-        <div class="col-md-8 mx-auto">
+        <div class="col-md-9 mx-auto">
             <div class="card">  
                 <div class="card-header">Manage Group Members</div>
                 <div class="card-body">
                     <form action="<?php echo URLROOT;?>/groups/managecreateupdate" method="post" autocomplete="off" name="studentsform">
                         <div class="row">
-                            <div class="col-md-6 mb-1">
+                            <div class="col-md-4 mb-1">
                                 <label for="group">Group</label>
-                                <select name="group" id="group" class="form-select form-select-sm" disabled>
+                                <select name="group" id="group" class="form-select" disabled>
                                     <option value="">Select group</option>
                                     <?php foreach($data['groups'] as $group) : ?>
                                         <option value="<?php echo $group->ID;?>" <?php selectdCheck($data['group'],$group->ID);?>><?php echo $group->GroupName;?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
-                            <div class="col-md-6 mb-1">
+                            <div class="col-md-8 mb-1">
                                 <label for="student">Student</label>
-                                <select name="student" id="student" class="form-select form-select-sm mandatory">
+                                <select name="student" id="student" class="form-control mandatory select2" data-toggle="select2">
                                     <option value="">Select student</option>
                                     <?php foreach($data['students'] as $student) : ?>
                                         <option value="<?php echo $student->ID;?>"><?php echo $student->StudentName;?></option>
