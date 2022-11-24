@@ -23,7 +23,7 @@
                         <div class="col-12 mb-3">
                             <label for="groupname" class="form-label">Group Name</label>
                             <input type="text" name="groupname" id="groupname" 
-                                class="form-control form-control-sm mandatory 
+                                class="form-control mandatory 
                                 <?php echo inputvalidation($data['groupname'],$data['groupname_err'],$data['touched']);?>"
                                 value="<?php echo $data['groupname'];?>" placeholder="eg Amani">
                             <span class="invalid-feedback"><?php echo $data['groupname_err'];?></span>
@@ -31,10 +31,19 @@
                         <div class="col-12 mb-3">
                             <label for="parishname" class="form-label">Parish Name</label>
                             <input type="text" name="parishname" id="parishname" 
-                                class="form-control form-control-sm mandatory 
+                                class="form-control mandatory 
                                 <?php echo inputvalidation($data['parishname'],$data['parishname_err'],$data['touched']);?>"
                                 value="<?php echo $data['parishname'];?>" placeholder="eg PCEA Kalimoni">
                             <span class="invalid-feedback"><?php echo $data['parishname_err'];?></span>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="groupleader" class="form-label">Group Leader</label>
+                            <select name="groupleader" id="groupleader" class="form-control select-2" data-toggle="select2">
+                                <option value="" selected disabled>Select group leader</option>
+                                <?php foreach($data['students'] as $student): ?>
+                                    <option value="<?php echo $student->ID;?>" <?php selectdCheck($data['groupleader'],$student->ID);?>><?php echo $student->StudentName;?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                         <?php if($data['isedit']) : ?>
                             <div class="col-12">
