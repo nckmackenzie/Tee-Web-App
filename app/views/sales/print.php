@@ -17,8 +17,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="clearfix">
-                        <div class="float-start mb-3">
-                            <!-- LOGO HERE -->
+                        <div class="float-start fw-bolder fs-3 mb-3">
+                            PCEA THEOLOGICAL EDUCATION BY EXTENSION
                         </div>
                         <div class="float-end">
                             <h4 class="m-0 d-print-none">Receipt</h4>
