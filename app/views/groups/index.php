@@ -30,6 +30,7 @@
                                 <th class="d-none">ID</th>
                                 <th>Group Name</th>
                                 <th>Parish Name</th>
+                                <th>Group Leader</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -40,6 +41,7 @@
                                     <td class="d-none"><?php echo $group->ID;?></td>
                                     <td><?php echo strtoupper($group->GroupName);?></td>
                                     <td><?php echo strtoupper($group->ParishName);?></td>
+                                    <td><?php echo strtoupper($group->GroupLeader);?></td>
                                     <td><span class="badge <?php echo badgeclasses($group->Status);?>"><?php echo $group->Status;?></span></td>
                                     <td>
                                         <a href="<?php echo URLROOT;?>/groups/edit/<?php echo $group->ID;?>" class="action-icon btn text-success"> <i class="mdi mdi-square-edit-outline"></i></a>
