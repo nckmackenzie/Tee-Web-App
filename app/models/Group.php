@@ -16,12 +16,12 @@ class Group
 
     public function GetStudents()
     {
-        $this->db->query('SELECT 
+        $this->db->query("SELECT 
                             ID,
-                            UCASE(StudentName) AS StudentName 
+                            CONCAT(UCASE(StudentName),IFNULL(CONCAT(' - ',Contact),'')) AS StudentName 
                           FROM students 
                           WHERE (StatusId = 1) AND (Deleted = 0)
-                          ORDER BY StudentName');
+                          ORDER BY StudentName");
         return $this->db->resultset();
     }
 
