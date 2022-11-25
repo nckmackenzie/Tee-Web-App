@@ -1,4 +1,9 @@
-import { HOST_URL, displayAlert } from '../utils.js';
+import {
+  HOST_URL,
+  displayAlert,
+  getSelectedText,
+  getRequest,
+} from '../utils.js';
 
 const btn = document.querySelector('[data-id="btn"]');
 const bookSelect = document.querySelector('#book');
@@ -32,7 +37,8 @@ btn.addEventListener('click', async function () {
   resultsDiv.innerHTML = '';
   const data = await fetchedResultsFromDb();
   resultsDiv.innerHTML = data;
-  setdatatable();
+  const [book, group, parish, groupleader] = await getGroupDetails();
+  setdatatable(book, group, parish, groupleader);
 });
 
 async function fetchedResultsFromDb() {
@@ -50,7 +56,22 @@ async function fetchedResultsFromDb() {
   return data;
 }
 
-function setdatatable() {
+async function getGroupDetails() {
+  const bookName = getSelectedText(bookSelect);
+  const groupValue = +groupSelect.value;
+  const res = await getRequest(
+    `${HOST_URL}/exams/getgroupdetails?gid=${groupValue}`
+  );
+  return [bookName, res.group, res.parish, res.groupleader];
+}
+
+function setdatatable(book, group, parish, groupleader) {
+  const html = `
+    <p><strong>Group Name:</strong> ${group}</p>
+    <p><strong>Parish Name:</strong> ${parish}</p>
+    <p><strong>Group Leader:</strong> ${groupleader}</p>
+    <p><strong>Book Name:</strong> ${book}</p>
+  `;
   $(document).ready(function () {
     'use strict';
     var table = $('#table').DataTable();
@@ -58,7 +79,15 @@ function setdatatable() {
     table = $('#table')
       .DataTable({
         lengthChange: !1,
-        buttons: ['copy', 'print'],
+        buttons: [
+          'copy',
+          {
+            extend: 'print',
+            title: 'Final Points',
+            messageTop: html,
+            messageBottom: null,
+          },
+        ],
         language: {
           paginate: {
             previous: "<i class='mdi mdi-chevron-left'>",
