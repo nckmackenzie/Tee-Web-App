@@ -64,7 +64,7 @@ class Suppliers extends Controller
                 'contactperson' => !empty(trim($_POST['contactperson'])) ? trim($_POST['contactperson']) : '',
                 'address' => !empty(trim($_POST['address'])) ? trim($_POST['address']) : '',
                 'pin' => !empty(trim($_POST['pin'])) ? trim($_POST['pin']) : '',
-                'openingbal' => converttobool(trim($_POST['isedit'])) ? '' : (!empty(trim($_POST['openingbal'])) ? floatval(trim($_POST['openingbal'])) : ''),
+                'openingbal' => converttobool(trim($_POST['isedit'])) ? '' : (!empty(trim($_POST['openingbal'])) ? floatval(trim($_POST['openingbal'])) : 0),
                 'asof' => converttobool(trim($_POST['isedit'])) ? '' : (!empty(trim($_POST['asof'])) ? date('Y-m-d',strtotime(trim($_POST['asof']))) : ''),
                 'suppliername_err' => '',
                 'contact_err' => '',

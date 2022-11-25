@@ -43,7 +43,7 @@ class Supplier
             $this->db->execute();
             $tid = $this->db->dbh->lastInsertId();
 
-            if($data['openingbal'] > 0){
+            if(floatval($data['openingbal']) !== 0){
                 $this->db->query('INSERT INTO invoice_header (InvoiceDate,SupplierId,`Description`,InclusiveVat,PayStatus,CenterId) 
                               VALUES(:idate,:supplier,:narr,:incl,:pstatus,:cid)');
                 $this->db->bind(':idate',$data['asof']);
@@ -68,10 +68,17 @@ class Supplier
                 $this->db->bind(':cid',$_SESSION['centerid']);
                 $this->db->execute();
 
-                savetoledger($this->db->dbh,$data['asof'],'uncategorized expenses',$data['openingbal'],0,
-                             'supplier opening balance',2,2,$tid,$_SESSION['centerid']);
-                savetoledger($this->db->dbh,$data['asof'],'accounts payable',0,$data['openingbal'],
-                             'supplier opening balance',4,2,$tid,$_SESSION['centerid']);
+                if($data['openingbal'] > 0) {
+                    savetoledger($this->db->dbh,$data['asof'],'uncategorized expenses',$data['openingbal'],0,
+                                'supplier opening balance',2,2,$tid,$_SESSION['centerid']);
+                    savetoledger($this->db->dbh,$data['asof'],'accounts payable',0,$data['openingbal'],
+                                'supplier opening balance',4,2,$tid,$_SESSION['centerid']);
+                }elseif(floatval($data['openingbal']) < 0){
+                    savetoledger($this->db->dbh,$data['asof'],'uncategorized expenses',0,$data['openingbal'],
+                                'supplier opening balance',2,2,$tid,$_SESSION['centerid']);
+                    savetoledger($this->db->dbh,$data['asof'],'accounts payable',$data['openingbal'],0,
+                                'supplier opening balance',4,2,$tid,$_SESSION['centerid']);
+                }
             }
 
             if(!$this->db->dbh->commit()){
