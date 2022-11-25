@@ -501,4 +501,16 @@ class Exam
         $this->db->bind(':gid',$data['gid']);
         return $this->db->resultset();
     }
+
+    public function GetGroupDetails($gid)
+    {
+        $this->db->query("SELECT  
+                            g.GroupName,
+                            g.ParishName,
+                            IF(g.GroupLeaderId IS NULL,'N/A',s.StudentName) AS GroupLeader
+                          FROM groups g left join students s on g.GroupLeaderId = s.ID 
+                          WHERE (g.ID = :id)");
+        $this->db->bind(':id',$gid);
+        return $this->db->single();
+    }
 }

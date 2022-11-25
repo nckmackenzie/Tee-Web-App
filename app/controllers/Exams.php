@@ -915,4 +915,29 @@ class Exams extends Controller
             exit();
         }
     }
+
+    public function getgroupdetails()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET')
+        {
+            $groupid = !empty(trim($_GET['gid'])) ? (int)trim($_GET['gid']) : null;
+            if(is_null($groupid)){
+                http_response_code(400);
+                echo json_encode(['message','Select group']);
+                exit;
+            }
+
+            $groupdetails = $this->exammodel->GetGroupDetails($groupid);
+            echo json_encode(
+                ['group' => ucwords($groupdetails->GroupName),
+                'parish' => ucwords($groupdetails->ParishName),
+                'groupleader' => ucwords($groupdetails->GroupLeader)]
+            );
+            exit;
+
+        }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }
