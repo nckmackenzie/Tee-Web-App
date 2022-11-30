@@ -158,29 +158,32 @@ class Sale
 
             for ($i=0; $i < count($data['books']); $i++) { 
                 $bp = $this->GetItemBuyingPrice($data['sdate'],$data['books'][$i]->bid);
+                $issoftcopy = converttobool($data['books'][$i]->isSoft);
                 $buyingvalue = $data['books'][$i]->qty * $bp;
                 $sellingvalue =$data['books'][$i]->qty * $data['books'][$i]->rate;
-                $this->db->query('INSERT INTO sales_details (HeaderId,BookId,Qty,BoughtValue,SellingValue) 
-                              VALUES(:hid,:bid,:qty,:bought,:selling)');
+                $this->db->query('INSERT INTO sales_details (HeaderId,BookId,Qty,BoughtValue,SellingValue,IsSoftCopy) 
+                              VALUES(:hid,:bid,:qty,:bought,:selling,:soft)');
                 $this->db->bind(':hid',$tid);
                 $this->db->bind(':bid',$data['books'][$i]->bid);
                 $this->db->bind(':qty',$data['books'][$i]->qty);
                 $this->db->bind(':bought',$buyingvalue);
                 $this->db->bind(':selling',$sellingvalue);
+                $this->db->bind(':soft',$issoftcopy);
                 $this->db->execute();
 
-                $this->db->query('INSERT INTO stockmovements (TransactionDate,BookId,Qty,Reference,
-                                          TransactionType,TransactionId,CenterId) 
-                              VALUES(:tdate,:bid,:qty,:ref,:ttype,:tid,:cid)');
-                $this->db->bind(':tdate',$data['sdate']);
-                $this->db->bind(':bid',$data['books'][$i]->bid);
-                $this->db->bind(':qty',$data['books'][$i]->qty);
-                $this->db->bind(':ref',$data['reference']); 
-                $this->db->bind(':ttype',4);
-                $this->db->bind(':tid',$tid);
-                $this->db->bind(':cid',$_SESSION['centerid']);
-                $this->db->execute();
-
+                if(!$issoftcopy){
+                    $this->db->query('INSERT INTO stockmovements (TransactionDate,BookId,Qty,Reference,
+                                            TransactionType,TransactionId,CenterId) 
+                                VALUES(:tdate,:bid,:qty,:ref,:ttype,:tid,:cid)');
+                    $this->db->bind(':tdate',$data['sdate']);
+                    $this->db->bind(':bid',$data['books'][$i]->bid);
+                    $this->db->bind(':qty',$data['books'][$i]->qty);
+                    $this->db->bind(':ref',$data['reference']); 
+                    $this->db->bind(':ttype',4);
+                    $this->db->bind(':tid',$tid);
+                    $this->db->bind(':cid',$_SESSION['centerid']);
+                    $this->db->execute();
+                }
                 // $accountname = $this->GetGlDetails($data['books'][$i]->bid)[0];
                 // $accountid = $this->GetGlDetails($data['books'][$i]->bid)[1];
                 
@@ -269,28 +272,32 @@ class Sale
 
             for ($i=0; $i < count($data['books']); $i++) { 
                 $bp = $this->GetItemBuyingPrice($data['sdate'],$data['books'][$i]->bid);
+                $issoftcopy = converttobool($data['books'][$i]->isSoft);
                 $buyingvalue = $data['books'][$i]->qty * $bp;
                 $sellingvalue =$data['books'][$i]->qty * $data['books'][$i]->rate;
-                $this->db->query('INSERT INTO sales_details (HeaderId,BookId,Qty,BoughtValue,SellingValue) 
-                                  VALUES(:hid,:bid,:qty,:bought,:selling)');
+                $this->db->query('INSERT INTO sales_details (HeaderId,BookId,Qty,BoughtValue,SellingValue,IsSoftCopy) 
+                                  VALUES(:hid,:bid,:qty,:bought,:selling,:soft)');
                 $this->db->bind(':hid',$data['id']);
                 $this->db->bind(':bid',$data['books'][$i]->bid);
                 $this->db->bind(':qty',$data['books'][$i]->qty);
                 $this->db->bind(':bought',$buyingvalue);
                 $this->db->bind(':selling',$sellingvalue);
+                $this->db->bind(':soft',$issoftcopy);
                 $this->db->execute();
 
-                $this->db->query('INSERT INTO stockmovements (TransactionDate,BookId,Qty,Reference,
-                                          TransactionType,TransactionId,CenterId) 
-                              VALUES(:tdate,:bid,:qty,:ref,:ttype,:tid,:cid)');
-                $this->db->bind(':tdate',$data['sdate']);
-                $this->db->bind(':bid',$data['books'][$i]->bid);
-                $this->db->bind(':qty',$data['books'][$i]->qty);
-                $this->db->bind(':ref',$data['reference']); 
-                $this->db->bind(':ttype',4);
-                $this->db->bind(':tid',$data['id']);
-                $this->db->bind(':cid',$_SESSION['centerid']);
-                $this->db->execute();
+                if(!$issoftcopy){
+                    $this->db->query('INSERT INTO stockmovements (TransactionDate,BookId,Qty,Reference,
+                                            TransactionType,TransactionId,CenterId) 
+                                VALUES(:tdate,:bid,:qty,:ref,:ttype,:tid,:cid)');
+                    $this->db->bind(':tdate',$data['sdate']);
+                    $this->db->bind(':bid',$data['books'][$i]->bid);
+                    $this->db->bind(':qty',$data['books'][$i]->qty);
+                    $this->db->bind(':ref',$data['reference']); 
+                    $this->db->bind(':ttype',4);
+                    $this->db->bind(':tid',$data['id']);
+                    $this->db->bind(':cid',$_SESSION['centerid']);
+                    $this->db->execute();
+                }
 
                 // $accountname = $this->GetGlDetails($data['books'][$i]->bid)[0];
                 // $accountid = $this->GetGlDetails($data['books'][$i]->bid)[1];
