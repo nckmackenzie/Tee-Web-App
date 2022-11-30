@@ -149,6 +149,12 @@
                                 <label for="value" class="">Value</label>
                                 <input type="text" id="value" class="form-control form-control-sm" readonly>
                             </div> 
+                            <div class="col-lg-12">
+                                <div class="form-check my-2">
+                                    <input type="checkbox" name="softcopy" class="form-check-input" id="softcopy" >
+                                    <label class="form-check-label" for="softcopy">Soft Copy</label>
+                                </div>
+                            </div> 
                             <div class="col-xs-4 col-lg-2 mt-1">
                                 <button type="button" class="btn btn-sm btn-success w-100 btnadd">Add</button>
                             </div>                
@@ -168,6 +174,7 @@
                                                 <th>Rate</th>
                                                 <th>Qty</th>
                                                 <th>Value</th>
+                                                <th class="d-none">SoftCopy</th>
                                                 <th>Remove</th>
                                             </tr>
                                         </thead>
@@ -179,6 +186,7 @@
                                                     <td><input type="text" class="table-input rate" name="rates[]" value="<?php echo $table['rate'];?>" readonly></td>
                                                     <td><input type="text" class="table-input qty" name="qtys[]" value="<?php echo $table['qty'];?>" readonly></td>
                                                     <td><input type="text" class="table-input value" name="values[]" value="<?php echo $table['values'];?>" readonly></td>
+                                                    <td class="d-none"><input type="text" class="table-input softcopy" name="softcopies[]" value="<?php echo $table['softcopy'];?>" readonly></td>
                                                     <td><button type="button" class="action-icon btn btn-sm text-danger fs-5 btndel">Remove</button></td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -274,6 +282,6 @@
 
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>  
 <script type="module" src="<?php echo URLROOT;?>/dist/js/pages/sales/calculations.js"></script>                  
-<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/sales/add-sale.js"></script>                  
+<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/sales/add-sale-v1.js"></script>                  
 <script type="module" src="<?php echo URLROOT;?>/dist/js/pages/sales/studentGroupHandler.js"></script>                  
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
