@@ -52,6 +52,7 @@ class Managementreports extends Controller
                 'gradfee' => floatval($values[1]),
                 'generalExpenses' => floatval($values[2]),
                 'purchases' => floatval($values[3]),
+                'sales' => floatval($values[4]),
             ];
 
             echo json_encode(['success' => true, 'results' => $results]);

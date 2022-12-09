@@ -23,8 +23,9 @@ class Managementreport
         $purchases = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(InclusiveVat),0) AS SumOfValue 
                                                 FROM invoice_header 
                                                 WHERE (InvoiceDate BETWEEN ? AND ?) AND (Deleted = 0) ',[...$values]); 
-        
-        return [$feepayments,$graduationfees,$generalexpenses,$purchases];
+        $sales = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(AmountPaid),0) As SaleValue FROM sales_header 
+                                            WHERE (SalesDate BETWEEN ? AND ?) AND (Deleted = 0)',[...$values]);
+        return [$feepayments,$graduationfees,$generalexpenses,$purchases,$sales];
     }
 
     public function GetTrialBalanceReport($data)
