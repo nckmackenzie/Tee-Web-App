@@ -33,5 +33,5 @@
     </div>                    
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?> 
-<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/reports/management/income-statement.js"></script>                   
+<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/reports/management/income-statement-v1.js"></script>                   
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
