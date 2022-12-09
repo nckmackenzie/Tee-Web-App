@@ -63,10 +63,24 @@ class Reports extends Controller
         if($_SERVER['REQUEST_METHOD'] === 'GET'){
             $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
             $data = [
-                'sdate' => date('Y-m-d',strtotime($_GET['sdate'])),
-                'edate' => date('Y-m-d',strtotime($_GET['edate'])),
+                'type' => isset($_GET['type']) && !empty(trim($_GET['type'])) ? trim($_GET['type']) : 'all',
+                'criteria' => isset($_GET['criteria']) && !empty(trim($_GET['criteria'])) ? (int)trim($_GET['criteria']) : null,
+                'sdate' => isset($_GET['sdate']) && !empty(trim($_GET['sdate'])) ? date('Y-m-d',strtotime(trim($_GET['sdate']))) : null,
+                'edate' => isset($_GET['edate']) && !empty(trim($_GET['edate'])) ? date('Y-m-d',strtotime(trim($_GET['edate']))) : null,
                 'results' => []
             ];
+            //validation
+            if(is_null($data['sdate']) || is_null($data['edate'])){
+                http_response_code(400);
+                echo json_encode(['message' => 'Provide all required fields']);
+                exit;
+            }
+
+            if($data['type'] !== 'all' && is_null($data['criteria'])){
+                http_response_code(400);
+                echo json_encode(['message' => 'Select criteria']);
+                exit;
+            }
             $results = $this->reportmodel->GetSalesReport($data);
             foreach ($results as $result):
                 array_push($data['results'],[
@@ -81,6 +95,26 @@ class Reports extends Controller
             endforeach;
             echo json_encode($data['results']);
         }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
+
+    public function getsalesreportcriteria()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET')
+        {
+            $type = isset($_GET['type']) && !empty(trim($_GET['type'])) ? trim(htmlentities($_GET['type'])) : null;
+            $output = '<option value="" selected disabled>Select '.substr($type,2).'</option>';
+            foreach($this->reportmodel->GetSalesCriterias($type) as $criteria)
+            {
+                $output .= '<option value="'.$criteria->ID.'">'.$criteria->CriteriaName.'</option>';
+            }
+            echo json_encode($output);
+            exit;
+        }
+        else
+        {
             redirect('auth/forbidden');
             exit();
         }
