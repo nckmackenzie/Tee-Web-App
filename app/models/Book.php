@@ -126,7 +126,7 @@ class Book
     //get single book
     public function GetBook($id)
     {
-        $this->db->query('SELECT * FROM vw_books WHERE ID = :id');
+        $this->db->query('SELECT * FROM vw_books_v1 WHERE ID = :id');
         $this->db->bind(':id',$id);
         return $this->db->single();
     }
