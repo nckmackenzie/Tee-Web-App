@@ -230,6 +230,7 @@ class Sales extends Controller
                 'rate' => $detail->Rate,
                 'qty' => $detail->Qty,
                 'values' => $detail->SellingValue,
+                'softcopy' => $detail->IsSoftCopy
             ]);
         }
 
