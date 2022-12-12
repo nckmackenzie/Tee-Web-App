@@ -1,7 +1,22 @@
 import { numberWithCommas, setdatatable, updateColumnTotal } from '../utils.js';
 
-export const settable = (data, results) => {
-  let table = `
+export const settable = (type, data, results) => {
+  let table = tableHtml(type, data);
+  results.innerHTML = table;
+  setdatatable('table');
+  if (type !== 'bycourse') {
+    updateColumnTotal('table', 3, 'subtotal');
+    updateColumnTotal('table', 4, 'discount');
+    updateColumnTotal('table', 5, 'netamount');
+  } else {
+    updateColumnTotal('table', 1, 'total');
+  }
+};
+
+function tableHtml(type, data) {
+  let html;
+  if (type !== 'bycourse') {
+    html = `
     <table class="table table-sm w-100 dt-responsive nowrap" id="table">
       <thead class="table-light">
         <tr>
@@ -15,9 +30,9 @@ export const settable = (data, results) => {
         </tr>
       </thead>
       <tbody>`;
-  if (data.length > 0) {
-    data.forEach(dt => {
-      table += `
+    if (data.length > 0) {
+      data.forEach(dt => {
+        html += `
             <tr>
               <td>${dt.saleId}</td>
               <td>${dt.salesDate}</td>
@@ -28,9 +43,9 @@ export const settable = (data, results) => {
               <td>${dt.reference}</td>
             </tr>
           `;
-    });
-  }
-  table += `
+      });
+    }
+    html += `
       </tbody>
       <tfoot class="table-light">
         <th colspan="3" style="text-align:center">Total:</th>
@@ -41,9 +56,35 @@ export const settable = (data, results) => {
       </tfoot>
     </table>
   `;
-  results.innerHTML = table;
-  setdatatable('table');
-  updateColumnTotal('table', 3, 'subtotal');
-  updateColumnTotal('table', 4, 'discount');
-  updateColumnTotal('table', 5, 'netamount');
-};
+  } else {
+    html = `
+    <table class="table table-sm w-100 dt-responsive nowrap" id="table">
+    <thead class="table-light">
+      <tr>
+        <th>Course Name</th>
+        <th>Sales Value</th>
+      </tr>
+    </thead>
+    <tbody>`;
+    if (data.length > 0) {
+      data.forEach(dt => {
+        html += `
+          <tr>
+            <td>${dt.course}</td>
+            <td>${numberWithCommas(dt.value)}</td>
+          </tr>
+        `;
+      });
+    }
+    html += `
+    </tbody>
+    <tfoot class="table-light">
+      <th style="text-align:center">Total:</th>
+      <th id="total"></th>
+    </tfoot>
+  </table>
+    `;
+  }
+
+  return html;
+}
