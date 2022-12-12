@@ -22,6 +22,14 @@ class Report
             return loadresultset($this->db->dbh,'CALL sp_get_sales(?,?,?)',[$data['sdate'],$data['edate'],(int)$data['criteria']]);
         }elseif ($data['type'] === 'all') {
             return loadresultset($this->db->dbh,'CALL sp_get_sales_all(?,?)',[$data['sdate'],$data['edate']]);
+        }elseif ($data['type'] === 'bycourse') {
+            $sql = 'SELECT 
+                        c.CourseName,
+                        IFNULL(SUM(d.SellingValue),0) AS SumOfValue
+                    FROM `sales_details` d join sales_header h on d.HeaderId = h.ID join books b 
+                        on d.BookId = b.ID join courses c on b.CourseId = c.ID
+                    WHERE (h.Deleted = 0) AND (h.SalesDate BETWEEN ? AND ?)';
+            return loadresultset($this->db->dbh,$sql,[$data['sdate'],$data['edate']]);
         }
     }
 
