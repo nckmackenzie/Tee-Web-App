@@ -34,14 +34,20 @@ class Feereports extends Controller
         if($_SERVER['REQUEST_METHOD'] === 'GET'){
             $_GET = filter_input_array(INPUT_GET,FILTER_UNSAFE_RAW);
             $data = [
+                'type' => isset($_GET['type']) && !empty(trim($_GET['type'])) ? trim(htmlentities($_GET['type'])) : null,
                 'sdate' => isset($_GET['sdate']) && !empty(trim($_GET['sdate'])) ? date('Y-m-d',strtotime($_GET['sdate'])) : null,
                 'edate' => isset($_GET['edate']) && !empty(trim($_GET['edate'])) ? date('Y-m-d',strtotime($_GET['edate'])) : null,
                 'results' => []
             ];
 
-            if(is_null($data['sdate']) || is_null($data['edate'])){
+            if(is_null($data['sdate']) || is_null($data['edate']) || is_null($data['type'])){
                 http_response_code(400);
                 echo json_encode(['message' => 'Provide all required fields']);
+                exit;
+            }
+            if($data['sdate'] > $data['edate']){
+                http_response_code(400);
+                echo json_encode(['message' => 'Start date cannot be greater than end date']);
                 exit;
             }
             $results = $this->reportmodel->Getfeepayments($data);
@@ -50,16 +56,25 @@ class Feereports extends Controller
                 echo json_encode(['message' => 'No data found']);
                 exit;
             }
-            foreach ($results as $result):
-                array_push($data['results'],[
-                    'paymentDate' => $result->PaymentDate,
-                    'receiptNo' => $result->ReceiptNo,
-                    'studentName' => $result->StudentName,
-                    'amount' => $result->AmountPaid,
-                    'paymentReference' => $result->PaymentReference
-                ]);
-            endforeach;
-            echo json_encode($data['results']);
+            if($data['type'] === 'all'){
+                foreach ($results as $result):
+                    array_push($data['results'],[
+                        'paymentDate' => $result->PaymentDate,
+                        'receiptNo' => $result->ReceiptNo,
+                        'studentName' => $result->StudentName,
+                        'amount' => $result->AmountPaid,
+                        'paymentReference' => $result->PaymentReference
+                    ]);
+                endforeach;
+            }else{
+                foreach ($results as $result):
+                    array_push($data['results'],[
+                        'course' => ucwords($result->CourseName),
+                        'value' => $result->SumOfValue
+                    ]);
+                endforeach;
+            }
+            echo json_encode(['success' => true,'data' => $data['results']]);
         }else{
             redirect('auth/forbidden');
             exit();
