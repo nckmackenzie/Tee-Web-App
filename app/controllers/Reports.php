@@ -76,23 +76,32 @@ class Reports extends Controller
                 exit;
             }
 
-            if($data['type'] !== 'all' && is_null($data['criteria'])){
+            if($data['type'] === 'bycenter' && is_null($data['criteria'])){
                 http_response_code(400);
                 echo json_encode(['message' => 'Select criteria']);
                 exit;
             }
             $results = $this->reportmodel->GetSalesReport($data);
-            foreach ($results as $result):
-                array_push($data['results'],[
-                    'saleId' => $result->SalesID,
-                    'salesDate' => $result->SalesDate,
-                    'soldTo' => $result->SoldTo,
-                    'subTotal' => $result->SubTotal,
-                    'discount' => $result->Discount,
-                    'netAmount' => $result->NetAmount,
-                    'reference' => $result->Reference,
-                ]);
-            endforeach;
+            if($data['type'] !== 'bycourse') :
+                foreach ($results as $result):
+                    array_push($data['results'],[
+                        'saleId' => $result->SalesID,
+                        'salesDate' => $result->SalesDate,
+                        'soldTo' => $result->SoldTo,
+                        'subTotal' => $result->SubTotal,
+                        'discount' => $result->Discount,
+                        'netAmount' => $result->NetAmount,
+                        'reference' => $result->Reference,
+                    ]);
+                endforeach;
+            else : 
+                foreach($results as $result) :
+                    array_push($data['results'],[
+                        'course' => ucwords($result->CourseName),
+                        'value' => $result->SumOfValue
+                    ]);
+                endforeach;
+            endif;
             echo json_encode($data['results']);
         }else{
             redirect('auth/forbidden');

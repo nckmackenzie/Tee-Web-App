@@ -19,7 +19,7 @@ const results = document.querySelector('#results');
 typeSelect.addEventListener('click', async function (e) {
   if (!e.target.value || e.target.value === '') return;
 
-  if (e.target.value === 'all') {
+  if (e.target.value === 'all' || e.target.value === 'bycourse') {
     criteriaSelect.value = '';
     criteriaSelect.disabled = true;
     criteriaSelect.classList.remove('mandatory');
@@ -48,7 +48,7 @@ preview.addEventListener('click', async function () {
   const edate = endInput.value || new Date();
   const url = `${HOST_URL}/reports/salesrpt?type=${type}&sdate=${sdate}&edate=${edate}&criteria=${criteria}`;
   const data = await getRequest(url);
-  settable(data, results);
+  settable(type, data, results);
 });
 
 //get criterias
