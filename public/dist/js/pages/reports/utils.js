@@ -36,7 +36,13 @@ export function setdatatable(
     table = $(`#${tbl}`)
       .DataTable({
         lengthChange: !1,
-        buttons: ['print', 'excel', 'pdf'],
+        buttons: [
+          { extend: 'print', footer: true },
+          { extend: 'excelHtml5', footer: true },
+          { extend: 'pdfHtml5', footer: true },
+          // { extend: excel, footer: true },
+          // { extend: pdf, footer: true },
+        ],
         columnDefs: columnDefs,
         ordering: false,
         searching: searching,

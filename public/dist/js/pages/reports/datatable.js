@@ -13,7 +13,11 @@ export function setdatatable(
     table = $(`#${tbl}`)
       .DataTable({
         lengthChange: !1,
-        buttons: buttonOptions || ['print', 'excel', 'pdf'],
+        buttons: buttonOptions || [
+          { extend: 'print', footer: true },
+          { extend: 'excelHtml5', footer: true },
+          { extend: 'pdfHtml5', footer: true },
+        ],
         columnDefs: columnDefs,
         ordering: false,
         searching: searching,
