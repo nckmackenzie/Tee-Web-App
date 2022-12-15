@@ -82,6 +82,8 @@ addBtn.addEventListener('click', async () => {
     return;
   }
 
+  getGrossValue();
+
   const selectedBook = getSelectedText(productSelect);
   const gross = grossInput.value;
   const rate = rateInput.value;
