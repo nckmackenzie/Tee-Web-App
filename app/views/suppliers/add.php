@@ -90,9 +90,10 @@
                                     <div class="mb-3">
                                         <label for="openingbal" class="form-label">Opening Balance</label>
                                         <input type="number" name="openingbal" id="openingbal" 
-                                            class="form-control form-control-sm"
-                                            value="<?php echo $data['openingbal'];?>"
-                                            placeholder="eg 25000">  
+                                               step="any"
+                                               class="form-control form-control-sm"
+                                               value="<?php echo $data['openingbal'];?>"
+                                               placeholder="eg 25000">  
                                     </div>
                                 </div>
                                 <div class="col-md-6">
