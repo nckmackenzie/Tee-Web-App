@@ -11,3 +11,4 @@ export function getGrossValue() {
 }
 
 qtyInput.addEventListener('change', getGrossValue);
+rateInput.addEventListener('change', getGrossValue);
