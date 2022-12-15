@@ -55,14 +55,15 @@ class Supplier
                 $this->db->execute();
                 $iid = $this->db->dbh->lastInsertId();
 
-                $this->db->query('INSERT INTO invoice_payments (TransactionDate,HeaderId,SupplierId,Debit,Credit,
+                $this->db->query('INSERT INTO invoice_payments (TransactionDate,HeaderId,SupplierId,Debit,Credit,Narration,
                                                                 TransactionType,TransactionId,CenterId) 
-                                  VALUES(:tdate,:hid,:supplier,:debit,:credit,:ttype,:tid,:cid)');
+                                  VALUES(:tdate,:hid,:supplier,:debit,:credit,:narr,:ttype,:tid,:cid)');
                 $this->db->bind(':tdate',$data['asof']);
                 $this->db->bind(':hid',$iid);
                 $this->db->bind(':supplier',$tid);
                 $this->db->bind(':debit',0);
                 $this->db->bind(':credit',$data['openingbal']);
+                $this->db->bind(':narr','opening bal');
                 $this->db->bind(':ttype',2);
                 $this->db->bind(':tid',$tid);
                 $this->db->bind(':cid',$_SESSION['centerid']);
