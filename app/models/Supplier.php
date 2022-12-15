@@ -48,7 +48,7 @@ class Supplier
                               VALUES(:idate,:supplier,:narr,:incl,:pstatus,:cid)');
                 $this->db->bind(':idate',$data['asof']);
                 $this->db->bind(':supplier',$tid);
-                $this->db->bind(':narr','opening bal');
+                $this->db->bind(':narr','supplier opening bal');
                 $this->db->bind(':incl',$data['openingbal']);
                 $this->db->bind(':pstatus',3);
                 $this->db->bind(':cid',$_SESSION['centerid']);
@@ -63,7 +63,7 @@ class Supplier
                 $this->db->bind(':supplier',$tid);
                 $this->db->bind(':debit',0);
                 $this->db->bind(':credit',$data['openingbal']);
-                $this->db->bind(':narr','opening bal');
+                $this->db->bind(':narr','supplier opening bal');
                 $this->db->bind(':ttype',2);
                 $this->db->bind(':tid',$tid);
                 $this->db->bind(':cid',$_SESSION['centerid']);
