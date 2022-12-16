@@ -33,18 +33,26 @@ class Semister
         }
     }
 
+    public function SemisterSetAsPrevious($id,$sem)
+    {
+        $count = getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM semisters WHERE (ID <> ?) AND (Deleted = 0) AND (PreviousSemister = ?)',[$id,$sem]);
+        if((int)$count > 0) return false;
+        return true;
+    }
+
     public function CreateUpdate($data)
     {
         try {
             if($data['isedit']){
-                $this->db->query('UPDATE semisters SET SemisterName=:sname,StartDate=:sdate,EndDate=:edate 
+                $this->db->query('UPDATE semisters SET SemisterName=:sname,StartDate=:sdate,EndDate=:edate,PreviousSemister=:prev 
                                   WHERE (ID = :id)');
             }else{
-                $this->db->query('INSERT INTO semisters (SemisterName,StartDate,EndDate) VALUES(:sname,:sdate,:edate)');
+                $this->db->query('INSERT INTO semisters (SemisterName,StartDate,EndDate,PreviousSemister) VALUES(:sname,:sdate,:edate,:prev)');
             }
             $this->db->bind(':sname',strtolower($data['semistername']));
             $this->db->bind(':sdate',$data['startdate']);
             $this->db->bind(':edate',$data['enddate']);
+            $this->db->bind(':prev',$data['previoussemister']);
             if($data['isedit']){
                 $this->db->bind(':id',$data['id']);
             }

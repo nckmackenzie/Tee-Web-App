@@ -10,6 +10,7 @@ class Semisters extends Controller
         $this->authmodel = $this->model('Auths');
         checkrights($this->authmodel,'semisters');
         $this->semistermodel = $this->model('Semister');
+        $this->semisters = $this->semistermodel->GetSemisters();
     }
 
     public function index()
@@ -25,8 +26,11 @@ class Semisters extends Controller
 
     public function add()
     {
+        $semisters = 
         $data = [
             'title' => 'Add Semister',
+            'semisters' => $this->semisters,
+            'isfirst' => count($this->semisters) === 0 ? true : false,
             'id' => 0,
             'isedit' => false,
             'semistername' => '',
@@ -52,6 +56,7 @@ class Semisters extends Controller
                 'semistername' => !empty(trim($fields->semistername)) ? trim($fields->semistername) : NULL,
                 'startdate' => !empty(trim($fields->startdate)) ? date('Y-m-d',strtotime(trim($fields->startdate))) : NULL,
                 'enddate' => !empty(trim($fields->enddate)) ? date('Y-m-d',strtotime(trim($fields->enddate))) : NULL,
+                'previoussemister' => !empty($fields->prevsem) ? (int)trim($fields->prevsem) : NULL,
                 'has_error' => false,
                 'error' => '',
             ];
@@ -74,6 +79,11 @@ class Semisters extends Controller
             if(!$this->semistermodel->CheckExists($data,'date')){
                 http_response_code(400);
                 echo json_encode(['message' => 'Defined period conflicts with another period']);
+                exit;
+            }
+            if(!is_null($data['previoussemister']) && !$this->semistermodel->SemisterSetAsPrevious($data['id'],$data['previoussemister'])){
+                http_response_code(400);
+                echo json_encode(['message' => 'Previous semister already added for another semister']);
                 exit;
             }
             if(!$this->semistermodel->CreateUpdate($data)){
@@ -136,6 +146,26 @@ class Semisters extends Controller
             exit();
     
         }else{
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
+
+    public function getsemisters()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET')
+        {
+            $semisters = $this->semistermodel->GetSemisters();
+            $output = '<option value="" selected disabled>Select Previous Semister</option>';
+            foreach($semisters as $semister):
+                $output .='<option value="'.$semister->ID.'">'.$semister->SemisterName.'</option>';
+            endforeach;
+
+            echo json_encode($output);
+            exit;
+        }
+        else
+        {
             redirect('auth/forbidden');
             exit();
         }
