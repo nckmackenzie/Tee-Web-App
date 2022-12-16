@@ -204,4 +204,91 @@ class Managementreports extends Controller
             exit;
         }
     }
+
+    public function balancesheet()
+    {
+        $data = ['title' => 'Balance Sheet'];
+        $this->view('managementreports/balancesheet',$data);
+        exit;
+    }
+
+    public function balancesheetrpt()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'GET')
+        {
+            $date = isset($_GET['date']) && !empty(trim($_GET['date'])) ? date('Y-m-d',strtotime(trim($_GET['date']))) : null;
+            if(is_null($date)){
+                http_response_code(400);
+                echo json_encode(['success' => false,'Provide date']);
+                exit;
+            }
+            if($date > date('Y-m-d')){
+                http_response_code(400);
+                echo json_encode(['success' => false,'Invalid date selected']);
+                exit;
+            }
+
+            $totals = $this->reportmodel->GetTotals($date);
+            //get results
+            $assets = $this->reportmodel->BalancesheetAssets($date);
+            $liabilitiesequities = $this->reportmodel->BalancesheetLiablityAndEquity($date);
+            $assetstotals = $totals[0];
+            $liabilityequitytotal = $totals[1];
+            $netincome = $this->reportmodel->GetNetIncome($date);
+            $totalLiablityEquity = floatval($liabilityequitytotal) + floatval($netincome);
+            $output = '';
+            $output .= '
+                <table class="table table-bordered table-sm" id="table">
+                    <thead class="bg-lightblue">
+                        <tr>
+                            <th>Balance Sheet As Of '.date("d/m/Y", strtotime($date)).'</th>
+                        </tr>
+                    </thead>   
+                    <tbody>
+                        <tr class="bg-success text-white">
+                            <td colspan="2">Assets</th>
+                        </tr>';
+                    foreach($assets as $asset){
+                        $output .='
+                        <tr>
+                            <td>'.ucwords($asset->Account).'</td>
+                            <td>'.number_format($asset->bal,2).'</td>
+                        </tr>';
+                    }
+                    $output .='
+                        <tr style="background-color: #abebbc;">
+                            <td style="font-weight: 700;">Assets Total</td>
+                            <td style="font-weight: 700;">'.number_format($assetstotals,2).'</td>
+                        </tr>
+                        <tr style="background-color: #e85858; color: #fff;">
+                            <td colspan="2">Liability & Equity</th>
+                        </tr>';
+                    foreach ($liabilitiesequities as $liabilityequity) {
+                        $output .='
+                        <tr>
+                             <td>'.strtoupper($liabilityequity->Account).'</td>
+                             <td>'.number_format((floatval($liabilityequity->bal) * -1),2).'</td>
+                        </tr>';
+                    } 
+                    $output .='
+                        <tr>
+                            <td>NET INCOME</td>
+                            <td>'.number_format(floatval($netincome),2).'</td>
+                        </tr>
+                        <tr style="background-color: #f59595;">
+                            <td style="font-weight: 700;">Liablity & Equity Total</td>
+                            <td style="font-weight: 700;">'.number_format($totalLiablityEquity,2).'</td>
+                        </tr>
+                    </tbody>
+                </table>';
+
+            echo json_encode(['success' => true, 'markup' => $output]);
+            exit;
+        }
+        else
+        {
+            redirect('auth/forbidden');
+            exit;
+        }
+    }
 }
