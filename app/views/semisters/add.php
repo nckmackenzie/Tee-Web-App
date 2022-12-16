@@ -48,6 +48,16 @@
                                        value="<?php echo $data['enddate'];?>">
                                 <span class="invalid-feedback"></span>
                             </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="prevsem">Previous Semister</label>
+                                <select name="prevsem" id="prevsem" class="form-select form-select-sm <?php echo $data['isfirst'] ? '' : 'mandatory';?>">
+                                    <option value="" selected disabled>Select Previous Semister</option>
+                                    <?php foreach($data['semisters'] as $semister) : ?>
+                                        <option value="<?php echo $semister->ID;?>"><?php echo $semister->SemisterName;?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <span class="invalid-feedback"></span>
+                            </div>
                         </div>
                         <div class="d-grid d-md-block">
                             <input type="hidden" name="isedit" value="<?php echo $data['isedit'];?>" id="isedit">
@@ -61,5 +71,5 @@
     </div>                    
 </div> <!-- container -->
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>  
-<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/semisters/addsemister.js"></script>                  
+<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/semisters/add-semister.js"></script>                  
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
