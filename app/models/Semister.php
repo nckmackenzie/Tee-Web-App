@@ -77,6 +77,20 @@ class Semister
         return $this->db->single();
     }
 
+    public function ValidateDelete($id)
+    {
+        $feestructurecount = getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM fee_structure WHERE SemisterId=? AND Deleted = 0',[(int)$id]);
+        $feepaymentcount = getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM fees_payment WHERE SemisterId=? AND Deleted = 0',[(int)$id]);
+        $initialbalcount = getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM initial_balances_header WHERE SemisterId=?',[(int)$id]);
+        $semistercount = getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM semisters WHERE PreviousSemister=? AND Deleted = 0',[(int)$id]);
+        //count validation
+        if((int)$feestructurecount > 0 || (int)$feepaymentcount > 0 || (int)$initialbalcount > 0 || $semistercount > 0)
+        {
+            return false;
+        }
+        return true;
+    }
+
     public function Delete($id)
     {
         try {

@@ -120,7 +120,7 @@ class Semisters extends Controller
 
     public function delete()
     {
-        delete('semister',$this->semistermodel);
+        delete('semister',$this->semistermodel,true);
     }
 
     public function close()
