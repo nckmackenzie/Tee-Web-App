@@ -72,8 +72,9 @@
                                 <div class="mb-3">
                                     <label for="studentorgroup" class="">Student/Group</label>
                                     <select name="studentorgroup" id="studentorgroup" 
-                                            class="form-select form-select-sm mandatory 
-                                            <?php echo inputvalidation($data['studentorgroup'],$data['studentgroup_err'],$data['touched']);?>">
+                                            class="form-select form-select-sm mandatory select2 
+                                            <?php echo inputvalidation($data['studentorgroup'],$data['studentgroup_err'],$data['touched']);?>"
+                                            data-toggle="select2">
                                         <option value="" selected disabled>Select student or group</option>
                                         <?php if(($data['touched'] && !empty($data['type'])) || $data['isedit']) : ?>
                                             <?php foreach($data['studentsorgroups'] as $studentorgroup) : ?>
@@ -87,7 +88,7 @@
                             <div class="col-lg-4">
                                 <div class="mb-3">
                                     <label for="paymethod">Pay method</label>
-                                    <select name="paymethod" id="paymethod" class="form-select form-select-sm mandatory 
+                                    <select name="paymethod" id="paymethod" class="form-select mandatory 
                                             <?php echo inputvalidation($data['paymethod'],$data['paymethod_err'],$data['touched']);?>">
                                         <option value="" selected disabled>Select payment method</option>
                                         <option value="1" <?php selectdCheck($data['paymethod'],1);?>>Cash</option>            
@@ -101,7 +102,7 @@
                                 <div class="mb-3">
                                     <label for="reference">Reference</label>
                                     <input type="text" name="reference" id="reference" 
-                                            class="form-control form-control-sm mandatory 
+                                            class="form-control mandatory 
                                             <?php echo inputvalidation($data['reference'],$data['reference_err'],$data['touched']);?>"
                                             value="<?php echo $data['reference'];?>"
                                             placeholder="eg MPESA Ref or Cheque No...">
@@ -283,5 +284,5 @@
 <?php require APPROOT .'/views/inc/layout/app/footer.php'; ?>  
 <script type="module" src="<?php echo URLROOT;?>/dist/js/pages/sales/calculations.js"></script>                  
 <script type="module" src="<?php echo URLROOT;?>/dist/js/pages/sales/add-sale-v1.js"></script>                  
-<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/sales/studentGroupHandler.js"></script>                  
+<script type="module" src="<?php echo URLROOT;?>/dist/js/pages/sales/studentGroupHandler-v1.js"></script>                  
 <?php require APPROOT .'/views/inc/layout/app/end.php'; ?>                    
