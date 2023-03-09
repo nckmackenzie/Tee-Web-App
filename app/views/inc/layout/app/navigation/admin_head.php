@@ -91,10 +91,21 @@
     </div>
 </li>
 <li class="side-nav-item">
-    <a href="<?php echo URLROOT;?>/sales" class="side-nav-link">
+    <a data-bs-toggle="collapse" href="#sidebarSales" aria-expanded="false" aria-controls="sidebarSales" class="side-nav-link">
         <i class="uil-dollar-sign"></i>
         <span> Sales </span>
+        <span class="menu-arrow"></span>
     </a>
+    <div class="collapse" id="sidebarSales">
+        <ul class="side-nav-second-level">
+            <li>
+                <a href="<?php echo URLROOT;?>/sales">Sales</a>
+            </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/sales/saleswithbalances">Sale With Balances</a>
+            </li>
+        </ul>
+    </div>
 </li>
 <li class="side-nav-item">
     <a data-bs-toggle="collapse" href="#sidebarExams" aria-expanded="false" aria-controls="sidebarExams" class="side-nav-link">
