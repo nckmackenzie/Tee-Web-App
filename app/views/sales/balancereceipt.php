@@ -73,7 +73,7 @@
                             <div class="col-md-6">
                                 <div class="mb-2">
                                     <label for="reference">Reference</label>
-                                    <input type="number" name="reference" id="reference" 
+                                    <input type="text" name="reference" id="reference" 
                                            class="form-control form-control-sm mandatory"
                                            placeholder="eg chq1234">
                                     <span class="invalid-feedback"></span>
