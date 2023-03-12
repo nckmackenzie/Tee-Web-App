@@ -26,12 +26,22 @@
                 <div class="card-body">
                     <form action="" method="post" id="semisterForm" autocomplete="off">
                         <div class="row">
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <label for="semistername">Semister Name</label>
                                 <input type="text" name="semistername" id="semistername" 
                                       class="form-control form-control-sm mandatory"
                                       value="<?php echo $data['semistername'];?>"
                                       placeholder="eg Semister 1 - 2022">
+                                <span class="invalid-feedback"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="class">Class</label>
+                                <select name="class" id="class" class="form-select form-select-sm mandatory">
+                                    <option value="" selected disabled>Select class</option>
+                                    <?php foreach($data['classes'] as $class) : ?>
+                                        <option value="<?php echo $class->ID;?>" <?php selectdCheck($data['class'],$class->ID)?>><?php echo $class->ClassName;?></option>
+                                    <?php endforeach; ?>
+                                </select>
                                 <span class="invalid-feedback"></span>
                             </div>
                             <div class="col-md-6 mb-3">

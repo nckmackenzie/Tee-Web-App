@@ -14,6 +14,12 @@ class Semister
         return loadresultset($this->db->dbh,'SELECT * FROM vw_semisters',[]);
     }
 
+    public function GetClasses()
+    {
+        $sql = 'SELECT ID,UCASE(ClassName) As ClassName FROM classes WHERE (Deleted = 0) ORDER BY ClassName';
+        return loadresultset($this->db->dbh,$sql,[]);
+    }
+
     public function CheckExists($data,$type)
     {
         if($type === 'name'){
@@ -24,8 +30,8 @@ class Semister
                 return true;
             }
         }elseif($type === 'date'){
-            $sql = 'SELECT COUNT(*) FROM semisters WHERE (? BETWEEN StartDate AND EndDate) AND (Deleted = 0) AND (ID <> ?)';
-            if((int) getdbvalue($this->db->dbh,$sql,[strtolower($data['startdate']),$data['id']]) > 0) {
+            $sql = 'SELECT COUNT(*) FROM semisters WHERE (? BETWEEN StartDate AND EndDate) AND (Deleted = 0) AND (ID <> ?) AND (ClassId <> ?)';
+            if((int) getdbvalue($this->db->dbh,$sql,[strtolower($data['startdate']),$data['id'],$data['class']]) > 0) {
                 return false;
             }else{
                 return true;
@@ -37,14 +43,15 @@ class Semister
     {
         try {
             if($data['isedit']){
-                $this->db->query('UPDATE semisters SET SemisterName=:sname,StartDate=:sdate,EndDate=:edate 
+                $this->db->query('UPDATE semisters SET SemisterName=:sname,StartDate=:sdate,EndDate=:edate,ClassId=:cid 
                                   WHERE (ID = :id)');
             }else{
-                $this->db->query('INSERT INTO semisters (SemisterName,StartDate,EndDate) VALUES(:sname,:sdate,:edate)');
+                $this->db->query('INSERT INTO semisters (SemisterName,StartDate,EndDate,ClassId) VALUES(:sname,:sdate,:edate,:cid)');
             }
             $this->db->bind(':sname',strtolower($data['semistername']));
             $this->db->bind(':sdate',$data['startdate']);
             $this->db->bind(':edate',$data['enddate']);
+            $this->db->bind(':cid',$data['class']);
             if($data['isedit']){
                 $this->db->bind(':id',$data['id']);
             }

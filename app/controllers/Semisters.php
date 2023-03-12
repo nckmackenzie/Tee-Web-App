@@ -27,9 +27,11 @@ class Semisters extends Controller
     {
         $data = [
             'title' => 'Add Semister',
+            'classes' => $this->semistermodel->GetClasses(),
             'id' => 0,
             'isedit' => false,
             'semistername' => '',
+            'class' => '',
             'startdate' => '',
             'enddate' => '',
             'has_error' => false,
@@ -50,13 +52,14 @@ class Semisters extends Controller
                 'id' => !empty(trim($fields->id)) ? trim($fields->id) : '',
                 'isedit' => converttobool($fields->isedit),
                 'semistername' => !empty(trim($fields->semistername)) ? trim($fields->semistername) : NULL,
+                'class' => !empty($fields->class) ? (int)trim($fields->class) : NULL,
                 'startdate' => !empty(trim($fields->startdate)) ? date('Y-m-d',strtotime(trim($fields->startdate))) : NULL,
                 'enddate' => !empty(trim($fields->enddate)) ? date('Y-m-d',strtotime(trim($fields->enddate))) : NULL,
                 'has_error' => false,
                 'error' => '',
             ];
             //validate
-            if(is_null($data['semistername']) || is_null($data['startdate']) || is_null($data['enddate'])){
+            if(is_null($data['semistername']) || is_null($data['startdate']) || is_null($data['enddate']) || is_null($data['class'])){
                 http_response_code(400);
                 echo json_encode(['message' => 'Fill all required fields']);
                 exit;
@@ -96,11 +99,13 @@ class Semisters extends Controller
         $semister = $this->semistermodel->GetSemister($id);
         $data = [
             'title' => 'Edit Semister',
+            'classes' => $this->semistermodel->GetClasses(),
             'id' => $semister->ID,
             'isedit' => true,
             'semistername' => strtoupper($semister->SemisterName),
             'startdate' => $semister->StartDate,
             'enddate' => $semister->EndDate,
+            'class' => $semister->ClassId,
             'has_error' => false,
             'error' => '',
         ];

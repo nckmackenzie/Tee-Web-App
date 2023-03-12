@@ -31,8 +31,8 @@
                             <tr>
                                 <th class="d-none">ID</th>
                                 <th>Semister Name</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
+                                <th>Class</th>
+                                <th>Period</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -41,8 +41,8 @@
                                 <tr>
                                     <td class="d-none"><?php echo $semister->ID;?></td>
                                     <td><?php echo $semister->SemisterName;?></td>
-                                    <td><?php echo date('d-m-y',strtotime($semister->StartDate));?></td>
-                                    <td><?php echo date('d-m-y',strtotime($semister->EndDate));?></td>
+                                    <td><?php echo $semister->ClassName;?></td>
+                                    <td><?php echo $semister->Period;?></td>
                                     <td>
                                         <?php if(!converttobool($semister->Closed)) : ?>
                                             <?php if((int)$_SESSION['usertypeid'] < 3 ): ?>
