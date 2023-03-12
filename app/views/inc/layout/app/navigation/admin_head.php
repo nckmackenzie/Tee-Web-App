@@ -40,6 +40,9 @@
                 <li>
                     <a href="<?php echo URLROOT;?>/banks">Banks</a>
                 </li>
+                <li>
+                    <a href="<?php echo URLROOT;?>/classes">Classes</a>
+                </li>
             </ul>
         </ul>
     </div>

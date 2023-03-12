@@ -19,7 +19,10 @@
                 <a href="<?php echo URLROOT;?>/users/logs">Sale edit logs</a>
             </li>
             <li>
-                    <a href="<?php echo URLROOT;?>/banks">Banks</a>
+                <a href="<?php echo URLROOT;?>/banks">Banks</a>
+            </li>
+            <li>
+                <a href="<?php echo URLROOT;?>/classes">Classes</a>
             </li>
         </ul>
     </div>
