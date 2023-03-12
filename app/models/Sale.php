@@ -426,4 +426,67 @@ class Sale
         $this->db->bind(':gid',$gid);
         return $this->db->resultset();
     }
+
+    public function GetSalesWithBalances()
+    {
+        return loadresultset($this->db->dbh,'SELECT * FROM vw_sales_balances WHERE CenterId = ?',[(int)$_SESSION['centerid']]);
+    }
+
+    public function GetBalanceDetails($id)
+    {
+        $balance = getdbvalue($this->db->dbh,'SELECT Balance from vw_sales_balances WHERE ID = ?',[$id]);
+        $soldto = getdbvalue($this->db->dbh,'SELECT SoldTo from vw_sales_balances WHERE ID = ?',[$id]);
+        return [$balance,$soldto];
+    }
+
+    public function ReceivePayment($data)
+    {
+        try {
+
+            $this->db->dbh->beginTransaction();
+            $amoutpaid = getdbvalue($this->db->dbh,'SELECT AmountPaid FROM sales_header WHERE (ID = ?)',[$data['saleid']]);
+
+            $this->db->query('INSERT INTO sale_balance_pay (SaleId,PaymentDate,InitialBalance,AmountPaid,TransactionType)
+                              VALUES(:saleid,:pdate,:balance,:amount,:ttype)');
+            $this->db->bind(':saleid',$data['saleid']);
+            $this->db->bind(':pdate',$data['paydate']);
+            $this->db->bind(':balance',$data['balance']);
+            $this->db->bind(':amount',$data['payment']);
+            $this->db->bind(':ttype',11);
+            $this->db->execute();
+            $tid = $this->db->dbh->lastInsertId();
+            $newpaid = $amoutpaid + $data['payment'];
+
+            $this->db->query('UPDATE sales_header SET AmountPaid=:paid WHERE ID=:id');
+            $this->db->bind(':paid',$newpaid);
+            $this->db->bind(':id',$data['saleid']);
+            $this->db->execute();
+
+            $desc = 'sale balance payment ref '.$data['reference'];
+            savetoledger($this->db->dbh,$data['paydate'],'sales',0,$data['payment'],$desc,1,11,$tid,$_SESSION['centerid']);
+            if(intval($data['paymethod']) === 1){
+                savetoledger($this->db->dbh,$data['paydate'],'cash at hand',$data['payment'],0,$desc,3,11,$tid,$_SESSION['centerid']);
+            }else{
+                savetoledger($this->db->dbh,$data['paydate'],'cash at bank',$data['payment'],0,$desc,3,11,$tid,$_SESSION['centerid']);
+                savebankposting($this->db->dbh,$data['paydate'],(int)$data['paymethod'] === 2 ? 1 : 0,null,$data['payment'],
+                                0,$data['reference'],$desc,11,$tid,$_SESSION['centerid']);
+            }
+
+            if(!$this->db->dbh->commit()){
+                return  false;
+            }else{
+                return true;
+            }
+
+        } catch (PDOException $e) {
+            if ($this->db->dbh->inTransaction()) {
+                $this->db->dbh->rollBack();
+            }
+            error_log($e->getMessage(),0);
+            return false;
+        } catch (Exception $e) {
+            error_log($e->getMessage(),0);
+            return false;
+        }
+    }
 }

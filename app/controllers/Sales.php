@@ -355,4 +355,93 @@ class Sales extends Controller
             echo json_encode($this->salemodel->GetSaleId());
         }
     }
+
+    public function saleswithbalances()
+    {
+        $data = [
+            'title' => 'Sales With Balances',
+            'sales' => $this->salemodel->GetSalesWithBalances(),
+            'has_datatable' => true
+        ];
+        $this->view('sales/salewithbalances',$data);
+        exit;
+    }
+
+    public function balancepayment($id)
+    {
+        $details = $this->salemodel->GetBalanceDetails($id);
+       
+        if(floatval($details[0] === 0 || empty($details[0])))
+        {
+            redirect('sales/saleswithbalances');
+            exit;    
+        }
+        $data = [
+            'title' => 'Balance Receipt',
+            'saleid' => $id,
+            'isedit' => false,
+            'paymethod' => '',
+            'paydate' => date('Y-m-d'),
+            'balance' => $details[0],
+            'soldto' => $details[1]
+            // 'sales' => $this->salemodel->GetSalesWithBalances(),
+        ];
+        $this->view('sales/balancereceipt',$data);
+        exit;
+    }
+
+    public function receivepayment()
+    {
+        if($_SERVER['REQUEST_METHOD'] === 'POST')
+        {
+            $formdetails = json_decode(file_get_contents('php://input'));
+            $data = [
+                'saleid' => isset($formdetails->id) && !empty(trim($formdetails->id)) ? (int)trim($formdetails->id): null,
+                'isedit' => false,
+                'paymethod' => isset($formdetails->paymethod) && !empty($formdetails->paymethod) ? (int)trim($formdetails->paymethod) : null,
+                'paydate' => isset($formdetails->paydate) && !empty(trim($formdetails->paydate)) ? date('Y-m-d',strtotime(trim($formdetails->paydate))) : null,
+                'balance' => isset($formdetails->balance) && !empty(trim($formdetails->balance)) ? floatval(trim($formdetails->balance)) : null,
+                'payment' => isset($formdetails->payment) && !empty(trim($formdetails->payment)) ? floatval(trim($formdetails->payment)) : null,
+                'reference' => isset($formdetails->reference) && !empty(trim($formdetails->reference)) ? strtolower(trim($formdetails->reference)) : null,
+            ];
+
+            //validate
+            if(is_null($data['paydate']) || is_null($data['payment']) || is_null($data['paymethod']) 
+               || is_null($data['reference']) || is_null($data['saleid']) || is_null($data['balance'])){
+                
+                http_response_code(400);
+                echo json_encode(['message' => 'Fill all required fields']);
+                exit;
+            }
+
+            if($data['paydate'] > date('Y-m-d')){
+                http_response_code(400);
+                echo json_encode(['message' => 'Invalid date selected']);
+                exit;
+            }
+
+            if($data['payment'] > $data['balance']){
+                http_response_code(400);
+                echo json_encode(['message' => 'Payment more than balance']);
+                exit;
+            }
+
+            // $balance = $data['balance'] - $data['payment'];
+            // echo json_encode(['balance' => $balance,'saleid' => $data['saleid']]);
+
+            if(!$this->salemodel->ReceivePayment($data)){
+                http_response_code(500);
+                echo json_encode(['message' => 'Unable to save. Retry or contact admin']);
+                exit;
+            }
+            //saved successfully
+            echo json_encode(['success' => true]);
+            exit;
+        }
+        else
+        {
+            redirect('auth/forbidden');
+            exit();
+        }
+    }
 }

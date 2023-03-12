@@ -9,17 +9,20 @@ import {
   alerBox,
   displayAlert,
   HOST_URL,
+  getRequest,
 } from '../utils.js';
-import { clearValues, redirect } from '../../utils/utils.js';
+import { clearValues } from '../../utils/utils.js';
 
 const sdateInput = document.getElementById('startdate');
 const edateInput = document.getElementById('enddate');
 const form = document.getElementById('semisterForm');
+const prevSemisterSelect = document.getElementById('prevsem');
 const saveBtn = document.querySelector('.save');
 
 //for sumbit
 form.addEventListener('submit', async function (e) {
   e.preventDefault();
+
   if (validation() > 0) return;
   if (!validateDate(sdateInput, edateInput)) return;
   setLoadingState(saveBtn, 'Saving...');
@@ -28,11 +31,7 @@ form.addEventListener('submit', async function (e) {
   if (res && res.success) {
     displayAlert(alerBox, 'Saved successfully', 'success');
     clearValues();
-    // if (document.getElementById('isedit').value) {
-    //   redirect('semisters');
-    // } else {
-    //   clearValues(); //reset form controls
-    // }
+    loadSemisters();
   }
 });
 
@@ -48,4 +47,9 @@ async function saveSemister() {
     alerBox
   );
   return res;
+}
+
+async function loadSemisters() {
+  const semisters = await getRequest(`${HOST_URL}/semisters/getsemisters`);
+  prevSemisterSelect.innerHTML = semisters;
 }

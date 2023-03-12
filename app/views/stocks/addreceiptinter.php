@@ -71,7 +71,7 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th class="d-none">Pid</th>
-                                        <th width="50%">Product</th>
+                                        <th width="70%">Product</th>
                                         <th>Transfered Qty</th>
                                         <th>Received Qty</th>
                                     </tr>

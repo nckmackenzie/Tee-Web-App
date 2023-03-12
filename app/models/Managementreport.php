@@ -40,4 +40,63 @@ class Managementreport
         return loadresultset($this->db->dbh,'SELECT * FROM vw_ledger 
                                              WHERE (TransactionDate BETWEEN ? AND ?) AND (Account = ?)',[...$values]);
     }
+
+    public function BalancesheetAssets($date)
+    {
+        return loadresultset($this->db->dbh,'CALL sp_balancesheet_assets(?)',[$date]);
+    }
+
+    public function BalancesheetLiablityAndEquity($date)
+    {
+        return loadresultset($this->db->dbh,'CALL sp_balanceSheet_liablityequity(?)',[$date]);
+    }
+
+    public function GetTotals($date)
+    {
+        $assetsdebits = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(Debit),0) as sumofdebits 
+                                                   FROM   ledger 
+                                                   WHERE  (AccountId=3) AND (TransactionDate <= ?)
+                                                   AND    (Deleted = 0)',[$date]);
+        $assetscredits = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(Credit),0) as sumofcredits 
+                                                    FROM   ledger 
+                                                    WHERE  (AccountId=3) AND (TransactionDate <= ?)
+                                                    AND    (Deleted = 0)',[$date]);
+        $assetstotal = floatval($assetsdebits) - floatval($assetscredits);
+        //liabilties
+        $liabilityequitydebits = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(Debit),0) as sumofdebits 
+                                                            FROM   ledger 
+                                                            WHERE  (AccountId = 4 OR AccountId = 6) AND (TransactionDate <= ?)
+                                                            AND    (Deleted = 0)',[$date]);
+        $liabilityequitycredits = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(Credit),0) as sumofcredits 
+                                                             FROM   ledger 
+                                                             WHERE  (AccountId = 4 OR AccountId = 6) AND (TransactionDate <= ?)
+                                                             AND    (Deleted = 0)',[$date]);
+        $liabilityequitytotal = floatval($liabilityequitydebits) - floatval($liabilityequitycredits);
+
+        return [$assetstotal,$liabilityequitytotal];
+    }
+
+    public function GetNetIncome($date)
+    {
+        $revenuedebit = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(Debit),0) 
+                                                   FROM   ledger 
+                                                   WHERE  (AccountId=1) AND TransactionDate <= ?
+                                                   AND     Deleted = 0',[$date]);
+        $revenuecredit = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(Credit),0) 
+                                                    FROM   ledger 
+                                                    WHERE  (AccountId=1) AND TransactionDate <= ?
+                                                    AND     Deleted = 0',[$date]);
+        $revenuebalance = floatval($revenuedebit) - floatval($revenuecredit);
+        //expenses 
+        $expensesdebit = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(Debit),0) 
+                                                    FROM   ledger 
+                                                    WHERE  (AccountId=2) AND TransactionDate <= ?
+                                                    AND     Deleted = 0',[$date]);
+        $expensescredit = getdbvalue($this->db->dbh,'SELECT IFNULL(SUM(Credit),0) 
+                                                     FROM   ledger 
+                                                     WHERE  (AccountId=2) AND TransactionDate <= ?
+                                                     AND     Deleted = 0',[$date]);
+        $expensebalance = floatval($expensesdebit) - floatval($expensescredit);
+        return floatval($revenuebalance) - floatval($expensebalance);                                                                                        
+    }
 }

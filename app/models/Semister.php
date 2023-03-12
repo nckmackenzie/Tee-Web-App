@@ -39,19 +39,25 @@ class Semister
         }
     }
 
+    public function SemisterSetAsPrevious($id,$sem)
+    {
+        $count = getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM semisters WHERE (ID <> ?) AND (Deleted = 0) AND (PreviousSemister = ?)',[$id,$sem]);
+        if((int)$count > 0) return false;
+        return true;
+    }
+
     public function CreateUpdate($data)
     {
         try {
             if($data['isedit']){
-                $this->db->query('UPDATE semisters SET SemisterName=:sname,StartDate=:sdate,EndDate=:edate,ClassId=:cid 
+                $this->db->query('UPDATE semisters SET SemisterName=:sname,StartDate=:sdate,EndDate=:edate 
                                   WHERE (ID = :id)');
             }else{
-                $this->db->query('INSERT INTO semisters (SemisterName,StartDate,EndDate,ClassId) VALUES(:sname,:sdate,:edate,:cid)');
+                $this->db->query('INSERT INTO semisters (SemisterName,StartDate,EndDate) VALUES(:sname,:sdate,:edate)');
             }
             $this->db->bind(':sname',strtolower($data['semistername']));
             $this->db->bind(':sdate',$data['startdate']);
             $this->db->bind(':edate',$data['enddate']);
-            $this->db->bind(':cid',$data['class']);
             if($data['isedit']){
                 $this->db->bind(':id',$data['id']);
             }
@@ -74,6 +80,20 @@ class Semister
         $this->db->query("SELECT * FROM semisters WHERE ID = :id");
         $this->db->bind(':id',$id);
         return $this->db->single();
+    }
+
+    public function ValidateDelete($id)
+    {
+        $feestructurecount = getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM fee_structure WHERE SemisterId=? AND Deleted = 0',[(int)$id]);
+        $feepaymentcount = getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM fees_payment WHERE SemisterId=? AND Deleted = 0',[(int)$id]);
+        $initialbalcount = getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM initial_balances_header WHERE SemisterId=?',[(int)$id]);
+        $semistercount = getdbvalue($this->db->dbh,'SELECT COUNT(*) FROM semisters WHERE PreviousSemister=? AND Deleted = 0',[(int)$id]);
+        //count validation
+        if((int)$feestructurecount > 0 || (int)$feepaymentcount > 0 || (int)$initialbalcount > 0 || $semistercount > 0)
+        {
+            return false;
+        }
+        return true;
     }
 
     public function Delete($id)
